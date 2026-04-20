@@ -4,7 +4,6 @@ import {
   Gift, Award, Lock, Check, Zap, ArrowLeft,
   ShieldCheck, Star, Target, Clock, Sparkles,
 } from 'lucide-react';
-import { FeulLogo } from '../ui/FeulLogo';
 
 // Validator XP Rewards Hub
 // Sage-green (#5A7B6D) accent for all validator-XP elements (distinct from contributor gold)
@@ -88,7 +87,7 @@ export function ValidatorRewards() {
     <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header */}
-      <div className="px-6 pt-8 pb-4 flex items-center gap-4">
+      <div className="px-6 pt-16 pb-4 flex items-center gap-4">
         <button
           onClick={() => navigate('/validator/profile')}
           style={{

@@ -11,3 +11,20 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ── Phone frame scroll container — hide native scrollbar ── */
+div[style*="overflowY: auto"]::-webkit-scrollbar,
+div[style*="overflow-y: auto"]::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Smooth scroll everywhere ── */
+* {
+  scroll-behavior: smooth;
+}
+
+/* ── Prevent content selection on quick taps (mobile-like) ── */
+button {
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}

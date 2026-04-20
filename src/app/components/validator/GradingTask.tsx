@@ -176,7 +176,7 @@ export function GradingTask() {
         style={{
           background: '#FFFFFF',
           borderBottom: '1px solid #E8EDF3',
-          padding: '20px 24px 16px',
+          padding: '64px 24px 16px',
         }}
       >
         <div className="flex items-center justify-between mb-4">

@@ -136,7 +136,7 @@ export function EarningCelebration() {
         className="px-6 pb-10"
       >
         <button
-          onClick={() => navigate('/contributor')}
+          onClick={() => navigate('/profile-setup')}
           style={{
             width: '100%', height: 58, borderRadius: 999,
             background: '#C4622D', color: '#FFFFFF',

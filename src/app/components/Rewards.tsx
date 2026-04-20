@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router';
 import { Gift, Award, Sparkles, Lock, Check, Zap, ShoppingBag, ArrowLeft } from 'lucide-react';
-import { FeulLogo } from './ui/FeulLogo';
 
 // XP-only rewards hub — cash is never shown here
 // Secondary accent #8B6914 (olive/dark gold) for all XP elements
@@ -55,7 +54,7 @@ export function Rewards() {
     <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header */}
-      <div className="px-6 pt-8 pb-4 flex items-center gap-4">
+      <div className="px-6 pt-16 pb-4 flex items-center gap-4">
         <button
           onClick={() => navigate('/contributor/profile')}
           style={{

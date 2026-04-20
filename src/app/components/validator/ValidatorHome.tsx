@@ -1,17 +1,18 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { motion } from 'motion/react';
 import {
   Play, ChevronRight, CheckCircle2, PlusCircle,
   ShieldCheck, Layers, ArrowUpRight, Activity,
 } from 'lucide-react';
 import { FeulLogo } from '../ui/FeulLogo';
 import { Waveform } from '../ui/Waveform';
+import { NotificationsPanel, BellButton } from '../ui/NotificationsPanel';
 
-/* ─── Mock data ─────────────────────────────────────────── */
 const pendingBatches = [
-  { id: 'task-1', title: 'Hindi — Waiter Scenario',    clips: 45, language: 'Hindi',   priority: 'High',   payout: 90 },
-  { id: 'task-2', title: 'English — Product Reviews',   clips: 32, language: 'English', priority: 'Medium', payout: 64 },
-  { id: 'task-3', title: 'Spanish — Customer Service',  clips: 28, language: 'Spanish', priority: 'Medium', payout: 56 },
+  { id: 'task-1', title: 'Hindi — Waiter Scenario',   clips: 45, language: 'Hindi',   priority: 'High',   payout: 90 },
+  { id: 'task-2', title: 'English — Product Reviews',  clips: 32, language: 'English', priority: 'Medium', payout: 64 },
+  { id: 'task-3', title: 'Spanish — Customer Service', clips: 28, language: 'Spanish', priority: 'Medium', payout: 56 },
 ];
 
 const recentGradings = [
@@ -20,7 +21,6 @@ const recentGradings = [
   { id: 3, title: 'Casual Chat Scripts',   clips: 18, completed: 'Yesterday',   earned: 36, accuracy: 98 },
 ];
 
-/* ─── Empty state ───────────────────────────────────────── */
 function EmptyBatchState() {
   return (
     <div className="flex flex-col items-center px-8 py-14 relative" style={{ textAlign: 'center' }}>
@@ -57,118 +57,216 @@ function EmptyBatchState() {
   );
 }
 
-/* ─── Main screen ───────────────────────────────────────── */
+function getGreeting(): string {
+  const h = new Date().getHours();
+  if (h >= 5 && h < 12)  return 'Good morning';
+  if (h >= 12 && h < 17) return 'Good afternoon';
+  if (h >= 17 && h < 21) return 'Good evening';
+  return 'Hey, night owl';
+}
+
 export function ValidatorHome() {
-  const navigate  = useNavigate();
+  const navigate = useNavigate();
   const [showEmpty, setShowEmpty] = useState(false);
+  const [greeting, setGreeting] = useState(getGreeting());
+  const [notifOpen, setNotifOpen] = useState(false);
+  const unreadCount = 1;
+
+  const accuracy = 94.8;
+  const clipsGraded = 127;
+  const weeklyEarned = 254;
+
+  useEffect(() => {
+    const id = setInterval(() => setGreeting(getGreeting()), 60_000);
+    return () => clearInterval(id);
+  }, []);
 
   return (
-    <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-24" style={{ background: '#F4F6F8', fontFamily: 'var(--font-sans)' }}>
 
-      {/* ── Header ── */}
-      <div className="px-6 pt-8 pb-4 flex items-center justify-between">
-        <FeulLogo />
-        <button
-          onClick={() => setShowEmpty(!showEmpty)}
-          style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
-        >
-          {showEmpty ? 'Show tasks' : 'Empty state'}
-        </button>
-      </div>
+      {/* Notifications Panel */}
+      <NotificationsPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
 
-      {/* ── Hero — Ink-Navy Surface (same as Contributor) ── */}
-      <div className="px-6 mb-6">
-        <div style={{
-          background: '#1A1F2E',
-          borderRadius: 22,
-          padding: '24px 24px 20px',
+      {/* ── WARM GREETING HERO ──────────────────────────────── */}
+      <div
+        style={{
+          background: 'linear-gradient(175deg, #F0F7F4 0%, #EAF4EF 40%, #F4F6F8 100%)',
+          padding: '64px 24px 24px',
           position: 'relative',
           overflow: 'hidden',
-        }}>
-          {/* Waveform texture — white, same as contributor */}
-          <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.08 }}>
-            <Waveform color="#FFFFFF" opacity={1} height={96} variant="precision" />
+        }}
+      >
+        {/* Subtle waveform in bg */}
+        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, opacity: 0.04, pointerEvents: 'none' }}>
+          <Waveform color="#2D7A4F" opacity={1} height={60} variant="precision" />
+        </div>
+
+        {/* Logo row */}
+        <div className="flex items-center justify-between mb-6">
+          <FeulLogo />
+          <div className="flex items-center gap-2">
+            <BellButton unreadCount={unreadCount} onClick={() => setNotifOpen(true)} />
+            <button
+              onClick={() => setShowEmpty(!showEmpty)}
+              style={{ fontSize: 10, fontWeight: 600, color: '#B0BBCA', border: '1px solid #E8EDF3', borderRadius: 8, padding: '3px 8px' }}
+            >
+              {showEmpty ? 'Show tasks' : 'Empty state'}
+            </button>
+          </div>
+        </div>
+
+        {/* Greeting row */}
+        <div className="flex items-start justify-between gap-3">
+          <div className="flex-1 min-w-0">
+            <motion.p
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              style={{ fontSize: 13, fontWeight: 600, color: '#2D7A4F', marginBottom: 4 }}
+            >
+              {greeting} 👋
+            </motion.p>
+
+            <motion.h1
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.07 }}
+              style={{ fontSize: 26, fontWeight: 800, color: '#1C2434', lineHeight: 1.1, marginBottom: 8, letterSpacing: '-0.4px' }}
+            >
+              Priya Sharma
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 6 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.14 }}
+              style={{ fontSize: 13, fontWeight: 500, color: '#4A5568', lineHeight: 1.5 }}
+            >
+              {accuracy >= 95
+                ? 'Elite accuracy. You\'re in the top tier. 🏆'
+                : accuracy >= 90
+                ? `${accuracy}% accuracy — keep it sharp.`
+                : 'Focus on quality today to lift your score.'}
+            </motion.p>
           </div>
 
-          <div className="relative z-10">
-            {/* Role pill — muted sage, the ONLY role-specific color */}
-            <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6, marginBottom: 16 }}>
-              <ShieldCheck className="w-3.5 h-3.5" style={{ color: '#5A7B6D' }} strokeWidth={2} />
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#5A7B6D', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                Validator
-              </span>
-            </div>
+          {/* Avatar + role badge */}
+          <div className="flex flex-col items-center gap-2 flex-shrink-0">
+            <motion.div
+              initial={{ scale: 0.8, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              transition={{ duration: 0.4, delay: 0.1, type: 'spring', stiffness: 280, damping: 22 }}
+              style={{
+                width: 56, height: 56, borderRadius: '50%',
+                background: 'linear-gradient(135deg, #3D9A6A 0%, #2D7A4F 100%)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                boxShadow: '0px 6px 20px rgba(45,122,79,0.3)',
+              }}
+            >
+              <span style={{ fontSize: 22, fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>P</span>
+            </motion.div>
 
-            {/* Accuracy — hero number */}
-            <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', marginBottom: 6, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-              Accuracy Score
-            </p>
-            <p style={{
-              fontFamily: 'var(--font-mono)',
-              fontSize: 52,
-              fontWeight: 700,
-              color: '#FFFFFF',
-              lineHeight: 1,
-              letterSpacing: '-0.02em',
-            }}>
-              94.8%
-            </p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.4)', marginTop: 6 }}>
-              You're in the top 10% of all validators
-            </p>
-
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', margin: '16px 0' }} />
-
-            {/* Weekly stats row */}
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <ArrowUpRight className="w-4 h-4" style={{ color: '#C4622D' }} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 700, color: '#C4622D' }}>
-                  +₹254 this week
-                </span>
-              </div>
-              <div className="flex items-center gap-2">
-                <Activity className="w-3.5 h-3.5" style={{ color: 'rgba(255,255,255,0.3)' }} />
-                <span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>
-                  127 clips graded
-                </span>
-              </div>
-            </div>
+            {/* Role badge */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.35, delay: 0.2 }}
+              style={{
+                display: 'flex', alignItems: 'center', gap: 4,
+                background: '#E8F5EE', borderRadius: 999,
+                padding: '4px 10px',
+                border: '1px solid rgba(45,122,79,0.2)',
+              }}
+            >
+              <ShieldCheck className="w-3 h-3" style={{ color: '#2D7A4F' }} />
+              <span style={{ fontSize: 10, fontWeight: 700, color: '#2D7A4F' }}>Validator</span>
+            </motion.div>
           </div>
         </div>
       </div>
 
-      {/* ── Secondary stats strip ── */}
-      <div className="px-6 mb-6">
-        <div
-          className="flex items-center gap-0"
+      {/* ── ACCURACY HERO CARD ──────────────────────────────── */}
+      <div className="px-5 mt-4 mb-3">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.45, delay: 0.28 }}
           style={{
-            background: '#FFFFFF',
-            borderRadius: 16,
-            border: '1px solid #E8EDF3',
+            background: 'radial-gradient(ellipse at 20% 35%, rgba(45,122,79,0.14) 0%, transparent 55%), linear-gradient(150deg, #0F1822 0%, #0A0C10 100%)',
+            borderRadius: 24,
+            padding: '20px 22px',
+            position: 'relative',
             overflow: 'hidden',
+            boxShadow: '0px 12px 40px rgba(0,0,0,0.22), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
           }}
         >
+          <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.05 }}>
+            <Waveform color="#FFFFFF" opacity={1} height={70} variant="precision" />
+          </div>
+
+          <div className="relative z-10">
+            <div className="flex items-center justify-between mb-4">
+              <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                Accuracy Score
+              </p>
+              <div className="flex items-center gap-1">
+                <ArrowUpRight className="w-3.5 h-3.5" style={{ color: '#4EC992' }} />
+                <span style={{ fontSize: 12, fontWeight: 700, color: '#4EC992' }}>Top 10% of validators</span>
+              </div>
+            </div>
+
+            <div className="flex items-end gap-5">
+              {/* Big accuracy number */}
+              <div>
+                <p style={{
+                  fontFamily: 'var(--font-mono)', fontSize: 52, fontWeight: 700,
+                  color: '#FFFFFF', lineHeight: 1, letterSpacing: '-0.02em',
+                }}>
+                  {accuracy}%
+                </p>
+                <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.35)', marginTop: 5 }}>
+                  Lifetime accuracy
+                </p>
+              </div>
+
+              {/* Right mini stats */}
+              <div className="flex-1 flex flex-col items-end gap-2 pb-1">
+                <div style={{ textAlign: 'right' }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 16, fontWeight: 700, color: '#E06C3A' }}>+₹{weeklyEarned}</p>
+                  <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>this week</p>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div className="flex items-center justify-end gap-1">
+                    <Activity className="w-3 h-3" style={{ color: 'rgba(255,255,255,0.3)' }} />
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 16, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>{clipsGraded}</p>
+                  </div>
+                  <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>clips graded</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* ── Secondary stats strip ── */}
+      <div className="px-5 mb-4">
+        <div
+          className="flex items-center"
+          style={{ background: '#FFFFFF', borderRadius: 16, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 2px 8px rgba(28,36,52,0.04)' }}
+        >
           {[
-            { label: 'Cash Earned',    value: '₹568',  mono: true,  color: '#1C2434' },
-            { label: 'Batches Done',   value: '32',    mono: false, color: '#1C2434' },
-            { label: 'Level',          value: 'Lv 4',  mono: true,  color: '#1C2434' },
+            { label: 'Cash Earned', value: '₹568',  mono: true  },
+            { label: 'Batches Done', value: '32',   mono: false },
+            { label: 'Level',        value: 'Lv 4', mono: true  },
           ].map((stat, idx) => (
             <div
               key={stat.label}
               className="flex-1 text-center"
-              style={{
-                padding: '14px 6px',
-                borderRight: idx < 2 ? '1px solid #E8EDF3' : 'none',
-              }}
+              style={{ padding: '14px 6px', borderRight: idx < 2 ? '1px solid #EDF0F5' : 'none' }}
             >
               <p style={{
                 fontFamily: stat.mono ? 'var(--font-mono)' : 'var(--font-serif)',
-                fontSize: 22,
-                fontWeight: 700,
-                color: stat.color,
-                lineHeight: 1,
-                marginBottom: 4,
+                fontSize: 20, fontWeight: 700, color: '#1C2434', lineHeight: 1, marginBottom: 4,
               }}>
                 {stat.value}
               </p>
@@ -184,50 +282,59 @@ export function ValidatorHome() {
         <EmptyBatchState />
       ) : (
         <>
-          {/* ── Primary CTA — Start Grading (brand orange) ── */}
-          <div className="px-6 mb-6">
-            <button
+          {/* ── Primary CTA ── */}
+          <div className="px-5 mb-5">
+            <motion.button
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4, delay: 0.38 }}
+              whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/validator/grading/${pendingBatches[0].id}`)}
               style={{
-                width: '100%', height: 58, borderRadius: 999,
-                background: '#C4622D',
+                width: '100%', height: 62, borderRadius: 999,
+                background: 'linear-gradient(160deg, #E8743F 0%, #C4622D 100%)',
                 color: '#FFFFFF',
-                fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-                boxShadow: '0px 6px 24px rgba(196,98,45,0.30)',
+                fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
+                boxShadow: '0px 10px 28px rgba(224,108,58,0.4), inset 0px 1px 0px rgba(255,255,255,0.18)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
               }}
             >
               <Play className="w-5 h-5 fill-white" />
               Start Grading — {pendingBatches[0].clips} clips
-            </button>
+            </motion.button>
           </div>
 
           {/* ── Pending Batches ── */}
-          <div className="px-6 mb-6">
-            <div className="flex items-center justify-between mb-4">
-              <div className="flex items-center gap-2">
-                <Layers className="w-4 h-4" style={{ color: '#1C2434' }} strokeWidth={1.75} />
+          <div className="px-5 mb-5">
+            <div className="flex items-center justify-between mb-3">
+              <div>
                 <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: '#1C2434' }}>
                   Pending Batches
                 </h3>
+                <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', marginTop: 1 }}>
+                  Matched to your language profile
+                </p>
               </div>
               <button
                 onClick={() => navigate('/validator/tasks')}
                 className="flex items-center gap-1"
-                style={{ fontSize: 13, fontWeight: 700, color: '#C4622D' }}
+                style={{ fontSize: 12, fontWeight: 700, color: '#E06C3A' }}
               >
-                View All <ChevronRight className="w-4 h-4" />
+                View all <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            <div style={{ background: '#FFFFFF', borderRadius: 16, border: '1px solid #E8EDF3', overflow: 'hidden' }}>
+            <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 2px 12px rgba(28,36,52,0.05)' }}>
               {pendingBatches.map((batch, idx) => (
-                <div
+                <motion.div
                   key={batch.id}
+                  initial={{ opacity: 0, y: 8 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: 0.4 + idx * 0.06 }}
                   onClick={() => navigate(`/validator/grading/${batch.id}`)}
                   style={{
                     padding: '16px 18px',
-                    borderBottom: idx < pendingBatches.length - 1 ? '1px solid #E8EDF3' : 'none',
+                    borderBottom: idx < pendingBatches.length - 1 ? '1px solid #F2F5F9' : 'none',
                     cursor: 'pointer',
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                   }}
@@ -236,7 +343,7 @@ export function ValidatorHome() {
                     {/* Priority accent dot */}
                     <div style={{
                       width: 4, height: 36, borderRadius: 99,
-                      background: batch.priority === 'High' ? '#C4622D' : '#E8EDF3',
+                      background: batch.priority === 'High' ? '#E06C3A' : '#E8EDF3',
                       flexShrink: 0,
                     }} />
                     <div>
@@ -245,7 +352,7 @@ export function ValidatorHome() {
                       </h4>
                       <div className="flex items-center gap-3">
                         <span style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>{batch.clips} clips</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: '#C4622D' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: '#E06C3A' }}>
                           ₹{batch.payout}
                         </span>
                       </div>
@@ -253,7 +360,7 @@ export function ValidatorHome() {
                   </div>
                   <div style={{
                     width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-                    background: batch.priority === 'High' ? '#C4622D' : '#F0F4F8',
+                    background: batch.priority === 'High' ? '#E06C3A' : '#F0F4F8',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
                     <Play
@@ -262,34 +369,36 @@ export function ValidatorHome() {
                       fill={batch.priority === 'High' ? '#FFFFFF' : '#1C2434'}
                     />
                   </div>
-                </div>
+                </motion.div>
               ))}
             </div>
           </div>
 
           {/* ── Recent Activity ── */}
-          <div className="px-6">
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: '#1C2434', marginBottom: 14 }}>
-              Recent Activity
-            </h3>
-            <div>
+          <div className="px-5">
+            <div className="flex items-center justify-between mb-3">
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: '#1C2434' }}>
+                Recent Activity
+              </h3>
+            </div>
+            <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 2px 12px rgba(28,36,52,0.05)' }}>
               {recentGradings.map((grading, idx) => (
                 <div
                   key={grading.id}
                   style={{
-                    padding: '13px 0',
-                    borderBottom: idx < recentGradings.length - 1 ? '1px solid #E8EDF3' : 'none',
+                    padding: '14px 18px',
+                    borderBottom: idx < recentGradings.length - 1 ? '1px solid #F2F5F9' : 'none',
                     display: 'flex', alignItems: 'center', justifyContent: 'space-between',
                   }}
                 >
                   <div>
-                    <p style={{ fontSize: 14, fontWeight: 600, color: '#1C2434', marginBottom: 2 }}>{grading.title}</p>
-                    <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>
+                    <p style={{ fontSize: 13, fontWeight: 600, color: '#1C2434', marginBottom: 2 }}>{grading.title}</p>
+                    <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7' }}>
                       {grading.clips} clips · {grading.completed}
                     </p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: '#C4622D' }}>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: '#E06C3A' }}>
                       +₹{grading.earned}
                     </p>
                     <p style={{ fontSize: 11, fontWeight: 600, color: '#2D7A4F', marginTop: 2 }}>

@@ -24,7 +24,7 @@ export function RejectedTask() {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
-      <div className="px-6 pt-10 pb-2 flex items-center gap-4">
+      <div className="px-6 pt-16 pb-2 flex items-center gap-4">
         <button
           onClick={() => navigate('/contributor')}
           style={{

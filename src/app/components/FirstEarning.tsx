@@ -17,7 +17,7 @@ export function FirstEarning() {
       </div>
 
       {/* Skip for returning users */}
-      <div className="absolute top-6 right-6 z-10">
+      <div className="absolute top-14 right-6 z-10">
         <button
           onClick={() => navigate('/contributor')}
           style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.35)', background: 'none', border: 'none', cursor: 'pointer' }}
@@ -68,7 +68,7 @@ export function FirstEarning() {
             marginBottom: 12,
           }}>
             Earn <span style={{ fontFamily: 'var(--font-mono)', color: '#C4622D' }}>₹50</span>
-            <br />in 30 seconds.
+            <br />in 2 minutes.
           </h1>
           <p style={{ fontSize: 15, fontWeight: 500, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, maxWidth: 300, margin: '0 auto' }}>
             Complete a quick voice calibration. Your wallet gets credited instantly.
@@ -84,7 +84,7 @@ export function FirstEarning() {
         >
           <div className="flex items-center gap-2">
             <Clock className="w-4 h-4" style={{ color: 'rgba(255,255,255,0.3)' }} />
-            <span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>~30 seconds</span>
+            <span style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>~2 minutes</span>
           </div>
           <div style={{ width: 1, height: 16, background: 'rgba(255,255,255,0.1)' }} />
           <div className="flex items-center gap-2">
@@ -102,7 +102,7 @@ export function FirstEarning() {
         className="px-6 pb-10"
       >
         <button
-          onClick={() => navigate('/voice-calibration')}
+          onClick={() => navigate('/data-consent')}
           style={{
             width: '100%', height: 58, borderRadius: 999,
             background: '#C4622D', color: '#FFFFFF',

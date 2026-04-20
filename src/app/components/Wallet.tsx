@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Wallet as WalletIcon, TrendingUp, Clock, CheckCircle2, Info, Pencil, Zap, ArrowRight, CreditCard, AlertCircle } from 'lucide-react';
-import { FeulLogo } from './ui/FeulLogo';
 import { Waveform } from './ui/Waveform';
 import { motion } from 'motion/react';
 import { Lock, Mic, Gift } from 'lucide-react';
@@ -49,20 +48,14 @@ export function Wallet() {
   if (showEmpty) {
     return (
       <div className="min-h-screen pb-28" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
-        <div className="px-6 pt-8 pb-2 flex items-center justify-between">
-          <FeulLogo />
+        <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Wallet</h1>
           <button
             onClick={() => setShowEmpty(false)}
             style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
           >
             Show wallet
           </button>
-        </div>
-
-        <div className="px-6 pt-2 pb-4">
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
-            Wallet
-          </h1>
         </div>
 
         {/* Locked Potential Card */}
@@ -176,8 +169,8 @@ export function Wallet() {
   return (
     <div className="min-h-screen pb-28" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
-      <div className="px-6 pt-8 pb-2 flex items-center justify-between">
-        <FeulLogo />
+      <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Wallet</h1>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowEmpty(true)}
@@ -185,25 +178,19 @@ export function Wallet() {
           >
             Empty state
           </button>
-          <span style={{ fontSize: 13, fontWeight: 500, color: '#8896A7' }}>Earnings & Payouts</span>
         </div>
-      </div>
-
-      <div className="px-6 pt-2 pb-4">
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
-          Wallet
-        </h1>
       </div>
 
       {/* Balance Card — NAVY */}
       <div className="px-6 mb-5">
         <div
           style={{
-            background: '#1A1F2E',
+            background: 'radial-gradient(ellipse at 20% 35%, rgba(196,98,45,0.20) 0%, transparent 52%), linear-gradient(150deg, #0F1822 0%, #0A0C10 100%)',
             borderRadius: 20,
             padding: '24px',
             position: 'relative',
             overflow: 'hidden',
+            boxShadow: '0px 12px 40px rgba(0,0,0,0.22), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
           }}
         >
           <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
@@ -388,13 +375,13 @@ export function Wallet() {
             width: '100%',
             height: 56,
             borderRadius: 999,
-            background: '#C4622D',
+            background: 'linear-gradient(160deg, #E8743F 0%, #C4622D 100%)',
             color: '#FFFFFF',
             fontSize: 16,
             fontWeight: 700,
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0px 4px 16px rgba(196,98,45,0.30)',
+            boxShadow: '0px 8px 24px rgba(196,98,45,0.38), inset 0px 1px 0px rgba(255,255,255,0.18)',
           }}
           onClick={() => navigate('/contributor/payout')}
         >

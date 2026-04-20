@@ -64,7 +64,7 @@ function StepConfirm({
       style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}
     >
       {/* Header */}
-      <div className="px-6 pt-12 pb-4 flex items-center gap-4">
+      <div className="px-6 pt-16 pb-4 flex items-center gap-4">
         <button
           onClick={onBack}
           style={{

@@ -1,8 +1,11 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import { Onboarding } from "./components/Onboarding";
 import { FirstEarning } from "./components/FirstEarning";
+import { DataConsent } from "./components/DataConsent";
+import { SubmissionGuidelines } from "./components/SubmissionGuidelines";
 import { VoiceCalibration } from "./components/VoiceCalibration";
 import { EarningCelebration } from "./components/EarningCelebration";
+import { ProfileSetup } from "./components/ProfileSetup";
 import { MainApp } from "./components/MainApp";
 import { Home } from "./components/Home";
 import { QuestFeed } from "./components/QuestFeed";
@@ -39,12 +42,24 @@ export const router = createBrowserRouter([
     Component: FirstEarning,
   },
   {
+    path: "/data-consent",
+    Component: DataConsent,
+  },
+  {
+    path: "/submission-guidelines",
+    Component: SubmissionGuidelines,
+  },
+  {
     path: "/voice-calibration",
     Component: VoiceCalibration,
   },
   {
     path: "/earning-celebration",
     Component: EarningCelebration,
+  },
+  {
+    path: "/profile-setup",
+    Component: ProfileSetup,
   },
 
   // ── Contributor (Main App) ──

@@ -1,6 +1,9 @@
-import { Building2, Mail, Calendar, TrendingUp, IndianRupee, FolderKanban, Settings, LogOut, ChevronRight, Globe, Shield } from 'lucide-react';
-import { FeulLogo } from '../ui/FeulLogo';
+import { useState } from 'react';
+import { useNavigate } from 'react-router';
+import { Building2, Mail, Calendar, TrendingUp, IndianRupee, FolderKanban, Settings, LogOut, ChevronRight, Globe, Shield, Repeat2 } from 'lucide-react';
+
 import { Waveform } from '../ui/Waveform';
+import { RoleSwitcher } from '../ui/RoleSwitcher';
 
 const stats = [
   { label: 'Campaigns', value: '4',     icon: FolderKanban },
@@ -21,16 +24,20 @@ const menuItems = [
 ];
 
 export function QuestCreatorProfile() {
+  const navigate = useNavigate();
+  const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
+
   return (
     <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
 
-      {/* ── Logo ── */}
-      <div className="px-6 pt-8 pb-4">
-        <FeulLogo />
-      </div>
+      <RoleSwitcher
+        isOpen={roleSwitcherOpen}
+        currentRole="quest-creator"
+        onClose={() => setRoleSwitcherOpen(false)}
+      />
 
       {/* ── Profile Header ── */}
-      <div className="flex flex-col items-center px-6 pb-6">
+      <div className="flex flex-col items-center px-6 pt-16 pb-6">
         <div
           className="flex items-center justify-center mb-5"
           style={{
@@ -80,6 +87,40 @@ export function QuestCreatorProfile() {
             );
           })}
         </div>
+      </div>
+
+      {/* Role Switcher Action */}
+      <div className="px-6 mb-6">
+        <button
+          onClick={() => setRoleSwitcherOpen(true)}
+          style={{
+            width: '100%',
+            background: 'linear-gradient(135deg, #1C2434 0%, #0A0C10 100%)',
+            borderRadius: 16,
+            padding: '14px 20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            boxShadow: '0px 4px 12px rgba(10,12,16,0.12)',
+            cursor: 'pointer',
+            border: 'none',
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <div style={{
+              width: 36, height: 36, borderRadius: 10,
+              background: 'rgba(255,255,255,0.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Repeat2 className="w-4 h-4" style={{ color: '#E06C3A' }} />
+            </div>
+            <div className="text-left">
+              <p style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>Switch App Role</p>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>Currently: Quest Creator</p>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4" style={{ color: 'rgba(255,255,255,0.3)' }} />
+        </button>
       </div>
 
       {/* ── Company Information ── */}

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Play, Pause, Users, Clock, TrendingUp, IndianRupee, Plus, BarChart2 } from 'lucide-react';
-import { FeulLogo } from '../ui/FeulLogo';
+
 import { Waveform } from '../ui/Waveform';
 
 const campaigns = [
@@ -24,15 +24,10 @@ export function QuestCreatorCampaigns() {
     <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
 
       {/* ── Header ── */}
-      <div className="px-6 pt-8 pb-4 flex items-center justify-between">
-        <FeulLogo />
-      </div>
-
-      {/* ── Title ── */}
-      <div className="px-6 pb-5">
+      <div className="px-6 pt-16 pb-2">
         <div className="flex items-center gap-2 mb-1">
-          <BarChart2 className="w-4 h-4" style={{ color: '#1C2434' }} strokeWidth={2} />
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
+          <BarChart2 className="w-5 h-5" style={{ color: '#1C2434' }} strokeWidth={2} />
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
             Campaign Manager
           </h1>
         </div>

@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router';
-import { Home as HomeIcon, Compass, Wallet, User } from 'lucide-react';
+import { Home as HomeIcon, Compass, Wallet, User, Repeat2 } from 'lucide-react';
 import { motion } from 'motion/react';
+import { RoleSwitcher } from './ui/RoleSwitcher';
 
 const navItems = [
   { path: '/contributor',         label: 'Home',    icon: HomeIcon },
@@ -19,7 +21,7 @@ export function MainApp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: '#F4F6F8', fontFamily: 'var(--font-sans)' }}>
       <div className="flex-1 overflow-auto pb-20">
         <Outlet />
       </div>
@@ -27,9 +29,11 @@ export function MainApp() {
       <nav
         className="fixed bottom-0 left-0 right-0 z-50"
         style={{
-          background: '#FFFFFF',
-          borderTop: '1px solid #E8EDF3',
-          boxShadow: '0px -2px 12px rgba(28,36,52,0.05)',
+          background: 'rgba(255,255,255,0.94)',
+          borderTop: '1px solid rgba(232,237,243,0.8)',
+          boxShadow: '0px -4px 20px rgba(28,36,52,0.07)',
+          backdropFilter: 'blur(16px)',
+          WebkitBackdropFilter: 'blur(16px)',
         }}
       >
         <div className="flex justify-around items-center max-w-md mx-auto" style={{ height: 64 }}>

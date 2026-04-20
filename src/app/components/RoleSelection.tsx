@@ -44,7 +44,7 @@ export function RoleSelection() {
       </div>
 
       {/* Logo placeholder */}
-      <div className="px-6 pt-10 mb-10">
+      <div className="px-6 pt-16 mb-10">
         <FeulLogo variant="light" />
       </div>
 

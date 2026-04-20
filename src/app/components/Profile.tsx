@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { User, Award, Settings, LogOut, ChevronRight, Shield, Trash2, Zap, ChevronDown, ShieldCheck, Building2 } from 'lucide-react';
-import { FeulLogo } from './ui/FeulLogo';
+import { User, Award, Settings, LogOut, ChevronRight, Shield, Trash2, Zap, ChevronDown, ShieldCheck, Building2, Repeat2 } from 'lucide-react';
+import { RoleSwitcher } from './ui/RoleSwitcher';
 
 const achievements = [
   { id: 1, name: 'First Steps',  emoji: '🎯', description: 'Complete your first quest',    unlocked: true  },
@@ -24,17 +24,19 @@ const menuItems = [
 export function Profile() {
   const navigate = useNavigate();
   const [perksExpanded, setPerksExpanded] = useState(false);
+  const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
 
   return (
     <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
 
-      {/* Logo */}
-      <div className="px-6 pt-8 pb-4">
-        <FeulLogo />
-      </div>
+      <RoleSwitcher
+        isOpen={roleSwitcherOpen}
+        currentRole="contributor"
+        onClose={() => setRoleSwitcherOpen(false)}
+      />
 
       {/* Profile Header — avatar left, name/level dominant */}
-      <div className="flex items-center gap-4 px-6 pb-6">
+      <div className="flex items-center gap-4 px-6 pt-16 pb-6">
         <div
           className="flex items-center justify-center flex-shrink-0"
           style={{
@@ -73,13 +75,48 @@ export function Profile() {
         </div>
       </div>
 
+      {/* Role Switcher Action */}
+      <div className="px-6 mb-6">
+        <button
+          onClick={() => setRoleSwitcherOpen(true)}
+          style={{
+            width: '100%',
+            background: 'linear-gradient(135deg, #1C2434 0%, #0A0C10 100%)',
+            borderRadius: 16,
+            padding: '14px 20px',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            boxShadow: '0px 4px 12px rgba(10,12,16,0.12)',
+            cursor: 'pointer',
+            border: 'none',
+          }}
+        >
+          <div className="flex items-center gap-3">
+            <div style={{
+              width: 36, height: 36, borderRadius: 10,
+              background: 'rgba(255,255,255,0.1)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>
+              <Repeat2 className="w-4 h-4" style={{ color: '#E06C3A' }} />
+            </div>
+            <div className="text-left">
+              <p style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>Switch App Role</p>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>Currently: Contributor</p>
+            </div>
+          </div>
+          <ChevronRight className="w-4 h-4" style={{ color: 'rgba(255,255,255,0.3)' }} />
+        </button>
+      </div>
+
       {/* XP Level Block — NAVY background, white text, orange progress */}
       <div className="px-6 mb-6">
         <div
           style={{
-            background: 'var(--navy)',
+            background: 'radial-gradient(ellipse at 20% 40%, rgba(224,108,58,0.18) 0%, transparent 55%), linear-gradient(150deg, #0F1822 0%, #0A0C10 100%)',
             borderRadius: 24,
             padding: '24px 24px',
+            boxShadow: '0px 10px 32px rgba(0,0,0,0.20), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
           }}
         >
           <div className="flex items-center justify-between mb-4">

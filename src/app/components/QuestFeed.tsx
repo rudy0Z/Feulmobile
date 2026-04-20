@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { Clock, Mic, Languages, ArrowUpRight, Flame, Users, Timer, Star } from 'lucide-react';
-import { FeulLogo } from './ui/FeulLogo';
 import { Waveform } from './ui/Waveform';
 
 const questCategories = [
@@ -119,14 +118,11 @@ export function QuestFeed() {
   if (showEmpty) {
     return (
       <div className="min-h-screen" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
-        <div className="px-6 pt-8 pb-2 flex items-center justify-between">
-          <FeulLogo />
+        <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Available Quests</h1>
           <button onClick={() => setShowEmpty(false)} style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}>
             Show quests
           </button>
-        </div>
-        <div className="px-6 pt-2 pb-4">
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434' }}>Available Quests</h1>
         </div>
         <EmptyQuestFeed />
       </div>
@@ -136,17 +132,14 @@ export function QuestFeed() {
   return (
     <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
-      <div className="px-6 pt-8 pb-2 flex items-center justify-between">
-        <FeulLogo />
+      <div className="px-6 pt-16 pb-2 flex items-center justify-between">
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Available Quests</h1>
         <button onClick={() => setShowEmpty(true)} style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}>
           Empty state
         </button>
       </div>
 
-      <div className="px-6 pt-2 pb-4">
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
-          Available Quests
-        </h1>
+      <div className="px-6 pt-1 pb-4">
         <p style={{ fontSize: 14, fontWeight: 500, color: '#4A5568', marginTop: 4 }}>
           Earn cash instantly for every clip
         </p>

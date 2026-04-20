@@ -66,7 +66,7 @@ export function ValidatorApplication() {
     <div className="min-h-screen pb-8" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header */}
-      <div className="px-6 pt-8 pb-2 flex items-center gap-3">
+      <div className="px-6 pt-16 pb-2 flex items-center gap-3">
         <button
           onClick={() => navigate(-1)}
           style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}

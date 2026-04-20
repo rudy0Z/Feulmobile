@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mic, Square, Play, Check, ArrowLeft } from 'lucide-react';
-import { FeulLogo } from './ui/FeulLogo';
 import { Waveform } from './ui/Waveform';
 
 const sampleClips = [
@@ -64,7 +63,7 @@ export function Recording() {
     <div className="min-h-screen flex flex-col relative" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header */}
-      <div className="px-6 pt-8 pb-4">
+      <div className="px-6 pt-16 pb-4">
         <div className="flex items-center justify-between mb-6">
           <button
             onClick={() => navigate('/contributor/quests')}
@@ -188,10 +187,10 @@ export function Recording() {
                   onClick={handleStartRecording}
                   style={{
                     width: 80, height: 80, borderRadius: '50%',
-                    background: '#C4622D',
+                    background: 'linear-gradient(145deg, #E8743F, #C4622D)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     margin: '0 auto',
-                    boxShadow: '0px 4px 20px rgba(196,98,45,0.35)',
+                    boxShadow: '0px 8px 24px rgba(196,98,45,0.45), inset 0px 1px 0px rgba(255,255,255,0.2)',
                     border: 'none', cursor: 'pointer',
                   }}
                 >
@@ -207,10 +206,10 @@ export function Recording() {
                     onClick={handleStopRecording}
                     style={{
                       width: 80, height: 80, borderRadius: '50%',
-                      background: '#C0392B',
+                      background: 'linear-gradient(145deg, #D9483A, #C0392B)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       margin: '0 auto 16px',
-                      boxShadow: '0px 4px 16px rgba(192,57,43,0.35)',
+                      boxShadow: '0px 8px 24px rgba(192,57,43,0.45), inset 0px 1px 0px rgba(255,255,255,0.15)',
                       border: 'none', cursor: 'pointer',
                     }}
                   >
@@ -254,8 +253,9 @@ export function Recording() {
                     onClick={handleAcceptClip}
                     style={{
                       width: '100%', height: 56, borderRadius: 999,
-                      background: '#C4622D', border: 'none', cursor: 'pointer',
-                      boxShadow: '0px 4px 16px rgba(196,98,45,0.30)',
+                      background: 'linear-gradient(160deg, #E8743F 0%, #C4622D 100%)',
+                      border: 'none', cursor: 'pointer',
+                      boxShadow: '0px 8px 24px rgba(196,98,45,0.38), inset 0px 1px 0px rgba(255,255,255,0.18)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                       marginBottom: 12,
                     }}

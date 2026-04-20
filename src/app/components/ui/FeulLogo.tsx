@@ -1,27 +1,34 @@
-/**
- * Feul logo placeholder — 40×40px reserved space in top-left nav.
- * Will be replaced with actual wordmark/logo asset.
- */
-export function FeulLogo({ variant = 'dark' }: { variant?: 'dark' | 'light' }) {
-  const bg = variant === 'light' ? 'rgba(255,255,255,0.15)' : '#E8EDF3';
-  const text = variant === 'light' ? 'rgba(255,255,255,0.6)' : '#8896A7';
+import logoImg from "figma:asset/7a4150af4a1e9ed7a5ff663987ed6e9b57b74925.png";
 
+/**
+ * Feul app logo — dark rounded square, 36×36.
+ * Use ONLY on home screens and onboarding — never on inner tab screens.
+ */
+export function FeulLogo({ size = 36 }: { size?: number }) {
   return (
     <div
       style={{
-        width: 40,
-        height: 40,
-        borderRadius: 12,
-        background: bg,
+        width: size,
+        height: size,
+        borderRadius: Math.round(size * 0.3),
+        background: '#24231F',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
         flexShrink: 0,
+        overflow: 'hidden',
       }}
     >
-      <span style={{ fontSize: 8, fontWeight: 800, color: text, letterSpacing: '0.05em' }}>
-        [LOGO]
-      </span>
+      <img
+        src={logoImg}
+        alt="Feul"
+        style={{
+          width: size * 0.68,
+          height: 'auto',
+          display: 'block',
+          pointerEvents: 'none',
+        }}
+      />
     </div>
   );
 }

@@ -5,7 +5,7 @@ import {
   Info, Pencil, Zap, ArrowRight, CreditCard, ShieldCheck,
   Star, ArrowUpRight, Target,
 } from 'lucide-react';
-import { FeulLogo } from '../ui/FeulLogo';
+
 import { Waveform } from '../ui/Waveform';
 import { motion } from 'motion/react';
 import { Lock, Gift } from 'lucide-react';
@@ -59,20 +59,14 @@ export function ValidatorWallet() {
   if (showEmpty) {
     return (
       <div className="min-h-screen pb-28" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
-        <div className="px-6 pt-8 pb-2 flex items-center justify-between">
-          <FeulLogo />
+        <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Earnings</h1>
           <button
             onClick={() => setShowEmpty(false)}
             style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
           >
             Show wallet
           </button>
-        </div>
-
-        <div className="px-6 pt-2 pb-4">
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
-            Earnings
-          </h1>
         </div>
 
         {/* Locked Potential Card */}
@@ -186,23 +180,14 @@ export function ValidatorWallet() {
     <div className="min-h-screen pb-28" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header */}
-      <div className="px-6 pt-8 pb-2 flex items-center justify-between">
-        <FeulLogo />
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setShowEmpty(true)}
-            style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
-          >
-            Empty state
-          </button>
-          <span style={{ fontSize: 13, fontWeight: 500, color: '#8896A7' }}>Grading Pay</span>
-        </div>
-      </div>
-
-      <div className="px-6 pt-2 pb-4">
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
-          Earnings
-        </h1>
+      <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Earnings</h1>
+        <button
+          onClick={() => setShowEmpty(true)}
+          style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
+        >
+          Empty state
+        </button>
       </div>
 
       {/* Balance Card — ink-navy */}

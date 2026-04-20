@@ -8,6 +8,8 @@ const calibrationPrompts = [
   "Hello, my name is... and I'm from...",
   "The weather today is really nice outside.",
   "I'd like to order a coffee with milk please.",
+  "Technology is a tool, but human creativity is the engine of progress.",
+  "Artificial intelligence is trained on the diverse voices of humanity.",
 ];
 
 export function VoiceCalibration() {
@@ -22,8 +24,8 @@ export function VoiceCalibration() {
     if (isRecording) {
       timerRef.current = setInterval(() => {
         setRecordingTime(prev => {
-          if (prev >= 5) {
-            // Auto-stop after 5 seconds
+          if (prev >= 12) {
+            // Auto-stop after 12 seconds
             setIsRecording(false);
             setCompletedPrompts(p => [...p, currentPrompt]);
             if (timerRef.current) clearInterval(timerRef.current);
@@ -37,7 +39,7 @@ export function VoiceCalibration() {
   }, [isRecording, currentPrompt]);
 
   useEffect(() => {
-    if (completedPrompts.length > 0 && !isRecording) {
+    if (completedPrompts.includes(currentPrompt) && !isRecording) {
       const timer = setTimeout(() => {
         if (currentPrompt < calibrationPrompts.length - 1) {
           setCurrentPrompt(prev => prev + 1);
@@ -70,7 +72,7 @@ export function VoiceCalibration() {
     <div className="min-h-screen flex flex-col" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header with live earnings */}
-      <div className="px-6 pt-8 pb-4 flex items-center justify-between">
+      <div className="px-6 pt-16 pb-4 flex items-center justify-between">
         <div>
           <p style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Voice Calibration

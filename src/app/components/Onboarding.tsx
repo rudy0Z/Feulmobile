@@ -48,10 +48,10 @@ export function Onboarding() {
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ background: '#FAF6F0', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'linear-gradient(170deg, #FAF6F0 0%, #F5EFE6 100%)', fontFamily: 'var(--font-sans)' }}
     >
       {/* Skip */}
-      <div className="absolute top-6 right-6 z-10">
+      <div className="absolute top-14 right-6 z-10">
         <button
           onClick={handleSkip}
           style={{
@@ -132,7 +132,7 @@ export function Onboarding() {
       {/* Bottom Nav */}
       <div
         className="fixed bottom-0 left-0 right-0 px-6 py-8"
-        style={{ background: '#FAF6F0' }}
+        style={{ background: 'linear-gradient(to top, #FAF6F0 70%, transparent)' }}
       >
         {/* Pagination dots */}
         <div className="flex justify-center gap-2 mb-8">
@@ -157,13 +157,13 @@ export function Onboarding() {
             width: '100%',
             height: 58,
             borderRadius: 999,
-            background: '#E06C3A',
+            background: 'linear-gradient(160deg, #E8743F 0%, #C4622D 100%)',
             color: '#FFFFFF',
             fontSize: 17,
             fontWeight: 700,
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0px 8px 24px rgba(224,108,58,0.25)',
+            boxShadow: '0px 10px 28px rgba(224,108,58,0.35), inset 0px 1px 0px rgba(255,255,255,0.18)',
           }}
         >
           {currentStep < onboardingSteps.length - 1 ? 'Continue' : 'Get Started'}
