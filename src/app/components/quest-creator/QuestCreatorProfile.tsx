@@ -112,7 +112,7 @@ export function QuestCreatorProfile() {
               background: 'rgba(255,255,255,0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Repeat2 className="w-4 h-4" style={{ color: '#E06C3A' }} />
+              <Repeat2 className="w-4 h-4" style={{ color: 'oklch(0.63 0.25 34)' }} />
             </div>
             <div className="text-left">
               <p style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>Switch App Role</p>

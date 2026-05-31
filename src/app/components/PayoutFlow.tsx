@@ -134,7 +134,7 @@ function StepAmount({
         <div
           onClick={() => inputRef.current?.focus()}
           style={{
-            background: '#FFFFFF', borderRadius: 16, border: `2px solid ${!amount || !invalid ? '#E06C3A' : '#E8EDF3'}`,
+            background: '#FFFFFF', borderRadius: 16, border: `2px solid ${!amount || !invalid ? 'oklch(0.63 0.25 34)' : '#E8EDF3'}`,
             padding: '18px 20px',
             display: 'flex', alignItems: 'center', gap: 8, cursor: 'text',
             boxShadow: '0px 2px 8px rgba(28,36,52,0.04)',
@@ -185,7 +185,7 @@ function StepAmount({
               onClick={() => setAmount(String(p))}
               style={{
                 padding: '9px 20px', borderRadius: 999,
-                border: `1.5px solid ${amount === String(p) ? '#E06C3A' : '#E8EDF3'}`,
+                border: `1.5px solid ${amount === String(p) ? 'oklch(0.63 0.25 34)' : '#E8EDF3'}`,
                 background: amount === String(p) ? '#FFF0E8' : '#FFFFFF',
                 color: amount === String(p) ? '#C4622D' : '#4A5568',
                 fontSize: 13, fontWeight: 700,
@@ -200,7 +200,7 @@ function StepAmount({
             onClick={() => setAmount(cfg.balance.toFixed(2))}
             style={{
               padding: '9px 20px', borderRadius: 999,
-              border: `1.5px solid ${amount === cfg.balance.toFixed(2) ? '#E06C3A' : '#E8EDF3'}`,
+              border: `1.5px solid ${amount === cfg.balance.toFixed(2) ? 'oklch(0.63 0.25 34)' : '#E8EDF3'}`,
               background: amount === cfg.balance.toFixed(2) ? '#FFF0E8' : '#FFFFFF',
               color: amount === cfg.balance.toFixed(2) ? '#C4622D' : '#4A5568',
               fontSize: 13, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s',

@@ -50,7 +50,7 @@ const cardStyle = {
   background: '#FFFFFF',
   borderRadius: 16,
   border: '1px solid #E8EDF3',
-  boxShadow: '0px 4px 12px rgba(28,36,52,0.04)',
+  boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
 };
 
 export function ValidatorRewards() {
@@ -94,7 +94,7 @@ export function ValidatorRewards() {
             width: 40, height: 40, borderRadius: '50%',
             background: '#FFFFFF', border: '1px solid #E8EDF3',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0px 4px 12px rgba(28,36,52,0.04)', cursor: 'pointer', flexShrink: 0,
+            boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)', cursor: 'pointer', flexShrink: 0,
           }}
         >
           <ArrowLeft className="w-5 h-5" style={{ color: '#1C2434' }} />

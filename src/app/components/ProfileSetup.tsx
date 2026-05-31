@@ -145,7 +145,7 @@ export function ProfileSetup() {
             padding: '5px 14px', marginBottom: 14,
           }}
         >
-          <span style={{ fontSize: 11, fontWeight: 700, color: '#E06C3A', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: 'oklch(0.63 0.25 34)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Step {step} of {steps.length}
           </span>
         </div>
@@ -185,7 +185,7 @@ export function ProfileSetup() {
                     <Wallet style={{ width: 20, height: 20, color: '#FFFFFF' }} />
                   </div>
                   <div>
-                    <p style={{ fontSize: 11, fontWeight: 600, color: '#E06C3A', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Ready to transfer</p>
+                    <p style={{ fontSize: 11, fontWeight: 600, color: 'oklch(0.63 0.25 34)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Ready to transfer</p>
                     <p style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700, color: '#FFFFFF', lineHeight: 1 }}>₹50.00</p>
                   </div>
                 </div>

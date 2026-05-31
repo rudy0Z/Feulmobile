@@ -110,7 +110,7 @@ export function GradingStyleDrawer({ currentMethod, onSelect, open, onOpenChange
                       padding: '16px',
                       borderRadius: 24,
                       background: isSelected ? '#FDF1EC' : '#FFFFFF',
-                      border: isSelected ? '2px solid #E06C3A' : '1px solid #E8EDF3',
+                      border: isSelected ? '2px solid oklch(0.63 0.25 34)' : '1px solid #E8EDF3',
                       display: 'flex',
                       alignItems: 'center',
                       gap: 16,
@@ -133,7 +133,7 @@ export function GradingStyleDrawer({ currentMethod, onSelect, open, onOpenChange
                     </div>
                     
                     {isSelected && (
-                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[#E06C3A] flex items-center justify-center">
+                      <div className="flex-shrink-0 w-6 h-6 rounded-full bg-[oklch(0.63 0.25 34)] flex items-center justify-center">
                         <Check className="w-4 h-4 text-white" />
                       </div>
                     )}

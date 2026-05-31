@@ -27,8 +27,8 @@ const transactions: Transaction[] = [
 
 const statusConfig: Record<TxStatus, { label: string; bg: string; text: string; icon: React.ElementType }> = {
   credited:   { label: 'Credited',      bg: '#E6F4EC', text: '#1A5C35', icon: CheckCircle2 },
-  pending:    { label: 'Pending',       bg: '#FEF7E6', text: '#6B4800', icon: Clock         },
-  processing: { label: 'Processing',   bg: '#E8EFF8', text: '#1E3A6E', icon: Clock         },
+  pending:    { label: 'In Review',     bg: '#FEF7E6', text: '#6B4800', icon: Clock         },
+  processing: { label: 'Processing',    bg: '#E8EFF8', text: '#1E3A6E', icon: Clock         },
   partial:    { label: 'Effort Credit', bg: '#FDF5E0', text: '#6B4800', icon: Info          },
 };
 
@@ -220,9 +220,14 @@ export function Wallet() {
             <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 16 }}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.4)' }}>Pending</p>
+                  <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.4)' }}>
+                    Security Reserve
+                  </p>
                   <p style={{ fontFamily: 'var(--font-mono)', color: '#B8860B', fontSize: 16, fontWeight: 600 }}>
                     ₹{pendingBalance.toFixed(2)}
+                  </p>
+                  <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.32)', marginTop: 2 }}>
+                    Clears when you reach Silver
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5">
@@ -274,8 +279,8 @@ export function Wallet() {
           <div className="flex items-center gap-3">
             <Zap className="w-4 h-4" style={{ color: '#8B6914' }} />
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>1,530 XP · Level 3</p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>Used for unlocking perks, not withdrawable</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>1,530 reputation · Trusted Contributor</p>
+              <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>Unlocks tier perks, not withdrawable</p>
             </div>
           </div>
           <button
@@ -304,7 +309,7 @@ export function Wallet() {
                 transition: 'all 0.15s',
               }}
             >
-              {f === 'all' ? 'All' : f === 'credited' ? 'Credited' : f === 'pending' ? 'Pending' : 'Effort Credit'}
+              {f === 'all' ? 'All' : f === 'credited' ? 'Credited' : f === 'pending' ? 'In Review' : 'Effort Credit'}
             </button>
           ))}
         </div>

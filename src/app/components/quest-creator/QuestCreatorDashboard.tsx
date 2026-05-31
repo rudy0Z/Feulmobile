@@ -188,8 +188,8 @@ export function QuestCreatorDashboard() {
                 Dataset Progress
               </p>
               <div className="flex items-center gap-1">
-                <ArrowUpRight className="w-3.5 h-3.5" style={{ color: '#E06C3A' }} />
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#E06C3A' }}>+12% this week</span>
+                <ArrowUpRight className="w-3.5 h-3.5" style={{ color: 'oklch(0.63 0.25 34)' }} />
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>+12% this week</span>
               </div>
             </div>
 
@@ -217,7 +217,7 @@ export function QuestCreatorDashboard() {
                 initial={{ width: 0 }}
                 animate={{ width: `${overallProgress}%` }}
                 transition={{ duration: 1.3, ease: 'easeOut', delay: 0.4 }}
-                style={{ background: 'linear-gradient(90deg, #E06C3A, #FF9D6C)', borderRadius: 999, height: 5 }}
+                style={{ background: 'linear-gradient(90deg, oklch(0.63 0.25 34), #FF9D6C)', borderRadius: 999, height: 5 }}
               />
             </div>
 
@@ -324,7 +324,7 @@ export function QuestCreatorDashboard() {
               </p>
               {underperformingCampaign.suggestions.map((s, idx) => (
                 <div key={idx} className="flex items-start gap-2 mb-2 last:mb-0">
-                  <span style={{ fontSize: 12, color: '#E06C3A', fontWeight: 700, marginTop: 1 }}>•</span>
+                  <span style={{ fontSize: 12, color: 'oklch(0.63 0.25 34)', fontWeight: 700, marginTop: 1 }}>•</span>
                   <p style={{ fontSize: 12, fontWeight: 500, color: '#4A5568', lineHeight: 1.5 }}>{s}</p>
                 </div>
               ))}
@@ -353,12 +353,12 @@ export function QuestCreatorDashboard() {
               Tap to manage or adjust
             </p>
           </div>
-          <button className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: '#E06C3A' }}>
+          <button className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>
             View all <ArrowRight className="w-3 h-3" />
           </button>
         </div>
 
-        <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 2px 12px rgba(28,36,52,0.05)' }}>
+        <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)' }}>
           {campaigns.map((campaign, idx) => (
             <motion.div
               key={campaign.id}
@@ -388,7 +388,7 @@ export function QuestCreatorDashboard() {
                 <div style={{
                   background: campaign.progress >= 90
                     ? 'linear-gradient(90deg, #2D7A4F, #4EC992)'
-                    : 'linear-gradient(90deg, #E06C3A, #FF9D6C)',
+                    : 'linear-gradient(90deg, oklch(0.63 0.25 34), #FF9D6C)',
                   borderRadius: 999, height: 4, width: `${campaign.progress}%`,
                   transition: 'width 0.5s ease',
                 }} />

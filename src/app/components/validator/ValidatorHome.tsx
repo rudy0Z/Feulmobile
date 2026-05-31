@@ -232,7 +232,7 @@ export function ValidatorHome() {
               {/* Right mini stats */}
               <div className="flex-1 flex flex-col items-end gap-2 pb-1">
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 16, fontWeight: 700, color: '#E06C3A' }}>+₹{weeklyEarned}</p>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 16, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>+₹{weeklyEarned}</p>
                   <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>this week</p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
@@ -318,13 +318,13 @@ export function ValidatorHome() {
               <button
                 onClick={() => navigate('/validator/tasks')}
                 className="flex items-center gap-1"
-                style={{ fontSize: 12, fontWeight: 700, color: '#E06C3A' }}
+                style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}
               >
                 View all <ChevronRight className="w-3.5 h-3.5" />
               </button>
             </div>
 
-            <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 2px 12px rgba(28,36,52,0.05)' }}>
+            <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)' }}>
               {pendingBatches.map((batch, idx) => (
                 <motion.div
                   key={batch.id}
@@ -343,7 +343,7 @@ export function ValidatorHome() {
                     {/* Priority accent dot */}
                     <div style={{
                       width: 4, height: 36, borderRadius: 99,
-                      background: batch.priority === 'High' ? '#E06C3A' : '#E8EDF3',
+                      background: batch.priority === 'High' ? 'oklch(0.63 0.25 34)' : '#E8EDF3',
                       flexShrink: 0,
                     }} />
                     <div>
@@ -352,7 +352,7 @@ export function ValidatorHome() {
                       </h4>
                       <div className="flex items-center gap-3">
                         <span style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>{batch.clips} clips</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: '#E06C3A' }}>
+                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>
                           ₹{batch.payout}
                         </span>
                       </div>
@@ -360,7 +360,7 @@ export function ValidatorHome() {
                   </div>
                   <div style={{
                     width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-                    background: batch.priority === 'High' ? '#E06C3A' : '#F0F4F8',
+                    background: batch.priority === 'High' ? 'oklch(0.63 0.25 34)' : '#F0F4F8',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
                     <Play
@@ -381,7 +381,7 @@ export function ValidatorHome() {
                 Recent Activity
               </h3>
             </div>
-            <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 2px 12px rgba(28,36,52,0.05)' }}>
+            <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)' }}>
               {recentGradings.map((grading, idx) => (
                 <div
                   key={grading.id}
@@ -398,7 +398,7 @@ export function ValidatorHome() {
                     </p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: '#E06C3A' }}>
+                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>
                       +₹{grading.earned}
                     </p>
                     <p style={{ fontSize: 11, fontWeight: 600, color: '#2D7A4F', marginTop: 2 }}>

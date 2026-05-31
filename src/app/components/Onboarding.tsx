@@ -9,21 +9,21 @@ const onboardingSteps = [
     subtitle: "Feul is your refinery.",
     description:
       "Your data is the invisible engine behind AI's growth. Feul turns that invisible force into tangible rewards because you built this future.",
-    waveColor: '#E06C3A',
+    waveColor: 'oklch(0.63 0.25 34)',
   },
   {
     title: "Share Your Voice",
     subtitle: "Train the future",
     description:
       "Record short audio clips to help train cutting-edge AI models. Every contribution makes a difference.",
-    waveColor: '#E06C3A',
+    waveColor: 'oklch(0.63 0.25 34)',
   },
   {
     title: "Earn ₹ Instantly",
     subtitle: "Your voice = real cash",
     description:
-      "Complete quests to earn cash in INR — credited directly to your wallet. Gain XP to unlock multipliers and perks.",
-    waveColor: '#E06C3A',
+      "Complete quests to earn cash in INR — credited directly to your wallet. Build reputation to unlock higher-paying campaigns.",
+    waveColor: 'oklch(0.63 0.25 34)',
   },
 ];
 
@@ -50,23 +50,6 @@ export function Onboarding() {
       className="min-h-screen flex flex-col"
       style={{ background: 'linear-gradient(170deg, #FAF6F0 0%, #F5EFE6 100%)', fontFamily: 'var(--font-sans)' }}
     >
-      {/* Skip */}
-      <div className="absolute top-14 right-6 z-10">
-        <button
-          onClick={handleSkip}
-          style={{
-            fontSize: 14,
-            fontWeight: 600,
-            color: '#8896A7',
-            background: 'none',
-            border: 'none',
-            cursor: 'pointer',
-          }}
-        >
-          Skip
-        </button>
-      </div>
-
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 pb-36">
         <AnimatePresence mode="wait">
@@ -104,7 +87,7 @@ export function Onboarding() {
               style={{
                 fontSize: 16,
                 fontWeight: 700,
-                color: '#E06C3A',
+                color: 'oklch(0.63 0.25 34)',
                 marginBottom: 20,
                 textAlign: 'center',
               }}
@@ -142,7 +125,7 @@ export function Onboarding() {
               style={{
                 height: 6,
                 borderRadius: 999,
-                background: index === currentStep ? '#E06C3A' : 'rgba(224,108,58,0.2)',
+                background: index === currentStep ? 'oklch(0.63 0.25 34)' : 'rgba(224,108,58,0.2)',
                 width: index === currentStep ? 28 : 6,
                 transition: 'all 0.3s ease',
               }}
@@ -168,6 +151,24 @@ export function Onboarding() {
         >
           {currentStep < onboardingSteps.length - 1 ? 'Continue' : 'Get Started'}
         </button>
+
+        {/* Returning user shortcut — explicit, intentional, not a hidden "skip" */}
+        <div style={{ textAlign: 'center', marginTop: 14 }}>
+          <button
+            onClick={handleSkip}
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: '#4A5568',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+          >
+            Returning user?{' '}
+            <span style={{ color: '#C4622D', fontWeight: 700 }}>Sign in</span>
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -18,9 +18,10 @@
   --text-secondary:    #4A5568;  /* slate grey */
   --text-muted:        #8896A7;  /* muted slate */
 
-  /* Accent */
-  --accent-primary:    #E06C3A;  /* brand orange — energy & action */
-  --accent-primary-light: #FF8D5C; /* lighter orange for hover/glow */
+  /* Accent — luminous Oklch vermillion (perceptually uniform on OLED) */
+  --accent-primary:        oklch(0.63 0.25 34);  /* brand orange — energy & action */
+  --accent-primary-light:  oklch(0.74 0.18 39);  /* lighter orange for hover/glow */
+  --accent-primary-deep:   oklch(0.55 0.22 32);  /* deeper press / gradient stop */
   --accent-xp:         #8B6914;  /* olive/dark gold — XP only */
 
   /* Semantic */
@@ -36,6 +37,10 @@
 
   /* Elevation — subtle, soft Y:4 Blur:12 Opacity:4% */
   --shadow-card:       0px 4px 12px rgba(28, 36, 52, 0.04);
+  /* Glassmorphic "chameleon" stroke — luminous inner highlight + soft drop */
+  --shadow-glass:      0px 6px 18px rgba(28, 36, 52, 0.05), inset 0px 1px 0px rgba(255, 255, 255, 0.65);
+  /* Brand orange glow halo — for active earning surfaces */
+  --shadow-accent-glow: 0px 0px 0px 1px rgba(224, 108, 58, 0.12), 0px 8px 24px rgba(224, 108, 58, 0.18);
 
   /* ─── Tailwind / shadcn compatibility ─────────────── */
   --foreground:            var(--text-primary);
@@ -79,10 +84,15 @@
   --sidebar-border:             oklch(0.922 0 0);
   --sidebar-ring:               oklch(0.708 0 0);
 
-  /* ─── Typography — all Plus Jakarta Sans ─────────── */
-  --font-serif:  'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-sans:   'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-mono:   'Plus Jakarta Sans', system-ui, sans-serif;
+  /* ─── Typography — 2026 dual-typeface system ─────── */
+  /* Body & UI labels */
+  --font-sans:    'Plus Jakarta Sans', system-ui, sans-serif;
+  /* Display headings (Bricolage Grotesque — editorial grotesque) */
+  --font-display: 'Bricolage Grotesque', 'Plus Jakarta Sans', system-ui, sans-serif;
+  /* Legacy alias retained — heading-bearing components inherit display */
+  --font-serif:   var(--font-display);
+  /* Tabular ledger — currency, streaks, timers, durations */
+  --font-mono:    'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 
 .dark {
@@ -239,5 +249,11 @@
     font-weight: 500;
     line-height: 1.5;
     color: var(--text-secondary);
+  }
+
+  /* Tabular ledger feel for mono usages (currency, timers, streaks) */
+  .font-mono {
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
   }
 }

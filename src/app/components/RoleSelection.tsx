@@ -10,7 +10,7 @@ const roles = [
     tagline: 'Record & Earn Cash',
     description: 'Share your voice to train AI models. Get paid per clip in INR.',
     path: '/contributor',
-    borderColor: '#E06C3A', // Brand Orange
+    borderColor: 'oklch(0.63 0.25 34)', // Brand Orange
   },
   {
     id: 'validator',
@@ -127,7 +127,7 @@ export function RoleSelection() {
           Already have an account?{' '}
           <button
             style={{
-              color: '#E06C3A',
+              color: 'oklch(0.63 0.25 34)',
               fontWeight: 700,
               background: 'none',
               border: 'none',

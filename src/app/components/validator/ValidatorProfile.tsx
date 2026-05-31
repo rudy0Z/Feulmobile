@@ -117,7 +117,7 @@ export function ValidatorProfile() {
               background: 'rgba(255,255,255,0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Repeat2 className="w-4 h-4" style={{ color: '#E06C3A' }} />
+              <Repeat2 className="w-4 h-4" style={{ color: 'oklch(0.63 0.25 34)' }} />
             </div>
             <div className="text-left">
               <p style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>Switch App Role</p>
@@ -139,10 +139,10 @@ export function ValidatorProfile() {
             <div className="flex items-center justify-between mb-3">
               <div>
                 <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                  Validator XP
+                  Validator Reputation
                 </p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 38, fontWeight: 700, color: '#FFFFFF', lineHeight: 1 }}>
-                  2,840 XP
+                  2,840
                 </p>
               </div>
               <div style={{
@@ -157,8 +157,8 @@ export function ValidatorProfile() {
             {/* Level progress bar */}
             <div style={{ marginBottom: 8 }}>
               <div className="flex items-center justify-between" style={{ marginBottom: 6 }}>
-                <p style={{ fontSize: 13, fontWeight: 600, color: '#C4622D' }}>Level 4 Validator</p>
-                <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>→ Lv 5 at 3,500 XP</p>
+                <p style={{ fontSize: 13, fontWeight: 600, color: '#C4622D' }}>Elite Validator</p>
+                <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>3,500 to Master Validator</p>
               </div>
               <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 999, height: 5 }}>
                 <div style={{

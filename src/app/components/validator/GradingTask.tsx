@@ -33,7 +33,7 @@ const cardStyle = {
   background: '#FFFFFF',
   borderRadius: 16,
   border: '1px solid #E8EDF3',
-  boxShadow: '0px 4px 12px rgba(28,36,52,0.04)',
+  boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
 };
 
 export function GradingTask() {
@@ -51,7 +51,7 @@ export function GradingTask() {
   const [tipDismissed, setTipDismissed]                     = useState(false);
 
   // New Variant State
-  const [gradingMethod, setGradingMethod]                   = useState('segmented');
+  const [gradingMethod, setGradingMethod]                   = useState('binary');
   const [isStyleDrawerOpen, setIsStyleDrawerOpen]           = useState(false);
   const [undoToastVisible, setUndoToastVisible]             = useState(false);
   const [lastGradeLabel, setLastGradeLabel]                 = useState('');
@@ -199,7 +199,7 @@ export function GradingTask() {
             <button
               onClick={() => setIsStyleDrawerOpen(true)}
               style={{ 
-                fontSize: 13, fontWeight: 700, color: '#E06C3A', 
+                fontSize: 13, fontWeight: 700, color: 'oklch(0.63 0.25 34)', 
                 background: '#FDF1EC', border: '1px solid #FADED3', 
                 padding: '8px 12px', borderRadius: 999,
                 display: 'flex', alignItems: 'center', gap: 6,
@@ -229,7 +229,7 @@ export function GradingTask() {
         <div style={{ background: '#F0F4F8', borderRadius: 999, height: 6 }}>
           <div
             style={{
-              background: 'linear-gradient(90deg, #E06C3A, #C4521D)',
+              background: 'linear-gradient(90deg, oklch(0.63 0.25 34), #C4521D)',
               borderRadius: 999, height: 6,
               width: `${progress}%`,
               transition: 'width 0.4s ease',
@@ -269,7 +269,7 @@ export function GradingTask() {
               padding: '6px 18px', borderRadius: 999,
               background: '#FFFFFF', border: '1px solid #E8EDF3',
               fontSize: 13, fontWeight: 600, color: '#4A5568',
-              boxShadow: '0px 4px 12px rgba(28,36,52,0.04)',
+              boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
             }}
           >
             Clip {currentClip + 1} of {sampleClips.length}
@@ -474,7 +474,7 @@ export function GradingTask() {
                   onClick={() => setIsPlaying(!isPlaying)}
                   style={{
                     width: 40, height: 40, borderRadius: '50%',
-                    background: '#E06C3A',
+                    background: 'oklch(0.63 0.25 34)',
                     border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     cursor: 'pointer', flexShrink: 0,
                     boxShadow: '0px 4px 12px rgba(224,108,58,0.3)',
@@ -489,7 +489,7 @@ export function GradingTask() {
                   {[...Array(24)].map((_, i) => (
                     <motion.div
                       key={i}
-                      style={{ flex: 1, background: isPlaying ? '#E06C3A' : '#E1E8F0', borderRadius: 2 }}
+                      style={{ flex: 1, background: isPlaying ? 'oklch(0.63 0.25 34)' : '#E1E8F0', borderRadius: 2 }}
                       animate={{ height: isPlaying ? [Math.random() * 28 + 8, Math.random() * 28 + 8] : 12 }}
                       transition={{ duration: 0.3, repeat: isPlaying ? Infinity : 0, repeatType: 'reverse' }}
                     />
@@ -518,7 +518,7 @@ export function GradingTask() {
                   onClick={() => { setShowConsensusMismatch(false); setSelectedGrade(null); }}
                   style={{
                     flex: 1, padding: '14px', borderRadius: 999,
-                    background: '#E06C3A', border: 'none',
+                    background: 'oklch(0.63 0.25 34)', border: 'none',
                     color: '#FFFFFF', fontSize: 14, fontWeight: 700, cursor: 'pointer',
                     boxShadow: '0px 4px 12px rgba(224,108,58,0.3)',
                   }}

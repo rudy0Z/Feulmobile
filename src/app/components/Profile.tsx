@@ -1,13 +1,14 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { User, Award, Settings, LogOut, ChevronRight, Shield, Trash2, Zap, ChevronDown, ShieldCheck, Building2, Repeat2 } from 'lucide-react';
+import { User, Award, Settings, LogOut, ChevronRight, Shield, Trash2, Zap, ChevronDown, ShieldCheck, Building2, Repeat2, BarChart3 } from 'lucide-react';
 import { RoleSwitcher } from './ui/RoleSwitcher';
+import { tierName, nextTierName } from '../lib/tier';
 
 const achievements = [
   { id: 1, name: 'First Steps',  emoji: '🎯', description: 'Complete your first quest',    unlocked: true  },
   { id: 2, name: 'Week Warrior', emoji: '🔥', description: 'Record for 7 days in a row',   unlocked: true  },
   { id: 3, name: 'Voice Master', emoji: '🎙️', description: 'Record 50 clips',              unlocked: false },
-  { id: 4, name: 'XP Collector', emoji: '⚡', description: 'Gain 5,000 XP',               unlocked: false },
+  { id: 4, name: 'Reputation Builder', emoji: '⚡', description: 'Reach 5,000 reputation',   unlocked: false },
   { id: 5, name: 'Dedicated',    emoji: '💪', description: 'Record for 30 days in a row',  unlocked: false },
   { id: 6, name: 'Elite',        emoji: '👑', description: 'Complete 100 quests',          unlocked: false },
 ];
@@ -45,7 +46,7 @@ export function Profile() {
             border: '2px solid #FFD8C4',
           }}
         >
-          <User className="w-8 h-8" style={{ color: '#E06C3A' }} strokeWidth={1.5} />
+          <User className="w-8 h-8" style={{ color: 'oklch(0.63 0.25 34)' }} strokeWidth={1.5} />
         </div>
         <div>
           <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em', marginBottom: 2 }}>
@@ -69,8 +70,8 @@ export function Profile() {
           </div>
           <div style={{ width: 1, height: 32, background: '#E8EDF3' }} />
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#1C2434' }}>1,530</p>
-            <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7' }}>XP</p>
+            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#1C2434' }}>94%</p>
+            <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7' }}>Acceptance</p>
           </div>
         </div>
       </div>
@@ -98,7 +99,7 @@ export function Profile() {
               background: 'rgba(255,255,255,0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Repeat2 className="w-4 h-4" style={{ color: '#E06C3A' }} />
+              <Repeat2 className="w-4 h-4" style={{ color: 'oklch(0.63 0.25 34)' }} />
             </div>
             <div className="text-left">
               <p style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>Switch App Role</p>
@@ -109,7 +110,7 @@ export function Profile() {
         </button>
       </div>
 
-      {/* XP Level Block — NAVY background, white text, orange progress */}
+      {/* Trust Tier Block — NAVY background, white text, orange progress */}
       <div className="px-6 mb-6">
         <div
           style={{
@@ -121,8 +122,8 @@ export function Profile() {
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <Zap className="w-5 h-5" style={{ color: '#E06C3A' }} />
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.5)' }}>Level Progress</span>
+              <ShieldCheck className="w-5 h-5" style={{ color: 'oklch(0.63 0.25 34)' }} />
+              <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.5)' }}>Trust Tier</span>
             </div>
             <span
               style={{
@@ -131,23 +132,26 @@ export function Profile() {
                 padding: '5px 14px',
                 fontSize: 12,
                 fontWeight: 700,
-                color: '#E06C3A',
+                color: 'oklch(0.63 0.25 34)',
               }}
             >
-              Level 3
+              {tierName(3)}
             </span>
           </div>
 
-          {/* Large XP number — hero element */}
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 36, fontWeight: 700, color: '#FFFFFF', lineHeight: 1, marginBottom: 8 }}>
-            1,530 XP
+          {/* Reputation number — hero element */}
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 36, fontWeight: 700, color: '#FFFFFF', lineHeight: 1, marginBottom: 4 }}>
+            1,530
+          </p>
+          <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.45)', marginBottom: 12, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+            Reputation
           </p>
 
           {/* Progress bar */}
           <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 999, height: 10, marginBottom: 10 }}>
             <div
               style={{
-                background: 'linear-gradient(90deg, #E06C3A, #FF8D5C)',
+                background: 'linear-gradient(90deg, oklch(0.63 0.25 34), oklch(0.74 0.18 39))',
                 borderRadius: 999,
                 height: 10,
                 width: '65%',
@@ -156,8 +160,8 @@ export function Profile() {
             />
           </div>
           <div className="flex items-center justify-between">
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.45)' }}>1,530 XP</span>
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>2,000 XP</span>
+            <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.45)' }}>1,530</span>
+            <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>2,000 to {nextTierName(3)}</span>
           </div>
 
           {/* Unlock preview */}
@@ -166,12 +170,38 @@ export function Profile() {
             style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
           >
             <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6 }}>
-              Reach <strong style={{ color: '#FFFFFF' }}>Level 4</strong> to unlock{' '}
-              <strong style={{ color: '#E06C3A' }}>1.2× Payout Multiplier</strong> &amp;{' '}
-              <strong style={{ color: '#FFFFFF' }}>Instant Auto-Approval</strong>.
+              Reach <strong style={{ color: '#FFFFFF' }}>{nextTierName(3)}</strong> to unlock{' '}
+              <strong style={{ color: 'oklch(0.63 0.25 34)' }}>higher-paying campaigns</strong> &amp;{' '}
+              <strong style={{ color: '#FFFFFF' }}>instant approvals</strong>.
             </p>
           </div>
         </div>
+      </div>
+
+      {/* Performance dashboard link */}
+      <div className="px-6 mb-6">
+        <button
+          onClick={() => navigate('/contributor/performance')}
+          style={{
+            width: '100%', background: '#FFFFFF', borderRadius: 16,
+            border: '1px solid #E8EDF3', padding: '14px 18px',
+            display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', textAlign: 'left',
+            boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
+          }}
+        >
+          <div style={{
+            width: 40, height: 40, borderRadius: 12,
+            background: '#F0F4F8',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
+          }}>
+            <BarChart3 className="w-5 h-5" style={{ color: '#1C2434' }} />
+          </div>
+          <div className="flex-1 min-w-0">
+            <p style={{ fontSize: 14, fontWeight: 700, color: '#1C2434' }}>Performance Dashboard</p>
+            <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>Acceptance, quality &amp; consistency scores</p>
+          </div>
+          <ChevronRight className="w-4 h-4 flex-shrink-0" style={{ color: '#8896A7' }} />
+        </button>
       </div>
 
       {/* Perks & Multipliers — collapsible */}
@@ -182,7 +212,7 @@ export function Profile() {
             background: '#FFFFFF',
             borderRadius: perksExpanded ? '16px 16px 0 0' : 16,
             border: '1px solid #E8EDF3',
-            boxShadow: '0px 4px 12px rgba(28,36,52,0.04)',
+            boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
             padding: '16px 18px',
             width: '100%',
             display: 'flex',
@@ -197,7 +227,7 @@ export function Profile() {
             </div>
             <div className="text-left">
               <p style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 2 }}>Perks &amp; Multipliers</p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>Spend your 1,530 XP on vouchers &amp; boosts</p>
+              <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>Milestone vouchers &amp; contributor perks</p>
             </div>
           </div>
           <ChevronDown

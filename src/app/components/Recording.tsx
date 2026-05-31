@@ -3,6 +3,7 @@ import { useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mic, Square, Play, Check, ArrowLeft } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
+import { VoiceVisualizer } from './ui/VoiceVisualizer';
 
 const sampleClips = [
   "Read the following sentence naturally: The quick brown fox jumps over the lazy dog.",
@@ -71,7 +72,7 @@ export function Recording() {
               width: 40, height: 40, borderRadius: '50%',
               background: '#FFFFFF', border: '1px solid #E8EDF3',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0px 4px 12px rgba(28,36,52,0.04)', cursor: 'pointer',
+              boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)', cursor: 'pointer',
             }}
           >
             <ArrowLeft className="w-5 h-5" style={{ color: '#1C2434' }} />
@@ -124,7 +125,7 @@ export function Recording() {
           <div style={{ background: '#E8EDF3', borderRadius: 999, height: 6 }}>
             <div
               style={{
-                background: 'linear-gradient(90deg, #C4622D, #E06C3A)',
+                background: 'linear-gradient(90deg, #C4622D, oklch(0.63 0.25 34))',
                 borderRadius: 999, height: 6,
                 width: `${progress}%`,
                 transition: 'width 0.3s ease',
@@ -170,7 +171,7 @@ export function Recording() {
               style={{
                 background: '#FFFFFF', borderRadius: 16,
                 border: '1px solid #E8EDF3',
-                boxShadow: '0px 4px 12px rgba(28,36,52,0.04)',
+                boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
                 padding: '28px', marginBottom: 32,
               }}
             >
@@ -200,6 +201,11 @@ export function Recording() {
 
               {recordingState === 'recording' && (
                 <div className="flex flex-col items-center">
+                  {/* Live voice coach */}
+                  <div style={{ width: '100%', marginBottom: 20 }}>
+                    <VoiceVisualizer active height={110} />
+                  </div>
+
                   <motion.button
                     animate={{ scale: [1, 1.1, 1] }}
                     transition={{ repeat: Infinity, duration: 1.5 }}

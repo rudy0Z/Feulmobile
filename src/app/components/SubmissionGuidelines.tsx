@@ -210,7 +210,7 @@ export function SubmissionGuidelines() {
                   key={i}
                   style={{
                     flex: 1, borderRadius: 3, minWidth: 3,
-                    background: i % 2 === 0 ? '#E06C3A' : '#C4622D',
+                    background: i % 2 === 0 ? 'oklch(0.63 0.25 34)' : '#C4622D',
                     height: `${Math.min(100, h * 2.8)}%`,
                     opacity: 0.85,
                   }}

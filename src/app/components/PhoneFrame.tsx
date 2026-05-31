@@ -130,52 +130,6 @@ function HomeIndicator() {
   );
 }
 
-/* ─── Decorative background blobs ───────────────────── */
-function BackgroundDecor() {
-  return (
-    <div
-      aria-hidden
-      style={{
-        position: 'absolute',
-        inset: 0,
-        pointerEvents: 'none',
-        overflow: 'hidden',
-        zIndex: 0,
-      }}
-    >
-      {/* Brand-orange glow behind phone */}
-      <div
-        style={{
-          position: 'absolute',
-          width: 500,
-          height: 500,
-          borderRadius: '50%',
-          background:
-            'radial-gradient(circle, rgba(224,108,58,0.12) 0%, transparent 70%)',
-          top: '50%',
-          left: '50%',
-          transform: 'translate(-50%, -50%)',
-          filter: 'blur(40px)',
-        }}
-      />
-      {/* Top-left accent */}
-      <div
-        style={{
-          position: 'absolute',
-          width: 300,
-          height: 300,
-          borderRadius: '50%',
-          background:
-            'radial-gradient(circle, rgba(139,105,20,0.08) 0%, transparent 70%)',
-          top: '10%',
-          left: '10%',
-          filter: 'blur(60px)',
-        }}
-      />
-    </div>
-  );
-}
-
 /* ─── Phone Frame Component ──────────────────────────── */
 export function PhoneFrame({ children }: { children: ReactNode }) {
   const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 520);
@@ -190,6 +144,22 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
   if (!isDesktop) {
     return (
       <div style={{ position: 'relative', minHeight: '100dvh' }}>
+        {/* Frosted status-bar backdrop so content never bleeds into the bar */}
+        <div
+          aria-hidden
+          style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: 54,
+            background: 'rgba(248,249,250,0.72)',
+            backdropFilter: 'blur(14px) saturate(140%)',
+            WebkitBackdropFilter: 'blur(14px) saturate(140%)',
+            zIndex: 9998,
+            pointerEvents: 'none',
+          }}
+        />
         <IOSStatusBar />
         {children}
         <HomeIndicator />
@@ -203,11 +173,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
       style={{
         minHeight: '100vh',
         minWidth: '100vw',
-        background: `
-          radial-gradient(ellipse at 25% 55%, rgba(224,108,58,0.09) 0%, transparent 45%),
-          radial-gradient(ellipse at 78% 20%, rgba(139,105,20,0.06) 0%, transparent 38%),
-          linear-gradient(155deg, #0d1018 0%, #11161e 55%, #0a0c10 100%)
-        `,
+        background: '#0A0C10',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -217,9 +183,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
         overflow: 'hidden',
       }}
     >
-      <BackgroundDecor />
-
-      {/* Outer phone body */}
+      {/* Outer phone body — flat, no halo, no caption */}
       <div
         style={{
           position: 'relative',
@@ -227,27 +191,14 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
           zIndex: 1,
         }}
       >
-        {/* Left side buttons */}
-        <div style={{ position: 'absolute', left: -3.5, top: 114, width: 3.5, height: 32, borderRadius: '3px 0 0 3px', background: 'linear-gradient(180deg, #333, #222)', boxShadow: '-1px 0 2px rgba(0,0,0,0.4)' }} />
-        <div style={{ position: 'absolute', left: -3.5, top: 162, width: 3.5, height: 62, borderRadius: '3px 0 0 3px', background: 'linear-gradient(180deg, #333, #222)', boxShadow: '-1px 0 2px rgba(0,0,0,0.4)' }} />
-        <div style={{ position: 'absolute', left: -3.5, top: 240, width: 3.5, height: 62, borderRadius: '3px 0 0 3px', background: 'linear-gradient(180deg, #333, #222)', boxShadow: '-1px 0 2px rgba(0,0,0,0.4)' }} />
-        {/* Right side button */}
-        <div style={{ position: 'absolute', right: -3.5, top: 178, width: 3.5, height: 90, borderRadius: '0 3px 3px 0', background: 'linear-gradient(180deg, #333, #222)', boxShadow: '1px 0 2px rgba(0,0,0,0.4)' }} />
-
-        {/* Phone body */}
+        {/* Phone body — minimal bezel, no orange glow, no oversized drop */}
         <div
           style={{
             width: 412,
             height: 868,
             borderRadius: 58,
-            background: 'linear-gradient(145deg, #2e2e2e 0%, #1c1c1c 35%, #111 100%)',
-            boxShadow: `
-              0 0 0 0.5px rgba(255,255,255,0.09),
-              inset 0 0 0 1px rgba(255,255,255,0.025),
-              0 60px 180px rgba(0,0,0,0.9),
-              0 20px 60px rgba(0,0,0,0.6),
-              0 0 100px rgba(224,108,58,0.07)
-            `,
+            background: '#1a1a1a',
+            boxShadow: '0 0 0 0.5px rgba(255,255,255,0.06)',
             padding: 11,
             position: 'relative',
           }}
@@ -281,7 +232,28 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
                 borderRadius: 20,
                 background: '#000000',
                 zIndex: 10000,
-                boxShadow: '0 0 0 1px rgba(255,255,255,0.04), inset 0 0 8px rgba(0,0,0,0.8)',
+              }}
+            />
+
+            {/*
+             * Frosted status-bar backdrop: a thin opaque/blurred band at the
+             * top of the screen so scrolling content never reads INTO the
+             * iOS status bar or the Dynamic Island — it slides cleanly
+             * underneath, exactly like a real iPhone.
+             */}
+            <div
+              aria-hidden
+              style={{
+                position: 'absolute',
+                top: 0,
+                left: 0,
+                right: 0,
+                height: 54,
+                background: 'rgba(248,249,250,0.72)',
+                backdropFilter: 'blur(14px) saturate(140%)',
+                WebkitBackdropFilter: 'blur(14px) saturate(140%)',
+                zIndex: 9998,
+                pointerEvents: 'none',
               }}
             />
 
@@ -302,45 +274,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
 
             {/* Home Indicator */}
             <HomeIndicator />
-
-            {/* Screen glare — very subtle top-right reflection */}
-            <div
-              aria-hidden
-              style={{
-                position: 'absolute',
-                top: 0,
-                right: 0,
-                width: '55%',
-                height: '30%',
-                background:
-                  'radial-gradient(ellipse at 80% 10%, rgba(255,255,255,0.04) 0%, transparent 65%)',
-                pointerEvents: 'none',
-                zIndex: 9998,
-                borderRadius: '0 48px 0 0',
-              }}
-            />
           </div>
-        </div>
-
-        {/* Feul label below phone */}
-        <div
-          style={{
-            textAlign: 'center',
-            marginTop: 28,
-          }}
-        >
-          <span
-            style={{
-              fontSize: 11,
-              fontWeight: 700,
-              color: 'rgba(255,255,255,0.15)',
-              letterSpacing: '0.18em',
-              textTransform: 'uppercase',
-              fontFamily: 'var(--font-sans)',
-            }}
-          >
-            Feul · AI Data Marketplace
-          </span>
         </div>
       </div>
     </div>

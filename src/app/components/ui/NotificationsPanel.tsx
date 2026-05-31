@@ -42,8 +42,8 @@ const allNotifications: Notification[] = [
   },
   {
     id: 'n3', type: 'xp_level', group: 'today', unread: true,
-    title: 'You hit Level 3! ⚡',
-    body: 'Unlocked 1.2× payout multiplier & instant auto-approval.',
+    title: 'You are now a Trusted Contributor ⚡',
+    body: 'Unlocked higher-paying campaigns & instant approvals.',
     time: '8:00 AM',
     actionLabel: 'View rewards',
   },
@@ -92,7 +92,7 @@ const notifConfig: Record<NotifType, {
   xp_level:          { icon: Zap,              iconColor: '#8B6914', iconBg: '#FFF3D6', dot: '#D4A017' },
   payout:             { icon: Wallet,           iconColor: '#1E3A6E', iconBg: '#E8EFF8', dot: '#3B62A8' },
   validator_approved: { icon: ShieldCheck,      iconColor: '#2D7A4F', iconBg: '#E6F4EC', dot: '#2D7A4F' },
-  quest_new:          { icon: Mic,              iconColor: '#E06C3A', iconBg: '#FEF0E8', dot: '#E06C3A' },
+  quest_new:          { icon: Mic,              iconColor: 'oklch(0.63 0.25 34)', iconBg: '#FEF0E8', dot: 'oklch(0.63 0.25 34)' },
   campaign_alert:     { icon: AlertCircle,      iconColor: '#8B6914', iconBg: '#FFF3D6', dot: '#D4A017' },
 };
 
@@ -182,7 +182,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                       <span style={{
                         position: 'absolute', top: -5, right: -6,
                         width: 16, height: 16, borderRadius: '50%',
-                        background: '#E06C3A', border: '2px solid #FFFFFF',
+                        background: 'oklch(0.63 0.25 34)', border: '2px solid #FFFFFF',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: 9, fontWeight: 800, color: '#FFFFFF',
                       }}>
@@ -199,7 +199,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                   {unreadCount > 0 && (
                     <button
                       onClick={markAllRead}
-                      style={{ fontSize: 12, fontWeight: 700, color: '#E06C3A', background: 'none', border: 'none', cursor: 'pointer' }}
+                      style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)', background: 'none', border: 'none', cursor: 'pointer' }}
                     >
                       Mark all read
                     </button>
@@ -313,7 +313,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                                     style={{
                                       marginTop: 8,
                                       display: 'inline-flex', alignItems: 'center', gap: 4,
-                                      fontSize: 12, fontWeight: 700, color: '#E06C3A',
+                                      fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)',
                                       background: 'none', border: 'none', cursor: 'pointer',
                                       padding: 0,
                                     }}
@@ -372,7 +372,7 @@ export function BellButton({ unreadCount, onClick }: BellButtonProps) {
         <span style={{
           position: 'absolute', top: -2, right: -2,
           minWidth: 16, height: 16, borderRadius: 999,
-          background: '#E06C3A', border: '2px solid #F4F6F8',
+          background: 'oklch(0.63 0.25 34)', border: '2px solid #F4F6F8',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 9, fontWeight: 800, color: '#FFFFFF', padding: '0 3px',
         }}>

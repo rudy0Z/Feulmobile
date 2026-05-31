@@ -1,7 +1,7 @@
-import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { ShieldCheck, Mic, Eye, Clock, Trash2, ChevronRight, Lock, AlertCircle } from 'lucide-react';
+import { ShieldCheck, Mic, Eye, Clock, Trash2, Lock } from 'lucide-react';
+import { SwipeButton } from './ui/SwipeButton';
 
 const consentPoints = [
   {
@@ -36,14 +36,8 @@ const consentPoints = [
 
 export function DataConsent() {
   const navigate = useNavigate();
-  const [agreed, setAgreed] = useState(false);
-  const [showError, setShowError] = useState(false);
 
-  const handleContinue = () => {
-    if (!agreed) {
-      setShowError(true);
-      return;
-    }
+  const handleConsent = () => {
     navigate('/submission-guidelines');
   };
 
@@ -81,8 +75,8 @@ export function DataConsent() {
               padding: '5px 14px', marginBottom: 20,
             }}
           >
-            <Lock style={{ width: 11, height: 11, color: '#E06C3A' }} />
-            <span style={{ fontSize: 11, fontWeight: 700, color: '#E06C3A', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <Lock style={{ width: 11, height: 11, color: 'oklch(0.63 0.25 34)' }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'oklch(0.63 0.25 34)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               Data & Consent
             </span>
           </div>
@@ -163,72 +157,20 @@ export function DataConsent() {
           </p>
         </div>
 
-        {/* Consent checkbox */}
-        <motion.div
-          style={{
-            marginTop: 20, padding: '16px', borderRadius: 14,
-            border: showError && !agreed ? '1.5px solid #C0392B' : '1.5px solid #E8EDF3',
-            background: agreed ? '#F0FAF4' : '#FFFFFF',
-            display: 'flex', gap: 12, alignItems: 'flex-start',
-            cursor: 'pointer', transition: 'all 0.2s',
-          }}
-          onClick={() => { setAgreed(!agreed); setShowError(false); }}
-          whileTap={{ scale: 0.98 }}
-        >
-          <div
-            style={{
-              width: 22, height: 22, borderRadius: 6, flexShrink: 0,
-              border: agreed ? 'none' : '2px solid #CBD5E0',
-              background: agreed ? '#2D7A4F' : 'transparent',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              transition: 'all 0.2s',
-            }}
-          >
-            {agreed && (
-              <motion.svg
-                initial={{ scale: 0 }} animate={{ scale: 1 }}
-                width="12" height="12" viewBox="0 0 12 12" fill="none"
-              >
-                <path d="M2 6L5 9L10 3" stroke="#FFFFFF" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
-              </motion.svg>
-            )}
-          </div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#1C2434', lineHeight: 1.55 }}>
-            I understand how my voice data will be recorded, used, and that I can delete it at any time.
-          </p>
-        </motion.div>
-
-        {/* Inline error */}
-        {showError && !agreed && (
-          <motion.div
-            initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }}
-            className="flex items-center gap-2 mt-2 px-1"
-          >
-            <AlertCircle style={{ width: 13, height: 13, color: '#C0392B', flexShrink: 0 }} />
-            <p style={{ fontSize: 12, fontWeight: 600, color: '#C0392B' }}>
-              Please check the box above to continue
-            </p>
-          </motion.div>
-        )}
+        {/* Consent affirmation copy — swipe replaces the checkbox */}
+        <p style={{ fontSize: 12, fontWeight: 600, color: '#4A5568', lineHeight: 1.55, marginTop: 18, textAlign: 'center' }}>
+          By swiping below, you confirm you understand how your voice data is recorded, used,
+          and that you can delete it at any time.
+        </p>
       </div>
 
-      {/* Bottom CTA — fixed above safe area */}
+      {/* Bottom Swipe-to-Consent — fixed above safe area */}
       <div className="px-5 pb-10 pt-2" style={{ background: 'linear-gradient(transparent, #FAF6F0 20%)' }}>
-        <button
-          onClick={handleContinue}
-          style={{
-            width: '100%', height: 58, borderRadius: 999,
-            background: agreed ? '#C4622D' : '#D4BAB0',
-            color: '#FFFFFF',
-            fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: agreed ? '0px 6px 24px rgba(196,98,45,0.30)' : 'none',
-            transition: 'all 0.25s',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          }}
-        >
-          I Agree — Continue
-          <ChevronRight style={{ width: 18, height: 18 }} />
-        </button>
+        <SwipeButton
+          label="Swipe to consent & continue"
+          completeLabel="Consent recorded"
+          onComplete={handleConsent}
+        />
         <p style={{ fontSize: 12, fontWeight: 500, color: '#A89880', textAlign: 'center', marginTop: 12, lineHeight: 1.5 }}>
           You can review and revoke consent anytime in Profile → Data Vault
         </p>

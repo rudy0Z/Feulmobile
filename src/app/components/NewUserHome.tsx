@@ -27,7 +27,7 @@ const starterQuests = [
 const lockedMilestones = [
   { label: 'Complete 5 quests',  reward: 'Unlock ₹50 bonus',                   progress: 1, total: 5 },
   { label: '3-day streak',       reward: '1.1× payout multiplier',              progress: 1, total: 3 },
-  { label: 'Reach Level 2',      reward: 'Priority access to high-paying quests', progress: 0, total: 1 },
+  { label: 'Reach Verified Contributor', reward: 'Priority access to high-paying quests', progress: 0, total: 1 },
 ];
 
 export function NewUserHome() {
@@ -55,8 +55,8 @@ export function NewUserHome() {
       <div className="px-6 pt-8 pb-2 flex items-center justify-between">
         <FeulLogo />
         <div className="flex items-center gap-2" style={{ background: '#FFF0E8', borderRadius: 999, padding: '5px 12px' }}>
-          <Flame style={{ width: 16, height: 16, color: '#E06C3A' }} />
-          <span style={{ fontSize: 13, fontWeight: 700, color: '#E06C3A' }}>1 day streak</span>
+          <Flame style={{ width: 16, height: 16, color: 'oklch(0.63 0.25 34)' }} />
+          <span style={{ fontSize: 13, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>1 day streak</span>
         </div>
       </div>
 
@@ -244,7 +244,7 @@ export function NewUserHome() {
           <button
             onClick={() => navigate('/contributor/quests')}
             className="flex items-center gap-1"
-            style={{ fontSize: 13, fontWeight: 700, color: '#E06C3A' }}
+            style={{ fontSize: 13, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}
           >
             All <ChevronRight style={{ width: 14, height: 14 }} />
           </button>
@@ -277,7 +277,7 @@ export function NewUserHome() {
                   </span>
                 </div>
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: '#E06C3A', lineHeight: 1 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'oklch(0.63 0.25 34)', lineHeight: 1 }}>
                     ₹{quest.cash}
                   </p>
                   <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', marginTop: 2 }}>
@@ -297,7 +297,7 @@ export function NewUserHome() {
           onClick={() => navigate('/contributor/quests')}
           style={{
             width: '100%', height: 60, borderRadius: 999,
-            background: '#E06C3A', color: '#FFFFFF',
+            background: 'oklch(0.63 0.25 34)', color: '#FFFFFF',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
             boxShadow: '0px 8px 24px rgba(224,108,58,0.30)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
@@ -308,22 +308,22 @@ export function NewUserHome() {
         </motion.button>
       </div>
 
-      {/* ── XP Level (minimal, new user) ── */}
+      {/* ── Trust Tier (minimal, new user) ── */}
       <div className="px-6 mb-6">
         <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #E8EDF3', padding: '20px' }}>
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center gap-2">
-              <Zap style={{ width: 16, height: 16, color: '#E06C3A' }} />
-              <span style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>Level 1</span>
+              <Zap style={{ width: 16, height: 16, color: 'oklch(0.63 0.25 34)' }} />
+              <span style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>New Contributor</span>
             </div>
-            <span style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>100 / 500 XP</span>
+            <span style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>100 / 500 reputation</span>
           </div>
           <div style={{ background: '#F0F4F8', borderRadius: 999, height: 8 }}>
-            <div style={{ background: '#E06C3A', borderRadius: 999, height: 8, width: '20%' }} />
+            <div style={{ background: 'oklch(0.63 0.25 34)', borderRadius: 999, height: 8, width: '20%' }} />
           </div>
           <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7', marginTop: 10 }}>
-            Reach Level 2 to unlock{' '}
-            <span style={{ color: '#E06C3A', fontWeight: 700 }}>priority access to high-paying quests</span>
+            Reach <span style={{ color: '#1C2434', fontWeight: 700 }}>Verified Contributor</span> to unlock{' '}
+            <span style={{ color: 'oklch(0.63 0.25 34)', fontWeight: 700 }}>priority access to high-paying quests</span>
           </p>
         </div>
       </div>
@@ -348,14 +348,14 @@ export function NewUserHome() {
                 background: m.progress > 0 ? '#FFF0E8' : '#F0F4F8',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               }}>
-                <Lock style={{ width: 18, height: 18, color: m.progress > 0 ? '#E06C3A' : '#8896A7' }} />
+                <Lock style={{ width: 18, height: 18, color: m.progress > 0 ? 'oklch(0.63 0.25 34)' : '#8896A7' }} />
               </div>
               <div className="flex-1 min-w-0">
                 <p style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 2 }}>{m.label}</p>
                 <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>{m.reward}</p>
                 <div style={{ background: '#F0F4F8', borderRadius: 999, height: 4, marginTop: 8 }}>
                   <div style={{
-                    background: '#E06C3A', borderRadius: 999, height: 4,
+                    background: 'oklch(0.63 0.25 34)', borderRadius: 999, height: 4,
                     width: `${(m.progress / m.total) * 100}%`,
                     transition: 'width 0.5s ease',
                   }} />

@@ -16,16 +16,6 @@ export function FirstEarning() {
         <Waveform color="#FFFFFF" opacity={1} height={200} />
       </div>
 
-      {/* Skip for returning users */}
-      <div className="absolute top-14 right-6 z-10">
-        <button
-          onClick={() => navigate('/contributor')}
-          style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.35)', background: 'none', border: 'none', cursor: 'pointer' }}
-        >
-          Skip
-        </button>
-      </div>
-
       <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
         {/* Pulsing mic icon */}
         <motion.div
@@ -117,6 +107,24 @@ export function FirstEarning() {
         <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.25)', textAlign: 'center', marginTop: 14 }}>
           No setup needed. Just speak naturally.
         </p>
+
+        {/* Returning user shortcut — explicit, intentional */}
+        <div style={{ textAlign: 'center', marginTop: 18 }}>
+          <button
+            onClick={() => navigate('/contributor')}
+            style={{
+              fontSize: 13,
+              fontWeight: 600,
+              color: 'rgba(255,255,255,0.55)',
+              background: 'none',
+              border: 'none',
+              cursor: 'pointer',
+            }}
+          >
+            Returning user?{' '}
+            <span style={{ color: '#E8913A', fontWeight: 700 }}>Go to wallet</span>
+          </button>
+        </div>
       </motion.div>
     </div>
   );

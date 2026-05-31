@@ -14,6 +14,7 @@ import { Rewards } from "./components/Rewards";
 import { Profile } from "./components/Profile";
 import { Recording } from "./components/Recording";
 import { RejectedTask } from "./components/RejectedTask";
+import { Performance } from "./components/Performance";
 import { RoleSelection } from "./components/RoleSelection";
 import { ValidatorApplication } from "./components/ValidatorApplication";
 import { QuestCreatorApplication } from "./components/QuestCreatorApplication";
@@ -73,6 +74,10 @@ export const router = createBrowserRouter([
       { path: "rewards",      Component: Rewards   },
       { path: "profile",      Component: Profile   },
     ],
+  },
+  {
+    path: "/contributor/performance",
+    Component: Performance,
   },
   {
     path: "/recording/:questId",

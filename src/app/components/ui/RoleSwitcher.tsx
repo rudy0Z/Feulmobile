@@ -22,7 +22,7 @@ const roles: RoleConfig[] = [
     label: 'Contributor',
     descriptor: 'Earn by recording your voice for AI',
     icon: Mic,
-    color: '#E06C3A',
+    color: 'oklch(0.63 0.25 34)',
     bg: 'linear-gradient(135deg, #FFF0E8 0%, #FFE8D8 100%)',
     borderColor: 'rgba(224,108,58,0.2)',
     path: '/contributor',

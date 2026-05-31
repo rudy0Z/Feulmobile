@@ -89,7 +89,7 @@ export function EarningCelebration() {
         >
           <Flame className="w-4 h-4" style={{ color: '#C4622D' }} />
           <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>
-            +100 XP · Welcome Bonus Unlocked
+            +100 reputation · Welcome bonus unlocked
           </span>
         </motion.div>
 

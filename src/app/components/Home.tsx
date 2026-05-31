@@ -9,6 +9,7 @@ import { FeulLogo } from './ui/FeulLogo';
 import { Waveform } from './ui/Waveform';
 import { NewUserHome } from './NewUserHome';
 import { NotificationsPanel, BellButton } from './ui/NotificationsPanel';
+import { tierName, nextTierName } from '../lib/tier';
 
 type ActivityStatus = 'auto_check' | 'under_review' | 'approved' | 'rejected';
 
@@ -44,7 +45,7 @@ const urgentQuests = [
   {
     id: 'uq-1', title: 'Hindi — Waiter Dialogue',
     cash: 15, duration: '30 sec', clips: 3,
-    tag: 'high-demand', tagLabel: 'High Demand',
+    tag: 'high-demand', tagLabel: '427 Hindi clips needed',
     slotsLeft: 12, emoji: '🍽️',
   },
   {
@@ -56,13 +57,13 @@ const urgentQuests = [
   {
     id: 'uq-3', title: 'Marathi — Product Reviews',
     cash: 25, duration: '8 min', clips: 10,
-    tag: 'expiring', tagLabel: 'Expires in 2h',
+    tag: 'expiring', tagLabel: 'Closes in 2h',
     slotsLeft: 5, emoji: '🛒',
   },
 ];
 
 const tagStyles: Record<string, { bg: string; text: string; dot: string }> = {
-  'high-demand': { bg: '#FEF0E8', text: '#8B3000', dot: '#E06C3A' },
+  'high-demand': { bg: '#FEF0E8', text: '#8B3000', dot: 'oklch(0.63 0.25 34)' },
   'bonus':       { bg: '#F5F0DC', text: '#6B4800', dot: '#8B6914' },
   'expiring':    { bg: '#FDE8E8', text: '#8B0000', dot: '#C0392B' },
 };
@@ -94,6 +95,10 @@ export function Home() {
   const dailyGoal   = 500;
   const todayEarned = 185;
   const progressPct = Math.min((todayEarned / dailyGoal) * 100, 100);
+
+  const clipsToday  = 7;
+  const clipsGoal   = 10;
+  const clipsPct    = Math.min((clipsToday / clipsGoal) * 100, 100);
 
   useEffect(() => {
     const id = setInterval(() => setGreeting(getGreeting()), 60_000);
@@ -138,7 +143,7 @@ export function Home() {
             opacity: 0.04, pointerEvents: 'none',
           }}
         >
-          <Waveform color="#E06C3A" opacity={1} height={60} />
+          <Waveform color="oklch(0.63 0.25 34)" opacity={1} height={60} />
         </div>
 
         {/* Logo row */}
@@ -163,7 +168,7 @@ export function Home() {
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4 }}
-              style={{ fontSize: 13, fontWeight: 600, color: '#E06C3A', marginBottom: 4, letterSpacing: '0.01em' }}
+              style={{ fontSize: 13, fontWeight: 600, color: 'oklch(0.63 0.25 34)', marginBottom: 4, letterSpacing: '0.01em' }}
             >
               {greeting} 👋
             </motion.p>
@@ -208,20 +213,16 @@ export function Home() {
               <span style={{ fontSize: 22, fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>A</span>
             </motion.div>
 
-            {/* Streak pill under avatar */}
+            {/* Streak — subtle, secondary signal */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
               transition={{ duration: 0.35, delay: 0.2 }}
-              style={{
-                display: 'flex', alignItems: 'center', gap: 4,
-                background: '#FFF0E8', borderRadius: 999,
-                padding: '4px 10px',
-                border: '1px solid rgba(224,108,58,0.2)',
-              }}
+              className="flex items-center gap-1"
+              style={{ opacity: 0.55 }}
             >
-              <Flame className="w-3 h-3" style={{ color: '#E06C3A' }} />
-              <span style={{ fontSize: 11, fontWeight: 700, color: '#E06C3A' }}>{streak}d</span>
+              <Flame className="w-3 h-3" style={{ color: '#8896A7' }} />
+              <span style={{ fontSize: 10, fontWeight: 600, color: '#8896A7' }}>{streak}d</span>
             </motion.div>
           </div>
         </div>
@@ -254,8 +255,8 @@ export function Home() {
                 Today's Progress
               </p>
               <div className="flex items-center gap-1">
-                <ArrowUpRight className="w-3.5 h-3.5" style={{ color: '#E06C3A' }} />
-                <span style={{ fontSize: 12, fontWeight: 700, color: '#E06C3A' }}>+₹254 this week</span>
+                <ArrowUpRight className="w-3.5 h-3.5" style={{ color: 'oklch(0.63 0.25 34)' }} />
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>+₹254 this week</span>
               </div>
             </div>
 
@@ -312,13 +313,36 @@ export function Home() {
                     initial={{ width: 0 }}
                     animate={{ width: `${progressPct}%` }}
                     transition={{ duration: 1.2, ease: 'easeOut', delay: 0.5 }}
-                    style={{ background: 'linear-gradient(90deg, #E06C3A, #FF9D6C)', borderRadius: 999, height: 4 }}
+                    style={{ background: 'linear-gradient(90deg, oklch(0.63 0.25 34), #FF9D6C)', borderRadius: 999, height: 4 }}
                   />
                 </div>
                 <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.3)', marginTop: 4 }}>
                   {Math.round(progressPct)}% of daily goal
                 </p>
               </div>
+            </div>
+
+            {/* Daily clips goal — completion motivation */}
+            <div className="mt-4 pt-4" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+              <div className="flex items-center justify-between mb-2">
+                <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.55)' }}>
+                  Daily clips goal
+                </p>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 700, color: '#FFFFFF' }}>
+                  {clipsToday} / {clipsGoal}
+                </p>
+              </div>
+              <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 999, height: 4 }}>
+                <motion.div
+                  initial={{ width: 0 }}
+                  animate={{ width: `${clipsPct}%` }}
+                  transition={{ duration: 1.1, ease: 'easeOut', delay: 0.65 }}
+                  style={{ background: 'linear-gradient(90deg, #5A7B6D, #6FAF92)', borderRadius: 999, height: 4 }}
+                />
+              </div>
+              <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.3)', marginTop: 5 }}>
+                {clipsGoal - clipsToday} clips left to finish today's goal
+              </p>
             </div>
           </div>
         </motion.div>
@@ -395,7 +419,7 @@ export function Home() {
           <button
             onClick={() => navigate('/contributor/quests')}
             className="flex items-center gap-1"
-            style={{ fontSize: 12, fontWeight: 700, color: '#E06C3A' }}
+            style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}
           >
             See all <ArrowRight className="w-3 h-3" />
           </button>
@@ -417,7 +441,7 @@ export function Home() {
                   border: '1px solid #EDF0F5',
                   padding: '16px 18px',
                   cursor: 'pointer',
-                  boxShadow: '0px 2px 12px rgba(28,36,52,0.05)',
+                  boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
                   display: 'flex',
                   alignItems: 'center',
                   gap: 14,
@@ -463,7 +487,7 @@ export function Home() {
 
                 {/* Earning */}
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#E06C3A', lineHeight: 1 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: 'oklch(0.63 0.25 34)', lineHeight: 1 }}>
                     ₹{quest.cash}
                   </p>
                   <p style={{ fontSize: 10, fontWeight: 600, color: '#B0BBCA', marginTop: 2 }}>earn now</p>
@@ -480,12 +504,12 @@ export function Home() {
           <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: '#1C2434' }}>
             Recent Activity
           </h3>
-          <button className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: '#E06C3A' }}>
+          <button className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>
             View all <ArrowRight className="w-3 h-3" />
           </button>
         </div>
 
-        <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 2px 12px rgba(28,36,52,0.05)' }}>
+        <div style={{ background: '#FFFFFF', borderRadius: 20, border: '1px solid #EDF0F5', overflow: 'hidden', boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)' }}>
           {recentActivity.map((activity, idx) => {
             const cfg = statusConfig[activity.status];
             const StatusIcon = cfg.icon;
@@ -527,18 +551,20 @@ export function Home() {
         </div>
       </div>
 
-      {/* ── LEVEL PROGRESS ──────────────────────────────────── */}
+      {/* ── TRUST TIER PROGRESS ─────────────────────────────── */}
       <div className="px-5">
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.55 }}
+          onClick={() => navigate('/contributor/performance')}
           style={{
             background: '#FFFFFF',
             borderRadius: 20,
             border: '1px solid #EDF0F5',
             padding: '18px',
-            boxShadow: '0px 2px 12px rgba(28,36,52,0.05)',
+            cursor: 'pointer',
+            boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
           }}
         >
           <div className="flex items-center justify-between mb-3">
@@ -551,15 +577,15 @@ export function Home() {
                 <Zap className="w-3.5 h-3.5" style={{ color: '#8B6914' }} />
               </div>
               <div>
-                <span style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>Level 3</span>
-                <span style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', marginLeft: 6 }}>470 XP to go</span>
+                <span style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>{tierName(3)}</span>
+                <span style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', marginLeft: 6 }}>470 to {nextTierName(3)}</span>
               </div>
             </div>
             <span style={{
               fontSize: 11, fontWeight: 600, color: '#8B6914',
               background: '#FFF3D6', padding: '3px 10px', borderRadius: 999,
             }}>
-              1,530 / 2,000 XP
+              1,530 / 2,000 reputation
             </span>
           </div>
 
@@ -570,16 +596,16 @@ export function Home() {
               animate={{ width: '76%' }}
               transition={{ duration: 1.1, ease: 'easeOut', delay: 0.6 }}
               style={{
-                background: 'linear-gradient(90deg, #E06C3A, #FF9D6C)',
+                background: 'linear-gradient(90deg, oklch(0.63 0.25 34), #FF9D6C)',
                 borderRadius: 999, height: 7,
               }}
             />
           </div>
 
           <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', marginTop: 9, lineHeight: 1.5 }}>
-            Reach Level 4 to unlock{' '}
-            <span style={{ color: '#E06C3A', fontWeight: 700 }}>1.2× payout multiplier</span>
-            {' '}& instant auto-approval.
+            Reach <span style={{ color: '#1C2434', fontWeight: 700 }}>{nextTierName(3)}</span> to unlock{' '}
+            <span style={{ color: 'oklch(0.63 0.25 34)', fontWeight: 700 }}>higher-paying campaigns</span>
+            {' '}& instant approvals.
           </p>
         </motion.div>
       </div>

@@ -34,7 +34,7 @@ const quests: Quest[] = [
     id: 'quest-1', title: 'Morning News Reading',
     description: 'Read 10 short news articles for natural language training',
     cashPayout: 15, xp: 150, duration: '8 min', clips: 10, difficulty: 'Easy', category: 'Reading',
-    language: 'Hindi', tag: 'high-demand', tagLabel: 'High Demand for Hindi', slotsLeft: 18, featured: true,
+    language: 'Hindi', tag: 'high-demand', tagLabel: '427 Hindi clips needed', slotsLeft: 18, featured: true,
   },
   {
     id: 'quest-2', title: 'Product Descriptions',
@@ -46,13 +46,13 @@ const quests: Quest[] = [
     id: 'quest-3', title: 'Conversational Dialogue',
     description: 'Respond to prompts in a natural conversation style',
     cashPayout: 35, xp: 250, duration: '15 min', clips: 20, difficulty: 'Medium', category: 'Conversation',
-    language: 'Hindi', tag: 'expiring', tagLabel: 'Expires in 2 hours', slotsLeft: 7,
+    language: 'Hindi', tag: 'expiring', tagLabel: 'Campaign closes in 2h', slotsLeft: 7,
   },
   {
     id: 'quest-4', title: 'Short Story Narration',
     description: 'Narrate engaging short stories with emotion and clarity',
     cashPayout: 50, xp: 300, duration: '20 min', clips: 25, difficulty: 'Hard', category: 'Narration',
-    language: 'English', tag: 'limited', tagLabel: '5 slots remaining', slotsLeft: 5,
+    language: 'English', tag: 'limited', tagLabel: '5 contributor spots left', slotsLeft: 5,
   },
   {
     id: 'quest-5', title: 'Quick Phrases',
@@ -190,7 +190,7 @@ export function QuestFeed() {
                 FEATURED
               </span>
               <span className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)' }}>
-                <Flame className="w-3 h-3" /> High Demand for Hindi
+                <Flame className="w-3 h-3" /> 427 Hindi clips needed
               </span>
               {quests[0].slotsLeft && (
                 <span className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: '#C4622D' }}>

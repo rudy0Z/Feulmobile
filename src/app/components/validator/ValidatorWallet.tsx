@@ -307,8 +307,8 @@ export function ValidatorWallet() {
           <div className="flex items-center gap-3">
             <Zap className="w-4 h-4" style={{ color: '#5A7B6D' }} />
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>2,840 XP · Level 4 Validator</p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>Used for unlocking perks · not withdrawable</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>2,840 reputation · Elite Validator</p>
+              <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>Unlocks tier perks · not withdrawable</p>
             </div>
           </div>
           <button
