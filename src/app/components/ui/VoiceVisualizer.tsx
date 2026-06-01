@@ -119,7 +119,7 @@ export function VoiceVisualizer({ active, height = 110, bars = BAR_COUNT_DEFAULT
           const h = Math.max(6, v * (height - 16));
           const isPeak = v > 0.82;
           const isQuiet = v < 0.32;
-          const color = isPeak ? '#C0392B' : isQuiet ? '#8896A7' : '#C4622D';
+          const color = isPeak ? '#C0392B' : isQuiet ? '#8896A7' : 'var(--accent-primary-deep)';
           return (
             <div
               key={i}

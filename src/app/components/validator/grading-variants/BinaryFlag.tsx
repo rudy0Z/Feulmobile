@@ -23,8 +23,8 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
           onClick={() => onGrade(1)} // Mapping Reject to 1
           style={{
             flex: 1, borderRadius: 24,
-            background: selectedGrade === 1 ? '#C0392B' : '#FDE8E8',
-            color: selectedGrade === 1 ? '#FFFFFF' : '#C0392B',
+            background: selectedGrade === 1 ? 'var(--status-error-text)' : 'var(--status-error-bg)',
+            color: selectedGrade === 1 ? 'var(--surface)' : 'var(--status-error-text)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             border: 'none', cursor: 'pointer',
             transition: 'all 0.2s',
@@ -39,8 +39,8 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
           onClick={() => onGrade(5)} // Mapping Accept to 5
           style={{
             flex: 1, borderRadius: 24,
-            background: selectedGrade === 5 ? '#2D7A4F' : '#ECFDF5',
-            color: selectedGrade === 5 ? '#FFFFFF' : '#2D7A4F',
+            background: selectedGrade === 5 ? 'var(--color-success)' : 'var(--status-success-bg)',
+            color: selectedGrade === 5 ? 'var(--surface)' : 'var(--color-success)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             border: 'none', cursor: 'pointer',
             transition: 'all 0.2s',
@@ -58,7 +58,7 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
           width: '100%', padding: '14px', borderRadius: 999,
           background: 'transparent',
           border: '2px dashed #CBD5E0',
-          color: '#8896A7', fontSize: 14, fontWeight: 700,
+          color: 'var(--text-muted)', fontSize: 14, fontWeight: 700,
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
           cursor: 'pointer', transition: 'all 0.2s',
         }}
@@ -76,9 +76,9 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
             className="mt-4 p-4 rounded-2xl bg-white border border-[#E8EDF3] shadow-lg"
           >
             <div className="flex items-center justify-between mb-3">
-              <span style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>Select Reason</span>
+              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>Select Reason</span>
               <button onClick={() => setShowTags(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
-                <X className="w-4 h-4" style={{ color: '#8896A7' }} />
+                <X className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
               </button>
             </div>
             <div className="flex flex-wrap gap-2">
@@ -88,7 +88,7 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
                   onClick={() => onFlag(tag)}
                   style={{
                     padding: '8px 16px', borderRadius: 999,
-                    background: '#F8F9FA', border: '1px solid #E8EDF3',
+                    background: 'var(--background)', border: '1px solid #E8EDF3',
                     fontSize: 12, fontWeight: 600, color: '#4A5568',
                     cursor: 'pointer', transition: 'all 0.1s',
                   }}

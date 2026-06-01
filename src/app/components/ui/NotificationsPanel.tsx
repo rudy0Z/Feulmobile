@@ -87,13 +87,13 @@ const notifConfig: Record<NotifType, {
   iconBg: string;
   dot: string;
 }> = {
-  rejected:           { icon: AlertCircle,      iconColor: '#C0392B', iconBg: '#FDE8E8', dot: '#C0392B' },
-  approved:           { icon: CheckCircle2,     iconColor: '#2D7A4F', iconBg: '#E6F4EC', dot: '#2D7A4F' },
-  xp_level:          { icon: Zap,              iconColor: '#8B6914', iconBg: '#FFF3D6', dot: '#D4A017' },
-  payout:             { icon: Wallet,           iconColor: '#1E3A6E', iconBg: '#E8EFF8', dot: '#3B62A8' },
-  validator_approved: { icon: ShieldCheck,      iconColor: '#2D7A4F', iconBg: '#E6F4EC', dot: '#2D7A4F' },
-  quest_new:          { icon: Mic,              iconColor: 'oklch(0.63 0.25 34)', iconBg: '#FEF0E8', dot: 'oklch(0.63 0.25 34)' },
-  campaign_alert:     { icon: AlertCircle,      iconColor: '#8B6914', iconBg: '#FFF3D6', dot: '#D4A017' },
+  rejected:           { icon: AlertCircle,      iconColor: 'var(--color-error)', iconBg: 'var(--status-error-bg)', dot: 'var(--color-error)' },
+  approved:           { icon: CheckCircle2,     iconColor: 'var(--color-success)', iconBg: 'var(--status-success-bg)', dot: 'var(--color-success)' },
+  xp_level:          { icon: Zap,              iconColor: 'var(--warning-700)', iconBg: '#FFF3D6', dot: '#D4A017' },
+  payout:             { icon: Wallet,           iconColor: 'var(--status-info-text)', iconBg: 'var(--status-info-bg)', dot: '#3B62A8' },
+  validator_approved: { icon: ShieldCheck,      iconColor: 'var(--color-success)', iconBg: 'var(--status-success-bg)', dot: 'var(--color-success)' },
+  quest_new:          { icon: Mic,              iconColor: 'var(--accent-primary)', iconBg: 'var(--status-accent-bg)', dot: 'var(--accent-primary)' },
+  campaign_alert:     { icon: AlertCircle,      iconColor: 'var(--warning-700)', iconBg: '#FFF3D6', dot: '#D4A017' },
 };
 
 const groupLabels: Record<string, string> = {
@@ -152,7 +152,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
               position: 'fixed', bottom: 0, left: 0, right: 0,
               zIndex: 101,
               height: '88%',
-              background: '#F4F6F8',
+              background: 'var(--background)',
               borderRadius: '28px 28px 0 0',
               display: 'flex', flexDirection: 'column',
               boxShadow: '0px -8px 40px rgba(0,0,0,0.2)',
@@ -162,7 +162,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
             {/* Drag handle */}
             <div style={{
               width: 36, height: 4, borderRadius: 999,
-              background: '#DDE2EA', margin: '12px auto 0', flexShrink: 0,
+              background: 'var(--neutral-200)', margin: '12px auto 0', flexShrink: 0,
             }} />
 
             {/* Header */}
@@ -177,12 +177,12 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2.5">
                   <div style={{ position: 'relative' }}>
-                    <Bell className="w-5 h-5" style={{ color: '#1C2434' }} />
+                    <Bell className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
                     {unreadCount > 0 && (
                       <span style={{
                         position: 'absolute', top: -5, right: -6,
                         width: 16, height: 16, borderRadius: '50%',
-                        background: 'oklch(0.63 0.25 34)', border: '2px solid #FFFFFF',
+                        background: 'var(--accent-primary)', border: '2px solid #FFFFFF',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: 9, fontWeight: 800, color: '#FFFFFF',
                       }}>
@@ -190,7 +190,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                       </span>
                     )}
                   </div>
-                  <h2 style={{ fontSize: 18, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.3px' }}>
+                  <h2 style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
                     Notifications
                   </h2>
                 </div>
@@ -199,7 +199,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                   {unreadCount > 0 && (
                     <button
                       onClick={markAllRead}
-                      style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)', background: 'none', border: 'none', cursor: 'pointer' }}
+                      style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer' }}
                     >
                       Mark all read
                     </button>
@@ -208,11 +208,11 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                     onClick={onClose}
                     style={{
                       width: 30, height: 30, borderRadius: '50%',
-                      background: '#F0F4F8', border: 'none', cursor: 'pointer',
+                      background: 'var(--neutral-100)', border: 'none', cursor: 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}
                   >
-                    <X className="w-4 h-4" style={{ color: '#4A5568' }} />
+                    <X className="w-4 h-4" style={{ color: 'var(--text-secondary)' }} />
                   </button>
                 </div>
               </div>
@@ -229,7 +229,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                     {/* Group label */}
                     <div style={{ padding: '16px 20px 8px' }}>
                       <p style={{
-                        fontSize: 11, fontWeight: 700, color: '#8896A7',
+                        fontSize: 11, fontWeight: 700, color: 'var(--text-muted)',
                         textTransform: 'uppercase', letterSpacing: '0.08em',
                       }}>
                         {groupLabels[group]}
@@ -284,7 +284,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                                 <div className="flex items-start justify-between gap-2">
                                   <p style={{
                                     fontSize: 13, fontWeight: notif.unread ? 700 : 600,
-                                    color: '#1C2434', lineHeight: 1.35,
+                                    color: 'var(--text-primary)', lineHeight: 1.35,
                                   }}>
                                     {notif.title}
                                   </p>
@@ -295,14 +295,14 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                                         background: cfg.dot, flexShrink: 0,
                                       }} />
                                     )}
-                                    <p style={{ fontSize: 11, fontWeight: 500, color: '#B0BBCA', whiteSpace: 'nowrap' }}>
+                                    <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--neutral-400)', whiteSpace: 'nowrap' }}>
                                       {notif.time}
                                     </p>
                                   </div>
                                 </div>
 
                                 <p style={{
-                                  fontSize: 12, fontWeight: 500, color: '#4A5568',
+                                  fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)',
                                   lineHeight: 1.5, marginTop: 3,
                                 }}>
                                   {notif.body}
@@ -313,7 +313,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                                     style={{
                                       marginTop: 8,
                                       display: 'inline-flex', alignItems: 'center', gap: 4,
-                                      fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)',
+                                      fontSize: 12, fontWeight: 700, color: 'var(--accent-primary)',
                                       background: 'none', border: 'none', cursor: 'pointer',
                                       padding: 0,
                                     }}
@@ -335,9 +335,9 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
               {/* Empty state */}
               {notifs.length === 0 && (
                 <div className="flex flex-col items-center justify-center" style={{ paddingTop: 80 }}>
-                  <Bell className="w-12 h-12" style={{ color: '#DDE2EA', marginBottom: 16 }} />
-                  <p style={{ fontSize: 16, fontWeight: 700, color: '#1C2434', marginBottom: 6 }}>All caught up</p>
-                  <p style={{ fontSize: 13, fontWeight: 500, color: '#8896A7' }}>No new notifications</p>
+                  <Bell className="w-12 h-12" style={{ color: 'var(--neutral-200)', marginBottom: 16 }} />
+                  <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>All caught up</p>
+                  <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>No new notifications</p>
                 </div>
               )}
             </div>
@@ -367,12 +367,12 @@ export function BellButton({ unreadCount, onClick }: BellButtonProps) {
         boxShadow: '0px 2px 8px rgba(28,36,52,0.07)',
       }}
     >
-      <Bell className="w-4 h-4" style={{ color: '#1C2434' }} />
+      <Bell className="w-4 h-4" style={{ color: 'var(--text-primary)' }} />
       {unreadCount > 0 && (
         <span style={{
           position: 'absolute', top: -2, right: -2,
           minWidth: 16, height: 16, borderRadius: 999,
-          background: 'oklch(0.63 0.25 34)', border: '2px solid #F4F6F8',
+          background: 'var(--accent-primary)', border: '2px solid var(--background)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 9, fontWeight: 800, color: '#FFFFFF', padding: '0 3px',
         }}>

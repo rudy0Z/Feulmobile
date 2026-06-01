@@ -6,8 +6,8 @@ import { SwipeButton } from './ui/SwipeButton';
 const consentPoints = [
   {
     icon: Mic,
-    iconBg: '#FEF0E8',
-    iconColor: '#C4622D',
+    iconBg: 'var(--status-accent-bg)',
+    iconColor: 'var(--accent-primary-deep)',
     title: 'What gets recorded',
     desc: 'Only your voice audio during active recording sessions. No ambient sound, no background listening. Recording starts and stops exactly when you tap.',
   },
@@ -20,15 +20,15 @@ const consentPoints = [
   },
   {
     icon: Clock,
-    iconBg: '#FEF7E6',
-    iconColor: '#8B6914',
+    iconBg: 'var(--warning-50)',
+    iconColor: 'var(--warning-700)',
     title: 'How long it\'s stored',
     desc: 'Audio clips are retained for up to 24 months from submission. You can request deletion at any time from your Profile \u2192 Data Vault.',
   },
   {
     icon: Trash2,
-    iconBg: '#E6F4EC',
-    iconColor: '#2D7A4F',
+    iconBg: 'var(--status-success-bg)',
+    iconColor: 'var(--color-success)',
     title: 'Your right to delete',
     desc: 'You can withdraw consent and request deletion of all your contributed audio at any time. Deletion is processed within 30 days.',
   },
@@ -49,7 +49,7 @@ export function DataConsent() {
       {/* Hero band — navy, same gravity as wallet card */}
       <div
         style={{
-          background: '#1A1F2E',
+          background: 'var(--navy)',
           padding: '64px 24px 32px',
           position: 'relative',
           overflow: 'hidden',
@@ -75,8 +75,8 @@ export function DataConsent() {
               padding: '5px 14px', marginBottom: 20,
             }}
           >
-            <Lock style={{ width: 11, height: 11, color: 'oklch(0.63 0.25 34)' }} />
-            <span style={{ fontSize: 11, fontWeight: 700, color: 'oklch(0.63 0.25 34)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+            <Lock style={{ width: 11, height: 11, color: 'var(--accent-primary)' }} />
+            <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
               Data & Consent
             </span>
           </div>
@@ -129,10 +129,10 @@ export function DataConsent() {
                   <Icon style={{ width: 18, height: 18, color: point.iconColor }} strokeWidth={2} />
                 </div>
                 <div>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 4 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>
                     {point.title}
                   </p>
-                  <p style={{ fontSize: 13, fontWeight: 500, color: '#4A5568', lineHeight: 1.6 }}>
+                  <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
                     {point.desc}
                   </p>
                 </div>
@@ -144,21 +144,21 @@ export function DataConsent() {
         {/* Legal note */}
         <div
           style={{
-            background: '#FEF7E6', borderRadius: 14, border: '1px solid #F5E4B8',
+            background: 'var(--warning-50)', borderRadius: 14, border: '1px solid #F5E4B8',
             padding: '14px 16px', marginTop: 16,
             display: 'flex', gap: 10, alignItems: 'flex-start',
           }}
         >
-          <ShieldCheck style={{ width: 16, height: 16, color: '#8B6914', flexShrink: 0, marginTop: 1 }} />
-          <p style={{ fontSize: 12, fontWeight: 500, color: '#6B4800', lineHeight: 1.55 }}>
+          <ShieldCheck style={{ width: 16, height: 16, color: 'var(--warning-700)', flexShrink: 0, marginTop: 1 }} />
+          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--status-warning-text)', lineHeight: 1.55 }}>
             Feul complies with the{' '}
-            <span style={{ fontWeight: 700, color: '#1C2434' }}>Digital Personal Data Protection Act, 2023</span>.
+            <span style={{ fontWeight: 700, color: 'var(--text-primary)' }}>Digital Personal Data Protection Act, 2023</span>.
             Your audio is processed under explicit consent — you're in control.
           </p>
         </div>
 
         {/* Consent affirmation copy — swipe replaces the checkbox */}
-        <p style={{ fontSize: 12, fontWeight: 600, color: '#4A5568', lineHeight: 1.55, marginTop: 18, textAlign: 'center' }}>
+        <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)', lineHeight: 1.55, marginTop: 18, textAlign: 'center' }}>
           By swiping below, you confirm you understand how your voice data is recorded, used,
           and that you can delete it at any time.
         </p>

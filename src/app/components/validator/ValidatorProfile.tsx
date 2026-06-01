@@ -31,7 +31,7 @@ export function ValidatorProfile() {
   const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
 
   return (
-    <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
 
       <RoleSwitcher
         isOpen={roleSwitcherOpen}
@@ -45,18 +45,18 @@ export function ValidatorProfile() {
           className="flex items-center justify-center flex-shrink-0"
           style={{
             width: 68, height: 68, borderRadius: '50%',
-            background: '#F0F4F8', border: '2.5px solid #E8EDF3',
+            background: 'var(--neutral-100)', border: '2.5px solid #E8EDF3',
           }}
         >
-          <span style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: '#1C2434' }}>JD</span>
+          <span style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>JD</span>
         </div>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em', marginBottom: 3 }}>
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 3 }}>
             Jordan Davis
           </h1>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-3.5 h-3.5" style={{ color: '#5A7B6D' }} strokeWidth={2} />
-            <p style={{ fontSize: 13, fontWeight: 600, color: '#4A5568' }}>Validator since Jan 2025</p>
+            <ShieldCheck className="w-3.5 h-3.5" style={{ color: 'var(--success-700)' }} strokeWidth={2} />
+            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>Validator since Jan 2025</p>
           </div>
         </div>
       </div>
@@ -80,13 +80,13 @@ export function ValidatorProfile() {
               }}
             >
               <p style={{
-                fontSize: 18, fontWeight: 700, color: '#1C2434',
+                fontSize: 18, fontWeight: 700, color: 'var(--text-primary)',
                 fontFamily: stat.mono ? 'var(--font-mono)' : 'var(--font-serif)',
                 marginBottom: 3,
               }}>
                 {stat.value}
               </p>
-              <p style={{ fontSize: 9, fontWeight: 600, color: '#8896A7', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+              <p style={{ fontSize: 9, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                 {stat.label}
               </p>
             </div>
@@ -117,7 +117,7 @@ export function ValidatorProfile() {
               background: 'rgba(255,255,255,0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Repeat2 className="w-4 h-4" style={{ color: 'oklch(0.63 0.25 34)' }} />
+              <Repeat2 className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
             </div>
             <div className="text-left">
               <p style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>Switch App Role</p>
@@ -130,8 +130,8 @@ export function ValidatorProfile() {
 
       {/* ── XP Hero Card — ink-navy (unified) ── */}
       <div className="px-6 mb-6">
-        <div style={{ background: '#1A1F2E', borderRadius: 20, padding: '22px 24px', position: 'relative', overflow: 'hidden' }}>
-          <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
+        <div style={{ background: 'var(--navy)', borderRadius: 20, padding: '22px 24px', position: 'relative', overflow: 'hidden' }}>
+          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 20px 20px', opacity: 0.10 }}>
             <Waveform color="#FFFFFF" opacity={1} height={72} variant="precision" />
           </div>
 
@@ -157,12 +157,12 @@ export function ValidatorProfile() {
             {/* Level progress bar */}
             <div style={{ marginBottom: 8 }}>
               <div className="flex items-center justify-between" style={{ marginBottom: 6 }}>
-                <p style={{ fontSize: 13, fontWeight: 600, color: '#C4622D' }}>Elite Validator</p>
+                <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-primary-deep)' }}>Elite Validator</p>
                 <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>3,500 to Master Validator</p>
               </div>
               <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 999, height: 5 }}>
                 <div style={{
-                  background: '#C4622D',
+                  background: 'var(--accent-primary-deep)',
                   borderRadius: 999, height: 5, width: '81%',
                 }} />
               </div>
@@ -182,23 +182,23 @@ export function ValidatorProfile() {
           <div className="flex items-center gap-3">
             <div style={{
               width: 40, height: 40, borderRadius: 12,
-              background: '#F0F4F8',
+              background: 'var(--neutral-100)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <TrendingUp className="w-5 h-5" style={{ color: '#1C2434' }} strokeWidth={1.75} />
+              <TrendingUp className="w-5 h-5" style={{ color: 'var(--text-primary)' }} strokeWidth={1.75} />
             </div>
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: '#1C2434', marginBottom: 2 }}>Top 10% Validator</p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7' }}>Based on 456 graded clips</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>Top 10% Validator</p>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>Based on 456 graded clips</p>
             </div>
           </div>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: '#2D7A4F' }}>94.8%</p>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--color-success)' }}>94.8%</p>
         </div>
       </div>
 
       {/* ── Badges ── */}
       <div className="px-6 mb-6">
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 700, color: '#1C2434', marginBottom: 14 }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 14 }}>
           Badges Earned
         </h3>
         <div className="grid grid-cols-2 gap-3">
@@ -208,24 +208,24 @@ export function ValidatorProfile() {
               style={{
                 borderRadius: 16, padding: '18px 14px', textAlign: 'center',
                 ...(badge.unlocked
-                  ? { background: '#1A1F2E', boxShadow: '0px 4px 16px rgba(26,31,46,0.25)' }
-                  : { background: '#F0F4F8' }),
+                  ? { background: 'var(--navy)', boxShadow: '0px 4px 16px rgba(26,31,46,0.25)' }
+                  : { background: 'var(--neutral-100)' }),
               }}
             >
               <div style={{
                 width: 48, height: 48, borderRadius: 14,
-                background: badge.unlocked ? 'rgba(255,255,255,0.08)' : '#E8EDF3',
+                background: badge.unlocked ? 'rgba(255,255,255,0.08)' : 'var(--card-border)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 margin: '0 auto 10px', fontSize: 22,
               }}>
                 {badge.unlocked
                   ? badge.emoji
-                  : <Award className="w-5 h-5" style={{ color: '#8896A7' }} strokeWidth={1.75} />}
+                  : <Award className="w-5 h-5" style={{ color: 'var(--text-muted)' }} strokeWidth={1.75} />}
               </div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: badge.unlocked ? '#FFFFFF' : '#1C2434', marginBottom: 3 }}>
+              <p style={{ fontSize: 13, fontWeight: 700, color: badge.unlocked ? '#FFFFFF' : 'var(--text-primary)', marginBottom: 3 }}>
                 {badge.name}
               </p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: badge.unlocked ? 'rgba(255,255,255,0.65)' : '#8896A7', lineHeight: 1.4 }}>
+              <p style={{ fontSize: 11, fontWeight: 500, color: badge.unlocked ? 'rgba(255,255,255,0.65)' : 'var(--text-muted)', lineHeight: 1.4 }}>
                 {badge.description}
               </p>
             </div>
@@ -248,10 +248,10 @@ export function ValidatorProfile() {
               }}
             >
               <div className="flex items-center gap-3">
-                <Icon className="w-5 h-5" style={{ color: '#4A5568' }} strokeWidth={1.75} />
-                <span style={{ fontSize: 14, fontWeight: 600, color: '#1C2434' }}>{item.label}</span>
+                <Icon className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} strokeWidth={1.75} />
+                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{item.label}</span>
               </div>
-              <ChevronRight className="w-4 h-4" style={{ color: '#8896A7' }} />
+              <ChevronRight className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
             </button>
           );
         })}

@@ -9,21 +9,21 @@ const onboardingSteps = [
     subtitle: "Feul is your refinery.",
     description:
       "Your data is the invisible engine behind AI's growth. Feul turns that invisible force into tangible rewards because you built this future.",
-    waveColor: 'oklch(0.63 0.25 34)',
+    waveColor: 'var(--accent-primary)',
   },
   {
     title: "Share Your Voice",
     subtitle: "Train the future",
     description:
       "Record short audio clips to help train cutting-edge AI models. Every contribution makes a difference.",
-    waveColor: 'oklch(0.63 0.25 34)',
+    waveColor: 'var(--accent-primary)',
   },
   {
     title: "Earn ₹ Instantly",
     subtitle: "Your voice = real cash",
     description:
       "Complete quests to earn cash in INR — credited directly to your wallet. Build reputation to unlock higher-paying campaigns.",
-    waveColor: 'oklch(0.63 0.25 34)',
+    waveColor: 'var(--accent-primary)',
   },
 ];
 
@@ -48,7 +48,7 @@ export function Onboarding() {
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ background: 'linear-gradient(170deg, #FAF6F0 0%, #F5EFE6 100%)', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'linear-gradient(170deg, var(--accent-50) 0%, color-mix(in oklch, var(--accent-100) 40%, white) 100%)', fontFamily: 'var(--font-sans)' }}
     >
       {/* Content */}
       <div className="flex-1 flex flex-col items-center justify-center px-6 pb-36">
@@ -72,7 +72,7 @@ export function Onboarding() {
                 fontFamily: 'var(--font-serif)',
                 fontSize: 36,
                 fontWeight: 800,
-                color: '#1C2434',
+                color: 'var(--text-primary)',
                 marginBottom: 10,
                 textAlign: 'center',
                 letterSpacing: '-0.02em',
@@ -87,7 +87,7 @@ export function Onboarding() {
               style={{
                 fontSize: 16,
                 fontWeight: 700,
-                color: 'oklch(0.63 0.25 34)',
+                color: 'var(--accent-primary)',
                 marginBottom: 20,
                 textAlign: 'center',
               }}
@@ -100,7 +100,7 @@ export function Onboarding() {
               style={{
                 fontSize: 15,
                 fontWeight: 500,
-                color: '#4A5568',
+                color: 'var(--text-secondary)',
                 lineHeight: 1.65,
                 maxWidth: 300,
                 textAlign: 'center',
@@ -115,7 +115,7 @@ export function Onboarding() {
       {/* Bottom Nav */}
       <div
         className="fixed bottom-0 left-0 right-0 px-6 py-8"
-        style={{ background: 'linear-gradient(to top, #FAF6F0 70%, transparent)' }}
+        style={{ background: 'linear-gradient(to top, var(--accent-50) 70%, transparent)' }}
       >
         {/* Pagination dots */}
         <div className="flex justify-center gap-2 mb-8">
@@ -125,7 +125,7 @@ export function Onboarding() {
               style={{
                 height: 6,
                 borderRadius: 999,
-                background: index === currentStep ? 'oklch(0.63 0.25 34)' : 'rgba(224,108,58,0.2)',
+                background: index === currentStep ? 'var(--accent-primary)' : 'var(--accent-200)',
                 width: index === currentStep ? 28 : 6,
                 transition: 'all 0.3s ease',
               }}
@@ -140,7 +140,7 @@ export function Onboarding() {
             width: '100%',
             height: 58,
             borderRadius: 999,
-            background: 'linear-gradient(160deg, #E8743F 0%, #C4622D 100%)',
+            background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
             color: '#FFFFFF',
             fontSize: 17,
             fontWeight: 700,
@@ -159,14 +159,14 @@ export function Onboarding() {
             style={{
               fontSize: 13,
               fontWeight: 600,
-              color: '#4A5568',
+              color: 'var(--text-secondary)',
               background: 'none',
               border: 'none',
               cursor: 'pointer',
             }}
           >
             Returning user?{' '}
-            <span style={{ color: '#C4622D', fontWeight: 700 }}>Sign in</span>
+            <span style={{ color: 'var(--accent-primary-deep)', fontWeight: 700 }}>Sign in</span>
           </button>
         </div>
       </div>

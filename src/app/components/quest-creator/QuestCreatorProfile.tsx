@@ -28,7 +28,7 @@ export function QuestCreatorProfile() {
   const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
 
   return (
-    <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
 
       <RoleSwitcher
         isOpen={roleSwitcherOpen}
@@ -42,13 +42,13 @@ export function QuestCreatorProfile() {
           className="flex items-center justify-center mb-5"
           style={{
             width: 88, height: 88, borderRadius: '50%',
-            background: '#F0F4F8',
+            background: 'var(--neutral-100)',
             border: '2.5px solid #E8EDF3',
           }}
         >
-          <Building2 className="w-11 h-11" style={{ color: '#1C2434' }} strokeWidth={1.5} />
+          <Building2 className="w-11 h-11" style={{ color: 'var(--text-primary)' }} strokeWidth={1.5} />
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: '#1C2434', marginBottom: 6 }}>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>
           TechVoice AI
         </h1>
         <div className="flex items-center gap-2">
@@ -56,7 +56,7 @@ export function QuestCreatorProfile() {
             width: 8, height: 8, borderRadius: '50%',
             background: '#6B7394',
           }} />
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#4A5568' }}>Quest Creator Account</p>
+          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>Quest Creator Account</p>
         </div>
       </div>
 
@@ -76,11 +76,11 @@ export function QuestCreatorProfile() {
                   borderRight: idx < stats.length - 1 ? '1px solid #E8EDF3' : 'none',
                 }}
               >
-                <Icon className="w-4 h-4 mx-auto mb-2" style={{ color: '#8896A7' }} strokeWidth={1.75} />
-                <p style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 700, color: '#1C2434', marginBottom: 2 }}>
+                <Icon className="w-4 h-4 mx-auto mb-2" style={{ color: 'var(--text-muted)' }} strokeWidth={1.75} />
+                <p style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>
                   {stat.value}
                 </p>
-                <p style={{ fontSize: 9, fontWeight: 600, color: '#8896A7', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <p style={{ fontSize: 9, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   {stat.label}
                 </p>
               </div>
@@ -112,7 +112,7 @@ export function QuestCreatorProfile() {
               background: 'rgba(255,255,255,0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Repeat2 className="w-4 h-4" style={{ color: 'oklch(0.63 0.25 34)' }} />
+              <Repeat2 className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
             </div>
             <div className="text-left">
               <p style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>Switch App Role</p>
@@ -125,7 +125,7 @@ export function QuestCreatorProfile() {
 
       {/* ── Company Information ── */}
       <div className="px-6 mb-6">
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: '#1C2434', marginBottom: 14 }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 14 }}>
           Company Information
         </h3>
         <div style={{ background: '#FFFFFF', borderRadius: 16, border: '1px solid #E8EDF3', overflow: 'hidden' }}>
@@ -142,14 +142,14 @@ export function QuestCreatorProfile() {
               >
                 <div style={{
                   width: 38, height: 38, borderRadius: 10,
-                  background: '#F0F4F8',
+                  background: 'var(--neutral-100)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
-                  <Icon className="w-4 h-4" style={{ color: '#8896A7' }} />
+                  <Icon className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', marginBottom: 2 }}>{info.label}</p>
-                  <p style={{ fontSize: 14, fontWeight: 600, color: '#1C2434' }}>{info.value}</p>
+                  <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 2 }}>{info.label}</p>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{info.value}</p>
                 </div>
               </div>
             );
@@ -159,8 +159,8 @@ export function QuestCreatorProfile() {
 
       {/* ── Enterprise Plan Card — ink-navy (unified surface) ── */}
       <div className="px-6 mb-6">
-        <div style={{ background: '#1A1F2E', borderRadius: 20, padding: '22px 24px', position: 'relative', overflow: 'hidden' }}>
-          <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
+        <div style={{ background: 'var(--navy)', borderRadius: 20, padding: '22px 24px', position: 'relative', overflow: 'hidden' }}>
+          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 20px 20px', opacity: 0.10 }}>
             <Waveform color="#FFFFFF" opacity={1} height={72} variant="data" />
           </div>
 
@@ -195,7 +195,7 @@ export function QuestCreatorProfile() {
       {/* ── Usage Stats ── */}
       <div className="px-6 mb-6">
         <div style={{ background: '#FFFFFF', borderRadius: 16, border: '1px solid #E8EDF3', padding: '18px' }}>
-          <h4 style={{ fontSize: 15, fontWeight: 700, color: '#1C2434', marginBottom: 16 }}>
+          <h4 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 16 }}>
             This Month's Usage
           </h4>
           <div className="space-y-4">
@@ -205,12 +205,12 @@ export function QuestCreatorProfile() {
             ].map((u) => (
               <div key={u.label}>
                 <div className="flex items-center justify-between mb-2">
-                  <span style={{ fontSize: 13, fontWeight: 600, color: '#4A5568' }}>{u.label}</span>
-                  <span style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>{u.used} / {u.total}</span>
+                  <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>{u.label}</span>
+                  <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{u.used} / {u.total}</span>
                 </div>
-                <div style={{ background: '#F0F4F8', borderRadius: 999, height: 5 }}>
+                <div style={{ background: 'var(--neutral-100)', borderRadius: 999, height: 5 }}>
                   <div style={{
-                    background: '#C4622D',
+                    background: 'var(--accent-primary-deep)',
                     borderRadius: 999, height: 5, width: `${u.pct}%`,
                   }} />
                 </div>
@@ -235,10 +235,10 @@ export function QuestCreatorProfile() {
               }}
             >
               <div className="flex items-center gap-3">
-                <Icon className="w-5 h-5" style={{ color: '#4A5568' }} strokeWidth={1.75} />
-                <span style={{ fontSize: 14, fontWeight: 600, color: '#1C2434' }}>{item.label}</span>
+                <Icon className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} strokeWidth={1.75} />
+                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{item.label}</span>
               </div>
-              <ChevronRight className="w-4 h-4" style={{ color: '#8896A7' }} />
+              <ChevronRight className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
             </button>
           );
         })}

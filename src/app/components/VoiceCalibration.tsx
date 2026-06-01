@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mic, Square, Check } from 'lucide-react';
+import { Mic, Square, Check, ChevronLeft } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
 
 const calibrationPrompts = [
@@ -69,40 +69,45 @@ export function VoiceCalibration() {
   const currentEarning = completedPrompts.length * earningPerClip;
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header with live earnings */}
-      <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+      <div className="px-6 pt-14 pb-4">
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 8 }}>
+          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
+        </button>
+      <div className="flex items-center justify-between">
         <div>
-          <p style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Voice Calibration
           </p>
-          <p style={{ fontSize: 13, fontWeight: 500, color: '#8896A7', marginTop: 2 }}>
+          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>
             {currentPrompt + 1} of {calibrationPrompts.length}
           </p>
         </div>
         <div style={{ textAlign: 'right' }}>
-          <p style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+          <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.04em', textTransform: 'uppercase' }}>
             Earned so far
           </p>
           <motion.p
             key={currentEarning}
             initial={{ scale: 1.2 }}
             animate={{ scale: 1 }}
-            style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: '#C4622D' }}
+            style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--accent-primary-deep)' }}
           >
             ₹{currentEarning.toFixed(0)}
           </motion.p>
         </div>
       </div>
+      </div>
 
       {/* Progress bar */}
       <div className="px-6 mb-8">
-        <div style={{ background: '#E8EDF3', borderRadius: 999, height: 4 }}>
+        <div style={{ background: 'var(--card-border)', borderRadius: 999, height: 4 }}>
           <motion.div
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.4, ease: 'easeOut' }}
-            style={{ background: '#C4622D', borderRadius: 999, height: 4 }}
+            style={{ background: 'var(--accent-primary-deep)', borderRadius: 999, height: 4 }}
           />
         </div>
       </div>
@@ -127,13 +132,13 @@ export function VoiceCalibration() {
               >
                 <div style={{
                   width: 72, height: 72, borderRadius: '50%',
-                  background: '#E6F4EC',
+                  background: 'var(--status-success-bg)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16,
                 }}>
-                  <Check className="w-8 h-8" style={{ color: '#2D7A4F' }} strokeWidth={2.5} />
+                  <Check className="w-8 h-8" style={{ color: 'var(--color-success)' }} strokeWidth={2.5} />
                 </div>
-                <p style={{ fontSize: 16, fontWeight: 700, color: '#1C2434' }}>Perfect!</p>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 700, color: '#C4622D', marginTop: 4 }}>
+                <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)' }}>Perfect!</p>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 700, color: 'var(--accent-primary-deep)', marginTop: 4 }}>
                   +₹{earningPerClip.toFixed(0)} earned
                 </p>
               </motion.div>
@@ -148,14 +153,14 @@ export function VoiceCalibration() {
                   textAlign: 'center',
                   marginBottom: 16,
                 }}>
-                  <p style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', marginBottom: 16, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+                  <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 16, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
                     Say this naturally
                   </p>
                   <p style={{
                     fontFamily: 'var(--font-serif)',
                     fontSize: 22,
                     fontWeight: 700,
-                    color: '#1C2434',
+                    color: 'var(--text-primary)',
                     lineHeight: 1.4,
                   }}>
                     "{calibrationPrompts[currentPrompt]}"
@@ -164,7 +169,7 @@ export function VoiceCalibration() {
 
                 {/* Earning preview */}
                 <div className="text-center mb-6">
-                  <p style={{ fontSize: 13, fontWeight: 600, color: '#C4622D' }}>
+                  <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-primary-deep)' }}>
                     Earn ₹{earningPerClip.toFixed(0)} for this clip
                   </p>
                 </div>
@@ -184,13 +189,13 @@ export function VoiceCalibration() {
             className="w-full mb-6"
             style={{ height: 48 }}
           >
-            <Waveform color="#C4622D" opacity={0.6} height={48} />
+            <Waveform color="var(--accent-primary-deep)" opacity={0.6} height={48} />
           </motion.div>
         )}
 
         {/* Timer */}
         {isRecording && (
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700, color: '#1C2434', marginBottom: 16 }}>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 16 }}>
             {recordingTime.toFixed(1)}s
           </p>
         )}
@@ -204,7 +209,7 @@ export function VoiceCalibration() {
               width: isRecording ? 72 : 80,
               height: isRecording ? 72 : 80,
               borderRadius: isRecording ? 20 : '50%',
-              background: isRecording ? '#C0392B' : '#C4622D',
+              background: isRecording ? 'var(--accent-primary-deep)' : 'var(--accent-primary-deep)',
               border: 'none',
               cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -222,7 +227,7 @@ export function VoiceCalibration() {
           </motion.button>
         )}
 
-        <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7', marginTop: 16 }}>
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 16 }}>
           {isRecording ? 'Tap to stop' : completedPrompts.includes(currentPrompt) ? 'Moving to next...' : 'Tap to record'}
         </p>
       </div>

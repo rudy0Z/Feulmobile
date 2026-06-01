@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { ArrowLeft, Play, Pause, Volume2, Flag, AlertTriangle, X, Check, LayoutGrid } from 'lucide-react';
+import { Play, Pause, Volume2, Flag, AlertTriangle, X, Check, LayoutGrid, ChevronLeft } from 'lucide-react';
 
 // Components
 import { SegmentedControl } from './grading-variants/SegmentedControl';
@@ -15,9 +15,9 @@ import { UndoToast } from './UndoToast';
 // Grade definitions
 const gradeOptions = [
   { id: 1, label: 'Not Usable', description: 'Unusable for training',                   color: '#C0392B' },
-  { id: 2, label: 'Poor',       description: 'Multiple quality issues',                  color: '#C4622D' },
+  { id: 2, label: 'Poor',       description: 'Multiple quality issues',                  color: 'var(--accent-primary-deep)' },
   { id: 3, label: 'Neutral',    description: 'Acceptable with some issues',              color: '#B8860B' },
-  { id: 4, label: 'Good',       description: 'Good quality, minor issues acceptable',    color: '#2D7A4F' },
+  { id: 4, label: 'Good',       description: 'Good quality, minor issues acceptable',    color: 'var(--color-success)' },
   { id: 5, label: 'Perfect',    description: 'Clear, accurate, no issues',               color: '#1E6B40' },
 ];
 
@@ -62,12 +62,21 @@ export function GradingTask() {
   const clip     = sampleClips[currentClip];
   const progress = (gradedClips.length / sampleClips.length) * 100;
 
-  // Cleanup timers
+  // Cleanup timers + swipe-from-left-edge to go back
   useEffect(() => {
+    let startX = 0;
+    const onStart = (e: TouchEvent) => { startX = e.touches[0].clientX; };
+    const onEnd = (e: TouchEvent) => {
+      if (e.changedTouches[0].clientX - startX > 72 && startX < 56) navigate(-1);
+    };
+    document.addEventListener('touchstart', onStart);
+    document.addEventListener('touchend', onEnd);
     return () => {
+      document.removeEventListener('touchstart', onStart);
+      document.removeEventListener('touchend', onEnd);
       if (advanceTimerRef.current) clearTimeout(advanceTimerRef.current);
     };
-  }, []);
+  }, [navigate]);
 
   const handleGrade = (grade: number) => {
     setSelectedGrade(grade);
@@ -169,7 +178,7 @@ export function GradingTask() {
   return (
     <div
       className="min-h-screen flex flex-col relative"
-      style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--surface-sunken)', fontFamily: 'var(--font-sans)' }}
     >
       {/* ── Header ──────────────────────────────────────────────────────────── */}
       <div
@@ -179,31 +188,23 @@ export function GradingTask() {
           padding: '64px 24px 16px',
         }}
       >
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 10 }}>
+          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
+        </button>
         <div className="flex items-center justify-between mb-4">
-          <button
-            onClick={() => navigate('/validator/tasks')}
-            style={{
-              width: 40, height: 40, borderRadius: '50%',
-              background: '#F8F9FA', border: '1px solid #E8EDF3',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-            }}
-          >
-            <ArrowLeft className="w-5 h-5" style={{ color: '#1C2434' }} />
-          </button>
-          
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 700, color: '#1C2434' }}>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>
             Hindi — Waiter Scenario
           </h2>
 
           <div className="flex items-center gap-3">
             <button
               onClick={() => setIsStyleDrawerOpen(true)}
-              style={{ 
-                fontSize: 13, fontWeight: 700, color: 'oklch(0.63 0.25 34)', 
-                background: '#FDF1EC', border: '1px solid #FADED3', 
+              style={{
+                fontSize: 13, fontWeight: 700, color: 'var(--accent-primary)',
+                background: 'var(--accent-50)', border: '1px solid #FADED3',
                 padding: '8px 12px', borderRadius: 999,
                 display: 'flex', alignItems: 'center', gap: 6,
-                cursor: 'pointer' 
+                cursor: 'pointer'
               }}
             >
               <LayoutGrid className="w-4 h-4" />
@@ -211,7 +212,7 @@ export function GradingTask() {
             </button>
             <button
               onClick={handleSkip}
-              style={{ fontSize: 13, fontWeight: 600, color: '#8896A7', background: 'none', border: 'none', cursor: 'pointer' }}
+              style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer' }}
               disabled={currentClip === sampleClips.length - 1}
             >
               Skip
@@ -221,15 +222,15 @@ export function GradingTask() {
 
         {/* Progress */}
         <div className="flex items-center justify-between mb-2">
-          <span style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>Progress</span>
-          <span style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>
+          <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>Progress</span>
+          <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>
             {gradedClips.length} / {sampleClips.length} graded
           </span>
         </div>
-        <div style={{ background: '#F0F4F8', borderRadius: 999, height: 6 }}>
+        <div style={{ background: 'var(--neutral-100)', borderRadius: 999, height: 6 }}>
           <div
             style={{
-              background: 'linear-gradient(90deg, oklch(0.63 0.25 34), #C4521D)',
+              background: 'linear-gradient(90deg, var(--accent-primary), #C4521D)',
               borderRadius: 999, height: 6,
               width: `${progress}%`,
               transition: 'width 0.4s ease',
@@ -250,7 +251,7 @@ export function GradingTask() {
         <div
           style={{
             padding: '4px 12px', borderRadius: 999,
-            background: '#E8EDF3', color: '#4A5568',
+            background: 'var(--card-border)', color: 'var(--text-secondary)',
             fontSize: 10, fontWeight: 800, textTransform: 'uppercase', letterSpacing: '0.05em',
             boxShadow: '0px 2px 8px rgba(0,0,0,0.05)',
           }}
@@ -268,7 +269,7 @@ export function GradingTask() {
             style={{
               padding: '6px 18px', borderRadius: 999,
               background: '#FFFFFF', border: '1px solid #E8EDF3',
-              fontSize: 13, fontWeight: 600, color: '#4A5568',
+              fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)',
               boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
             }}
           >
@@ -278,14 +279,14 @@ export function GradingTask() {
 
         {/* Transcript Card */}
         <div style={{ ...cardStyle, padding: '20px', marginBottom: 20 }}>
-          <p style={{ fontSize: 12, fontWeight: 600, color: '#8896A7', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Transcript</p>
-          <p style={{ fontSize: 14, fontWeight: 500, color: '#1C2434', lineHeight: 1.65 }}>{clip.text}</p>
+          <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Transcript</p>
+          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-primary)', lineHeight: 1.65 }}>{clip.text}</p>
         </div>
 
         {/* Audio Player */}
         <div
           style={{
-            background: '#1A1F2E',
+            background: 'var(--navy)',
             borderRadius: 20,
             border: 'none',
             padding: '22px',
@@ -314,7 +315,7 @@ export function GradingTask() {
               onClick={() => setIsPlaying(!isPlaying)}
               style={{
                 width: 56, height: 56, borderRadius: '50%',
-                background: '#C4622D',
+                background: 'var(--accent-primary-deep)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 boxShadow: '0px 4px 16px rgba(196,98,45,0.30)',
                 border: 'none', cursor: 'pointer',
@@ -331,14 +332,14 @@ export function GradingTask() {
           <div className="flex items-center gap-3">
             <Volume2 className="w-4 h-4" style={{ color: 'rgba(255,255,255,0.3)' }} />
             <div style={{ flex: 1, background: 'rgba(255,255,255,0.08)', borderRadius: 999, height: 4 }}>
-              <div style={{ background: '#C4622D', borderRadius: 999, height: 4, width: '72%' }} />
+              <div style={{ background: 'var(--accent-primary-deep)', borderRadius: 999, height: 4, width: '72%' }} />
             </div>
           </div>
         </div>
 
         {/* ── Grading Section ────────────────────────────────────────────────── */}
         <div className="mb-4">
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: '#1C2434', textAlign: 'center', marginBottom: 16 }}>
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', marginBottom: 16 }}>
             Grade this clip
           </h3>
 
@@ -346,13 +347,13 @@ export function GradingTask() {
           {(gradingMethod === 'segmented' || gradingMethod === 'keyboard') && !tipDismissed && (
             <div
               className="flex items-center justify-between px-3 py-2 rounded-xl mb-4"
-              style={{ background: '#F0F4F8', border: '1px solid #E8EDF3' }}
+              style={{ background: 'var(--neutral-100)', border: '1px solid #E8EDF3' }}
             >
-              <span style={{ fontSize: 12, fontWeight: 500, color: '#4A5568' }}>
+              <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)' }}>
                 💡 <strong>Tip:</strong> Press <strong>1–5</strong> to grade faster
               </span>
               <button onClick={() => setTipDismissed(true)} style={{ background: 'none', border: 'none', cursor: 'pointer', padding: '2px 4px' }}>
-                <X className="w-3.5 h-3.5" style={{ color: '#8896A7' }} />
+                <X className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
               </button>
             </div>
           )}
@@ -370,8 +371,8 @@ export function GradingTask() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 padding: '12px', borderRadius: 999,
                 border: flaggedFraud ? '2px solid #C0392B' : '1.5px dashed #CBD5E0',
-                background: flaggedFraud ? '#FDE8E8' : 'transparent',
-                color: flaggedFraud ? '#8B0000' : '#8896A7',
+                background: flaggedFraud ? 'var(--status-error-bg)' : 'transparent',
+                color: flaggedFraud ? 'var(--status-error-text)' : 'var(--text-muted)',
                 fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
               }}
             >
@@ -401,7 +402,7 @@ export function GradingTask() {
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               style={{
-                background: '#2D7A4F', padding: '16px 24px', borderRadius: 999,
+                background: 'var(--color-success)', padding: '16px 24px', borderRadius: 999,
                 display: 'flex', alignItems: 'center', gap: 10,
                 boxShadow: '0px 12px 24px rgba(45,122,79,0.3)'
               }}
@@ -439,32 +440,32 @@ export function GradingTask() {
                 style={{
                   position: 'absolute', top: 24, right: 24,
                   width: 32, height: 32, borderRadius: '50%',
-                  background: '#F0F4F8', border: 'none',
+                  background: 'var(--neutral-100)', border: 'none',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
                 }}
               >
-                <X className="w-4 h-4" style={{ color: '#4A5568' }} />
+                <X className="w-4 h-4" style={{ color: 'var(--text-secondary)' }} />
               </button>
 
-              <div style={{ width: 52, height: 52, borderRadius: 16, background: '#FEF7E6', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+              <div style={{ width: 52, height: 52, borderRadius: 16, background: 'var(--warning-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
                 <AlertTriangle className="w-6 h-6" style={{ color: '#B8860B' }} />
               </div>
 
-              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: '#1C2434', marginBottom: 10 }}>
+              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
                 Your grade differs from others
               </h3>
-              <p style={{ fontSize: 14, fontWeight: 500, color: '#4A5568', lineHeight: 1.65, marginBottom: 20 }}>
+              <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: 20 }}>
                 You graded this clip{' '}
-                <strong style={{ color: '#1C2434' }}>'{selectedGradeObj?.label}'</strong>.
+                <strong style={{ color: 'var(--text-primary)' }}>'{selectedGradeObj?.label}'</strong>.
                 Two other validators graded it{' '}
-                <strong style={{ color: '#1C2434' }}>'{CONSENSUS_MISMATCH_GRADE}'</strong>.
+                <strong style={{ color: 'var(--text-primary)' }}>'{CONSENSUS_MISMATCH_GRADE}'</strong>.
                 Listen again and confirm or update your grade.
               </p>
 
               {/* Mini audio player */}
               <div
                 style={{
-                  background: '#F8F9FA', borderRadius: 14,
+                  background: 'var(--background)', borderRadius: 14,
                   border: '1px solid #E8EDF3',
                   padding: '14px 18px',
                   display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20,
@@ -474,7 +475,7 @@ export function GradingTask() {
                   onClick={() => setIsPlaying(!isPlaying)}
                   style={{
                     width: 40, height: 40, borderRadius: '50%',
-                    background: 'oklch(0.63 0.25 34)',
+                    background: 'var(--accent-primary)',
                     border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     cursor: 'pointer', flexShrink: 0,
                     boxShadow: '0px 4px 12px rgba(224,108,58,0.3)',
@@ -489,13 +490,13 @@ export function GradingTask() {
                   {[...Array(24)].map((_, i) => (
                     <motion.div
                       key={i}
-                      style={{ flex: 1, background: isPlaying ? 'oklch(0.63 0.25 34)' : '#E1E8F0', borderRadius: 2 }}
+                      style={{ flex: 1, background: isPlaying ? 'var(--accent-primary)' : '#E1E8F0', borderRadius: 2 }}
                       animate={{ height: isPlaying ? [Math.random() * 28 + 8, Math.random() * 28 + 8] : 12 }}
                       transition={{ duration: 0.3, repeat: isPlaying ? Infinity : 0, repeatType: 'reverse' }}
                     />
                   ))}
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 500, color: '#8896A7', flexShrink: 0 }}>{clip.duration}</span>
+                <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', flexShrink: 0 }}>{clip.duration}</span>
               </div>
 
               <div className="flex gap-3">
@@ -508,8 +509,8 @@ export function GradingTask() {
                   }}
                   style={{
                     flex: 1, padding: '14px', borderRadius: 999,
-                    background: '#F0F4F8', border: '1.5px solid #E8EDF3',
-                    color: '#4A5568', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+                    background: 'var(--neutral-100)', border: '1.5px solid #E8EDF3',
+                    color: 'var(--text-secondary)', fontSize: 14, fontWeight: 700, cursor: 'pointer',
                   }}
                 >
                   Keep My Grade
@@ -518,7 +519,7 @@ export function GradingTask() {
                   onClick={() => { setShowConsensusMismatch(false); setSelectedGrade(null); }}
                   style={{
                     flex: 1, padding: '14px', borderRadius: 999,
-                    background: 'oklch(0.63 0.25 34)', border: 'none',
+                    background: 'var(--accent-primary)', border: 'none',
                     color: '#FFFFFF', fontSize: 14, fontWeight: 700, cursor: 'pointer',
                     boxShadow: '0px 4px 12px rgba(224,108,58,0.3)',
                   }}

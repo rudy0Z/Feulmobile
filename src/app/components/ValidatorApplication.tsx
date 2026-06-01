@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { ArrowLeft, ShieldCheck, Languages, Clock, CheckCircle2 } from 'lucide-react';
+import { ShieldCheck, Languages, Clock, CheckCircle2, ChevronLeft } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
 
 const languageOptions = ['Hindi', 'English', 'Marathi', 'Tamil', 'Bengali', 'Telugu', 'Kannada', 'Malayalam', 'Gujarati', 'Punjabi', 'Spanish', 'French', 'Mandarin'];
@@ -9,6 +9,15 @@ const languageOptions = ['Hindi', 'English', 'Marathi', 'Tamil', 'Bengali', 'Tel
 export function ValidatorApplication() {
   const navigate = useNavigate();
   const [step, setStep] = useState<'form' | 'submitted'>('form');
+
+  useEffect(() => {
+    let sx = 0;
+    const onStart = (e: TouchEvent) => { sx = e.touches[0].clientX; };
+    const onEnd = (e: TouchEvent) => { if (e.changedTouches[0].clientX - sx > 72 && sx < 56) navigate(-1); };
+    document.addEventListener('touchstart', onStart);
+    document.addEventListener('touchend', onEnd);
+    return () => { document.removeEventListener('touchstart', onStart); document.removeEventListener('touchend', onEnd); };
+  }, [navigate]);
   const [selectedLanguages, setSelectedLanguages] = useState<string[]>([]);
   const [hoursPerWeek, setHoursPerWeek] = useState('');
   const [motivation, setMotivation] = useState('');
@@ -23,7 +32,7 @@ export function ValidatorApplication() {
 
   if (step === 'submitted') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -32,25 +41,25 @@ export function ValidatorApplication() {
         >
           <div style={{
             width: 88, height: 88, borderRadius: '50%',
-            background: '#E6F4EC',
+            background: 'var(--status-success-bg)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24,
           }}>
-            <CheckCircle2 className="w-11 h-11" style={{ color: '#2D7A4F' }} strokeWidth={1.5} />
+            <CheckCircle2 className="w-11 h-11" style={{ color: 'var(--color-success)' }} strokeWidth={1.5} />
           </div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', marginBottom: 10 }}>
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
             Application Submitted
           </h1>
-          <p style={{ fontSize: 15, fontWeight: 500, color: '#4A5568', lineHeight: 1.6, maxWidth: 300, marginBottom: 8 }}>
+          <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: 300, marginBottom: 8 }}>
             We'll review your profile and notify you within 48 hours. Top contributors get priority access.
           </p>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#8896A7', marginBottom: 32 }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 32 }}>
             Keep recording to strengthen your application.
           </p>
           <button
             onClick={() => navigate('/contributor')}
             style={{
               height: 56, borderRadius: 999, padding: '0 40px',
-              background: '#C4622D', color: '#FFFFFF',
+              background: 'var(--accent-primary-deep)', color: '#FFFFFF',
               fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
               boxShadow: '0px 4px 16px rgba(196,98,45,0.28)',
             }}
@@ -63,32 +72,29 @@ export function ValidatorApplication() {
   }
 
   return (
-    <div className="min-h-screen pb-8" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-8" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header */}
-      <div className="px-6 pt-16 pb-2 flex items-center gap-3">
-        <button
-          onClick={() => navigate(-1)}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
-        >
-          <ArrowLeft className="w-6 h-6" style={{ color: '#1C2434' }} />
+      <div className="px-6 pt-14 pb-2">
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
+          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <p style={{ fontSize: 15, fontWeight: 600, color: '#1C2434' }}>Apply to Validate</p>
+        <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>Apply to Validate</p>
       </div>
 
       {/* Hero */}
       <div className="px-6 mb-6">
         <div style={{
-          background: '#1A1F2E', borderRadius: 22,
+          background: 'var(--navy)', borderRadius: 22,
           padding: '24px', position: 'relative', overflow: 'hidden',
         }}>
-          <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
+          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 22px 22px', opacity: 0.10 }}>
             <Waveform color="#FFFFFF" opacity={1} height={80} variant="precision" />
           </div>
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-3">
-              <ShieldCheck className="w-5 h-5" style={{ color: '#5A7B6D' }} />
-              <span style={{ fontSize: 12, fontWeight: 700, color: '#5A7B6D', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+              <ShieldCheck className="w-5 h-5" style={{ color: 'var(--success-700)' }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--success-700)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
                 Validator Program
               </span>
             </div>
@@ -96,7 +102,7 @@ export function ValidatorApplication() {
               Earn more by reviewing audio quality
             </h2>
             <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
-              Validators earn <span style={{ color: '#C4622D', fontWeight: 700 }}>₹2 per clip reviewed</span>. Grade submissions from contributors and help maintain dataset quality.
+              Validators earn <span style={{ color: 'var(--accent-primary-deep)', fontWeight: 700 }}>₹2 per clip reviewed</span>. Grade submissions from contributors and help maintain dataset quality.
             </p>
           </div>
         </div>
@@ -116,8 +122,8 @@ export function ValidatorApplication() {
                 flex: 1, background: '#FFFFFF', borderRadius: 14,
                 border: '1px solid #E8EDF3', padding: '14px 10px', textAlign: 'center',
               }}>
-                <Icon className="w-4 h-4 mx-auto mb-2" style={{ color: req.met ? '#2D7A4F' : '#8896A7' }} />
-                <p style={{ fontSize: 11, fontWeight: 600, color: req.met ? '#1C2434' : '#8896A7', lineHeight: 1.4 }}>
+                <Icon className="w-4 h-4 mx-auto mb-2" style={{ color: req.met ? 'var(--color-success)' : 'var(--text-muted)' }} />
+                <p style={{ fontSize: 11, fontWeight: 600, color: req.met ? 'var(--text-primary)' : 'var(--text-muted)', lineHeight: 1.4 }}>
                   {req.label}
                 </p>
               </div>
@@ -130,10 +136,10 @@ export function ValidatorApplication() {
       <div className="px-6 space-y-6">
         {/* Languages */}
         <div>
-          <label style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 10, display: 'block' }}>
+          <label style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 10, display: 'block' }}>
             Languages you can grade
           </label>
-          <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7', marginBottom: 12 }}>
+          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 12 }}>
             Select all languages you're fluent in
           </p>
           <div className="flex flex-wrap gap-2">
@@ -145,9 +151,9 @@ export function ValidatorApplication() {
                   padding: '8px 16px', borderRadius: 999,
                   fontSize: 13, fontWeight: 600,
                   border: '1.5px solid',
-                  background: selectedLanguages.includes(lang) ? '#1C2434' : '#FFFFFF',
-                  borderColor: selectedLanguages.includes(lang) ? '#1C2434' : '#E8EDF3',
-                  color: selectedLanguages.includes(lang) ? '#FFFFFF' : '#4A5568',
+                  background: selectedLanguages.includes(lang) ? 'var(--text-primary)' : '#FFFFFF',
+                  borderColor: selectedLanguages.includes(lang) ? 'var(--text-primary)' : 'var(--card-border)',
+                  color: selectedLanguages.includes(lang) ? '#FFFFFF' : 'var(--text-secondary)',
                   cursor: 'pointer', transition: 'all 0.15s',
                 }}
               >
@@ -159,7 +165,7 @@ export function ValidatorApplication() {
 
         {/* Hours per week */}
         <div>
-          <label style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 10, display: 'block' }}>
+          <label style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 10, display: 'block' }}>
             Hours available per week
           </label>
           <div className="flex gap-2">
@@ -171,9 +177,9 @@ export function ValidatorApplication() {
                   flex: 1, padding: '12px 8px', borderRadius: 12,
                   fontSize: 12, fontWeight: 600, textAlign: 'center',
                   border: '1.5px solid',
-                  background: hoursPerWeek === opt ? '#1C2434' : '#FFFFFF',
-                  borderColor: hoursPerWeek === opt ? '#1C2434' : '#E8EDF3',
-                  color: hoursPerWeek === opt ? '#FFFFFF' : '#4A5568',
+                  background: hoursPerWeek === opt ? 'var(--text-primary)' : '#FFFFFF',
+                  borderColor: hoursPerWeek === opt ? 'var(--text-primary)' : 'var(--card-border)',
+                  color: hoursPerWeek === opt ? '#FFFFFF' : 'var(--text-secondary)',
                   cursor: 'pointer', transition: 'all 0.15s',
                 }}
               >
@@ -185,8 +191,8 @@ export function ValidatorApplication() {
 
         {/* Motivation */}
         <div>
-          <label style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 10, display: 'block' }}>
-            Why do you want to validate? <span style={{ fontWeight: 500, color: '#8896A7' }}>(optional)</span>
+          <label style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 10, display: 'block' }}>
+            Why do you want to validate? <span style={{ fontWeight: 500, color: 'var(--text-muted)' }}>(optional)</span>
           </label>
           <textarea
             value={motivation}
@@ -196,7 +202,7 @@ export function ValidatorApplication() {
             style={{
               width: '100%', borderRadius: 14,
               border: '1.5px solid #E8EDF3', padding: '14px 16px',
-              fontSize: 14, fontWeight: 500, color: '#1C2434',
+              fontSize: 14, fontWeight: 500, color: 'var(--text-primary)',
               resize: 'none', outline: 'none',
               fontFamily: 'var(--font-sans)',
             }}
@@ -210,8 +216,8 @@ export function ValidatorApplication() {
           onClick={() => canSubmit && setStep('submitted')}
           style={{
             width: '100%', height: 56, borderRadius: 999,
-            background: canSubmit ? '#C4622D' : '#E8EDF3',
-            color: canSubmit ? '#FFFFFF' : '#8896A7',
+            background: canSubmit ? 'var(--accent-primary-deep)' : 'var(--card-border)',
+            color: canSubmit ? '#FFFFFF' : 'var(--text-muted)',
             fontSize: 16, fontWeight: 700, border: 'none',
             cursor: canSubmit ? 'pointer' : 'not-allowed',
             boxShadow: canSubmit ? '0px 4px 16px rgba(196,98,45,0.28)' : 'none',

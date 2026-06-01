@@ -55,7 +55,7 @@ export function QuestCreatorDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: '#F4F6F8', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-24" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
 
       {/* Notifications Panel */}
       <NotificationsPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
@@ -63,7 +63,7 @@ export function QuestCreatorDashboard() {
       {/* ── WARM GREETING HERO ──────────────────────────────── */}
       <div
         style={{
-          background: 'linear-gradient(175deg, #F2F4FF 0%, #EEF0FF 40%, #F4F6F8 100%)',
+          background: 'linear-gradient(175deg, #F2F4FF 0%, #EEF0FF 40%, var(--background) 100%)',
           padding: '64px 24px 24px',
           position: 'relative',
           overflow: 'hidden',
@@ -82,12 +82,12 @@ export function QuestCreatorDashboard() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setShowUnderperform(!showUnderperform)}
-                style={{ fontSize: 10, fontWeight: 600, color: '#B0BBCA', border: '1px solid #E8EDF3', borderRadius: 8, padding: '3px 8px' }}
+                style={{ fontSize: 10, fontWeight: 600, color: 'var(--neutral-400)', border: '1px solid #E8EDF3', borderRadius: 8, padding: '3px 8px' }}
               >
                 {showUnderperform ? 'Hide alert' : 'Underperform'}
               </button>
               <div style={{
-                fontSize: 10, fontWeight: 700, color: '#2D7A4F',
+                fontSize: 10, fontWeight: 700, color: 'var(--color-success)',
                 background: '#E8F5EE', border: '1px solid rgba(45,122,79,0.2)',
                 borderRadius: 8, padding: '3px 8px', letterSpacing: '0.04em',
               }}>
@@ -113,7 +113,7 @@ export function QuestCreatorDashboard() {
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.07 }}
-              style={{ fontSize: 26, fontWeight: 800, color: '#1C2434', lineHeight: 1.1, marginBottom: 8, letterSpacing: '-0.4px' }}
+              style={{ fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.1, marginBottom: 8, letterSpacing: '-0.4px' }}
             >
               Rohan Mehta
             </motion.h1>
@@ -122,7 +122,7 @@ export function QuestCreatorDashboard() {
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, delay: 0.14 }}
-              style={{ fontSize: 13, fontWeight: 500, color: '#4A5568', lineHeight: 1.5 }}
+              style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5 }}
             >
               {activeCampaigns} active campaigns · {totalClips.toLocaleString()} clips collected.
             </motion.p>
@@ -178,7 +178,7 @@ export function QuestCreatorDashboard() {
             boxShadow: '0px 12px 40px rgba(0,0,0,0.22), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
           }}
         >
-          <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.05 }}>
+          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 24px 24px', opacity: 0.10 }}>
             <Waveform color="#FFFFFF" opacity={1} height={70} variant="data" />
           </div>
 
@@ -188,8 +188,8 @@ export function QuestCreatorDashboard() {
                 Dataset Progress
               </p>
               <div className="flex items-center gap-1">
-                <ArrowUpRight className="w-3.5 h-3.5" style={{ color: 'oklch(0.63 0.25 34)' }} />
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>+12% this week</span>
+                <ArrowUpRight className="w-3.5 h-3.5" style={{ color: 'var(--accent-primary)' }} />
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-primary)' }}>+12% this week</span>
               </div>
             </div>
 
@@ -217,7 +217,7 @@ export function QuestCreatorDashboard() {
                 initial={{ width: 0 }}
                 animate={{ width: `${overallProgress}%` }}
                 transition={{ duration: 1.3, ease: 'easeOut', delay: 0.4 }}
-                style={{ background: 'linear-gradient(90deg, oklch(0.63 0.25 34), #FF9D6C)', borderRadius: 999, height: 5 }}
+                style={{ background: 'linear-gradient(90deg, var(--accent-primary), #FF9D6C)', borderRadius: 999, height: 5 }}
               />
             </div>
 
@@ -237,9 +237,9 @@ export function QuestCreatorDashboard() {
       <div className="px-5 mb-4">
         <div className="grid grid-cols-3 gap-2.5">
           {[
-            { icon: Clock,       value: '48.5h', label: 'Audio Hours', color: '#1C2434' },
-            { icon: CheckCircle, value: '92%',   label: 'Pass Rate',   color: '#2D7A4F' },
-            { icon: IndianRupee, value: '₹1.8L', label: 'Budget Used', color: '#1C2434' },
+            { icon: Clock,       value: '48.5h', label: 'Audio Hours', color: 'var(--text-primary)' },
+            { icon: CheckCircle, value: '92%',   label: 'Pass Rate',   color: 'var(--color-success)' },
+            { icon: IndianRupee, value: '₹1.8L', label: 'Budget Used', color: 'var(--text-primary)' },
           ].map((m) => {
             const Icon = m.icon;
             return (
@@ -256,16 +256,16 @@ export function QuestCreatorDashboard() {
               >
                 <div style={{
                   width: 34, height: 34, borderRadius: 10,
-                  background: '#F4F6F8',
+                  background: 'var(--background)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   margin: '0 auto 8px',
                 }}>
-                  <Icon className="w-4 h-4" style={{ color: '#8896A7' }} />
+                  <Icon className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
                 </div>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 17, fontWeight: 700, color: m.color, marginBottom: 3 }}>
                   {m.value}
                 </p>
-                <p style={{ fontSize: 9, fontWeight: 600, color: '#8896A7', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+                <p style={{ fontSize: 9, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
                   {m.label}
                 </p>
               </div>
@@ -278,24 +278,24 @@ export function QuestCreatorDashboard() {
       {showUnderperform && (
         <div className="px-5 mb-4">
           <div style={{
-            background: '#FFF8F8', borderRadius: 18,
-            border: '1px solid #F5C5C5',
-            borderLeft: '4px solid #C0392B',
+            background: 'var(--warning-50)', borderRadius: 18,
+            border: '1px solid #F5E4B8',
+            borderLeft: '4px solid #B8860B',
             padding: '18px',
           }}>
             <div className="flex items-start gap-3 mb-4">
               <div style={{
                 width: 40, height: 40, borderRadius: 12,
-                background: '#FDE8E8',
+                background: 'rgba(184,134,11,0.12)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               }}>
-                <AlertTriangle className="w-5 h-5" style={{ color: '#C0392B' }} />
+                <AlertTriangle className="w-5 h-5" style={{ color: '#B8860B' }} />
               </div>
               <div>
-                <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 2 }}>
+                <h4 style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>
                   Campaign Underperforming
                 </h4>
-                <p style={{ fontSize: 13, fontWeight: 500, color: '#4A5568', lineHeight: 1.5 }}>
+                <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
                   {underperformingCampaign.name}
                 </p>
               </div>
@@ -303,36 +303,36 @@ export function QuestCreatorDashboard() {
 
             <div className="flex items-center gap-4 mb-4 flex-wrap">
               <div className="flex items-center gap-1.5">
-                <TrendingDown className="w-3.5 h-3.5" style={{ color: '#C0392B' }} />
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: '#C0392B' }}>
+                <TrendingDown className="w-3.5 h-3.5" style={{ color: '#B8860B' }} />
+                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: '#B8860B' }}>
                   {underperformingCampaign.progress}%
                 </span>
-                <span style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>in {underperformingCampaign.daysActive} days</span>
+                <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>in {underperformingCampaign.daysActive} days</span>
               </div>
-              <span style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>
+              <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>
                 {underperformingCampaign.contributors} contributors
               </span>
             </div>
 
-            <p style={{ fontSize: 12, fontWeight: 600, color: '#8B0000', marginBottom: 10 }}>
+            <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--warning-700)', marginBottom: 10 }}>
               Issue: {underperformingCampaign.issue}
             </p>
 
             <div style={{ background: 'rgba(255,255,255,0.8)', borderRadius: 12, padding: '14px' }}>
-              <p style={{ fontSize: 11, fontWeight: 700, color: '#8896A7', marginBottom: 8, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
+              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', marginBottom: 8, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
                 Suggested Fixes
               </p>
               {underperformingCampaign.suggestions.map((s, idx) => (
                 <div key={idx} className="flex items-start gap-2 mb-2 last:mb-0">
-                  <span style={{ fontSize: 12, color: 'oklch(0.63 0.25 34)', fontWeight: 700, marginTop: 1 }}>•</span>
-                  <p style={{ fontSize: 12, fontWeight: 500, color: '#4A5568', lineHeight: 1.5 }}>{s}</p>
+                  <span style={{ fontSize: 12, color: 'var(--accent-primary)', fontWeight: 700, marginTop: 1 }}>•</span>
+                  <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{s}</p>
                 </div>
               ))}
             </div>
 
             <button style={{
               marginTop: 14, width: '100%', padding: '12px', borderRadius: 999,
-              background: 'linear-gradient(160deg, #E8743F 0%, #C4622D 100%)',
+              background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               color: '#FFFFFF', fontSize: 13, fontWeight: 700, border: 'none', cursor: 'pointer',
               boxShadow: '0px 4px 16px rgba(196,98,45,0.3)',
             }}>
@@ -346,14 +346,14 @@ export function QuestCreatorDashboard() {
       <div className="px-5 mb-5">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: '#1C2434' }}>
+            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
               Active Campaigns
             </h3>
-            <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', marginTop: 1 }}>
+            <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', marginTop: 1 }}>
               Tap to manage or adjust
             </p>
           </div>
-          <button className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: 'oklch(0.63 0.25 34)' }}>
+          <button className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-primary)' }}>
             View all <ArrowRight className="w-3 h-3" />
           </button>
         </div>
@@ -371,32 +371,32 @@ export function QuestCreatorDashboard() {
               }}
             >
               <div className="flex items-start justify-between mb-2">
-                <h4 style={{ fontSize: 13, fontWeight: 700, color: '#1C2434', flex: 1, paddingRight: 12, lineHeight: 1.35 }}>
+                <h4 style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', flex: 1, paddingRight: 12, lineHeight: 1.35 }}>
                   {campaign.name}
                 </h4>
                 <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 17, fontWeight: 700, color: '#1C2434', lineHeight: 1, marginBottom: 2 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, marginBottom: 2 }}>
                     {campaign.progress}%
                   </p>
-                  <p style={{ fontSize: 10, fontWeight: 500, color: '#8896A7' }}>
+                  <p style={{ fontSize: 10, fontWeight: 500, color: 'var(--text-muted)' }}>
                     {campaign.clips}/{campaign.target}
                   </p>
                 </div>
               </div>
 
-              <div style={{ background: '#F0F4F8', borderRadius: 999, height: 4 }}>
+              <div style={{ background: 'var(--neutral-100)', borderRadius: 999, height: 4 }}>
                 <div style={{
                   background: campaign.progress >= 90
                     ? 'linear-gradient(90deg, #2D7A4F, #4EC992)'
-                    : 'linear-gradient(90deg, oklch(0.63 0.25 34), #FF9D6C)',
+                    : 'linear-gradient(90deg, var(--accent-primary), #FF9D6C)',
                   borderRadius: 999, height: 4, width: `${campaign.progress}%`,
                   transition: 'width 0.5s ease',
                 }} />
               </div>
 
               <div className="flex items-center gap-1 mt-2">
-                <IndianRupee className="w-3 h-3" style={{ color: '#B0BBCA' }} />
-                <span style={{ fontSize: 11, fontWeight: 500, color: '#8896A7' }}>
+                <IndianRupee className="w-3 h-3" style={{ color: 'var(--neutral-400)' }} />
+                <span style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>
                   Budget: ₹{campaign.budget.toLocaleString()}
                 </span>
               </div>
@@ -412,7 +412,7 @@ export function QuestCreatorDashboard() {
           whileTap={{ scale: 0.97 }}
           style={{
             marginTop: 16, width: '100%', height: 62, borderRadius: 999,
-            background: 'linear-gradient(160deg, #E8743F 0%, #C4622D 100%)',
+            background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
             color: '#FFFFFF',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,

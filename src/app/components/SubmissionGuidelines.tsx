@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { Volume2, Mic2, Timer, ThumbsUp, X, Check, ChevronRight, Wand2 } from 'lucide-react';
+import { Volume2, Mic2, Timer, ThumbsUp, X, Check, ChevronRight, Wand2, ChevronLeft } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
 
 const doItems = [
@@ -34,9 +34,9 @@ const dontItems = [
 ];
 
 const qualityBadges = [
-  { label: 'Clear audio', bg: '#E6F4EC', text: '#1A5C35' },
-  { label: 'No clipping', bg: '#E6F4EC', text: '#1A5C35' },
-  { label: 'Natural pace', bg: '#E6F4EC', text: '#1A5C35' },
+  { label: 'Clear audio', bg: 'var(--status-success-bg)', text: 'var(--status-success-text)' },
+  { label: 'No clipping', bg: 'var(--status-success-bg)', text: 'var(--status-success-text)' },
+  { label: 'Natural pace', bg: 'var(--status-success-bg)', text: 'var(--status-success-text)' },
 ];
 
 export function SubmissionGuidelines() {
@@ -45,20 +45,23 @@ export function SubmissionGuidelines() {
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}
     >
       {/* Header */}
-      <div className="px-6 pt-16 pb-0">
+      <div className="px-6 pt-14 pb-0">
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 10 }}>
+          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
+        </button>
         {/* Step pill */}
         <div
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
-            background: '#FEF0E8', borderRadius: 999,
+            background: 'var(--status-accent-bg)', borderRadius: 999,
             padding: '5px 14px', marginBottom: 16,
           }}
         >
-          <Wand2 style={{ width: 11, height: 11, color: '#C4622D' }} />
-          <span style={{ fontSize: 11, fontWeight: 700, color: '#C4622D', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+          <Wand2 style={{ width: 11, height: 11, color: 'var(--accent-primary-deep)' }} />
+          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-primary-deep)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Recording Tips
           </span>
         </div>
@@ -66,12 +69,12 @@ export function SubmissionGuidelines() {
         <h1
           style={{
             fontFamily: 'var(--font-serif)', fontSize: 30, fontWeight: 800,
-            color: '#1C2434', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 8,
+            color: 'var(--text-primary)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 8,
           }}
         >
           How to record<br />for top quality
         </h1>
-        <p style={{ fontSize: 14, fontWeight: 500, color: '#4A5568', lineHeight: 1.6, marginBottom: 6 }}>
+        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 6 }}>
           Clips that meet these standards get approved instantly. Rejected clips still earn 10% effort credit.
         </p>
       </div>
@@ -107,10 +110,10 @@ export function SubmissionGuidelines() {
               display: 'flex', alignItems: 'center', gap: 8,
             }}
           >
-            <div style={{ width: 22, height: 22, borderRadius: 6, background: '#E6F4EC', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <Check style={{ width: 13, height: 13, color: '#2D7A4F' }} strokeWidth={2.5} />
+            <div style={{ width: 22, height: 22, borderRadius: 6, background: 'var(--status-success-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Check style={{ width: 13, height: 13, color: 'var(--color-success)' }} strokeWidth={2.5} />
             </div>
-            <p style={{ fontSize: 13, fontWeight: 800, color: '#1C2434', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Do this
             </p>
           </div>
@@ -132,17 +135,17 @@ export function SubmissionGuidelines() {
                 <div
                   style={{
                     width: 38, height: 38, borderRadius: 11, flexShrink: 0,
-                    background: '#FEF0E8',
+                    background: 'var(--status-accent-bg)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
                 >
-                  <Icon style={{ width: 17, height: 17, color: '#C4622D' }} strokeWidth={2} />
+                  <Icon style={{ width: 17, height: 17, color: 'var(--accent-primary-deep)' }} strokeWidth={2} />
                 </div>
                 <div style={{ paddingTop: 1 }}>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 3 }}>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>
                     {item.title}
                   </p>
-                  <p style={{ fontSize: 13, fontWeight: 500, color: '#4A5568', lineHeight: 1.55 }}>
+                  <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
                     {item.desc}
                   </p>
                 </div>
@@ -165,10 +168,10 @@ export function SubmissionGuidelines() {
               display: 'flex', alignItems: 'center', gap: 8,
             }}
           >
-            <div style={{ width: 22, height: 22, borderRadius: 6, background: '#FDE8E8', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: 22, height: 22, borderRadius: 6, background: 'var(--status-error-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <X style={{ width: 13, height: 13, color: '#C0392B' }} strokeWidth={2.5} />
             </div>
-            <p style={{ fontSize: 13, fontWeight: 800, color: '#1C2434', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
+            <p style={{ fontSize: 13, fontWeight: 800, color: 'var(--text-primary)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
               Avoid this
             </p>
           </div>
@@ -184,7 +187,7 @@ export function SubmissionGuidelines() {
                 }}
               >
                 <div style={{ width: 6, height: 6, borderRadius: '50%', background: '#C0392B', flexShrink: 0 }} />
-                <p style={{ fontSize: 13, fontWeight: 500, color: '#4A5568' }}>{item}</p>
+                <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>{item}</p>
               </div>
             ))}
           </div>
@@ -193,11 +196,11 @@ export function SubmissionGuidelines() {
         {/* Waveform example — what good audio looks like */}
         <div
           style={{
-            background: '#1A1F2E', borderRadius: 18, padding: '18px 20px', marginBottom: 4,
+            background: 'var(--navy)', borderRadius: 18, padding: '18px 20px', marginBottom: 4,
             position: 'relative', overflow: 'hidden',
           }}
         >
-          <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.08 }}>
+          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 18px 18px', opacity: 0.10 }}>
             <Waveform color="#FFFFFF" opacity={1} height={56} />
           </div>
           <div className="relative z-10">
@@ -210,7 +213,7 @@ export function SubmissionGuidelines() {
                   key={i}
                   style={{
                     flex: 1, borderRadius: 3, minWidth: 3,
-                    background: i % 2 === 0 ? 'oklch(0.63 0.25 34)' : '#C4622D',
+                    background: i % 2 === 0 ? 'var(--accent-primary)' : 'var(--accent-primary-deep)',
                     height: `${Math.min(100, h * 2.8)}%`,
                     opacity: 0.85,
                   }}
@@ -231,7 +234,7 @@ export function SubmissionGuidelines() {
           onClick={() => navigate('/voice-calibration')}
           style={{
             width: '100%', height: 58, borderRadius: 999,
-            background: '#C4622D', color: '#FFFFFF',
+            background: 'var(--accent-primary-deep)', color: '#FFFFFF',
             fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
             boxShadow: '0px 6px 24px rgba(196,98,45,0.30)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
@@ -241,7 +244,7 @@ export function SubmissionGuidelines() {
           I'm Ready — Start Recording
           <ChevronRight style={{ width: 18, height: 18 }} />
         </motion.button>
-        <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7', textAlign: 'center', marginTop: 12 }}>
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 12 }}>
           5 short clips · ~2 minutes total · Earn ₹50
         </p>
       </div>

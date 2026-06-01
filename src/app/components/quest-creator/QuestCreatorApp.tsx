@@ -20,7 +20,7 @@ export function QuestCreatorApp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#F4F6F8', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
       <div className="flex-1 overflow-auto pb-20">
         <Outlet />
       </div>
@@ -40,33 +40,44 @@ export function QuestCreatorApp() {
             const Icon   = item.icon;
             const active = isActive(item.path);
             return (
-              <button
+              <motion.button
                 key={item.path}
                 onClick={() => navigate(item.path)}
-                className="flex flex-col items-center justify-center flex-1 h-full gap-0.5 transition-colors"
+                whileTap={{ scale: 0.92 }}
+                transition={{ type: 'spring', stiffness: 400, damping: 28 }}
+                className="relative flex flex-col items-center justify-center flex-1 h-full gap-0.5"
                 style={{ minWidth: 48, minHeight: 48 }}
               >
-                <motion.div
-                  animate={{ scale: active ? 1 : 0.9, y: active ? -2 : 0 }}
-                  transition={{ type: 'spring', stiffness: 300, damping: 20 }}
-                >
+                <div className="relative flex items-center justify-center" style={{ width: 44, height: 28 }}>
+                  {active && (
+                    <motion.div
+                      layoutId="qc-nav-active-pill"
+                      transition={{ type: 'spring', stiffness: 380, damping: 30 }}
+                      style={{
+                        position: 'absolute', inset: 0,
+                        background: 'color-mix(in oklch, var(--accent-primary) 14%, transparent)',
+                        borderRadius: 999,
+                      }}
+                    />
+                  )}
                   <Icon
-                    style={{ color: active ? '#1C2434' : '#8896A7' }}
-                    className="w-6 h-6"
-                    strokeWidth={active ? 2.25 : 1.75}
+                    style={{ color: active ? 'var(--accent-primary)' : '#8896A7', position: 'relative', zIndex: 1 }}
+                    className="w-[22px] h-[22px]"
+                    strokeWidth={active ? 2.4 : 1.75}
+                    fill={active ? 'color-mix(in oklch, var(--accent-primary) 18%, transparent)' : 'none'}
                   />
-                </motion.div>
+                </div>
                 {active && (
                   <motion.span
-                    initial={{ opacity: 0, y: 4 }}
+                    initial={{ opacity: 0, y: 2 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-[10px]"
-                    style={{ color: '#1C2434', fontWeight: 700 }}
+                    style={{ color: 'var(--accent-primary)', fontWeight: 700 }}
                   >
                     {item.label}
                   </motion.span>
                 )}
-              </button>
+              </motion.button>
             );
           })}
         </div>

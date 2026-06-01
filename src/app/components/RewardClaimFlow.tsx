@@ -2,8 +2,8 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import {
-  ArrowLeft, Zap, CheckCircle2, Copy, ShieldCheck, ArrowRight,
-  Sparkles, Lock,
+  Zap, CheckCircle2, Copy, ShieldCheck, ArrowRight,
+  Sparkles, Lock, ChevronLeft,
 } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
 
@@ -49,7 +49,7 @@ function StepConfirm({
 }) {
   const xp      = roleXP[role];
   const xpAfter = xp - reward.xpCost;
-  const accentColor = role === 'validator' ? '#5A7B6D' : '#8B6914';
+  const accentColor = role === 'validator' ? 'var(--success-700)' : 'var(--warning-700)';
   const accentBg    = role === 'validator' ? '#E8F2EE' : '#FFF3D6';
   const accentText  = role === 'validator' ? '#1A3A2F' : '#4A3200';
 
@@ -61,27 +61,17 @@ function StepConfirm({
       exit={{ opacity: 0, x: -40 }}
       transition={{ duration: 0.28 }}
       className="flex flex-col min-h-screen"
-      style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}
     >
       {/* Header */}
-      <div className="px-6 pt-16 pb-4 flex items-center gap-4">
-        <button
-          onClick={onBack}
-          style={{
-            width: 40, height: 40, borderRadius: '50%',
-            background: '#FFFFFF', border: '1px solid #E8EDF3',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', flexShrink: 0,
-          }}
-        >
-          <ArrowLeft className="w-5 h-5" style={{ color: '#1C2434' }} />
+      <div className="px-6 pt-14 pb-4">
+        <button onClick={onBack} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
+          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
-            Redeem Reward
-          </h1>
-          <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7', marginTop: 2 }}>Step 1 of 3 · Confirm redemption</p>
-        </div>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+          Redeem Reward
+        </h1>
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>Step 1 of 3 · Confirm redemption</p>
       </div>
 
       {/* Reward hero card */}
@@ -101,10 +91,10 @@ function StepConfirm({
           }}>
             {reward.emoji}
           </div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: '#1C2434', marginBottom: 6 }}>
+          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>
             {reward.name}
           </h2>
-          <p style={{ fontSize: 14, fontWeight: 500, color: '#4A5568', marginBottom: 18, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 18, lineHeight: 1.5 }}>
             {reward.description}
           </p>
           {/* XP cost badge */}
@@ -125,18 +115,18 @@ function StepConfirm({
       <div className="px-6 mb-5">
         <div style={{ background: '#FFFFFF', borderRadius: 16, border: '1px solid #E8EDF3', overflow: 'hidden' }}>
           <div style={{ padding: '14px 20px', borderBottom: '1px solid #E8EDF3' }}>
-            <p style={{ fontSize: 12, fontWeight: 600, color: '#8896A7', marginBottom: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>XP Impact</p>
+            <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 2, textTransform: 'uppercase', letterSpacing: '0.05em' }}>XP Impact</p>
           </div>
           <div className="flex items-center" style={{ padding: '16px 20px', gap: 12 }}>
             <div style={{ flex: 1, textAlign: 'center' }}>
-              <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', marginBottom: 4 }}>Current XP</p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: '#1C2434' }}>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 4 }}>Current XP</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)' }}>
                 {xp.toLocaleString()}
               </p>
             </div>
-            <ArrowRight className="w-5 h-5 flex-shrink-0" style={{ color: '#8896A7' }} />
+            <ArrowRight className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
             <div style={{ flex: 1, textAlign: 'center' }}>
-              <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', marginBottom: 4 }}>After Redemption</p>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 4 }}>After Redemption</p>
               <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: xpAfter < 0 ? '#D94F4F' : accentColor }}>
                 {xpAfter.toLocaleString()}
               </p>
@@ -153,8 +143,8 @@ function StepConfirm({
       {/* Irreversible note */}
       <div className="px-6 mb-auto">
         <div className="flex items-center gap-2">
-          <Lock className="w-3.5 h-3.5 flex-shrink-0" style={{ color: '#8896A7' }} />
-          <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>
+          <Lock className="w-3.5 h-3.5 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
+          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>
             Redemptions are final and cannot be reversed.
           </p>
         </div>
@@ -175,7 +165,7 @@ function StepConfirm({
           <Sparkles className="w-5 h-5" />
           Redeem {reward.xpCost.toLocaleString()} XP
         </button>
-        <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', textAlign: 'center', marginTop: 10 }}>
+        <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 10 }}>
           This will deduct {reward.xpCost.toLocaleString()} XP from your balance
         </p>
       </div>
@@ -193,7 +183,7 @@ function StepProcessing({ onDone }: { onDone: () => void }) {
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center relative overflow-hidden"
-      style={{ background: '#1A1F2E', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}
     >
       <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.05 }}>
         <Waveform color="#FFFFFF" opacity={1} height={200} variant="precision" />
@@ -225,7 +215,7 @@ function StepProcessing({ onDone }: { onDone: () => void }) {
               style={{
                 width: 48, height: 48, borderRadius: '50%',
                 border: '3px solid transparent',
-                borderTopColor: '#C4622D',
+                borderTopColor: 'var(--accent-primary-deep)',
               }}
             />
           </div>
@@ -256,7 +246,7 @@ function StepSuccess({
 }) {
   const navigate    = useNavigate();
   const backPath    = roleBackPaths[role];
-  const accentColor = role === 'validator' ? '#5A7B6D' : '#8B6914';
+  const accentColor = role === 'validator' ? 'var(--success-700)' : 'var(--warning-700)';
   const xp          = roleXP[role];
   const xpAfter     = xp - reward.xpCost;
 
@@ -279,7 +269,7 @@ function StepSuccess({
   return (
     <div
       className="min-h-screen flex flex-col relative overflow-hidden"
-      style={{ background: '#1A1F2E', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}
     >
       {/* Waveform texture */}
       <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>

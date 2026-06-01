@@ -8,7 +8,7 @@ interface KeyboardGradeProps {
 }
 
 export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: KeyboardGradeProps) {
-  const flashColors = ['#C0392B', '#C0392B', '#B8860B', '#2D7A4F', '#2D7A4F'];
+  const flashColors = ['var(--status-error-text)', 'var(--status-error-text)', 'var(--warning-700)', 'var(--color-success)', 'var(--color-success)'];
 
   useEffect(() => {
     const handleKey = (e: KeyboardEvent) => {
@@ -71,7 +71,7 @@ export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: Keyboard
             className="hover:bg-slate-50 active:bg-slate-100"
           >
             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 800, color: '#1C2434' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 800, color: 'var(--text-primary)' }}>
                 {opt.id}
               </span>
               <div 
@@ -82,7 +82,7 @@ export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: Keyboard
         ))}
       </div>
       
-      <p style={{ textAlign: 'center', fontSize: 11, fontWeight: 600, color: '#8896A7', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+      <p style={{ textAlign: 'center', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
         Tap or Press keys 1–5 to grade
       </p>
     </div>

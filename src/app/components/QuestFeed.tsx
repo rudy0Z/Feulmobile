@@ -1,80 +1,21 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
-import { Clock, Mic, Languages, ArrowUpRight, Flame, Users, Timer, Star } from 'lucide-react';
+import { motion } from 'motion/react';
+import { Star, ArrowUpRight, Flame, Users, Users2 } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
+import { QuestCardSkeleton } from './ui/FeulSkeleton';
+import { QuestCard } from './ui/QuestCard';
+import { SectionHeading } from './ui/Primitives';
+import { quests, formatMeta, type QuestFormat } from '../lib/quests';
+import { springs, whileTap } from '../lib/motion';
 
-const questCategories = [
-  { id: 'all',          label: 'All Quests'   },
-  { id: 'high-demand',  label: 'High Demand'  },
-  { id: 'quick',        label: 'Quick Wins'   },
-  { id: 'high-reward',  label: 'High Reward'  },
+const filters: { id: 'all' | QuestFormat | 'high-reward'; label: string }[] = [
+  { id: 'all',         label: 'All' },
+  { id: 'lines',       label: 'Lines' },
+  { id: 'scenario',    label: 'Scenario' },
+  { id: 'group',       label: 'Group' },
+  { id: 'high-reward', label: 'Top Pay' },
 ];
-
-type QuestTag = 'high-demand' | 'bonus' | 'expiring' | 'limited' | 'new' | null;
-
-interface Quest {
-  id: string;
-  title: string;
-  description: string;
-  cashPayout: number;
-  xp: number;
-  duration: string;
-  clips: number;
-  difficulty: string;
-  category: string;
-  language: string;
-  tag: QuestTag;
-  tagLabel?: string;
-  slotsLeft?: number | null;
-  featured?: boolean;
-}
-
-const quests: Quest[] = [
-  {
-    id: 'quest-1', title: 'Morning News Reading',
-    description: 'Read 10 short news articles for natural language training',
-    cashPayout: 15, xp: 150, duration: '8 min', clips: 10, difficulty: 'Easy', category: 'Reading',
-    language: 'Hindi', tag: 'high-demand', tagLabel: '427 Hindi clips needed', slotsLeft: 18, featured: true,
-  },
-  {
-    id: 'quest-2', title: 'Product Descriptions',
-    description: 'Describe various products in natural, conversational tone',
-    cashPayout: 25, xp: 200, duration: '12 min', clips: 15, difficulty: 'Medium', category: 'Description',
-    language: 'Marathi', tag: 'bonus', tagLabel: '+20% Bonus Active',
-  },
-  {
-    id: 'quest-3', title: 'Conversational Dialogue',
-    description: 'Respond to prompts in a natural conversation style',
-    cashPayout: 35, xp: 250, duration: '15 min', clips: 20, difficulty: 'Medium', category: 'Conversation',
-    language: 'Hindi', tag: 'expiring', tagLabel: 'Campaign closes in 2h', slotsLeft: 7,
-  },
-  {
-    id: 'quest-4', title: 'Short Story Narration',
-    description: 'Narrate engaging short stories with emotion and clarity',
-    cashPayout: 50, xp: 300, duration: '20 min', clips: 25, difficulty: 'Hard', category: 'Narration',
-    language: 'English', tag: 'limited', tagLabel: '5 contributor spots left', slotsLeft: 5,
-  },
-  {
-    id: 'quest-5', title: 'Quick Phrases',
-    description: 'Record common phrases and expressions — fast and easy',
-    cashPayout: 10, xp: 100, duration: '3 min', clips: 8, difficulty: 'Easy', category: 'Phrases',
-    language: 'Marathi', tag: 'new', tagLabel: 'New Quest',
-  },
-];
-
-const tagStyles: Record<string, { bg: string; text: string }> = {
-  'high-demand': { bg: '#FEF0E8', text: '#8B3000' },
-  'bonus':       { bg: '#F5F0DC', text: '#6B4800' },
-  'expiring':    { bg: '#FDE8E8', text: '#8B0000' },
-  'limited':     { bg: '#FDE8E8', text: '#8B0000' },
-  'new':         { bg: '#E8EFF8', text: '#1E3A6E' },
-};
-
-const difficultyStyle: Record<string, { bg: string; text: string }> = {
-  Easy:   { bg: '#E6F4EC', text: '#1A5C35' },
-  Medium: { bg: '#FEF0E8', text: '#8B3000' },
-  Hard:   { bg: '#FDE8E8', text: '#8B0000' },
-};
 
 function EmptyQuestFeed() {
   const navigate = useNavigate();
@@ -82,25 +23,30 @@ function EmptyQuestFeed() {
     <div className="flex flex-col items-center justify-center px-8 py-16 relative" style={{ minHeight: '50vh' }}>
       <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <div style={{ width: '80%' }}>
-          <Waveform color="#D4744A" opacity={0.12} height={100} />
+          <Waveform color="var(--accent-primary)" opacity={0.12} height={100} />
         </div>
       </div>
       <div className="relative z-10 flex flex-col items-center">
-        <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 800, color: '#1C2434', textAlign: 'center', marginBottom: 12, lineHeight: 1.2 }}>
+        <h2 style={{
+          fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800,
+          color: 'var(--text-primary)', textAlign: 'center', marginBottom: 12, lineHeight: 1.2,
+          letterSpacing: '-0.02em',
+        }}>
           New quests dropping soon
         </h2>
-        <p style={{ fontSize: 14, fontWeight: 500, color: '#4A5568', textAlign: 'center', lineHeight: 1.65, maxWidth: 280, marginBottom: 8 }}>
-          High-demand quests in <strong style={{ color: '#1C2434' }}>Hindi</strong> and <strong style={{ color: '#1C2434' }}>Marathi</strong> are coming. You'll be first to know.
+        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.65, maxWidth: 280, marginBottom: 8 }}>
+          High-demand scenarios in <strong style={{ color: 'var(--text-primary)' }}>Hindi</strong> and{' '}
+          <strong style={{ color: 'var(--text-primary)' }}>Marathi</strong> are coming. You'll be first to know.
         </p>
-        <p style={{ fontSize: 13, fontWeight: 600, color: '#C4622D', marginBottom: 32 }}>
+        <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-primary-deep)', marginBottom: 32 }}>
           Turn on notifications to never miss a high-paying quest
         </p>
         <button
           onClick={() => navigate('/contributor/profile')}
           style={{
-            background: 'transparent', color: '#C4622D', borderRadius: 999,
+            background: 'transparent', color: 'var(--accent-primary-deep)', borderRadius: 999,
             padding: '13px 28px', fontSize: 14, fontWeight: 700,
-            border: '1.5px solid #C4622D', cursor: 'pointer',
+            border: '1.5px solid var(--accent-primary-deep)', cursor: 'pointer',
           }}
         >
           Update Language Preferences
@@ -112,15 +58,38 @@ function EmptyQuestFeed() {
 
 export function QuestFeed() {
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState('all');
+  const [activeFilter, setActiveFilter] = useState<typeof filters[number]['id']>('all');
   const [showEmpty, setShowEmpty] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const id = setTimeout(() => setLoading(false), 650);
+    return () => clearTimeout(id);
+  }, []);
+
+  const featured = quests.find(q => q.format === 'group') ?? quests[0];
+  const groupQuests = quests.filter(q => q.format === 'group');
+  const scenarioQuests = quests.filter(q => q.format === 'scenario');
+  const lineQuests = quests.filter(q => q.format === 'lines');
+
+  const filteredList = (() => {
+    if (activeFilter === 'all') return quests.filter(q => q.id !== featured.id);
+    if (activeFilter === 'high-reward') return [...quests].sort((a, b) => b.cashPayout - a.cashPayout);
+    return quests.filter(q => q.format === activeFilter);
+  })();
 
   if (showEmpty) {
     return (
-      <div className="min-h-screen" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+      <div className="min-h-screen" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
         <div className="px-6 pt-16 pb-4 flex items-center justify-between">
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Available Quests</h1>
-          <button onClick={() => setShowEmpty(false)} style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}>
+          <h1 style={{
+            fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800,
+            color: 'var(--text-primary)', letterSpacing: '-0.02em',
+          }}>Available Quests</h1>
+          <button onClick={() => setShowEmpty(false)} style={{
+            fontSize: 11, fontWeight: 600, color: 'var(--text-muted)',
+            border: '1px solid var(--card-border)', borderRadius: 8, padding: '4px 10px',
+          }}>
             Show quests
           </button>
         </div>
@@ -130,179 +99,240 @@ export function QuestFeed() {
   }
 
   return (
-    <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
       <div className="px-6 pt-16 pb-2 flex items-center justify-between">
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Available Quests</h1>
-        <button onClick={() => setShowEmpty(true)} style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}>
+        <h1 style={{
+          fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800,
+          color: 'var(--text-primary)', letterSpacing: '-0.02em',
+        }}>
+          Available Quests
+        </h1>
+        <button onClick={() => setShowEmpty(true)} style={{
+          fontSize: 11, fontWeight: 600, color: 'var(--text-muted)',
+          border: '1px solid var(--card-border)', borderRadius: 8, padding: '4px 10px',
+        }}>
           Empty state
         </button>
       </div>
 
       <div className="px-6 pt-1 pb-4">
-        <p style={{ fontSize: 14, fontWeight: 500, color: '#4A5568', marginTop: 4 }}>
-          Earn cash instantly for every clip
+        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', marginTop: 4 }}>
+          Quick lines, deeper scenarios, or full group sessions.
         </p>
       </div>
 
-      {/* Category Filter */}
+      {/* Filter chips — right-edge fade hints at horizontal scroll */}
+      <div style={{ position: 'relative' }}>
       <div className="flex gap-2 overflow-x-auto px-6 pb-4 mb-2" style={{ scrollbarWidth: 'none' }}>
-        {questCategories.map((cat) => (
-          <button
-            key={cat.id}
-            onClick={() => setActiveCategory(cat.id)}
+        {filters.map((cat) => {
+          const isActive = activeFilter === cat.id;
+          return (
+            <motion.button
+              key={cat.id}
+              whileTap={whileTap.button}
+              transition={springs.tap}
+              onClick={() => setActiveFilter(cat.id)}
+              style={{
+                padding: '7px 18px', borderRadius: 999, fontSize: 13, fontWeight: 700,
+                whiteSpace: 'nowrap', border: '1.5px solid',
+                background: isActive ? 'var(--accent-primary)' : 'var(--surface)',
+                borderColor: isActive ? 'var(--accent-primary)' : 'var(--card-border)',
+                color: isActive ? '#FFFFFF' : 'var(--text-secondary)',
+                boxShadow: isActive ? 'var(--shadow-card)' : 'none',
+                transition: 'background 0.15s, color 0.15s, border-color 0.15s',
+              }}
+            >
+              {cat.label}
+            </motion.button>
+          );
+        })}
+      </div>
+      {/* Right-edge fade overlay */}
+      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 4, width: 48, pointerEvents: 'none', background: 'linear-gradient(to right, transparent, var(--background))' }} />
+      </div>
+
+      {/* Featured — premium navy hero featuring a group session */}
+      {activeFilter === 'all' && (
+        <div className="px-6 mb-7">
+          <div className="flex items-center gap-2 mb-3">
+            <Star className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} fill="currentColor" />
+            <h3 style={{
+              fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800,
+              color: 'var(--text-primary)', letterSpacing: '-0.02em',
+            }}>
+              Premium Session
+            </h3>
+          </div>
+          <motion.div
+            whileTap={whileTap.card}
+            transition={springs.tap}
+            onClick={() => navigate(`/recording/${featured.id}`)}
             style={{
-              padding: '7px 18px', borderRadius: 999, fontSize: 13, fontWeight: 600,
-              whiteSpace: 'nowrap', border: '1.5px solid',
-              background: activeCategory === cat.id ? '#1C2434' : '#FFFFFF',
-              borderColor: activeCategory === cat.id ? '#1C2434' : '#E8EDF3',
-              color: activeCategory === cat.id ? '#FFFFFF' : '#4A5568',
-              transition: 'all 0.15s',
+              background: 'radial-gradient(ellipse at 80% 0%, rgba(224,108,58,0.22) 0%, transparent 55%), var(--navy)',
+              borderRadius: 22, padding: '22px',
+              cursor: 'pointer', position: 'relative', overflow: 'hidden',
+              boxShadow: 'var(--shadow-floating)',
             }}
           >
-            {cat.label}
-          </button>
-        ))}
-      </div>
+            {/* Waveform anchored to bottom — clears all text content above */}
+            <motion.div
+              className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden"
+              style={{ borderRadius: '0 0 22px 22px' }}
+              animate={{ opacity: [0.07, 0.11, 0.07] }}
+              transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
+            >
+              <Waveform color="#FAD4BC" opacity={1} height={34} />
+            </motion.div>
 
-      {/* Featured Quest — NAVY card with urgency */}
-      <div className="px-6 mb-6">
-        <div className="flex items-center gap-2 mb-3">
-          <Star className="w-4 h-4" style={{ color: '#C4622D' }} />
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: '#1C2434' }}>
-            Highest Earning
-          </h3>
-        </div>
-        <div
-          onClick={() => navigate(`/recording/${quests[0].id}`)}
-          style={{
-            background: '#1A1F2E', borderRadius: 20, padding: '22px',
-            cursor: 'pointer', position: 'relative', overflow: 'hidden',
-          }}
-        >
-          <div className="absolute inset-0 pointer-events-none flex items-center">
-            <Waveform color="#FAD4BC" opacity={0.04} height={60} />
-          </div>
-
-          <div className="relative z-10">
-            <div className="flex items-center gap-2 mb-3 flex-wrap">
-              <span style={{ background: '#C4622D', color: '#FFFFFF', fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 999 }}>
-                FEATURED
-              </span>
-              <span className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.5)' }}>
-                <Flame className="w-3 h-3" /> 427 Hindi clips needed
-              </span>
-              {quests[0].slotsLeft && (
-                <span className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: '#C4622D' }}>
-                  <Users className="w-3 h-3" /> {quests[0].slotsLeft} slots left
+            <div className="relative z-10">
+              <div className="flex items-center gap-2 mb-3 flex-wrap">
+                <span style={{
+                  background: 'var(--accent-primary-deep)', color: '#FFFFFF',
+                  fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 999,
+                  letterSpacing: '0.06em',
+                }}>
+                  GROUP · {featured.speakers} SPEAKERS
                 </span>
-              )}
-            </div>
+                <span className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.55)' }}>
+                  <Flame className="w-3 h-3" /> Premium tier
+                </span>
+                {featured.slotsLeft != null && (
+                  <span className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-primary-light)' }}>
+                    <Users className="w-3 h-3" /> {featured.slotsLeft} slots left
+                  </span>
+                )}
+              </div>
 
-            <h4 style={{ fontSize: 20, fontWeight: 700, color: '#FFFFFF', marginBottom: 6 }}>
-              {quests[0].title}
-            </h4>
-            <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', lineHeight: 1.5, marginBottom: 16 }}>
-              {quests[0].description}
-            </p>
+              <h4 style={{
+                fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800,
+                color: '#FFFFFF', marginBottom: 6, letterSpacing: '-0.01em',
+              }}>
+                {featured.title}
+              </h4>
+              <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)', lineHeight: 1.55, marginBottom: 14 }}>
+                {featured.description}
+              </p>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-4">
-                {/* THE HOOK: earning per time */}
+              {/* Scene preview */}
+              <div style={{
+                background: 'rgba(255,255,255,0.06)',
+                borderRadius: 12,
+                padding: '12px 14px',
+                marginBottom: 16,
+                border: '1px solid rgba(255,255,255,0.06)',
+              }}>
+                <p style={{
+                  fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)',
+                  letterSpacing: '0.10em', textTransform: 'uppercase', marginBottom: 4,
+                }}>
+                  Scene
+                </p>
+                <p style={{ fontSize: 12.5, fontWeight: 500, color: 'rgba(255,255,255,0.78)', lineHeight: 1.55, fontStyle: 'italic' }}>
+                  {featured.excerpt}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between">
                 <div>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: '#C4622D', lineHeight: 1 }}>
-                    ₹{quests[0].cashPayout}
+                  <p style={{
+                    fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700,
+                    color: 'var(--accent-primary-light)', lineHeight: 1, fontVariantNumeric: 'tabular-nums',
+                  }}>
+                    ₹{featured.cashPayout}
                   </p>
-                  <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.35)', marginTop: 2 }}>
-                    in {quests[0].duration}
+                  <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.45)', marginTop: 4 }}>
+                    {featured.sessionAt ?? `in ${featured.duration}`}
                   </p>
                 </div>
+                <button style={{
+                  width: 48, height: 48, borderRadius: 14,
+                  background: 'var(--accent-primary)', border: 'none',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  cursor: 'pointer', boxShadow: '0px 4px 12px rgba(224,108,58,0.4)',
+                }}>
+                  <ArrowUpRight className="w-5 h-5 text-white" />
+                </button>
               </div>
-              <button style={{
-                width: 48, height: 48, borderRadius: 14,
-                background: '#C4622D', border: 'none',
-                display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer', boxShadow: '0px 4px 12px rgba(196,98,45,0.3)',
-              }}>
-                <ArrowUpRight className="w-5 h-5 text-white" />
-              </button>
+            </div>
+          </motion.div>
+        </div>
+      )}
+
+      {/* Sectioned lists when on 'all' filter */}
+      {activeFilter === 'all' ? (
+        <>
+          {/* Solo Scenarios */}
+          <div className="px-6 mb-6">
+            <SectionHeading variant="display" subtitle="Multi-turn scripts with context — pay scales with depth">
+              Solo Scenarios
+            </SectionHeading>
+            <div className="space-y-3">
+              {loading
+                ? Array.from({ length: 2 }).map((_, i) => <QuestCardSkeleton key={`sk-s-${i}`} />)
+                : scenarioQuests.map(q => (
+                    <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
+                  ))}
             </div>
           </div>
+
+          {/* Group Sessions */}
+          <div className="px-6 mb-6">
+            <SectionHeading
+              variant="display"
+              subtitle="Scheduled multi-speaker sessions"
+              action={
+                <span className="flex items-center gap-1" style={{
+                  fontSize: 11, fontWeight: 700, color: 'var(--accent-primary-deep)',
+                  background: 'var(--accent-50)', padding: '4px 10px', borderRadius: 999,
+                }}>
+                  <Users2 className="w-3 h-3" /> Premium
+                </span>
+              }
+            >
+              Group Sessions
+            </SectionHeading>
+            <div className="space-y-3">
+              {loading
+                ? <QuestCardSkeleton />
+                : groupQuests.filter(q => q.id !== featured.id).map(q => (
+                    <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
+                  ))}
+            </div>
+          </div>
+
+          {/* Quick Lines */}
+          <div className="px-6">
+            <SectionHeading variant="display" subtitle="Fast 1–2 line clips for quick wins">
+              Quick Lines
+            </SectionHeading>
+            <div className="space-y-3">
+              {loading
+                ? <QuestCardSkeleton />
+                : lineQuests.map(q => (
+                    <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
+                  ))}
+            </div>
+          </div>
+        </>
+      ) : (
+        <div className="px-6">
+          <h3 style={{
+            fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 700,
+            color: 'var(--text-muted)', marginBottom: 12,
+            letterSpacing: '0.08em', textTransform: 'uppercase',
+          }}>
+            {filters.find(f => f.id === activeFilter)?.label} · {filteredList.length}
+          </h3>
+          <div className="space-y-3">
+            {loading
+              ? Array.from({ length: 4 }).map((_, i) => <QuestCardSkeleton key={`skel-${i}`} />)
+              : filteredList.map(q => (
+                  <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
+                ))}
+          </div>
         </div>
-      </div>
-
-      {/* All Quests — Card list with urgency/scarcity */}
-      <div className="px-6">
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: '#1C2434', marginBottom: 14 }}>
-          All Quests
-        </h3>
-        <div className="space-y-3">
-          {quests.map((quest) => {
-            const diff = difficultyStyle[quest.difficulty];
-            const ts = quest.tag ? tagStyles[quest.tag] : null;
-            return (
-              <div
-                key={quest.id}
-                onClick={() => navigate(`/recording/${quest.id}`)}
-                style={{
-                  background: '#FFFFFF', borderRadius: 18,
-                  border: '1px solid #E8EDF3', padding: '18px',
-                  cursor: 'pointer',
-                }}
-              >
-                {/* Tags row */}
-                {(quest.tag || quest.slotsLeft) && (
-                  <div className="flex items-center gap-2 mb-3 flex-wrap">
-                    {ts && quest.tagLabel && (
-                      <span style={{
-                        fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 999,
-                        background: ts.bg, color: ts.text,
-                      }}>
-                        {quest.tagLabel}
-                      </span>
-                    )}
-                    <span style={{
-                      fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 999,
-                      background: diff.bg, color: diff.text,
-                    }}>
-                      {quest.difficulty}
-                    </span>
-                  </div>
-                )}
-
-                <div className="flex items-center justify-between">
-                  <div className="flex-1 pr-4">
-                    <h4 style={{ fontSize: 15, fontWeight: 700, color: '#1C2434', marginBottom: 6 }}>
-                      {quest.title}
-                    </h4>
-                    <div className="flex items-center gap-3 flex-wrap">
-                      <span className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>
-                        <Clock className="w-3.5 h-3.5" /> {quest.duration}
-                      </span>
-                      <span className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>
-                        <Mic className="w-3.5 h-3.5" /> {quest.clips} clips
-                      </span>
-                      <span className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>
-                        <Languages className="w-3.5 h-3.5" /> {quest.language}
-                      </span>
-                    </div>
-                  </div>
-
-                  {/* Earning hook */}
-                  <div style={{ textAlign: 'right', flexShrink: 0 }}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 20, fontWeight: 700, color: '#C4622D', lineHeight: 1 }}>
-                      ₹{quest.cashPayout}
-                    </p>
-                    <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', marginTop: 3 }}>
-                      in {quest.duration}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            );
-          })}
-        </div>
-      </div>
+      )}
     </div>
   );
 }

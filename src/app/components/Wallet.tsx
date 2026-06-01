@@ -26,10 +26,10 @@ const transactions: Transaction[] = [
 ];
 
 const statusConfig: Record<TxStatus, { label: string; bg: string; text: string; icon: React.ElementType }> = {
-  credited:   { label: 'Credited',      bg: '#E6F4EC', text: '#1A5C35', icon: CheckCircle2 },
-  pending:    { label: 'In Review',     bg: '#FEF7E6', text: '#6B4800', icon: Clock         },
-  processing: { label: 'Processing',    bg: '#E8EFF8', text: '#1E3A6E', icon: Clock         },
-  partial:    { label: 'Effort Credit', bg: '#FDF5E0', text: '#6B4800', icon: Info          },
+  credited:   { label: 'Credited',      bg: 'var(--status-success-bg)', text: 'var(--status-success-text)', icon: CheckCircle2 },
+  pending:    { label: 'In Review',     bg: 'var(--warning-50)', text: 'var(--status-warning-text)', icon: Clock         },
+  processing: { label: 'Processing',    bg: 'var(--status-info-bg)', text: 'var(--status-info-text)', icon: Clock         },
+  partial:    { label: 'Effort Credit', bg: 'var(--warning-50)', text: 'var(--status-warning-text)', icon: Info          },
 };
 
 const totalBalance   = 127.50;
@@ -47,12 +47,12 @@ export function Wallet() {
   /* ── New User Wallet Empty State ── */
   if (showEmpty) {
     return (
-      <div className="min-h-screen pb-28" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+      <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
         <div className="px-6 pt-16 pb-4 flex items-center justify-between">
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Wallet</h1>
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Wallet</h1>
           <button
             onClick={() => setShowEmpty(false)}
-            style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
+            style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', border: '1px solid var(--card-border)', borderRadius: 8, padding: '4px 10px' }}
           >
             Show wallet
           </button>
@@ -61,10 +61,10 @@ export function Wallet() {
         {/* Locked Potential Card */}
         <div className="px-6 mb-5">
           <div style={{
-            background: '#1A1F2E', borderRadius: 20, padding: '28px 24px',
+            background: 'var(--navy)', borderRadius: 20, padding: '28px 24px',
             position: 'relative', overflow: 'hidden',
           }}>
-            <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
+            <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 20px 20px', opacity: 0.10 }}>
               <Waveform color="#F5C49A" opacity={1} height={60} />
             </div>
             <div className="relative z-10 flex flex-col items-center text-center">
@@ -74,7 +74,7 @@ export function Wallet() {
                   <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" strokeDasharray="8 4" />
                   <motion.circle
                     cx="60" cy="60" r="52" fill="none"
-                    stroke="#C4622D" strokeWidth="6" strokeLinecap="round"
+                    stroke="var(--accent-primary-deep)" strokeWidth="6" strokeLinecap="round"
                     strokeDasharray={`${2 * Math.PI * 52}`}
                     initial={{ strokeDashoffset: 2 * Math.PI * 52 }}
                     animate={{ strokeDashoffset: 2 * Math.PI * 52 * 0.85 }}
@@ -105,29 +105,29 @@ export function Wallet() {
 
         {/* What you'll earn section */}
         <div className="px-6 mb-6">
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: '#1C2434', marginBottom: 12 }}>
+          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12 }}>
             How Earnings Work
           </h3>
           {[
-            { icon: Mic, label: 'Record audio clips', desc: 'Earn ₹10–50 per quest', color: '#C4622D' },
-            { icon: CheckCircle2, label: 'Clips get validated', desc: 'Auto-check or validator review', color: '#2D7A4F' },
-            { icon: WalletIcon, label: 'Cash hits your wallet', desc: 'Withdraw via UPI anytime', color: '#1C2434' },
+            { icon: Mic, label: 'Record audio clips', desc: 'Earn ₹10–50 per quest', color: 'var(--accent-primary-deep)' },
+            { icon: CheckCircle2, label: 'Clips get validated', desc: 'Auto-check or validator review', color: 'var(--color-success)' },
+            { icon: WalletIcon, label: 'Cash hits your wallet', desc: 'Withdraw via UPI anytime', color: 'var(--text-primary)' },
           ].map((step, idx) => {
             const Icon = step.icon;
             return (
               <div key={idx} className="flex items-center gap-4 py-3" style={{
-                borderBottom: idx < 2 ? '1px solid #E8EDF3' : 'none',
+                borderBottom: idx < 2 ? '1px solid var(--card-border)' : 'none',
               }}>
                 <div style={{
                   width: 44, height: 44, borderRadius: 14,
-                  background: '#F0F4F8',
+                  background: 'var(--neutral-100)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
                   <Icon className="w-5 h-5" style={{ color: step.color }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 2 }}>{step.label}</p>
-                  <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>{step.desc}</p>
+                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>{step.label}</p>
+                  <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{step.desc}</p>
                 </div>
               </div>
             );
@@ -137,24 +137,24 @@ export function Wallet() {
         {/* Welcome bonus teaser */}
         <div className="px-6">
           <div className="flex items-center gap-3" style={{
-            background: '#FEF0E8', borderRadius: 14, padding: '14px 18px',
-            border: '1px solid #F2C4AD',
+            background: 'var(--status-accent-bg)', borderRadius: 14, padding: '14px 18px',
+            border: '1px solid var(--accent-200)',
           }}>
-            <Gift className="w-5 h-5 flex-shrink-0" style={{ color: '#C4622D' }} />
+            <Gift className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary-deep)' }} />
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: '#8B3000' }}>Welcome Bonus: ₹50</p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: '#C4622D' }}>Complete voice calibration to claim</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--status-accent-text)' }}>Welcome Bonus: ₹50</p>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--accent-primary-deep)' }}>Complete voice calibration to claim</p>
             </div>
           </div>
         </div>
 
         {/* CTA */}
-        <div className="fixed bottom-16 left-0 right-0 px-6 py-4 z-40" style={{ background: 'linear-gradient(transparent, #F8F9FA 30%)' }}>
+        <div className="fixed bottom-16 left-0 right-0 px-6 py-4 z-40" style={{ background: 'linear-gradient(to bottom, transparent, var(--background) 30%)' }}>
           <button
             onClick={() => navigate('/first-earning')}
             style={{
               width: '100%', height: 56, borderRadius: 999,
-              background: '#C4622D', color: '#FFFFFF',
+              background: 'var(--accent-primary-deep)', color: '#FFFFFF',
               fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
               boxShadow: '0px 4px 16px rgba(196,98,45,0.30)',
             }}
@@ -167,14 +167,14 @@ export function Wallet() {
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
       <div className="px-6 pt-16 pb-4 flex items-center justify-between">
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>Wallet</h1>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Wallet</h1>
         <div className="flex items-center gap-2">
           <button
             onClick={() => setShowEmpty(true)}
-            style={{ fontSize: 11, fontWeight: 600, color: '#8896A7', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
+            style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', border: '1px solid var(--card-border)', borderRadius: 8, padding: '4px 10px' }}
           >
             Empty state
           </button>
@@ -193,14 +193,14 @@ export function Wallet() {
             boxShadow: '0px 12px 40px rgba(0,0,0,0.22), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
           }}
         >
-          <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
-            <Waveform color="#F5C49A" opacity={1} height={60} />
+          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 20px 20px', opacity: 0.10 }}>
+            <Waveform color="#F5C49A" opacity={1} height={48} />
           </div>
 
           <div className="relative z-10">
             <div className="flex items-start justify-between mb-5">
               <div>
-                <p style={{ fontSize: 11, fontWeight: 600, color: '#C4622D', marginBottom: 6, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent-primary-deep)', marginBottom: 6, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                   Cash Balance
                 </p>
                 <p style={{ fontFamily: 'var(--font-mono)', fontSize: 38, fontWeight: 700, color: '#FFFFFF', lineHeight: 1 }}>
@@ -213,7 +213,7 @@ export function Wallet() {
               <div
                 style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(196,98,45,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
               >
-                <WalletIcon className="w-6 h-6" style={{ color: '#C4622D' }} />
+                <WalletIcon className="w-6 h-6" style={{ color: 'var(--accent-primary-deep)' }} />
               </div>
             </div>
 
@@ -223,7 +223,7 @@ export function Wallet() {
                   <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.4)' }}>
                     Security Reserve
                   </p>
-                  <p style={{ fontFamily: 'var(--font-mono)', color: '#B8860B', fontSize: 16, fontWeight: 600 }}>
+                  <p style={{ fontFamily: 'var(--font-mono)', color: 'var(--warning-700)', fontSize: 16, fontWeight: 600 }}>
                     ₹{pendingBalance.toFixed(2)}
                   </p>
                   <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.32)', marginTop: 2 }}>
@@ -231,8 +231,8 @@ export function Wallet() {
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <TrendingUp className="w-4 h-4" style={{ color: '#C4622D' }} />
-                  <p style={{ fontSize: 13, fontWeight: 700, color: '#C4622D' }}>+₹185.00 this week</p>
+                  <TrendingUp className="w-4 h-4" style={{ color: 'var(--accent-primary-deep)' }} />
+                  <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-primary-deep)' }}>+₹185.00 this week</p>
                 </div>
               </div>
             </div>
@@ -244,18 +244,18 @@ export function Wallet() {
       <div className="px-6 mb-4">
         <div
           className="flex items-center justify-between px-4 py-3"
-          style={{ borderBottom: '1px solid #E8EDF3' }}
+          style={{ borderBottom: '1px solid var(--card-border)' }}
         >
           <div className="flex items-center gap-3">
-            <CreditCard className="w-4 h-4" style={{ color: '#2D7A4F' }} />
+            <CreditCard className="w-4 h-4" style={{ color: 'var(--color-success)' }} />
             <div>
-              <p style={{ fontSize: 13, fontWeight: 600, color: '#1C2434' }}>alex@upi</p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7' }}>UPI ID linked · payouts every Monday</p>
+              <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>alex@upi</p>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>UPI ID linked · payouts every Monday</p>
             </div>
           </div>
           <button
             className="flex items-center gap-1"
-            style={{ fontSize: 12, fontWeight: 600, color: '#C4622D', background: 'none', border: 'none', cursor: 'pointer' }}
+            style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent-primary-deep)', background: 'none', border: 'none', cursor: 'pointer' }}
           >
             <Pencil className="w-3.5 h-3.5" />
             Edit
@@ -266,27 +266,27 @@ export function Wallet() {
       {/* Payout Info — no card wrapper */}
       <div className="px-6 mb-5">
         <div className="flex items-start gap-3 px-1 py-3">
-          <Info className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#B8860B' }} />
-          <p style={{ fontSize: 12, fontWeight: 500, color: '#6B4800', lineHeight: 1.5 }}>
-            Minimum withdrawal: <strong style={{ color: '#1C2434' }}>₹50</strong>. Processing: 2–3 business days after Monday payout cycle.
+          <Info className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--warning-700)' }} />
+          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--status-warning-text)', lineHeight: 1.5 }}>
+            Minimum withdrawal: <strong style={{ color: 'var(--text-primary)' }}>₹50</strong>. Processing: 2–3 business days after Monday payout cycle.
           </p>
         </div>
       </div>
 
       {/* XP teaser — naked divider style */}
       <div className="px-6 mb-5">
-        <div className="flex items-center justify-between py-3" style={{ borderTop: '1px solid #E8EDF3', borderBottom: '1px solid #E8EDF3' }}>
+        <div className="flex items-center justify-between py-3" style={{ borderTop: '1px solid var(--card-border)', borderBottom: '1px solid var(--card-border)' }}>
           <div className="flex items-center gap-3">
-            <Zap className="w-4 h-4" style={{ color: '#8B6914' }} />
+            <Zap className="w-4 h-4" style={{ color: 'var(--warning-700)' }} />
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>1,530 reputation · Trusted Contributor</p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>Unlocks tier perks, not withdrawable</p>
+              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>1,530 reputation · Trusted Contributor</p>
+              <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>Unlocks tier perks, not withdrawable</p>
             </div>
           </div>
           <button
             onClick={() => navigate('/contributor/profile')}
             className="flex items-center gap-1"
-            style={{ fontSize: 12, fontWeight: 700, color: '#8B6914', background: 'none', border: 'none', cursor: 'pointer' }}
+            style={{ fontSize: 12, fontWeight: 700, color: 'var(--warning-700)', background: 'none', border: 'none', cursor: 'pointer' }}
           >
             Perks <ArrowRight className="w-3.5 h-3.5" />
           </button>
@@ -303,9 +303,9 @@ export function Wallet() {
               style={{
                 padding: '7px 18px', borderRadius: 999, fontSize: 12, fontWeight: 600,
                 whiteSpace: 'nowrap', border: '1.5px solid',
-                background: activeFilter === f ? '#C4622D' : '#FFFFFF',
-                borderColor: activeFilter === f ? '#C4622D' : '#E8EDF3',
-                color: activeFilter === f ? '#FFFFFF' : '#4A5568',
+                background: activeFilter === f ? 'var(--accent-primary-deep)' : '#FFFFFF',
+                borderColor: activeFilter === f ? 'var(--accent-primary-deep)' : 'var(--card-border)',
+                color: activeFilter === f ? '#FFFFFF' : 'var(--text-secondary)',
                 transition: 'all 0.15s',
               }}
             >
@@ -317,7 +317,7 @@ export function Wallet() {
 
       {/* Earnings Ledger */}
       <div className="px-6">
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: '#1C2434', marginBottom: 14 }}>
+        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 14 }}>
           Earnings Ledger
         </h3>
 
@@ -330,13 +330,13 @@ export function Wallet() {
                 key={tx.id}
                 style={{
                   padding: '14px 0',
-                  borderBottom: idx < filtered.length - 1 ? '1px solid #E8EDF3' : 'none',
+                  borderBottom: idx < filtered.length - 1 ? '1px solid var(--card-border)' : 'none',
                 }}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <p style={{ fontSize: 14, fontWeight: 600, color: '#1C2434', marginBottom: 2 }}>{tx.quest}</p>
-                    <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7' }}>{tx.date}</p>
+                    <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>{tx.quest}</p>
+                    <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{tx.date}</p>
                     {tx.note && (
                       <p style={{ fontSize: 11, fontWeight: 500, color: cfg.text, marginTop: 4, lineHeight: 1.4 }}>
                         {tx.note}
@@ -347,7 +347,7 @@ export function Wallet() {
                     <span
                       style={{
                         fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 700,
-                        color: tx.status === 'credited' ? '#C4622D' : tx.status === 'partial' ? '#8B6914' : '#4A5568',
+                        color: tx.status === 'credited' ? 'var(--accent-primary-deep)' : tx.status === 'partial' ? 'var(--warning-700)' : 'var(--text-secondary)',
                       }}
                     >
                       {tx.status === 'credited' ? '+' : ''}₹{tx.amount.toFixed(2)}
@@ -373,14 +373,14 @@ export function Wallet() {
       {/* Sticky Withdraw CTA */}
       <div
         className="fixed bottom-16 left-0 right-0 px-6 py-4 z-40"
-        style={{ background: 'linear-gradient(transparent, #F8F9FA 30%)' }}
+        style={{ background: 'linear-gradient(to bottom, transparent, var(--background) 30%)' }}
       >
         <button
           style={{
             width: '100%',
             height: 56,
             borderRadius: 999,
-            background: 'linear-gradient(160deg, #E8743F 0%, #C4622D 100%)',
+            background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
             color: '#FFFFFF',
             fontSize: 16,
             fontWeight: 700,

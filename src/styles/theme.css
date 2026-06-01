@@ -3,44 +3,155 @@
 :root {
   --font-size: 16px;
 
-  /* ─── Feul Design Tokens ─────────────────────────── */
-  --background:        #F8F9FA;  /* cool off-white */
-  --surface:           #FFFFFF;
-  --card-border:       #E8EDF3;
-  --divider:           #E1E8F0;
+  /* ═══════════════════════════════════════════════════════════
+     COLOR SYSTEM — oklch tonal ramps (perceptually uniform)
+     Convention: 50 = barely tinted bg, 500 = base, 950 = deepest
+     Reserve full-saturation 500 for primary actions only.
+     ═══════════════════════════════════════════════════════════ */
 
-  /* Expressive surfaces */
-  --navy:              #0A0C10;  /* deep ink-navy — value & status */
-  --cream:             #FAF6F0;  /* warm cream — soft screens */
+  /* — Accent (vermillion orange, hue ~34) — */
+  --accent-50:   oklch(0.975 0.012 34);
+  --accent-100:  oklch(0.95  0.030 34);
+  --accent-200:  oklch(0.91  0.060 36);
+  --accent-300:  oklch(0.85  0.110 38);
+  --accent-400:  oklch(0.74  0.180 39);
+  --accent-500:  oklch(0.63  0.250 34);   /* BASE — primary action */
+  --accent-600:  oklch(0.55  0.220 32);
+  --accent-700:  oklch(0.47  0.190 30);
+  --accent-800:  oklch(0.38  0.150 28);
+  --accent-900:  oklch(0.30  0.110 26);
+  --accent-950:  oklch(0.20  0.070 24);
 
-  /* Text */
-  --text-primary:      #1C2434;  /* deep charcoal/slate */
-  --text-secondary:    #4A5568;  /* slate grey */
-  --text-muted:        #8896A7;  /* muted slate */
+  /* — Neutral (slate, hue ~250, slight cool) — */
+  --neutral-0:   #FFFFFF;
+  --neutral-50:  oklch(0.985 0.003 250);
+  --neutral-100: oklch(0.97  0.005 250);
+  --neutral-200: oklch(0.93  0.008 250);
+  --neutral-300: oklch(0.88  0.012 250);
+  --neutral-400: oklch(0.75  0.015 250);
+  --neutral-500: oklch(0.62  0.018 250);
+  --neutral-600: oklch(0.48  0.022 250);
+  --neutral-700: oklch(0.37  0.025 250);
+  --neutral-800: oklch(0.24  0.028 250);
+  --neutral-900: oklch(0.18  0.025 250);
+  --neutral-950: oklch(0.10  0.020 250);
 
-  /* Accent — luminous Oklch vermillion (perceptually uniform on OLED) */
-  --accent-primary:        oklch(0.63 0.25 34);  /* brand orange — energy & action */
-  --accent-primary-light:  oklch(0.74 0.18 39);  /* lighter orange for hover/glow */
-  --accent-primary-deep:   oklch(0.55 0.22 32);  /* deeper press / gradient stop */
-  --accent-xp:         #8B6914;  /* olive/dark gold — XP only */
+  /* — Success (green, hue ~150) — */
+  --success-50:  oklch(0.97  0.020 150);
+  --success-100: oklch(0.93  0.045 150);
+  --success-200: oklch(0.86  0.080 150);
+  --success-500: oklch(0.58  0.130 150);
+  --success-700: oklch(0.44  0.105 150);
+  --success-900: oklch(0.28  0.075 150);
 
-  /* Semantic */
-  --color-success:     #2D7A4F;
-  --color-warning:     #B8860B;
-  --color-error:       #C0392B;
+  /* — Warning (amber, hue ~75) — */
+  --warning-50:  oklch(0.97  0.025 75);
+  --warning-100: oklch(0.93  0.055 75);
+  --warning-200: oklch(0.87  0.090 75);
+  --warning-500: oklch(0.70  0.150 75);
+  --warning-700: oklch(0.50  0.115 70);
+  --warning-900: oklch(0.32  0.080 70);
 
-  /* Radius */
-  --radius-card:       16px;
-  --radius-button:     999px;   /* fully pill-shaped */
-  --radius-tag:        999px;   /* fully pill-shaped */
-  --radius-input:      12px;
+  /* — Error (red, hue ~25) — */
+  --error-50:    oklch(0.97  0.018 25);
+  --error-100:   oklch(0.93  0.040 25);
+  --error-200:   oklch(0.87  0.075 25);
+  --error-500:   oklch(0.58  0.200 25);
+  --error-700:   oklch(0.45  0.165 25);
+  --error-900:   oklch(0.30  0.110 25);
 
-  /* Elevation — subtle, soft Y:4 Blur:12 Opacity:4% */
-  --shadow-card:       0px 4px 12px rgba(28, 36, 52, 0.04);
-  /* Glassmorphic "chameleon" stroke — luminous inner highlight + soft drop */
-  --shadow-glass:      0px 6px 18px rgba(28, 36, 52, 0.05), inset 0px 1px 0px rgba(255, 255, 255, 0.65);
-  /* Brand orange glow halo — for active earning surfaces */
-  --shadow-accent-glow: 0px 0px 0px 1px rgba(224, 108, 58, 0.12), 0px 8px 24px rgba(224, 108, 58, 0.18);
+  /* — Info (blue, hue ~250) — */
+  --info-50:     oklch(0.97  0.020 250);
+  --info-100:    oklch(0.93  0.045 250);
+  --info-200:    oklch(0.87  0.080 250);
+  --info-500:    oklch(0.58  0.165 250);
+  --info-700:    oklch(0.44  0.135 250);
+
+  /* ─── Semantic aliases (use these in components) ─── */
+  --background:        var(--neutral-100);
+  --surface:           var(--neutral-0);
+  --surface-sunken:    var(--neutral-50);
+  --card-border:       var(--neutral-200);
+  --divider:           var(--neutral-200);
+  --border-strong:     var(--neutral-300);
+
+  --navy:              var(--neutral-950);
+  --cream:             #FAF6F0;
+
+  --text-primary:      var(--neutral-900);
+  --text-secondary:    var(--neutral-700);
+  --text-muted:        var(--neutral-500);
+  --text-on-accent:    #FFFFFF;
+  --text-on-navy:      var(--neutral-100);
+
+  --accent-primary:        var(--accent-500);
+  --accent-primary-light:  var(--accent-400);
+  --accent-primary-deep:   var(--accent-600);
+  --accent-soft-bg:        var(--accent-50);
+  --accent-soft-border:    var(--accent-200);
+  --accent-xp:             var(--warning-700);
+
+  /* Status surface pairs (bg + text) — use these instead of raw hexes */
+  --status-success-bg:   var(--success-100);
+  --status-success-text: var(--success-900);
+  --status-warning-bg:   var(--warning-100);
+  --status-warning-text: var(--warning-900);
+  --status-error-bg:     var(--error-100);
+  --status-error-text:   var(--error-900);
+  --status-info-bg:      var(--info-100);
+  --status-info-text:    var(--info-700);
+  --status-accent-bg:    var(--accent-100);
+  --status-accent-text:  var(--accent-900);
+
+  --color-success:     var(--success-700);
+  --color-warning:     var(--warning-700);
+  --color-error:       var(--error-700);
+
+  /* ═══════════════════════════════════════════════════════════
+     SPACING SCALE (4-base) — use these only.
+     ═══════════════════════════════════════════════════════════ */
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-7:  32px;
+  --space-8:  40px;
+  --space-9:  56px;
+
+  /* ═══════════════════════════════════════════════════════════
+     RADIUS SCALE — 4 sizes, plus full-pill
+     ═══════════════════════════════════════════════════════════ */
+  --radius-sm:    8px;
+  --radius-md:    12px;
+  --radius-lg:    16px;
+  --radius-xl:    20px;
+  --radius-2xl:   24px;
+  --radius-full:  999px;
+
+  --radius-card:    var(--radius-lg);
+  --radius-button:  var(--radius-full);
+  --radius-tag:     var(--radius-full);
+  --radius-input:   var(--radius-md);
+
+  /* ═══════════════════════════════════════════════════════════
+     ELEVATION — single source of truth
+     ═══════════════════════════════════════════════════════════ */
+  --shadow-card:        0px 4px 12px rgba(28, 36, 52, 0.04);
+  --shadow-card-hover:  0px 8px 24px rgba(28, 36, 52, 0.08);
+  --shadow-glass:       0px 6px 18px rgba(28, 36, 52, 0.05), inset 0px 1px 0px rgba(255, 255, 255, 0.65);
+  --shadow-floating:    0px 12px 40px rgba(10, 12, 16, 0.22), inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
+  --shadow-accent-glow: 0px 0px 0px 1px oklch(0.63 0.25 34 / 0.12), 0px 8px 24px oklch(0.63 0.25 34 / 0.22);
+
+  /* ═══════════════════════════════════════════════════════════
+     MOTION — durations & easings
+     ═══════════════════════════════════════════════════════════ */
+  --duration-fast:   120ms;
+  --duration-base:   180ms;
+  --duration-slow:   280ms;
+  --ease-standard:   cubic-bezier(0.2, 0, 0, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
 
   /* ─── Tailwind / shadcn compatibility ─────────────── */
   --foreground:            var(--text-primary);
@@ -133,6 +244,63 @@
 }
 
 @theme inline {
+  /* Tonal ramps exposed as Tailwind utilities */
+  --color-accent-50:   var(--accent-50);
+  --color-accent-100:  var(--accent-100);
+  --color-accent-200:  var(--accent-200);
+  --color-accent-300:  var(--accent-300);
+  --color-accent-400:  var(--accent-400);
+  --color-accent-500:  var(--accent-500);
+  --color-accent-600:  var(--accent-600);
+  --color-accent-700:  var(--accent-700);
+  --color-accent-800:  var(--accent-800);
+  --color-accent-900:  var(--accent-900);
+  --color-accent-950:  var(--accent-950);
+
+  --color-neutral-0:   var(--neutral-0);
+  --color-neutral-50:  var(--neutral-50);
+  --color-neutral-100: var(--neutral-100);
+  --color-neutral-200: var(--neutral-200);
+  --color-neutral-300: var(--neutral-300);
+  --color-neutral-400: var(--neutral-400);
+  --color-neutral-500: var(--neutral-500);
+  --color-neutral-600: var(--neutral-600);
+  --color-neutral-700: var(--neutral-700);
+  --color-neutral-800: var(--neutral-800);
+  --color-neutral-900: var(--neutral-900);
+  --color-neutral-950: var(--neutral-950);
+
+  --color-success-50:  var(--success-50);
+  --color-success-100: var(--success-100);
+  --color-success-500: var(--success-500);
+  --color-success-700: var(--success-700);
+  --color-success-900: var(--success-900);
+
+  --color-warning-50:  var(--warning-50);
+  --color-warning-100: var(--warning-100);
+  --color-warning-500: var(--warning-500);
+  --color-warning-700: var(--warning-700);
+  --color-warning-900: var(--warning-900);
+
+  --color-error-50:    var(--error-50);
+  --color-error-100:   var(--error-100);
+  --color-error-500:   var(--error-500);
+  --color-error-700:   var(--error-700);
+  --color-error-900:   var(--error-900);
+
+  --color-info-50:     var(--info-50);
+  --color-info-100:    var(--info-100);
+  --color-info-500:    var(--info-500);
+  --color-info-700:    var(--info-700);
+
+  /* Semantic */
+  --color-text-primary:   var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted:     var(--text-muted);
+  --color-surface:        var(--surface);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-navy:           var(--navy);
+
   --color-background:            var(--background);
   --color-foreground:            var(--foreground);
   --color-card:                  var(--card);

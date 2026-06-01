@@ -9,7 +9,7 @@ export function EarningCelebration() {
   return (
     <div
       className="min-h-screen flex flex-col relative overflow-hidden"
-      style={{ background: '#1A1F2E', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}
     >
       {/* Background waveform */}
       <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
@@ -35,7 +35,7 @@ export function EarningCelebration() {
             transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.3 }}
             style={{
               width: 88, height: 88, borderRadius: '50%',
-              background: '#C4622D',
+              background: 'var(--accent-primary-deep)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: '0px 12px 40px rgba(196,98,45,0.4)',
             }}
@@ -51,7 +51,7 @@ export function EarningCelebration() {
           transition={{ delay: 0.5, duration: 0.5 }}
           className="text-center"
         >
-          <p style={{ fontSize: 14, fontWeight: 600, color: '#C4622D', marginBottom: 12, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent-primary-deep)', marginBottom: 12, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Credited to your wallet
           </p>
           <motion.p
@@ -87,7 +87,7 @@ export function EarningCelebration() {
             border: '1px solid rgba(255,255,255,0.08)',
           }}
         >
-          <Flame className="w-4 h-4" style={{ color: '#C4622D' }} />
+          <Flame className="w-4 h-4" style={{ color: 'var(--accent-primary-deep)' }} />
           <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>
             +100 reputation · Welcome bonus unlocked
           </span>
@@ -118,7 +118,7 @@ export function EarningCelebration() {
                 padding: '10px 14px',
                 textAlign: 'center',
               }}>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: '#C4622D', marginBottom: 2 }}>
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'var(--accent-primary-deep)', marginBottom: 2 }}>
                   {item.amount}
                 </p>
                 <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>{item.label}</p>
@@ -139,7 +139,7 @@ export function EarningCelebration() {
           onClick={() => navigate('/profile-setup')}
           style={{
             width: '100%', height: 58, borderRadius: 999,
-            background: '#C4622D', color: '#FFFFFF',
+            background: 'var(--accent-primary-deep)', color: '#FFFFFF',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
             boxShadow: '0px 6px 28px rgba(196,98,45,0.4)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,

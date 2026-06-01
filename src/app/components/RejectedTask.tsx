@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router';
+import { useEffect } from 'react';
 import { motion } from 'motion/react';
-import { ArrowLeft, Mic, AlertCircle, Check, FileText, Lightbulb, Volume2 } from 'lucide-react';
+import { Mic, AlertCircle, Check, FileText, Lightbulb, Volume2, ChevronLeft } from 'lucide-react';
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
 
@@ -25,22 +26,23 @@ export function RejectedTask() {
   const validCount = TOTAL_PROMPTS - FLAGGED_PROMPTS.length;
   const firstFlagged = FLAGGED_PROMPTS[0];
 
+  useEffect(() => {
+    let sx = 0;
+    const onStart = (e: TouchEvent) => { sx = e.touches[0].clientX; };
+    const onEnd = (e: TouchEvent) => { if (e.changedTouches[0].clientX - sx > 72 && sx < 56) navigate(-1); };
+    document.addEventListener('touchstart', onStart);
+    document.addEventListener('touchend', onEnd);
+    return () => { document.removeEventListener('touchstart', onStart); document.removeEventListener('touchend', onEnd); };
+  }, [navigate]);
+
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
-      <div className="px-6 pt-16 pb-2 flex items-center gap-4">
-        <button
-          onClick={() => navigate('/contributor')}
-          style={{
-            width: 40, height: 40, borderRadius: '50%',
-            background: '#FFFFFF', border: '1px solid #E8EDF3',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)', cursor: 'pointer',
-          }}
-        >
-          <ArrowLeft className="w-5 h-5" style={{ color: '#1C2434' }} />
+      <div className="px-6 pt-14 pb-2">
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
+          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: '#1C2434' }}>
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>
           Repair Studio
         </h1>
       </div>
@@ -85,8 +87,8 @@ export function RejectedTask() {
           }}
         >
           <div className="flex items-center justify-between mb-3">
-            <p style={{ fontSize: 13, fontWeight: 700, color: '#1C2434' }}>Your clips</p>
-            <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7' }}>
+            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>Your clips</p>
+            <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>
               {validCount} valid · {FLAGGED_PROMPTS.length} to fix
             </p>
           </div>
@@ -104,7 +106,7 @@ export function RejectedTask() {
                   style={{
                     aspectRatio: '1 / 1',
                     borderRadius: 12,
-                    background: flagged ? '#FDE8E8' : '#E6F4EC',
+                    background: flagged ? 'var(--status-error-bg)' : 'var(--status-success-bg)',
                     border: flagged ? '1.5px solid #F5C5C5' : '1px solid #C8E6D5',
                     display: 'flex',
                     flexDirection: 'column',
@@ -117,16 +119,16 @@ export function RejectedTask() {
                   }}
                 >
                   {flagged ? (
-                    <AlertCircle style={{ width: 16, height: 16, color: '#C0392B' }} />
+                    <AlertCircle style={{ width: 16, height: 16, color: 'var(--color-error)' }} />
                   ) : (
-                    <Check style={{ width: 16, height: 16, color: '#2D7A4F' }} strokeWidth={2.6} />
+                    <Check style={{ width: 16, height: 16, color: 'var(--color-success)' }} strokeWidth={2.6} />
                   )}
                   <span
                     style={{
                       fontFamily: 'var(--font-mono)',
                       fontSize: 11,
                       fontWeight: 700,
-                      color: flagged ? '#8B0000' : '#1A5C35',
+                      color: flagged ? 'var(--status-error-text)' : 'var(--status-success-text)',
                       marginTop: 4,
                     }}
                   >
@@ -144,7 +146,7 @@ export function RejectedTask() {
             background: '#FFF8F8',
             borderRadius: 16,
             border: '1px solid #F5C5C5',
-            borderLeft: '3px solid #C0392B',
+            borderLeft: '3px solid #B8860B',
             padding: '18px',
           }}
         >
@@ -153,22 +155,22 @@ export function RejectedTask() {
               style={{
                 fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700,
                 padding: '3px 9px', borderRadius: 999,
-                background: '#FDE8E8', color: '#8B0000', border: '1px solid #F5C5C5',
+                background: 'var(--status-error-bg)', color: 'var(--status-error-text)', border: '1px solid #F5C5C5',
               }}
             >
               PROMPT {String(firstFlagged).padStart(2, '0')}
             </span>
-            <span style={{ fontSize: 12, fontWeight: 600, color: '#8B0000' }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--status-error-text)' }}>
               Background noise
             </span>
           </div>
           <div className="flex items-center gap-2 mb-2">
-            <FileText className="w-3.5 h-3.5" style={{ color: '#8896A7' }} />
-            <p style={{ fontSize: 11, fontWeight: 700, color: '#8896A7', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            <FileText className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+            <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               What to re-record
             </p>
           </div>
-          <p style={{ fontSize: 13, fontWeight: 500, color: '#1C2434', lineHeight: 1.65 }}>
+          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-primary)', lineHeight: 1.65 }}>
             {rejectedSubmission.prompt4}
           </p>
         </div>
@@ -186,29 +188,29 @@ export function RejectedTask() {
           <div className="flex items-center gap-2 mb-2">
             <div style={{
               width: 28, height: 28, borderRadius: 8,
-              background: '#FEF0E8',
+              background: 'var(--status-accent-bg)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Volume2 className="w-3.5 h-3.5" style={{ color: '#C4622D' }} />
+              <Volume2 className="w-3.5 h-3.5" style={{ color: 'var(--accent-primary-deep)' }} />
             </div>
-            <p style={{ fontSize: 11, fontWeight: 700, color: '#8896A7', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
               Category · {rejectedSubmission.category}
             </p>
           </div>
           <div className="flex items-start gap-2">
             <Lightbulb className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#B8860B' }} />
             <div>
-              <p style={{ fontSize: 12, fontWeight: 700, color: '#1C2434', marginBottom: 4 }}>
+              <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>
                 How to improve next time
               </p>
-              <p style={{ fontSize: 12.5, fontWeight: 500, color: '#4A5568', lineHeight: 1.55 }}>
+              <p style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
                 {rejectedSubmission.improvementTip}
               </p>
             </div>
           </div>
         </div>
 
-        <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7', textAlign: 'center', lineHeight: 1.5 }}>
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5 }}>
           ✓ Re-recording doesn't affect your streak or level
         </p>
 
@@ -218,7 +220,7 @@ export function RejectedTask() {
             onClick={() => navigate('/recording/rejected-redo')}
             style={{
               width: '100%', height: 56, borderRadius: 999,
-              background: 'linear-gradient(160deg, #E8743F 0%, #C4622D 100%)',
+              background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               color: '#FFFFFF',
               fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
               boxShadow: '0px 8px 24px rgba(196,98,45,0.38), inset 0px 1px 0px rgba(255,255,255,0.18)',
@@ -232,7 +234,7 @@ export function RejectedTask() {
             onClick={() => navigate('/contributor')}
             style={{
               width: '100%', padding: '15px', borderRadius: 999,
-              background: 'transparent', color: '#8896A7',
+              background: 'transparent', color: 'var(--text-muted)',
               fontSize: 14, fontWeight: 600,
               border: 'none',
               cursor: 'pointer',

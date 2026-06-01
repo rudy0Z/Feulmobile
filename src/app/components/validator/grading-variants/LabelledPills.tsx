@@ -8,11 +8,11 @@ interface LabelledPillsProps {
 
 export function LabelledPills({ selectedGrade, onGrade, gradeOptions }: LabelledPillsProps) {
   const pillColors = [
-    { bg: '#FDE8E8', active: '#C0392B' }, // 1
-    { bg: '#FEF2E8', active: '#C4622D' }, // 2
-    { bg: '#FEF7E6', active: '#B8860B' }, // 3
-    { bg: '#ECFDF5', active: '#2D7A4F' }, // 4
-    { bg: '#D1FAE5', active: '#1E6B40' }, // 5
+    { bg: 'var(--status-error-bg)', active: 'var(--status-error-text)' }, // 1
+    { bg: 'var(--accent-50)', active: 'var(--accent-primary-deep)' }, // 2
+    { bg: 'var(--warning-50)', active: 'var(--warning-700)' }, // 3
+    { bg: 'var(--status-success-bg)', active: 'var(--color-success)' }, // 4
+    { bg: 'var(--status-success-bg)', active: 'var(--success-900)' }, // 5
   ];
 
   return (
@@ -31,7 +31,7 @@ export function LabelledPills({ selectedGrade, onGrade, gradeOptions }: Labelled
               height: 52,
               borderRadius: 26,
               background: isSelected ? colors.active : colors.bg,
-              color: isSelected ? '#FFFFFF' : '#1C2434',
+              color: isSelected ? '#FFFFFF' : 'var(--text-primary)',
               display: 'flex',
               alignItems: 'center',
               padding: '0 24px',

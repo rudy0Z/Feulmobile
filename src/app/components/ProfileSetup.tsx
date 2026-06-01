@@ -1,7 +1,7 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { User, Languages, CreditCard, ChevronRight, Check, ArrowLeft, Wallet } from 'lucide-react';
+import { User, Languages, CreditCard, ChevronRight, ChevronLeft, Check, Wallet } from 'lucide-react';
 
 const LANGUAGES = [
   'Hindi', 'English', 'Marathi', 'Tamil', 'Telugu',
@@ -30,6 +30,19 @@ function getInitials(name: string) {
 export function ProfileSetup() {
   const navigate = useNavigate();
   const [step, setStep]               = useState(1);
+
+  useEffect(() => {
+    let sx = 0;
+    const onStart = (e: TouchEvent) => { sx = e.touches[0].clientX; };
+    const onEnd = (e: TouchEvent) => {
+      if (e.changedTouches[0].clientX - sx > 72 && sx < 56) {
+        if (step > 1) setStep(s => s - 1); else navigate(-1);
+      }
+    };
+    document.addEventListener('touchstart', onStart);
+    document.addEventListener('touchend', onEnd);
+    return () => { document.removeEventListener('touchstart', onStart); document.removeEventListener('touchend', onEnd); };
+  }, [navigate, step]);
   const [name, setName]               = useState('');
   const [nameError, setNameError]     = useState('');
   const [selectedLangs, setLangs]     = useState<string[]>([]);
@@ -95,12 +108,12 @@ export function ProfileSetup() {
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}
     >
       {/* ── Progress header ── */}
       <div
         style={{
-          background: '#1A1F2E',
+          background: 'var(--navy)',
           padding: '48px 24px 28px',
           position: 'relative',
           overflow: 'hidden',
@@ -109,16 +122,10 @@ export function ProfileSetup() {
         {/* Back button */}
         {step > 1 && (
           <button
-            onClick={() => setStep(step - 1)}
-            style={{
-              position: 'absolute', top: 52, left: 24,
-              width: 36, height: 36, borderRadius: '50%',
-              background: 'rgba(255,255,255,0.08)', border: 'none',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer',
-            }}
+            onClick={() => setStep(s => s - 1)}
+            style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'rgba(255,255,255,0.55)', padding: '4px 0', marginBottom: 12 }}
           >
-            <ArrowLeft style={{ width: 16, height: 16, color: 'rgba(255,255,255,0.6)' }} />
+            <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
           </button>
         )}
 
@@ -129,7 +136,7 @@ export function ProfileSetup() {
               key={s.id}
               style={{
                 height: 4, borderRadius: 999,
-                background: s.id <= step ? '#C4622D' : 'rgba(255,255,255,0.12)',
+                background: s.id <= step ? 'var(--accent-primary-deep)' : 'rgba(255,255,255,0.12)',
                 flex: 1,
                 transition: 'background 0.3s',
               }}
@@ -145,7 +152,7 @@ export function ProfileSetup() {
             padding: '5px 14px', marginBottom: 14,
           }}
         >
-          <span style={{ fontSize: 11, fontWeight: 700, color: 'oklch(0.63 0.25 34)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+          <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-primary)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
             Step {step} of {steps.length}
           </span>
         </div>
@@ -181,11 +188,11 @@ export function ProfileSetup() {
             {step === 3 && (
               <>
                 <div className="flex items-center gap-3 mb-3">
-                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: '#C4622D', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <div style={{ width: 44, height: 44, borderRadius: '50%', background: 'var(--accent-primary-deep)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                     <Wallet style={{ width: 20, height: 20, color: '#FFFFFF' }} />
                   </div>
                   <div>
-                    <p style={{ fontSize: 11, fontWeight: 600, color: 'oklch(0.63 0.25 34)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Ready to transfer</p>
+                    <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent-primary)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Ready to transfer</p>
                     <p style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700, color: '#FFFFFF', lineHeight: 1 }}>₹50.00</p>
                   </div>
                 </div>
@@ -215,7 +222,7 @@ export function ProfileSetup() {
               <div className="flex justify-center mb-8">
                 <div style={{
                   width: 88, height: 88, borderRadius: '50%',
-                  background: initials ? '#C4622D' : '#F0F4F8',
+                  background: initials ? 'var(--accent-primary-deep)' : 'var(--neutral-100)',
                   border: initials ? '3px solid rgba(196,98,45,0.3)' : '3px dashed #CBD5E0',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   boxShadow: initials ? '0px 8px 24px rgba(196,98,45,0.25)' : 'none',
@@ -233,7 +240,7 @@ export function ProfileSetup() {
 
               {/* Name input */}
               <div style={{ marginBottom: 8 }}>
-                <label style={{ fontSize: 12, fontWeight: 700, color: '#4A5568', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>
+                <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>
                   Full Name
                 </label>
                 <input
@@ -244,19 +251,19 @@ export function ProfileSetup() {
                   autoFocus
                   style={{
                     width: '100%', height: 54, borderRadius: 14,
-                    border: nameError ? '1.5px solid #C0392B' : '1.5px solid #E8EDF3',
+                    border: nameError ? '1.5px solid var(--color-error)' : '1.5px solid #E8EDF3',
                     background: '#FFFFFF', padding: '0 18px',
-                    fontSize: 16, fontWeight: 600, color: '#1C2434',
+                    fontSize: 16, fontWeight: 600, color: 'var(--text-primary)',
                     outline: 'none', boxSizing: 'border-box',
                     transition: 'border-color 0.2s',
                   }}
                 />
                 {nameError && (
-                  <p style={{ fontSize: 12, fontWeight: 600, color: '#C0392B', marginTop: 6 }}>{nameError}</p>
+                  <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-error)', marginTop: 6 }}>{nameError}</p>
                 )}
               </div>
 
-              <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7', marginTop: 10 }}>
+              <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 10 }}>
                 This is how you'll appear to quest creators. You can update it later.
               </p>
             </motion.div>
@@ -270,7 +277,7 @@ export function ProfileSetup() {
               exit={{ opacity: 0, x: -20 }} transition={{ duration: 0.25 }}
             >
               <div style={{ marginBottom: 6 }}>
-                <label style={{ fontSize: 12, fontWeight: 700, color: '#4A5568', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block', marginBottom: 14 }}>
+                <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block', marginBottom: 14 }}>
                   Tap to select — pick all that apply
                 </label>
                 <div className="flex flex-wrap gap-2">
@@ -285,8 +292,8 @@ export function ProfileSetup() {
                           padding: '10px 18px', borderRadius: 999,
                           fontSize: 14, fontWeight: 600,
                           border: selected ? 'none' : '1.5px solid #E8EDF3',
-                          background: selected ? '#C4622D' : '#FFFFFF',
-                          color: selected ? '#FFFFFF' : '#4A5568',
+                          background: selected ? 'var(--accent-primary-deep)' : '#FFFFFF',
+                          color: selected ? '#FFFFFF' : 'var(--text-secondary)',
                           cursor: 'pointer',
                           boxShadow: selected ? '0px 4px 12px rgba(196,98,45,0.25)' : 'none',
                           transition: 'all 0.2s',
@@ -300,7 +307,7 @@ export function ProfileSetup() {
                   })}
                 </div>
                 {langError && (
-                  <p style={{ fontSize: 12, fontWeight: 600, color: '#C0392B', marginTop: 10 }}>{langError}</p>
+                  <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-error)', marginTop: 10 }}>{langError}</p>
                 )}
               </div>
 
@@ -309,12 +316,12 @@ export function ProfileSetup() {
                   initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }}
                   style={{
                     marginTop: 20, padding: '12px 16px', borderRadius: 12,
-                    background: '#E6F4EC', border: '1px solid #C5E1D0',
+                    background: 'var(--status-success-bg)', border: '1px solid #C5E1D0',
                     display: 'flex', alignItems: 'center', gap: 10,
                   }}
                 >
-                  <Check style={{ width: 15, height: 15, color: '#2D7A4F', flexShrink: 0 }} strokeWidth={2.5} />
-                  <p style={{ fontSize: 13, fontWeight: 600, color: '#1A5C35' }}>
+                  <Check style={{ width: 15, height: 15, color: 'var(--color-success)', flexShrink: 0 }} strokeWidth={2.5} />
+                  <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--status-success-text)' }}>
                     {selectedLangs.length} language{selectedLangs.length > 1 ? 's' : ''} selected —
                     quests in {selectedLangs.slice(0, 2).join(', ')}{selectedLangs.length > 2 ? ` +${selectedLangs.length - 2} more` : ''} will be prioritised for you
                   </p>
@@ -332,7 +339,7 @@ export function ProfileSetup() {
             >
               {/* UPI input */}
               <div style={{ marginBottom: 8 }}>
-                <label style={{ fontSize: 12, fontWeight: 700, color: '#4A5568', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>
+                <label style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', letterSpacing: '0.05em', textTransform: 'uppercase', display: 'block', marginBottom: 8 }}>
                   UPI ID
                 </label>
                 <input
@@ -343,15 +350,15 @@ export function ProfileSetup() {
                   autoFocus
                   style={{
                     width: '100%', height: 54, borderRadius: 14,
-                    border: upiError ? '1.5px solid #C0392B' : '1.5px solid #E8EDF3',
+                    border: upiError ? '1.5px solid var(--color-error)' : '1.5px solid #E8EDF3',
                     background: '#FFFFFF', padding: '0 18px',
-                    fontSize: 16, fontWeight: 600, color: '#1C2434',
+                    fontSize: 16, fontWeight: 600, color: 'var(--text-primary)',
                     outline: 'none', boxSizing: 'border-box',
                     transition: 'border-color 0.2s',
                   }}
                 />
                 {upiError && (
-                  <p style={{ fontSize: 12, fontWeight: 600, color: '#C0392B', marginTop: 6 }}>{upiError}</p>
+                  <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--color-error)', marginTop: 6 }}>{upiError}</p>
                 )}
               </div>
 
@@ -367,7 +374,7 @@ export function ProfileSetup() {
                     }}
                     style={{
                       fontSize: 12, fontWeight: 600, padding: '6px 14px', borderRadius: 999,
-                      background: '#F0F4F8', color: '#4A5568',
+                      background: 'var(--neutral-100)', color: 'var(--text-secondary)',
                       border: '1px solid #E8EDF3', cursor: 'pointer',
                     }}
                   >
@@ -379,18 +386,18 @@ export function ProfileSetup() {
               {/* Payout info */}
               <div
                 style={{
-                  background: '#FEF7E6', borderRadius: 14, border: '1px solid #F5E4B8',
+                  background: 'var(--warning-50)', borderRadius: 14, border: '1px solid #F5E4B8',
                   padding: '14px 16px', marginBottom: 16,
                 }}
               >
-                <p style={{ fontSize: 13, fontWeight: 600, color: '#6B4800', lineHeight: 1.55 }}>
+                <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--status-warning-text)', lineHeight: 1.55 }}>
                   💳 Payouts are processed every Monday. Minimum withdrawal ₹50.
                   Your ₹50 will be transferred in the next cycle.
                 </p>
               </div>
 
               {/* TDS note */}
-              <p style={{ fontSize: 11, fontWeight: 500, color: '#8896A7', lineHeight: 1.55 }}>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.55 }}>
                 10% TDS applies on annual earnings above ₹30,000 as per Indian tax law.
               </p>
             </motion.div>
@@ -406,7 +413,7 @@ export function ProfileSetup() {
             onClick={handleStep1Next}
             style={{
               width: '100%', height: 58, borderRadius: 999,
-              background: name.trim().length >= 2 ? '#C4622D' : '#D4BAB0',
+              background: name.trim().length >= 2 ? 'var(--accent-primary-deep)' : '#D4BAB0',
               color: '#FFFFFF', fontSize: 16, fontWeight: 700,
               border: 'none', cursor: 'pointer',
               boxShadow: name.trim().length >= 2 ? '0px 6px 24px rgba(196,98,45,0.30)' : 'none',
@@ -425,7 +432,7 @@ export function ProfileSetup() {
             onClick={handleStep2Next}
             style={{
               width: '100%', height: 58, borderRadius: 999,
-              background: selectedLangs.length > 0 ? '#C4622D' : '#D4BAB0',
+              background: selectedLangs.length > 0 ? 'var(--accent-primary-deep)' : '#D4BAB0',
               color: '#FFFFFF', fontSize: 16, fontWeight: 700,
               border: 'none', cursor: 'pointer',
               boxShadow: selectedLangs.length > 0 ? '0px 6px 24px rgba(196,98,45,0.30)' : 'none',
@@ -445,7 +452,7 @@ export function ProfileSetup() {
               onClick={handleStep3Finish}
               style={{
                 width: '100%', height: 58, borderRadius: 999,
-                background: '#C4622D', color: '#FFFFFF',
+                background: 'var(--accent-primary-deep)', color: '#FFFFFF',
                 fontSize: 16, fontWeight: 700,
                 border: 'none', cursor: 'pointer',
                 boxShadow: '0px 6px 24px rgba(196,98,45,0.30)',
@@ -459,7 +466,7 @@ export function ProfileSetup() {
               onClick={() => saveAndFinish(true)}
               style={{
                 width: '100%', padding: '15px', background: 'transparent',
-                color: '#8896A7', fontSize: 14, fontWeight: 600,
+                color: 'var(--text-muted)', fontSize: 14, fontWeight: 600,
                 border: 'none', cursor: 'pointer',
               }}
             >

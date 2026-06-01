@@ -9,7 +9,7 @@ export function FirstEarning() {
   return (
     <div
       className="min-h-screen flex flex-col relative overflow-hidden"
-      style={{ background: '#1A1F2E', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}
     >
       {/* Background waveform */}
       <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.05 }}>
@@ -30,7 +30,7 @@ export function FirstEarning() {
         >
           <div style={{
             width: 72, height: 72, borderRadius: '50%',
-            background: '#C4622D',
+            background: 'var(--accent-primary-deep)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             boxShadow: '0px 8px 32px rgba(196,98,45,0.4)',
           }}>
@@ -45,7 +45,7 @@ export function FirstEarning() {
           transition={{ delay: 0.2, duration: 0.6 }}
           className="text-center"
         >
-          <p style={{ fontSize: 14, fontWeight: 600, color: '#C4622D', marginBottom: 16, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent-primary-deep)', marginBottom: 16, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Your first earning
           </p>
           <h1 style={{
@@ -57,7 +57,7 @@ export function FirstEarning() {
             letterSpacing: '-0.02em',
             marginBottom: 12,
           }}>
-            Earn <span style={{ fontFamily: 'var(--font-mono)', color: '#C4622D' }}>₹50</span>
+            Earn <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent-primary-deep)' }}>₹50</span>
             <br />in 2 minutes.
           </h1>
           <p style={{ fontSize: 15, fontWeight: 500, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, maxWidth: 300, margin: '0 auto' }}>
@@ -95,7 +95,7 @@ export function FirstEarning() {
           onClick={() => navigate('/data-consent')}
           style={{
             width: '100%', height: 58, borderRadius: 999,
-            background: '#C4622D', color: '#FFFFFF',
+            background: 'var(--accent-primary-deep)', color: '#FFFFFF',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
             boxShadow: '0px 6px 28px rgba(196,98,45,0.4)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,

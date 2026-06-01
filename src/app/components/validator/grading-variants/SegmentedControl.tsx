@@ -8,10 +8,10 @@ interface SegmentedControlProps {
 
 export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: SegmentedControlProps) {
   function getSegmentColor(id: number, selected: number | null): string {
-    if (selected !== id) return '#EDE9E1';
-    if (id <= 2) return '#C0392B';
-    if (id === 3) return '#B8860B';
-    return '#2D7A4F';
+    if (selected !== id) return 'var(--neutral-100)';
+    if (id <= 2) return 'var(--status-error-text)';
+    if (id === 3) return 'var(--warning-700)';
+    return 'var(--color-success)';
   }
 
   const selectedGradeObj = gradeOptions.find(g => g.id === selectedGrade);
@@ -43,7 +43,7 @@ export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: Segme
                   fontFamily: 'var(--font-mono)',
                   fontSize: isSelected ? 22 : 16,
                   fontWeight: isSelected ? 800 : 500,
-                  color: isSelected ? '#FFFFFF' : '#8896A7',
+                  color: isSelected ? '#FFFFFF' : 'var(--text-muted)',
                   transition: 'font-size 0.12s',
                   lineHeight: 1,
                 }}
@@ -63,7 +63,7 @@ export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: Segme
               flex: 1, textAlign: 'center',
               fontSize: 9,
               fontWeight: selectedGrade === opt.id ? 700 : 500,
-              color: selectedGrade === opt.id ? '#1C2434' : '#8896A7',
+              color: selectedGrade === opt.id ? 'var(--text-primary)' : 'var(--text-muted)',
               transition: 'color 0.15s', lineHeight: 1.3,
             }}
           >
@@ -80,7 +80,7 @@ export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: Segme
           style={{ background: '#FFFFFF', border: '1px solid #E8EDF3' }}
         >
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: selectedGradeObj.color, flexShrink: 0 }} />
-          <span style={{ fontSize: 15, fontWeight: 700, color: '#1C2434' }}>
+          <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>
             {selectedGradeObj.id} — {selectedGradeObj.label}
           </span>
         </motion.div>

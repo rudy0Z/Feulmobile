@@ -7,7 +7,7 @@ interface ThumbArcProps {
 }
 
 export function ThumbArc({ selectedGrade, onGrade, gradeOptions }: ThumbArcProps) {
-  const gradeColors = ['#C0392B', '#C4622D', '#B8860B', '#2D7A4F', '#1E6B40'];
+  const gradeColors = ['var(--status-error-text)', 'var(--accent-primary-deep)', 'var(--warning-700)', 'var(--color-success)', 'var(--success-900)'];
 
   const selectedGradeObj = gradeOptions.find(g => g.id === selectedGrade);
 
@@ -19,7 +19,7 @@ export function ThumbArc({ selectedGrade, onGrade, gradeOptions }: ThumbArcProps
           <motion.span
             initial={{ opacity: 0, y: 8 }}
             animate={{ opacity: 1, y: 0 }}
-            style={{ fontSize: 18, fontWeight: 800, color: '#1C2434' }}
+            style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-primary)' }}
           >
             {selectedGradeObj.id} — {selectedGradeObj.label.toUpperCase()}
           </motion.span>

@@ -29,7 +29,7 @@ export function UndoToast({ gradeLabel, onUndo, onDismiss, visible }: UndoToastP
         >
           <div
             style={{
-              background: '#1C2434',
+              background: 'var(--text-primary)',
               borderRadius: 999,
               padding: '10px 20px',
               display: 'flex',
@@ -50,7 +50,7 @@ export function UndoToast({ gradeLabel, onUndo, onDismiss, visible }: UndoToastP
               style={{
                 background: 'none',
                 border: 'none',
-                color: 'oklch(0.63 0.25 34)',
+                color: 'var(--accent-primary)',
                 fontSize: 13,
                 fontWeight: 800,
                 cursor: 'pointer',

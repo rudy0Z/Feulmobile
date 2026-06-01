@@ -1,12 +1,21 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { ArrowLeft, Building2, CheckCircle2, Globe, Users, Database } from 'lucide-react';
+import { Building2, CheckCircle2, Globe, Users, Database, ChevronLeft } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
 
 export function QuestCreatorApplication() {
   const navigate = useNavigate();
   const [step, setStep] = useState<'form' | 'submitted'>('form');
+
+  useEffect(() => {
+    let sx = 0;
+    const onStart = (e: TouchEvent) => { sx = e.touches[0].clientX; };
+    const onEnd = (e: TouchEvent) => { if (e.changedTouches[0].clientX - sx > 72 && sx < 56) navigate(-1); };
+    document.addEventListener('touchstart', onStart);
+    document.addEventListener('touchend', onEnd);
+    return () => { document.removeEventListener('touchstart', onStart); document.removeEventListener('touchend', onEnd); };
+  }, [navigate]);
   const [companyName, setCompanyName] = useState('');
   const [email, setEmail] = useState('');
   const [website, setWebsite] = useState('');
@@ -17,7 +26,7 @@ export function QuestCreatorApplication() {
 
   if (step === 'submitted') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -26,25 +35,25 @@ export function QuestCreatorApplication() {
         >
           <div style={{
             width: 88, height: 88, borderRadius: '50%',
-            background: '#F0F4F8',
+            background: 'var(--neutral-100)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24,
           }}>
-            <Building2 className="w-11 h-11" style={{ color: '#1C2434' }} strokeWidth={1.5} />
+            <Building2 className="w-11 h-11" style={{ color: 'var(--text-primary)' }} strokeWidth={1.5} />
           </div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#1C2434', marginBottom: 10 }}>
+          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
             We'll be in touch
           </h1>
-          <p style={{ fontSize: 15, fontWeight: 500, color: '#4A5568', lineHeight: 1.6, maxWidth: 300, marginBottom: 8 }}>
+          <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: 300, marginBottom: 8 }}>
             Our team will reach out within 24 hours to discuss your audio data requirements and set up your campaign.
           </p>
-          <p style={{ fontSize: 13, fontWeight: 600, color: '#8896A7', marginBottom: 32 }}>
+          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 32 }}>
             Check {email} for a confirmation.
           </p>
           <button
             onClick={() => navigate('/contributor')}
             style={{
               height: 56, borderRadius: 999, padding: '0 40px',
-              background: '#C4622D', color: '#FFFFFF',
+              background: 'var(--accent-primary-deep)', color: '#FFFFFF',
               fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
               boxShadow: '0px 4px 16px rgba(196,98,45,0.28)',
             }}
@@ -57,26 +66,23 @@ export function QuestCreatorApplication() {
   }
 
   return (
-    <div className="min-h-screen pb-8" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-8" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header */}
-      <div className="px-6 pt-16 pb-2 flex items-center gap-3">
-        <button
-          onClick={() => navigate(-1)}
-          style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
-        >
-          <ArrowLeft className="w-6 h-6" style={{ color: '#1C2434' }} />
+      <div className="px-6 pt-14 pb-2">
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
+          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <p style={{ fontSize: 15, fontWeight: 600, color: '#1C2434' }}>Create Campaigns</p>
+        <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>Create Campaigns</p>
       </div>
 
       {/* Hero */}
       <div className="px-6 mb-6">
         <div style={{
-          background: '#1A1F2E', borderRadius: 22,
+          background: 'var(--navy)', borderRadius: 22,
           padding: '24px', position: 'relative', overflow: 'hidden',
         }}>
-          <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
+          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 22px 22px', opacity: 0.10 }}>
             <Waveform color="#FFFFFF" opacity={1} height={80} variant="data" />
           </div>
           <div className="relative z-10">
@@ -110,11 +116,11 @@ export function QuestCreatorApplication() {
                 flex: 1, background: '#FFFFFF', borderRadius: 14,
                 border: '1px solid #E8EDF3', padding: '14px 10px', textAlign: 'center',
               }}>
-                <Icon className="w-4 h-4 mx-auto mb-2" style={{ color: '#8896A7' }} />
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 17, fontWeight: 700, color: '#1C2434', marginBottom: 2 }}>
+                <Icon className="w-4 h-4 mx-auto mb-2" style={{ color: 'var(--text-muted)' }} />
+                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>
                   {stat.value}
                 </p>
-                <p style={{ fontSize: 10, fontWeight: 600, color: '#8896A7', textTransform: 'uppercase' }}>
+                <p style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase' }}>
                   {stat.label}
                 </p>
               </div>
@@ -126,7 +132,7 @@ export function QuestCreatorApplication() {
       {/* Form */}
       <div className="px-6 space-y-5">
         <div>
-          <label style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 8, display: 'block' }}>
+          <label style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8, display: 'block' }}>
             Company Name *
           </label>
           <input
@@ -136,14 +142,14 @@ export function QuestCreatorApplication() {
             style={{
               width: '100%', height: 48, borderRadius: 14,
               border: '1.5px solid #E8EDF3', padding: '0 16px',
-              fontSize: 14, fontWeight: 500, color: '#1C2434',
+              fontSize: 14, fontWeight: 500, color: 'var(--text-primary)',
               outline: 'none', fontFamily: 'var(--font-sans)',
             }}
           />
         </div>
 
         <div>
-          <label style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 8, display: 'block' }}>
+          <label style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8, display: 'block' }}>
             Work Email *
           </label>
           <input
@@ -154,15 +160,15 @@ export function QuestCreatorApplication() {
             style={{
               width: '100%', height: 48, borderRadius: 14,
               border: '1.5px solid #E8EDF3', padding: '0 16px',
-              fontSize: 14, fontWeight: 500, color: '#1C2434',
+              fontSize: 14, fontWeight: 500, color: 'var(--text-primary)',
               outline: 'none', fontFamily: 'var(--font-sans)',
             }}
           />
         </div>
 
         <div>
-          <label style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 8, display: 'block' }}>
-            Website <span style={{ fontWeight: 500, color: '#8896A7' }}>(optional)</span>
+          <label style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8, display: 'block' }}>
+            Website <span style={{ fontWeight: 500, color: 'var(--text-muted)' }}>(optional)</span>
           </label>
           <input
             value={website}
@@ -171,7 +177,7 @@ export function QuestCreatorApplication() {
             style={{
               width: '100%', height: 48, borderRadius: 14,
               border: '1.5px solid #E8EDF3', padding: '0 16px',
-              fontSize: 14, fontWeight: 500, color: '#1C2434',
+              fontSize: 14, fontWeight: 500, color: 'var(--text-primary)',
               outline: 'none', fontFamily: 'var(--font-sans)',
             }}
           />
@@ -179,7 +185,7 @@ export function QuestCreatorApplication() {
 
         {/* Volume */}
         <div>
-          <label style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 10, display: 'block' }}>
+          <label style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 10, display: 'block' }}>
             Expected data volume
           </label>
           <div className="flex gap-2 flex-wrap">
@@ -191,9 +197,9 @@ export function QuestCreatorApplication() {
                   padding: '10px 16px', borderRadius: 12,
                   fontSize: 12, fontWeight: 600,
                   border: '1.5px solid',
-                  background: volume === opt ? '#1C2434' : '#FFFFFF',
-                  borderColor: volume === opt ? '#1C2434' : '#E8EDF3',
-                  color: volume === opt ? '#FFFFFF' : '#4A5568',
+                  background: volume === opt ? 'var(--text-primary)' : '#FFFFFF',
+                  borderColor: volume === opt ? 'var(--text-primary)' : 'var(--card-border)',
+                  color: volume === opt ? '#FFFFFF' : 'var(--text-secondary)',
                   cursor: 'pointer', transition: 'all 0.15s',
                 }}
               >
@@ -205,8 +211,8 @@ export function QuestCreatorApplication() {
 
         {/* Data needs */}
         <div>
-          <label style={{ fontSize: 14, fontWeight: 700, color: '#1C2434', marginBottom: 8, display: 'block' }}>
-            Tell us about your data needs <span style={{ fontWeight: 500, color: '#8896A7' }}>(optional)</span>
+          <label style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8, display: 'block' }}>
+            Tell us about your data needs <span style={{ fontWeight: 500, color: 'var(--text-muted)' }}>(optional)</span>
           </label>
           <textarea
             value={dataNeeds}
@@ -216,7 +222,7 @@ export function QuestCreatorApplication() {
             style={{
               width: '100%', borderRadius: 14,
               border: '1.5px solid #E8EDF3', padding: '14px 16px',
-              fontSize: 14, fontWeight: 500, color: '#1C2434',
+              fontSize: 14, fontWeight: 500, color: 'var(--text-primary)',
               resize: 'none', outline: 'none',
               fontFamily: 'var(--font-sans)',
             }}
@@ -230,8 +236,8 @@ export function QuestCreatorApplication() {
           onClick={() => canSubmit && setStep('submitted')}
           style={{
             width: '100%', height: 56, borderRadius: 999,
-            background: canSubmit ? '#C4622D' : '#E8EDF3',
-            color: canSubmit ? '#FFFFFF' : '#8896A7',
+            background: canSubmit ? 'var(--accent-primary-deep)' : 'var(--card-border)',
+            color: canSubmit ? '#FFFFFF' : 'var(--text-muted)',
             fontSize: 16, fontWeight: 700, border: 'none',
             cursor: canSubmit ? 'pointer' : 'not-allowed',
             boxShadow: canSubmit ? '0px 4px 16px rgba(196,98,45,0.28)' : 'none',
@@ -240,7 +246,7 @@ export function QuestCreatorApplication() {
         >
           Connect With Us
         </button>
-        <p style={{ fontSize: 12, fontWeight: 500, color: '#8896A7', textAlign: 'center', marginTop: 12 }}>
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 12 }}>
           Free consultation · No commitment required
         </p>
       </div>

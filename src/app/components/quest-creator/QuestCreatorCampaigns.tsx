@@ -21,7 +21,7 @@ export function QuestCreatorCampaigns() {
     : campaigns.filter(c => c.status === activeFilter);
 
   return (
-    <div className="min-h-screen pb-6" style={{ background: '#F8F9FA', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
 
       {/* ── Header ── */}
       <div className="px-6 pt-16 pb-2">
@@ -81,7 +81,7 @@ export function QuestCreatorCampaigns() {
                     <h4 style={{ fontSize: 14, fontWeight: 700, color: '#1C2434' }}>{campaign.name}</h4>
                     <span style={{
                       fontSize: 10, fontWeight: 700, padding: '3px 10px', borderRadius: 999,
-                      background: '#FEF7E6', color: '#6B4800',
+                      background: '#FEF7E6', color: 'var(--status-warning-text)',
                     }}>
                       Paused
                     </span>
@@ -92,7 +92,7 @@ export function QuestCreatorCampaigns() {
                 </div>
                 <button style={{
                   padding: '8px 18px', borderRadius: 999,
-                  background: '#C4622D', color: '#FFFFFF',
+                  background: 'var(--accent-primary-deep)', color: '#FFFFFF',
                   fontSize: 12, fontWeight: 700, border: 'none', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', gap: 6,
                   boxShadow: '0px 3px 10px rgba(196,98,45,0.25)',
@@ -151,7 +151,7 @@ export function QuestCreatorCampaigns() {
               {/* Progress bar */}
               <div style={{ background: '#F0F4F8', borderRadius: 999, height: 6, marginBottom: 16 }}>
                 <div style={{
-                  background: '#C4622D',
+                  background: 'var(--accent-primary-deep)',
                   borderRadius: 999, height: 6,
                   width: `${campaign.progress}%`,
                   transition: 'width 0.5s ease',
@@ -185,7 +185,7 @@ export function QuestCreatorCampaigns() {
       <div className="px-6 mt-6">
         <button style={{
           width: '100%', height: 56, borderRadius: 999,
-          background: '#C4622D',
+          background: 'var(--accent-primary-deep)',
           color: '#FFFFFF',
           fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
