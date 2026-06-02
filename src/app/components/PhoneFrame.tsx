@@ -1,4 +1,49 @@
 import { ReactNode, useEffect, useState } from 'react';
+import { useDevContext } from '../lib/DevContext';
+
+/* ─── Dev Button ─────────────────────────────────────── */
+function DevButton() {
+  const dev = useDevContext();
+  return (
+    <button
+      onClick={dev.openPanel}
+      title="Open Overlay Gallery"
+      style={{
+        position: 'fixed',
+        bottom: 24,
+        right: 24,
+        zIndex: 9999,
+        display: 'flex',
+        alignItems: 'center',
+        gap: 6,
+        padding: '7px 12px',
+        borderRadius: 999,
+        background: 'rgba(255,255,255,0.06)',
+        border: '1px solid rgba(255,255,255,0.1)',
+        color: 'rgba(255,255,255,0.45)',
+        fontSize: 11,
+        fontWeight: 700,
+        fontFamily: 'monospace',
+        letterSpacing: '0.06em',
+        cursor: 'pointer',
+        backdropFilter: 'blur(8px)',
+        transition: 'background 0.15s, color 0.15s',
+      }}
+      onMouseEnter={e => {
+        (e.currentTarget as HTMLButtonElement).style.background = 'rgba(224,108,58,0.18)';
+        (e.currentTarget as HTMLButtonElement).style.color = 'rgba(224,108,58,0.9)';
+        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(224,108,58,0.3)';
+      }}
+      onMouseLeave={e => {
+        (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)';
+        (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.45)';
+        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.1)';
+      }}
+    >
+      ⬡ DEV
+    </button>
+  );
+}
 
 /* ─── iOS Status Bar ─────────────────────────────────── */
 function IOSStatusBar() {
@@ -183,6 +228,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
         overflow: 'hidden',
       }}
     >
+      <DevButton />
       {/* Outer phone body — flat, no halo, no caption */}
       <div
         style={{

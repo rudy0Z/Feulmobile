@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useDevContext } from '../lib/DevContext';
 import { motion } from 'motion/react';
 import {
   Flame, TrendingUp, Mic, ArrowRight, Clock, AlertCircle,
@@ -61,8 +62,9 @@ function getMotivationalLine(todayEarned: number): string {
 
 export function Home() {
   const navigate = useNavigate();
+  const dev = useDevContext();
   const [streak] = useState(5);
-  const [isNewUser, setIsNewUser] = useState(false);
+  const isNewUser = dev.isNewUser;
   const [greeting, setGreeting] = useState(getGreeting());
   const [notifOpen, setNotifOpen] = useState(false);
   const unreadCount = 3;
@@ -84,16 +86,7 @@ export function Home() {
   if (isNewUser) {
     return (
       <div>
-        <div className="px-6 pt-16 flex justify-end" style={{ background: 'var(--background)' }}>
-          <button
-            onClick={() => setIsNewUser(false)}
-            style={{
-              fontSize: 11, fontWeight: 600, color: 'var(--text-muted)',
-              border: '1px solid var(--card-border)', borderRadius: 8, padding: '4px 10px',
-            }}
-          >
-            Returning user
-          </button>
+        <div className="px-6 pt-16" style={{ background: 'var(--background)' }}>
         </div>
         <NewUserHome />
       </div>
@@ -116,18 +109,7 @@ export function Home() {
       >
         <div className="flex items-center justify-between mb-6">
           <FeulLogo />
-          <div className="flex items-center gap-2">
-            <BellButton unreadCount={unreadCount} onClick={() => setNotifOpen(true)} />
-            <button
-              onClick={() => setIsNewUser(true)}
-              style={{
-                fontSize: 10, fontWeight: 600, color: 'var(--neutral-400)',
-                border: '1px solid var(--card-border)', borderRadius: 8, padding: '3px 8px',
-              }}
-            >
-              New user
-            </button>
-          </div>
+          <BellButton unreadCount={unreadCount} onClick={() => setNotifOpen(true)} />
         </div>
 
         <div className="flex items-start justify-between gap-3">

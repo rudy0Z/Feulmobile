@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useDevContext } from '../../lib/DevContext';
 import {
   Wallet as WalletIcon, TrendingUp, Clock, CheckCircle2,
   Info, Pencil, Zap, ArrowRight, CreditCard, ShieldCheck,
@@ -48,25 +49,19 @@ const perClipRate    = 2.00;
 
 export function ValidatorWallet() {
   const navigate = useNavigate();
+  const dev = useDevContext();
   const [activeFilter, setActiveFilter] = useState<'all' | TxStatus>('all');
-  const [showEmpty, setShowEmpty] = useState(false);
 
   const filtered = activeFilter === 'all'
     ? transactions
     : transactions.filter(t => t.status === activeFilter);
 
   /* ── Empty / New Validator State ── */
-  if (showEmpty) {
+  if (dev.validatorWalletEmpty) {
     return (
       <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
-        <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+        <div className="px-6 pt-16 pb-4">
           <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
-          <button
-            onClick={() => setShowEmpty(false)}
-            style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
-          >
-            Show wallet
-          </button>
         </div>
 
         {/* Locked Potential Card */}
@@ -180,14 +175,8 @@ export function ValidatorWallet() {
     <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
 
       {/* Header */}
-      <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+      <div className="px-6 pt-16 pb-4">
         <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
-        <button
-          onClick={() => setShowEmpty(true)}
-          style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
-        >
-          Empty state
-        </button>
       </div>
 
       {/* Balance Card — ink-navy */}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useDevContext } from '../../lib/DevContext';
 import { Play, Clock, Languages, CheckCircle2, PlusCircle, ShieldCheck } from 'lucide-react';
 import { Waveform } from '../ui/Waveform';
 
@@ -22,8 +23,8 @@ const priorityConfig: Record<string, { bg: string; text: string; bar: string }> 
 
 export function ValidatorTasks() {
   const navigate = useNavigate();
+  const dev = useDevContext();
   const [activeCategory, setActiveCategory] = useState('All Tasks');
-  const [showEmpty, setShowEmpty]           = useState(false);
 
   const filtered = activeCategory === 'All Tasks'
     ? tasks
@@ -34,20 +35,12 @@ export function ValidatorTasks() {
   return (
     <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
 
-      {/* ── Header — title + debug toggle, no logo ── */}
-      <div className="px-6 pt-16 pb-2 flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <ShieldCheck className="w-5 h-5" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-            Available Tasks
-          </h1>
-        </div>
-        <button
-          onClick={() => setShowEmpty(!showEmpty)}
-          style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', border: '1px solid #E8EDF3', borderRadius: 8, padding: '4px 10px' }}
-        >
-          {showEmpty ? 'Show tasks' : 'Empty state'}
-        </button>
+      {/* ── Header ── */}
+      <div className="px-6 pt-16 pb-2 flex items-center gap-2">
+        <ShieldCheck className="w-5 h-5" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
+        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+          Available Tasks
+        </h1>
       </div>
 
       <div className="px-6 pb-4">
@@ -80,7 +73,7 @@ export function ValidatorTasks() {
       </div>
 
       {/* ── Empty State ── */}
-      {showEmpty ? (
+      {dev.validatorTasksEmpty ? (
         <div className="flex flex-col items-center px-8 py-16" style={{ textAlign: 'center' }}>
           <div style={{
             width: 96, height: 96, borderRadius: '50%',

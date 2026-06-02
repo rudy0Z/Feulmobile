@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { Play, Pause, Volume2, Flag, AlertTriangle, X, Check, LayoutGrid, ChevronLeft } from 'lucide-react';
+import { useDevContext } from '../../lib/DevContext';
 
 // Components
 import { SegmentedControl } from './grading-variants/SegmentedControl';
@@ -38,6 +39,7 @@ const cardStyle = {
 
 export function GradingTask() {
   const navigate = useNavigate();
+  const dev = useDevContext();
   const { taskId } = useParams();
 
   // Core State
@@ -51,7 +53,7 @@ export function GradingTask() {
   const [tipDismissed, setTipDismissed]                     = useState(false);
 
   // New Variant State
-  const [gradingMethod, setGradingMethod]                   = useState('binary');
+  const [gradingMethod, setGradingMethod]                   = useState(dev.gradingMethod);
   const [isStyleDrawerOpen, setIsStyleDrawerOpen]           = useState(false);
   const [undoToastVisible, setUndoToastVisible]             = useState(false);
   const [lastGradeLabel, setLastGradeLabel]                 = useState('');
@@ -416,12 +418,12 @@ export function GradingTask() {
 
       {/* ── Consensus Mismatch Modal ─────────────────────────────────────────── */}
       <AnimatePresence>
-        {showConsensusMismatch && (
+        {(showConsensusMismatch || dev.activeOverlay === 'consensus') && (
           <>
             <motion.div
               initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
               style={{ position: 'fixed', inset: 0, background: 'rgba(28,36,52,0.45)', zIndex: 300 }}
-              onClick={() => setShowConsensusMismatch(false)}
+              onClick={() => { setShowConsensusMismatch(false); dev.dismissOverlay(); }}
             />
             <motion.div
               initial={{ y: '100%', opacity: 0 }} animate={{ y: 0, opacity: 1 }} exit={{ y: '100%', opacity: 0 }}
@@ -436,7 +438,7 @@ export function GradingTask() {
             >
               <div style={{ width: 36, height: 4, borderRadius: 2, background: '#E1E8F0', margin: '0 auto 24px' }} />
               <button
-                onClick={() => { setShowConsensusMismatch(false); setSelectedGrade(null); }}
+                onClick={() => { setShowConsensusMismatch(false); setSelectedGrade(null); dev.dismissOverlay(); }}
                 style={{
                   position: 'absolute', top: 24, right: 24,
                   width: 32, height: 32, borderRadius: '50%',
@@ -516,7 +518,7 @@ export function GradingTask() {
                   Keep My Grade
                 </button>
                 <button
-                  onClick={() => { setShowConsensusMismatch(false); setSelectedGrade(null); }}
+                  onClick={() => { setShowConsensusMismatch(false); setSelectedGrade(null); dev.dismissOverlay(); }}
                   style={{
                     flex: 1, padding: '14px', borderRadius: 999,
                     background: 'var(--accent-primary)', border: 'none',
@@ -532,12 +534,13 @@ export function GradingTask() {
         )}
       </AnimatePresence>
 
-      <GradingStyleDrawer 
-        currentMethod={gradingMethod} 
-        onSelect={setGradingMethod} 
-        open={isStyleDrawerOpen} 
-        onOpenChange={setIsStyleDrawerOpen} 
+      <GradingStyleDrawer
+        currentMethod={gradingMethod}
+        onSelect={setGradingMethod}
+        open={isStyleDrawerOpen}
+        onOpenChange={setIsStyleDrawerOpen}
       />
+
     </div>
   );
 }

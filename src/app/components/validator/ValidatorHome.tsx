@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
+import { useDevContext } from '../../lib/DevContext';
 import { motion } from 'motion/react';
 import {
   Play, ChevronRight, CheckCircle2, PlusCircle,
@@ -67,7 +68,7 @@ function getGreeting(): string {
 
 export function ValidatorHome() {
   const navigate = useNavigate();
-  const [showEmpty, setShowEmpty] = useState(false);
+  const dev = useDevContext();
   const [greeting, setGreeting] = useState(getGreeting());
   const [notifOpen, setNotifOpen] = useState(false);
   const unreadCount = 1;
@@ -104,15 +105,7 @@ export function ValidatorHome() {
         {/* Logo row */}
         <div className="flex items-center justify-between mb-6">
           <FeulLogo />
-          <div className="flex items-center gap-2">
-            <BellButton unreadCount={unreadCount} onClick={() => setNotifOpen(true)} />
-            <button
-              onClick={() => setShowEmpty(!showEmpty)}
-              style={{ fontSize: 10, fontWeight: 600, color: '#B0BBCA', border: '1px solid #E8EDF3', borderRadius: 8, padding: '3px 8px' }}
-            >
-              {showEmpty ? 'Show tasks' : 'Empty state'}
-            </button>
-          </div>
+          <BellButton unreadCount={unreadCount} onClick={() => setNotifOpen(true)} />
         </div>
 
         {/* Greeting row */}
@@ -279,7 +272,7 @@ export function ValidatorHome() {
         </div>
       </div>
 
-      {showEmpty ? (
+      {dev.validatorHomeEmpty ? (
         <EmptyBatchState />
       ) : (
         <>

@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router';
+import { SpoofingVerificationHold } from './SpoofingVerificationHold';
 import { motion, AnimatePresence } from 'motion/react';
 import {
   CreditCard, CheckCircle2, Clock,
@@ -573,36 +574,46 @@ export function PayoutFlow() {
   const role      = getRole(location.pathname);
   const cfg       = roleConfig[role];
 
-  const [step, setStep]     = useState<1 | 2 | 3>(1);
-  const [amount, setAmount] = useState('');
+  const [step, setStep]               = useState<1 | 2 | 3>(1);
+  const [amount, setAmount]           = useState('');
+  const [showSpoofCheck, setShowSpoofCheck] = useState(false);
 
   // Reset scroll on step change
   useEffect(() => { window.scrollTo(0, 0); }, [step]);
 
   return (
-    <AnimatePresence mode="wait">
-      {step === 1 && (
-        <StepAmount
-          key="1"
-          role={role}
-          amount={amount}
-          setAmount={setAmount}
-          onNext={() => setStep(2)}
-          onBack={() => navigate(cfg.backPath)}
+    <>
+      <AnimatePresence mode="wait">
+        {step === 1 && (
+          <StepAmount
+            key="1"
+            role={role}
+            amount={amount}
+            setAmount={setAmount}
+            onNext={() => setStep(2)}
+            onBack={() => navigate(cfg.backPath)}
+          />
+        )}
+        {step === 2 && (
+          <StepConfirm
+            key="2"
+            role={role}
+            amount={amount}
+            onConfirm={() => setShowSpoofCheck(true)}
+            onBack={() => setStep(1)}
+          />
+        )}
+        {step === 3 && (
+          <StepSuccess key="3" role={role} amount={amount} />
+        )}
+      </AnimatePresence>
+
+      {showSpoofCheck && (
+        <SpoofingVerificationHold
+          onClose={() => setShowSpoofCheck(false)}
+          onVerified={() => { setShowSpoofCheck(false); setStep(3); }}
         />
       )}
-      {step === 2 && (
-        <StepConfirm
-          key="2"
-          role={role}
-          amount={amount}
-          onConfirm={() => setStep(3)}
-          onBack={() => setStep(1)}
-        />
-      )}
-      {step === 3 && (
-        <StepSuccess key="3" role={role} amount={amount} />
-      )}
-    </AnimatePresence>
+    </>
   );
 }

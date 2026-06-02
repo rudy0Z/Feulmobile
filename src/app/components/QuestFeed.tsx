@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
+import { useDevContext } from '../lib/DevContext';
 import { motion } from 'motion/react';
 import { Star, ArrowUpRight, Flame, Users, Users2 } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
@@ -58,8 +59,8 @@ function EmptyQuestFeed() {
 
 export function QuestFeed() {
   const navigate = useNavigate();
+  const dev = useDevContext();
   const [activeFilter, setActiveFilter] = useState<typeof filters[number]['id']>('all');
-  const [showEmpty, setShowEmpty] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -78,20 +79,14 @@ export function QuestFeed() {
     return quests.filter(q => q.format === activeFilter);
   })();
 
-  if (showEmpty) {
+  if (dev.questsEmpty) {
     return (
       <div className="min-h-screen" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
-        <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+        <div className="px-6 pt-16 pb-4">
           <h1 style={{
             fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800,
             color: 'var(--text-primary)', letterSpacing: '-0.02em',
           }}>Available Quests</h1>
-          <button onClick={() => setShowEmpty(false)} style={{
-            fontSize: 11, fontWeight: 600, color: 'var(--text-muted)',
-            border: '1px solid var(--card-border)', borderRadius: 8, padding: '4px 10px',
-          }}>
-            Show quests
-          </button>
         </div>
         <EmptyQuestFeed />
       </div>
@@ -108,12 +103,6 @@ export function QuestFeed() {
         }}>
           Available Quests
         </h1>
-        <button onClick={() => setShowEmpty(true)} style={{
-          fontSize: 11, fontWeight: 600, color: 'var(--text-muted)',
-          border: '1px solid var(--card-border)', borderRadius: 8, padding: '4px 10px',
-        }}>
-          Empty state
-        </button>
       </div>
 
       <div className="px-6 pt-1 pb-4">

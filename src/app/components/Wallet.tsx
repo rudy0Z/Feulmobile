@@ -1,5 +1,7 @@
 import { useState } from 'react';
+import { SilverTierReserveDrawer } from './SilverTierReserveDrawer';
 import { useNavigate } from 'react-router';
+import { useDevContext } from '../lib/DevContext';
 import { Wallet as WalletIcon, TrendingUp, Clock, CheckCircle2, Info, Pencil, Zap, ArrowRight, CreditCard, AlertCircle } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
 import { motion } from 'motion/react';
@@ -37,25 +39,20 @@ const pendingBalance = 60.00;
 
 export function Wallet() {
   const navigate = useNavigate();
-  const [activeFilter, setActiveFilter] = useState<'all' | TxStatus>('all');
-  const [showEmpty, setShowEmpty] = useState(false);
+  const dev = useDevContext();
+  const [activeFilter, setActiveFilter]           = useState<'all' | TxStatus>('all');
+  const [showReserveDrawer, setShowReserveDrawer] = useState(false);
 
   const filtered = activeFilter === 'all'
     ? transactions
     : transactions.filter(t => t.status === activeFilter);
 
   /* ── New User Wallet Empty State ── */
-  if (showEmpty) {
+  if (dev.walletEmpty) {
     return (
       <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
-        <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+        <div className="px-6 pt-16 pb-4">
           <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Wallet</h1>
-          <button
-            onClick={() => setShowEmpty(false)}
-            style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', border: '1px solid var(--card-border)', borderRadius: 8, padding: '4px 10px' }}
-          >
-            Show wallet
-          </button>
         </div>
 
         {/* Locked Potential Card */}
@@ -169,16 +166,8 @@ export function Wallet() {
   return (
     <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
-      <div className="px-6 pt-16 pb-4 flex items-center justify-between">
+      <div className="px-6 pt-16 pb-4">
         <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Wallet</h1>
-        <div className="flex items-center gap-2">
-          <button
-            onClick={() => setShowEmpty(true)}
-            style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', border: '1px solid var(--card-border)', borderRadius: 8, padding: '4px 10px' }}
-          >
-            Empty state
-          </button>
-        </div>
       </div>
 
       {/* Balance Card — NAVY */}
@@ -388,11 +377,18 @@ export function Wallet() {
             cursor: 'pointer',
             boxShadow: '0px 8px 24px rgba(196,98,45,0.38), inset 0px 1px 0px rgba(255,255,255,0.18)',
           }}
-          onClick={() => navigate('/contributor/payout')}
+          onClick={() => dev.tierLockBypassed ? navigate('/contributor/payout') : setShowReserveDrawer(true)}
         >
           Withdraw Funds
         </button>
       </div>
+
+      {showReserveDrawer && (
+        <SilverTierReserveDrawer
+          onClose={() => setShowReserveDrawer(false)}
+          onStartQuests={() => { setShowReserveDrawer(false); navigate('/contributor/quests'); }}
+        />
+      )}
     </div>
   );
 }

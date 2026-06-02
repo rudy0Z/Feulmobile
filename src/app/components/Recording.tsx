@@ -5,6 +5,8 @@ import { Mic, Square, Play, Check, Users, ChevronRight, ChevronLeft } from 'luci
 import { Waveform } from './ui/Waveform';
 import { VoiceVisualizer } from './ui/VoiceVisualizer';
 import { quests, Quest } from '../lib/quests';
+import { AcousticNoisePause } from './AcousticNoisePause';
+import { useDevContext } from '../lib/DevContext';
 
 /* ─── Script data ──────────────────────────────────────────────────── */
 
@@ -154,10 +156,12 @@ const FALLBACK_LINES = [
 
 function LinesRecording({ quest }: { quest: Quest | undefined }) {
   const navigate = useNavigate();
+  const dev = useDevContext();
   const [currentLine, setCurrentLine] = useState(0);
   const [state, setState] = useState<RecordingState>('idle');
   const [time, setTime] = useState(0);
   const [done, setDone] = useState<number[]>([]);
+  const [showNoisePause, setShowNoisePause] = useState(false);
 
   const lines = FALLBACK_LINES;
   const total = lines.length;
@@ -241,7 +245,12 @@ function LinesRecording({ quest }: { quest: Quest | undefined }) {
               state={state}
               time={time}
               fmtTime={fmtTime}
-              onStart={() => { setState('recording'); setTime(0); }}
+              onStart={() => {
+                setState('recording'); setTime(0);
+                if (dev.forceNoisePause) {
+                  setTimeout(() => setShowNoisePause(true), 2000);
+                }
+              }}
               onStop={() => setState('completed')}
               onAccept={accept}
               onRetry={() => { setState('idle'); setTime(0); }}
@@ -249,6 +258,13 @@ function LinesRecording({ quest }: { quest: Quest | undefined }) {
           </motion.div>
         </AnimatePresence>
       </div>
+
+      {showNoisePause && (
+        <AcousticNoisePause
+          onClose={() => { setShowNoisePause(false); setState('idle'); setTime(0); }}
+          onResume={() => setShowNoisePause(false)}
+        />
+      )}
     </div>
   );
 }

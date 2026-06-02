@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
+import { DPDPConsentRevocation } from './DPDPConsentRevocation';
 import { Award, Settings, LogOut, ChevronRight, Shield, Trash2, Zap, ShieldCheck, Building2, Repeat2, BarChart3 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { RoleSwitcher } from './ui/RoleSwitcher';
@@ -26,6 +27,7 @@ const menuItems = [
 export function Profile() {
   const navigate = useNavigate();
   const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
+  const [showRevokeSheet, setShowRevokeSheet]   = useState(false);
 
   return (
     <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
@@ -354,6 +356,7 @@ export function Profile() {
                 </span>
               </div>
               <button
+                onClick={() => setShowRevokeSheet(true)}
                 style={{
                   width: '100%',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
@@ -471,6 +474,12 @@ export function Profile() {
         })}
       </div>
 
+      {showRevokeSheet && (
+        <DPDPConsentRevocation
+          onClose={() => setShowRevokeSheet(false)}
+          onRevoked={() => setShowRevokeSheet(false)}
+        />
+      )}
     </div>
   );
 }
