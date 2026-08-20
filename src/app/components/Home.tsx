@@ -67,8 +67,9 @@ export function Home() {
   const { profile } = useSession();
   const [streak] = useState(5);
   // Home-first: a freshly-authed profile lands on the progressive new-user
-  // experience; the rich dashboard is the established/no-profile default.
-  const isNewUser = dev.isNewUser || !!profile;
+  // experience until their first earning clears; once 'credited' they graduate
+  // to the established dashboard. DevPanel can force the new-user view.
+  const isNewUser = dev.isNewUser || (!!profile && profile.stage !== 'credited');
   const [greeting, setGreeting] = useState(getGreeting());
   const [notifOpen, setNotifOpen] = useState(false);
   const unreadCount = 3;
@@ -375,7 +376,7 @@ export function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, delay: 0.4 }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => navigate('/recording/sample-quest')}
+          onClick={() => navigate('/recording/q-lines-1')}
           style={{
             width: '100%', height: 62, borderRadius: 999,
             background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',

@@ -22,19 +22,20 @@
   --accent-900:  oklch(0.30  0.110 26);
   --accent-950:  oklch(0.20  0.070 24);
 
-  /* — Neutral (slate, hue ~250, slight cool) — */
+  /* — Neutral (quiet warm, hue ~70) — one warm base per brief (§ light UI).
+     Was cool slate (hue 250); warmed so the whole light UI + --cream agree. */
   --neutral-0:   #FFFFFF;
-  --neutral-50:  oklch(0.985 0.003 250);
-  --neutral-100: oklch(0.97  0.005 250);
-  --neutral-200: oklch(0.93  0.008 250);
-  --neutral-300: oklch(0.88  0.012 250);
-  --neutral-400: oklch(0.75  0.015 250);
-  --neutral-500: oklch(0.62  0.018 250);
-  --neutral-600: oklch(0.48  0.022 250);
-  --neutral-700: oklch(0.37  0.025 250);
-  --neutral-800: oklch(0.24  0.028 250);
-  --neutral-900: oklch(0.18  0.025 250);
-  --neutral-950: oklch(0.10  0.020 250);
+  --neutral-50:  oklch(0.985 0.003 70);
+  --neutral-100: oklch(0.97  0.006 70);
+  --neutral-200: oklch(0.93  0.010 70);
+  --neutral-300: oklch(0.88  0.014 70);
+  --neutral-400: oklch(0.75  0.016 70);
+  --neutral-500: oklch(0.62  0.018 70);
+  --neutral-600: oklch(0.48  0.022 70);
+  --neutral-700: oklch(0.37  0.024 70);
+  --neutral-800: oklch(0.24  0.026 70);
+  --neutral-900: oklch(0.18  0.022 70);
+  --neutral-950: oklch(0.10  0.016 70);
 
   /* — Success (green, hue ~150) — */
   --success-50:  oklch(0.97  0.020 150);
@@ -71,7 +72,8 @@
   --border-strong:     var(--neutral-300);
 
   --navy:              var(--neutral-950);
-  --cream:             #FAF6F0;
+  /* --cream retired into the one warm base; kept as an alias so any stragglers resolve. */
+  --cream:             var(--neutral-100);
 
   /* ─── Hero dark surface (was hardcoded in Wallet/Home; now formalized) ───
      Source of truth for the navy hero gradient AND for calibrating clay

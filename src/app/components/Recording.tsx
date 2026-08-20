@@ -1,132 +1,32 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mic, Square, Play, Check, Users, ChevronRight, ChevronLeft } from 'lucide-react';
-import { Waveform } from './ui/Waveform';
+import {
+  Mic, Square, Play, Pause, Check, RotateCcw, ChevronLeft, ChevronRight,
+  Clock, Coins, Users2, Volume2, AlertCircle,
+} from 'lucide-react';
 import { VoiceVisualizer } from './ui/VoiceVisualizer';
-import { quests, Quest } from '../lib/quests';
+import { getQuest, formatMeta, Quest, QuestFormat } from '../lib/quests';
+import {
+  LINES_CONTENT, SCENARIO_CONTENT, INTERVIEW_CONTENT, ROOM_CONTENT,
+} from '../lib/questContent';
 import { AcousticNoisePause } from './AcousticNoisePause';
 import { useDevContext } from '../lib/DevContext';
 import { ConsentSheet } from './ui/ConsentSheet';
-import { hasConsented } from '../lib/session';
+import { hasConsented, advanceStage, getProfile } from '../lib/session';
 
-/* ─── Script data ──────────────────────────────────────────────────── */
-
-interface ScriptTurn {
-  role: 'you' | 'other';
-  label: string;
-  text: string;
-}
-
-const SCENARIO_SCRIPTS: Record<string, { setup: string; turns: ScriptTurn[] }> = {
-  'q-scen-1': {
-    setup: 'You walk into a busy café on a Monday morning. There\'s a short queue at the counter. You know what you want.',
-    turns: [
-      { role: 'you',   label: 'YOU',     text: '"Hi, can I get a large oat milk latte and one almond croissant, please?"' },
-      { role: 'other', label: 'BARISTA', text: '"Of course! Name for the order?"' },
-      { role: 'you',   label: 'YOU',     text: '"Arjun. Quick question — any dairy milk options too?"' },
-      { role: 'other', label: 'BARISTA', text: '"Yes — full cream, semi-skimmed, or oat. Your latte should be about eight minutes. Queue\'s a bit long today."' },
-      { role: 'you',   label: 'YOU',     text: '"Eight minutes? I have a 9 o\'clock. Can I just pay now and grab it from the bar when it\'s ready?"' },
-      { role: 'other', label: 'BARISTA', text: '"Absolutely, we\'ll call your name. Card or UPI?"' },
-      { role: 'you',   label: 'YOU',     text: '"UPI please. Thanks."' },
-    ],
-  },
-  'q-scen-2': {
-    setup: 'General physician\'s clinic, late afternoon. You\'ve had a fever, headache, and body ache for three days. You waited an hour to get in.',
-    turns: [
-      { role: 'you',    label: 'YOU',     text: '"Doctor, mujhe pichhle teen din se bukhar hai, aur sar bhi bahut bhaari lag raha hai..."' },
-      { role: 'other',  label: 'DOCTOR',  text: '"Kitna temperature aa raha hai? Maine koi painkiller liya hai aapne?"' },
-      { role: 'you',    label: 'YOU',     text: '"Haan, Crocin li thi — ek baar, aaj subah. Temperature 101.4 tha raat ko."' },
-      { role: 'other',  label: 'DOCTOR',  text: '"Khana khaya? Neend kaisi hai? Koi khansi ya gale mein dard?"' },
-      { role: 'you',    label: 'YOU',     text: '"Khana khaane ka mann nahi tha bilkul... neend bhi puri nahi hui. Gale mein thoda dard hai, khansi nahi."' },
-      { role: 'other',  label: 'DOCTOR',  text: '"Theek hai. Main ek blood test aur throat swab recommend karunga. Aaj raat pani zyada pijiye."' },
-      { role: 'you',    label: 'YOU',     text: '"Koi serious baat toh nahi hai na? Kab tak theek ho jaaunga?"' },
-      { role: 'other',  label: 'DOCTOR',  text: '"Lagbhag 2–3 din mein. Waqt par reports aane do, phir decide karenge."' },
-      { role: 'you',    label: 'YOU',     text: '"Okay, shukriya doctor. Main aaj hi test karwa leta hoon."' },
-    ],
-  },
-  'q-scen-3': {
-    setup: 'You\'re on a phone call to an electronics store\'s support line. You bought headphones two weeks ago and the left earbud has stopped working.',
-    turns: [
-      { role: 'you',    label: 'YOU',     text: '"Hi, I bought a pair of headphones from your Pune store on the 14th, and the left earbud has completely stopped working."' },
-      { role: 'other',  label: 'SUPPORT', text: '"I\'m sorry to hear that. Can I get your order number or the registered email, please?"' },
-      { role: 'you',    label: 'YOU',     text: '"Sure, it\'s arjun.mehta@gmail.com. I still have the bill too."' },
-      { role: 'other',  label: 'SUPPORT', text: '"I can see the order. Since it\'s within the 30-day return window, we can process an exchange. Are you near a store?"' },
-      { role: 'you',    label: 'YOU',     text: '"Not really — is there any way to do this by courier? I work long hours and the store closes at 8."' },
-      { role: 'other',  label: 'SUPPORT', text: '"We do have a pickup option but it takes 5–7 days. Alternatively you could visit on a Saturday."' },
-      { role: 'you',    label: 'YOU',     text: '"Okay, the pickup works. Can you confirm the replacement will be the same model? Not a refurbished unit?"' },
-      { role: 'other',  label: 'SUPPORT', text: '"Yes, brand new same model. I\'ll send the pickup request now — you\'ll get an SMS tomorrow."' },
-      { role: 'you',    label: 'YOU',     text: '"Perfect. Thanks for sorting this out quickly."' },
-    ],
-  },
-  'q-scen-4': {
-    setup: 'It\'s 9pm. You\'ve been on hold for 22 minutes. Your flight to Bengaluru tomorrow has just been cancelled — for the second time this week.',
-    turns: [
-      { role: 'you',    label: 'YOU',     text: '"I\'ve been waiting on this line for almost half an hour. And this is the second cancellation in three days. I need to understand what\'s happening."' },
-      { role: 'other',  label: 'AGENT',   text: '"I sincerely apologise for the wait and the disruption, sir. Can I get your booking reference?"' },
-      { role: 'you',    label: 'YOU',     text: '"It\'s FEU-4482. And I\'d like to know — what\'s the actual reason for this second cancellation?"' },
-      { role: 'other',  label: 'AGENT',   text: '"There\'s been an operational crew issue on the route. We\'ve rebooked you on a 7 AM flight tomorrow."' },
-      { role: 'you',    label: 'YOU',     text: '"7 AM is not viable. I have a meeting at 9 in Bengaluru. I need the 11 PM flight tonight or a full refund."' },
-      { role: 'other',  label: 'AGENT',   text: '"The 11 PM is at capacity. I can put you on a waitlist or process a full refund with a meal voucher."' },
-      { role: 'you',    label: 'YOU',     text: '"Is there a supervisor available? I\'d like to understand what compensation is possible for the time I\'ve already lost."' },
-      { role: 'other',  label: 'AGENT',   text: '"I can escalate. Please hold for a few minutes."' },
-      { role: 'you',    label: 'YOU',     text: '"I\'ll hold. But please note — I\'ve been waiting since 8:40 and I have a screenshot of both cancellation notices."' },
-    ],
-  },
-};
-
-const GROUP_SCRIPTS: Record<string, { scene: string; speakers: string[]; turns: Array<{ speakerIdx: number; text: string }> }> = {
-  'q-group-1': {
-    scene: 'Sunday dinner, four people around a table. The eldest just brought up the upcoming family wedding in Lucknow.',
-    speakers: ['Eldest (Dada ji)', 'Parent', 'Sibling', 'You (Youngest)'],
-    turns: [
-      { speakerIdx: 0, text: '"Toh finally, Lucknow ki shaadi ka date pakka hua — 18 ko hai."' },
-      { speakerIdx: 1, text: '"Haan, flight book karni padegi jaldi. Season mein bahut rush hota hai."' },
-      { speakerIdx: 2, text: '"Main toh train se jaana chahta hoon. Overnight ka mazaa alag hai."' },
-      { speakerIdx: 3, text: '"Main bhi train se — koi ek gaana gaayega toh pair milaunga!"' },
-      { speakerIdx: 0, text: '"Haha, woh toh hai. Lekin Dadi ji ko flight se hi jaana hoga."' },
-      { speakerIdx: 1, text: '"Bilkul. Main unka aur apna ticket ek saath book kar leta hoon."' },
-      { speakerIdx: 2, text: '"Aur dress code kya hai? Shaadi ke liye kuch traditional lena padega."' },
-      { speakerIdx: 3, text: '"Dada ji, aapki baat sun ke lagta hai yeh shaadi kitni badi hogi. Kaafi log aa rahe hain?"' },
-      { speakerIdx: 0, text: '"Minimum 400. Poorey khaandaan ko bulaya hai. Aur catering bhi Lucknawi hai."' },
-      { speakerIdx: 1, text: '"Khana toh mast hoga. Awadhi biryani."' },
-      { speakerIdx: 2, text: '"Aur kabab! Main pehle din hi pahunch jaaunga."' },
-      { speakerIdx: 3, text: '"Hum sab saath chalein toh zyada mazaa aayega. Plan bana lete hain."' },
-    ],
-  },
-  'q-group-2': {
-    scene: 'Saturday night, 8:15 PM, busy restaurant lobby. You arrive for a 8 PM reservation only to find the table given to another party.',
-    speakers: ['Host (Manager)', 'Customer', 'Customer\'s Partner'],
-    turns: [
-      { speakerIdx: 1, text: '"Hi, we have an 8 PM reservation under Mehta — table for two."' },
-      { speakerIdx: 0, text: '"Let me check... I do see the booking, but I\'m afraid there\'s been a mix-up tonight. The table was released at 8:10."' },
-      { speakerIdx: 2, text: '"Released? We were stuck in traffic — we\'re barely 15 minutes late."' },
-      { speakerIdx: 0, text: '"I\'m very sorry. Our policy is 10 minutes, but I should have handled this better. Let me see what I can do."' },
-      { speakerIdx: 1, text: '"We\'d appreciate that. This is a special occasion — we specifically chose this restaurant."' },
-      { speakerIdx: 0, text: '"I can offer you our private booth in 20 minutes, and complimentary starters while you wait."' },
-      { speakerIdx: 2, text: '"A private booth is actually nicer. But we\'d like a note for the bill as well."' },
-      { speakerIdx: 0, text: '"Of course — 15% off the total. I\'m genuinely sorry for the inconvenience."' },
-      { speakerIdx: 1, text: '"That works. We\'ll wait at the bar. Thank you for making it right."' },
-    ],
-  },
-};
-
-/* ─── Main component ───────────────────────────────────────────────── */
-
-type Phase = 'intro' | 'recording' | 'done';
-type RecordingState = 'idle' | 'recording' | 'completed';
+/* ═══════════════════════════════════════════════════════════════════
+   Dispatcher — consent gate, invalid/disabled guards, format routing
+   ═══════════════════════════════════════════════════════════════════ */
 
 export function Recording() {
   const navigate = useNavigate();
   const { questId } = useParams();
+  const quest = getQuest(questId);
 
-  const quest: Quest | undefined = quests.find(q => q.id === questId);
-  const format = quest?.format ?? 'lines';
-
-  /* ── Consent gate: lazy, before the first capture (§ Pass 1) ── */
   const [consentPassed, setConsentPassed] = useState(hasConsented());
 
-  /* ── Swipe-from-left-edge to go back ── */
+  /* Edge-swipe back */
   useEffect(() => {
     let startX = 0;
     const onStart = (e: TouchEvent) => { startX = e.touches[0].clientX; };
@@ -141,918 +41,747 @@ export function Recording() {
     };
   }, [navigate]);
 
+  /* Guard: unknown quest id — no silent fallback content (§ Pass 2). */
+  if (!quest) return <NotFound onBack={() => navigate('/contributor/quests')} />;
+
+  /* Guard: interview with no track yet — waiting for prompts. */
+  if (quest.available === false || (quest.format === 'interview' && !quest.track)) {
+    return <WaitingForPrompts quest={quest} onBack={() => navigate('/contributor/quests')} />;
+  }
+
   if (!consentPassed) {
     return (
       <div className="min-h-screen" style={{ background: 'var(--background)' }}>
-        <ConsentSheet
-          onComplete={() => setConsentPassed(true)}
-          onCancel={() => navigate(-1)}
-        />
+        <ConsentSheet onComplete={() => setConsentPassed(true)} onCancel={() => navigate(-1)} />
       </div>
     );
   }
 
-  if (format === 'lines') return <LinesRecording quest={quest} />;
-  if (format === 'scenario') return <ScenarioRecording quest={quest} />;
-  return <GroupRecording quest={quest} />;
+  return <Studio quest={quest} />;
 }
 
-/* ─────────────────────────────────────────────────────────────────── */
-/*  LINES — quick multi-clip recording                                 */
-/* ─────────────────────────────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════
+   Studio — Brief → Capture → Review → Pending, shared across formats
+   ═══════════════════════════════════════════════════════════════════ */
 
-const FALLBACK_LINES = [
-  '"नमस्ते, आप कैसे हैं?"',
-  '"मुझे एक कप चाय चाहिए।"',
-  '"क्या आप यहाँ नए हैं?"',
-  '"बहुत अच्छा! धन्यवाद।"',
-  '"कल मिलते हैं।"',
-  '"यह रास्ता कहाँ जाता है?"',
-];
+type Beat = 'brief' | 'capture' | 'review' | 'pending';
 
-function LinesRecording({ quest }: { quest: Quest | undefined }) {
+interface Clip { label: string; seconds: number; }
+
+function Studio({ quest }: { quest: Quest }) {
   const navigate = useNavigate();
-  const dev = useDevContext();
-  const [currentLine, setCurrentLine] = useState(0);
-  const [state, setState] = useState<RecordingState>('idle');
-  const [time, setTime] = useState(0);
-  const [done, setDone] = useState<number[]>([]);
-  const [showNoisePause, setShowNoisePause] = useState(false);
+  const [beat, setBeat] = useState<Beat>('brief');
+  const [clips, setClips] = useState<Clip[]>([]);
 
-  const lines = FALLBACK_LINES;
-  const total = lines.length;
-  const progress = (done.length / total) * 100;
-
-  useEffect(() => {
-    let t: NodeJS.Timeout;
-    if (state === 'recording') t = setInterval(() => setTime(p => p + 1), 1000);
-    return () => clearInterval(t);
-  }, [state]);
-
-  const fmtTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
-
-  const accept = () => {
-    const next = [...done, currentLine];
-    setDone(next);
-    if (currentLine < total - 1) { setCurrentLine(p => p + 1); setState('idle'); setTime(0); }
-    else navigate('/contributor');
+  const submit = () => {
+    // Blocker 2: first submitted session moves day0 → session.
+    if (getProfile()?.stage === 'day0') advanceStage('session');
+    setBeat('pending');
   };
 
   return (
-    <div className="min-h-screen flex flex-col relative" style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}>
-      <SwipeHint />
+    <AnimatePresence mode="wait">
+      {beat === 'brief' && (
+        <motion.div key="brief" {...beatFade}>
+          <Brief quest={quest} onStart={() => setBeat('capture')} onBack={() => navigate('/contributor/quests')} />
+        </motion.div>
+      )}
+      {beat === 'capture' && (
+        <motion.div key="capture" {...beatFade}>
+          <Capture
+            quest={quest}
+            onDone={(recorded) => { setClips(recorded); setBeat('review'); }}
+            onBack={() => setBeat('brief')}
+          />
+        </motion.div>
+      )}
+      {beat === 'review' && (
+        <motion.div key="review" {...beatFade}>
+          <Review quest={quest} clips={clips} onSubmit={submit} onRetakeAll={() => setBeat('capture')} />
+        </motion.div>
+      )}
+      {beat === 'pending' && (
+        <motion.div key="pending" {...beatFade}>
+          <Pending quest={quest} onHome={() => navigate('/contributor')} />
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
 
-      {/* Header */}
+const beatFade = {
+  initial: { opacity: 0 },
+  animate: { opacity: 1 },
+  exit: { opacity: 0 },
+  transition: { duration: 0.22 },
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   BEAT 1 — Brief (light, tab-bar world). ~10s of orientation.
+   ═══════════════════════════════════════════════════════════════════ */
+
+function Brief({ quest, onStart, onBack }: { quest: Quest; onStart: () => void; onBack: () => void }) {
+  const meta = formatMeta[quest.format];
+  const count = captureCount(quest);
+
+  return (
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
       <div className="px-6 pt-14 pb-4">
-        <BackButton label="Quests" onPress={() => navigate('/contributor/quests')} dark />
-        <div className="flex items-center justify-between mb-1">
-          <QuestFormatEyebrow format="lines" />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.35)' }}>
-            {done.length}/{total}
+        <button onClick={onBack} style={backBtn}>
+          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
+        </button>
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', color: 'var(--accent-primary-deep)', textTransform: 'uppercase' }}>
+          {meta.short}
+        </span>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', marginTop: 6, letterSpacing: '-0.01em' }}>
+          {quest.title}
+        </h1>
+      </div>
+
+      <div className="flex-1 px-6 pb-40 overflow-y-auto">
+        {/* Meta row */}
+        <div className="flex items-center gap-4 mb-6" style={{ flexWrap: 'wrap' }}>
+          <MetaChip Icon={Coins} text={`₹${quest.cashPayout}`} accent />
+          <MetaChip Icon={Clock} text={quest.duration} />
+          <MetaChip
+            Icon={Users2}
+            text={
+              quest.format === 'room' ? `${quest.speakers} people`
+              : quest.format === 'interview' ? `${quest.questions} questions`
+              : `${count} ${quest.format === 'lines' ? 'lines' : 'turns'}`
+            }
+          />
+        </div>
+
+        {/* Scene / setup card */}
+        <SectionLabel>{quest.format === 'lines' ? 'What you\'ll read' : 'The scene'}</SectionLabel>
+        <div style={briefCard}>
+          <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.7 }}>
+            {briefScene(quest)}
+          </p>
+        </div>
+
+        {/* How this format works */}
+        <SectionLabel>How it works</SectionLabel>
+        <div style={{ ...briefCard, padding: '4px 18px' }}>
+          {howItWorks(quest.format).map((line, i, arr) => (
+            <div key={line} className="flex items-start gap-3" style={{ padding: '13px 0', borderBottom: i < arr.length - 1 ? '1px solid var(--card-border)' : 'none' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 700, color: 'var(--accent-primary-deep)', width: 16, flexShrink: 0 }}>{i + 1}</span>
+              <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5 }}>{line}</p>
+            </div>
+          ))}
+        </div>
+
+        {/* Mic guidance */}
+        <div className="flex items-center gap-2 mt-5" style={{ color: 'var(--text-muted)' }}>
+          <Volume2 style={{ width: 15, height: 15 }} strokeWidth={2} />
+          <p style={{ fontSize: 12, fontWeight: 500 }}>Find a quiet spot. Hold the phone a hand's width away.</p>
+        </div>
+      </div>
+
+      {/* Start */}
+      <div className="px-6 pb-10" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, var(--background) 68%, transparent)', paddingTop: 20 }}>
+        <motion.button whileTap={{ scale: 0.97 }} onClick={onStart} style={primaryCta}>
+          <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-on-accent)' }}>
+            {quest.format === 'room' ? 'Everyone ready — start take' : 'Start recording'}
           </span>
-        </div>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 19, fontWeight: 700, color: '#FFFFFF', marginBottom: 14 }}>
-          {quest?.title ?? 'Quick Lines'}
-        </h2>
-        <ProgressBar value={progress} />
+          <ChevronRight style={{ width: 20, height: 20, color: 'var(--text-on-accent)' }} />
+        </motion.button>
       </div>
+    </div>
+  );
+}
 
-      {/* Waveform bg */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div style={{ width: '90%' }}>
-          <Waveform color="var(--accent-primary)" opacity={state === 'recording' ? 0.12 : 0.05} height={100} />
-        </div>
-      </div>
+/* ═══════════════════════════════════════════════════════════════════
+   BEAT 2 — Capture (dim studio). Bottom-center control, sticky one-liner.
+   ═══════════════════════════════════════════════════════════════════ */
 
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-28 relative z-10">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentLine}
-            initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -18 }}
-            transition={{ duration: 0.28 }}
-            className="w-full"
-          >
-            {/* Line counter */}
-            <div className="flex justify-center mb-5">
-              <span style={{
-                padding: '5px 18px', borderRadius: 999,
-                background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-                fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.45)',
+function Capture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: Clip[]) => void; onBack: () => void }) {
+  if (quest.format === 'room') return <RoomCapture quest={quest} onDone={onDone} onBack={onBack} />;
+  return <StepCapture quest={quest} onDone={onDone} onBack={onBack} />;
+}
+
+/* ── Step-based capture: LINES · SCENARIO · INTERVIEW ─────────────── */
+
+type StepState = 'ready' | 'listening' | 'yourturn' | 'recording' | 'kept';
+
+function StepCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: Clip[]) => void; onBack: () => void }) {
+  const dev = useDevContext();
+  const steps = buildSteps(quest);
+  const [idx, setIdx] = useState(0);
+  const isInterview = quest.format === 'interview';
+  const [state, setState] = useState<StepState>(isInterview ? 'listening' : 'ready');
+  const [time, setTime] = useState(0);
+  const [clips, setClips] = useState<Clip[]>([]);
+  const [noise, setNoise] = useState(false);
+
+  const step = steps[idx];
+  const total = steps.length;
+
+  /* Recording timer */
+  useEffect(() => {
+    if (state !== 'recording') return;
+    const t = setInterval(() => setTime((p) => p + 1), 1000);
+    return () => clearInterval(t);
+  }, [state]);
+
+  /* Interview: simulate the pre-recorded stem playing, then "your turn". */
+  useEffect(() => {
+    if (state !== 'listening') return;
+    const t = setTimeout(() => setState('yourturn'), 2200);
+    return () => clearTimeout(t);
+  }, [state, idx]);
+
+  const startRec = () => {
+    setState('recording'); setTime(0);
+    if (dev.forceNoisePause) setTimeout(() => setNoise(true), 2000);
+  };
+  const stopRec = () => setState('kept');
+
+  const keep = () => {
+    const next = [...clips, { label: step.clipLabel, seconds: time || 3 }];
+    setClips(next);
+    if (idx < total - 1) {
+      setIdx(idx + 1); setTime(0);
+      setState(isInterview ? 'listening' : 'ready');
+    } else {
+      onDone(next);
+    }
+  };
+  const retake = () => { setState(isInterview ? 'yourturn' : 'ready'); setTime(0); };
+
+  const stickyLine =
+    isInterview ? `${step.context} · Q ${idx + 1} of ${total} · You`
+    : quest.format === 'scenario' ? `${quest.title} · Turn ${idx + 1} of ${total}`
+    : `${quest.title} · Line ${idx + 1} of ${total}`;
+
+  return (
+    <StudioShell sticky={stickyLine} progress={(idx + (state === 'kept' ? 1 : 0)) / total} onBack={onBack}>
+      <div className="flex-1 flex flex-col items-center justify-center px-7 text-center">
+        {/* Interview: the other voice, quiet */}
+        {isInterview && (
+          <div style={{ marginBottom: 28, width: '100%' }}>
+            <div className="flex items-center justify-center gap-2 mb-3">
+              <div style={{
+                width: 30, height: 30, borderRadius: 999,
+                background: state === 'listening' ? 'rgba(var(--accent-glow-rgb),0.22)' : 'rgba(255,255,255,0.06)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                Line {currentLine + 1} of {total}
+                {state === 'listening'
+                  ? <Volume2 style={{ width: 15, height: 15, color: 'var(--accent-primary-light)' }} strokeWidth={2.2} />
+                  : <Play style={{ width: 13, height: 13, color: 'rgba(255,255,255,0.4)' }} />}
+              </div>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'rgba(255,255,255,0.4)' }}>
+                {step.speaker} {state === 'listening' ? '· speaking' : ''}
               </span>
             </div>
-
-            {/* Prompt card */}
-            <div style={{
-              background: 'rgba(255,255,255,0.05)',
-              borderRadius: 20,
-              border: '1px solid rgba(255,255,255,0.08)',
-              padding: '28px 24px',
-              marginBottom: 36,
-              boxShadow: 'inset 0 1px 0 rgba(255,255,255,0.07)',
-            }}>
-              <p style={{ fontFamily: 'var(--font-sans)', fontSize: 20, fontWeight: 500, color: '#FFFFFF', textAlign: 'center', lineHeight: 1.6 }}>
-                {lines[currentLine]}
-              </p>
-            </div>
-
-            <RecordingControls
-              state={state}
-              time={time}
-              fmtTime={fmtTime}
-              onStart={() => {
-                setState('recording'); setTime(0);
-                if (dev.forceNoisePause) {
-                  setTimeout(() => setShowNoisePause(true), 2000);
-                }
-              }}
-              onStop={() => setState('completed')}
-              onAccept={accept}
-              onRetry={() => { setState('idle'); setTime(0); }}
-            />
-          </motion.div>
-        </AnimatePresence>
-      </div>
-
-      {showNoisePause && (
-        <AcousticNoisePause
-          onClose={() => { setShowNoisePause(false); setState('idle'); setTime(0); }}
-          onResume={() => setShowNoisePause(false)}
-        />
-      )}
-    </div>
-  );
-}
-
-/* ─────────────────────────────────────────────────────────────────── */
-/*  SCENARIO — multi-turn solo session                                 */
-/* ─────────────────────────────────────────────────────────────────── */
-
-function ScenarioRecording({ quest }: { quest: Quest | undefined }) {
-  const navigate = useNavigate();
-  const [phase, setPhase] = useState<Phase>('intro');
-  const [turnIdx, setTurnIdx] = useState(0);
-  const [state, setState] = useState<RecordingState>('idle');
-  const [time, setTime] = useState(0);
-
-  const scriptData = quest ? SCENARIO_SCRIPTS[quest.id] : undefined;
-  const setup = scriptData?.setup ?? '';
-  const turns = scriptData?.turns ?? [];
-  const myTurns = turns.filter(t => t.role === 'you');
-
-  // Which "my turn" index we're on
-  const [myTurnIdx, setMyTurnIdx] = useState(0);
-
-  useEffect(() => {
-    let t: NodeJS.Timeout;
-    if (state === 'recording') t = setInterval(() => setTime(p => p + 1), 1000);
-    return () => clearInterval(t);
-  }, [state]);
-
-  const fmtTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
-
-  const advanceTurn = () => {
-    // Find the next "you" turn in the full script after current
-    const currentMyTurn = myTurns[myTurnIdx];
-    const currentFullIdx = turns.findIndex(t => t === currentMyTurn);
-    const nextMyTurnIdx = myTurnIdx + 1;
-    if (nextMyTurnIdx < myTurns.length) {
-      setMyTurnIdx(nextMyTurnIdx);
-      const nextTurn = myTurns[nextMyTurnIdx];
-      const nextFullIdx = turns.indexOf(nextTurn);
-      setTurnIdx(nextFullIdx);
-      setState('idle');
-      setTime(0);
-    } else {
-      setPhase('done');
-    }
-  };
-
-  const currentYourTurnFullIdx = turns.indexOf(myTurns[myTurnIdx] ?? turns[0]);
-
-  /* ── INTRO PHASE ── */
-  if (phase === 'intro') {
-    return (
-      <div className="min-h-screen flex flex-col" style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}>
-        <SwipeHint />
-        <div className="px-6 pt-14 pb-4">
-          <BackButton label="Quests" onPress={() => navigate('/contributor/quests')} dark />
-          <QuestFormatEyebrow format="scenario" />
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: '#FFFFFF', marginTop: 6, marginBottom: 4 }}>
-            {quest?.title ?? 'Solo Scenario'}
-          </h2>
-          <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', marginBottom: 20 }}>
-            {myTurns.length} turns to record · {quest?.duration ?? '—'}
-          </p>
-        </div>
-
-        <div className="flex-1 px-6 pb-32 overflow-y-auto">
-          {/* Setup card */}
-          <div style={{
-            background: 'rgba(255,255,255,0.05)',
-            borderRadius: 20, border: '1px solid rgba(255,255,255,0.08)',
-            padding: '22px', marginBottom: 20,
-          }}>
-            <p style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
-              Setup
-            </p>
-            <p style={{ fontSize: 15, fontWeight: 500, color: 'rgba(255,255,255,0.85)', lineHeight: 1.7 }}>
-              {setup}
+            <p style={{ fontSize: 15, fontWeight: 500, color: 'rgba(255,255,255,0.5)', lineHeight: 1.6, fontStyle: 'italic' }}>
+              {step.stem}
             </p>
           </div>
+        )}
 
-          {/* Script preview — first 4 turns */}
-          <div style={{ marginBottom: 28 }}>
-            <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 14 }}>
-              Script preview
-            </p>
-            {turns.slice(0, 4).map((t, i) => (
-              <div key={i} className="flex gap-3 mb-3">
-                <span style={{
-                  fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
-                  color: t.role === 'you' ? 'var(--accent-primary)' : 'rgba(255,255,255,0.3)',
-                  width: 52, flexShrink: 0, paddingTop: 2,
-                }}>
-                  {t.label}
-                </span>
-                <p style={{
-                  fontSize: 13, fontWeight: t.role === 'you' ? 600 : 400,
-                  color: t.role === 'you' ? 'rgba(255,255,255,0.8)' : 'rgba(255,255,255,0.38)',
-                  lineHeight: 1.6, fontStyle: t.role === 'other' ? 'italic' : 'normal',
-                }}>
-                  {t.text}
-                </p>
-              </div>
-            ))}
-            {turns.length > 4 && (
-              <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.2)', marginTop: 4, paddingLeft: 64 }}>
-                + {turns.length - 4} more turns
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={idx + state}
+            initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }}
+            transition={{ duration: 0.24 }}
+            className="w-full"
+          >
+            {isInterview && (
+              <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary-light)', marginBottom: 12 }}>
+                {state === 'listening' ? 'Listen…' : 'Your answer'}
               </p>
             )}
-          </div>
-
-          {/* What to expect */}
-          <div style={{
-            background: 'rgba(255,255,255,0.04)', borderRadius: 16,
-            border: '1px solid rgba(255,255,255,0.07)',
-            padding: '16px', marginBottom: 8,
-          }}>
-            <p style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.4)', marginBottom: 10 }}>
-              How it works
+            <p style={{ fontFamily: 'var(--font-sans)', fontSize: 29, fontWeight: 600, color: 'var(--text-on-navy)', lineHeight: 1.45, letterSpacing: '-0.01em' }}>
+              {step.prompt}
             </p>
-            {[
-              'Read each turn carefully before recording',
-              'Record only YOUR lines — context turns are shown for reference',
-              'Speak naturally, as if you\'re actually in the situation',
-            ].map((tip, i) => (
-              <div key={i} className="flex items-start gap-2 mb-2">
-                <span style={{ fontSize: 13, color: 'var(--accent-primary)', fontWeight: 700, marginTop: 0.5, flexShrink: 0 }}>·</span>
-                <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.5)', lineHeight: 1.55 }}>{tip}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Start CTA */}
-        <div className="px-6 pb-10" style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            onClick={() => setPhase('recording')}
-            style={{
-              width: '100%', height: 58, borderRadius: 999,
-              background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-              border: 'none', cursor: 'pointer',
-              boxShadow: '0px 8px 28px rgba(var(--accent-glow-rgb),0.40), inset 0px 1px 0px rgba(255,255,255,0.18)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-            }}
-          >
-            <span style={{ fontSize: 16, fontWeight: 700, color: '#FFFFFF' }}>Start Session</span>
-            <ChevronRight className="w-5 h-5 text-white" />
-          </motion.button>
-        </div>
-      </div>
-    );
-  }
-
-  /* ── DONE PHASE ── */
-  if (phase === 'done') {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}>
-        <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }}>
-          <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#1E6B40', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
-            <Check className="w-10 h-10 text-white" strokeWidth={2.5} />
-          </div>
-        </motion.div>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: '#FFFFFF', textAlign: 'center', marginBottom: 8 }}>
-          Session Complete
-        </h2>
-        <p style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.45)', textAlign: 'center', marginBottom: 10 }}>
-          {myTurns.length} turns recorded
-        </p>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700, color: 'var(--accent-primary)', marginBottom: 8 }}>
-          +₹{quest?.cashPayout ?? 0}
-        </p>
-        <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.3)', marginBottom: 40 }}>
-          Your voice just trained an AI.
-        </p>
-        <button
-          onClick={() => navigate('/contributor')}
-          style={{
-            width: '100%', height: 56, borderRadius: 999,
-            background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-            border: 'none', cursor: 'pointer', fontSize: 16, fontWeight: 700, color: '#FFFFFF',
-            boxShadow: '0px 8px 24px rgba(var(--accent-glow-rgb),0.38)',
-          }}
-        >
-          Back to Home
-        </button>
-      </div>
-    );
-  }
-
-  /* ── RECORDING PHASE ── */
-  const currentTurn = myTurns[myTurnIdx];
-  const prevTurns = turns.slice(0, currentYourTurnFullIdx);
-
-  return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}>
-      <SwipeHint />
-
-      {/* Header */}
-      <div className="px-6 pt-14 pb-3">
-        <BackButton label="Quests" onPress={() => navigate('/contributor/quests')} dark />
-        <div className="flex items-center justify-between mb-1">
-          <QuestFormatEyebrow format="scenario" />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.3)' }}>
-            Your turn {myTurnIdx + 1}/{myTurns.length}
-          </span>
-        </div>
-        <ProgressBar value={((myTurnIdx) / myTurns.length) * 100} />
-      </div>
-
-      {/* Script scroll */}
-      <div className="flex-1 overflow-y-auto px-6 pb-4">
-        {/* Previous context turns */}
-        {prevTurns.slice(-3).map((t, i) => (
-          <motion.div
-            key={`prev-${i}`}
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="flex gap-3 mb-4"
-          >
-            <span style={{
-              fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.2)', width: 52, flexShrink: 0, paddingTop: 2,
-            }}>
-              {t.label}
-            </span>
-            <p style={{
-              fontSize: 13, color: 'rgba(255,255,255,0.25)', lineHeight: 1.65,
-              fontStyle: 'italic',
-            }}>
-              {t.text}
-            </p>
+            {step.hint && (
+              <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.4)', marginTop: 14, lineHeight: 1.5 }}>
+                {step.hint}
+              </p>
+            )}
           </motion.div>
-        ))}
+        </AnimatePresence>
 
-        {/* Current YOUR turn — highlighted */}
-        <motion.div
-          key={`current-${myTurnIdx}`}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          style={{
-            background: 'rgba(255,255,255,0.06)',
-            borderRadius: 16,
-            border: '1px solid rgba(var(--accent-glow-rgb),0.30)',
-            padding: '18px',
-            marginBottom: 24,
-          }}
-        >
-          <div className="flex items-center gap-2 mb-3">
-            <div style={{
-              width: 6, height: 6, borderRadius: '50%',
-              background: 'var(--accent-primary)',
-              boxShadow: '0 0 0 3px rgba(var(--accent-glow-rgb),0.25)',
-            }} />
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
-              Your Turn
-            </span>
-          </div>
-          <p style={{ fontSize: 17, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.65 }}>
-            {currentTurn?.text}
-          </p>
-        </motion.div>
+        {/* Waveform only while sound happens */}
+        <div style={{ height: 84, width: '100%', marginTop: 30, display: 'flex', alignItems: 'center' }}>
+          {state === 'recording' && <VoiceVisualizer active height={84} />}
+        </div>
+      </div>
 
-        {/* Waveform bg during recording */}
+      {/* Bottom-center control */}
+      <ControlDock>
+        {state === 'listening' && (
+          <p style={dockHint}>Playing the prompt…</p>
+        )}
+        {(state === 'ready' || state === 'yourturn') && (
+          <RecordButton onPress={startRec} />
+        )}
         {state === 'recording' && (
-          <div style={{ marginBottom: 16 }}>
-            <VoiceVisualizer active height={80} />
+          <div className="flex flex-col items-center">
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700, color: 'var(--text-on-navy)', marginBottom: 14 }}>{fmt(time)}</div>
+            <StopButton onPress={stopRec} />
           </div>
         )}
+        {state === 'kept' && (
+          <KeepRetake time={time} onKeep={keep} onRetake={retake} last={idx === total - 1} />
+        )}
+      </ControlDock>
 
-        <RecordingControls
-          state={state}
-          time={time}
-          fmtTime={fmtTime}
-          onStart={() => { setState('recording'); setTime(0); }}
-          onStop={() => setState('completed')}
-          onAccept={advanceTurn}
-          onRetry={() => { setState('idle'); setTime(0); }}
-          submitLabel={myTurnIdx < myTurns.length - 1 ? 'Submit & Next Turn' : 'Submit & Finish'}
+      {noise && (
+        <AcousticNoisePause
+          onClose={() => { setNoise(false); setState(isInterview ? 'yourturn' : 'ready'); setTime(0); }}
+          onResume={() => setNoise(false)}
         />
-      </div>
-    </div>
+      )}
+    </StudioShell>
   );
 }
 
-/* ─────────────────────────────────────────────────────────────────── */
-/*  GROUP — pass-the-device local multi-speaker                        */
-/* ─────────────────────────────────────────────────────────────────── */
+/* ── ROOM capture: one continuous take, one control, scrolling score ── */
 
-function GroupRecording({ quest }: { quest: Quest | undefined }) {
-  const navigate = useNavigate();
-  const [phase, setPhase] = useState<Phase>('intro');
-  const [state, setState] = useState<RecordingState>('idle');
+function RoomCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: Clip[]) => void; onBack: () => void }) {
+  const script = ROOM_CONTENT[quest.id];
+  const [recording, setRecording] = useState(false);
   const [time, setTime] = useState(0);
-  const [turnIdx, setTurnIdx] = useState(0);
-  const [waitingPass, setWaitingPass] = useState(false);
-
-  const scriptData = quest ? GROUP_SCRIPTS[quest.id] : undefined;
-  const scene = scriptData?.scene ?? '';
-  const speakers = scriptData?.speakers ?? ['Speaker 1', 'Speaker 2', 'Speaker 3'];
-  const turns = scriptData?.turns ?? [];
+  const [cue, setCue] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    let t: NodeJS.Timeout;
-    if (state === 'recording') t = setInterval(() => setTime(p => p + 1), 1000);
+    if (!recording) return;
+    const t = setInterval(() => setTime((p) => p + 1), 1000);
     return () => clearInterval(t);
-  }, [state]);
+  }, [recording]);
 
-  const fmtTime = (s: number) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
+  /* Advance the score cue every few seconds while rolling (mocked pacing). */
+  useEffect(() => {
+    if (!recording || !script) return;
+    if (cue >= script.score.length - 1) return;
+    const t = setTimeout(() => setCue((c) => Math.min(c + 1, script.score.length - 1)), 3400);
+    return () => clearTimeout(t);
+  }, [recording, cue, script]);
 
-  const currentTurn = turns[turnIdx];
-  const nextTurn = turns[turnIdx + 1];
-  const speakerChanged = nextTurn && nextTurn.speakerIdx !== currentTurn?.speakerIdx;
+  useEffect(() => {
+    scrollRef.current?.querySelector('[data-active="true"]')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [cue]);
 
-  const acceptTurn = () => {
-    if (turnIdx >= turns.length - 1) { setPhase('done'); return; }
-    if (speakerChanged) {
-      setWaitingPass(true);
-    } else {
-      setTurnIdx(p => p + 1);
-      setState('idle');
-      setTime(0);
-    }
-  };
+  if (!script) return null;
 
-  const proceedAfterPass = () => {
-    setTurnIdx(p => p + 1);
-    setState('idle');
-    setTime(0);
-    setWaitingPass(false);
-  };
-
-  const speakerColors = [
-    'var(--accent-primary)',
-    '#4EC992',
-    '#7B83C4',
-    '#E8B84B',
-  ];
-
-  /* ── INTRO ── */
-  if (phase === 'intro') {
-    return (
-      <div className="min-h-screen flex flex-col" style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}>
-        <SwipeHint />
-        <div className="flex-1 px-6 pt-14 pb-32 overflow-y-auto">
-          <BackButton label="Quests" onPress={() => navigate('/contributor/quests')} dark />
-          <QuestFormatEyebrow format="group" />
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: '#FFFFFF', marginTop: 6, marginBottom: 16 }}>
-            {quest?.title ?? 'Group Session'}
-          </h2>
-
-          {/* Scene card */}
-          <div style={{
-            background: 'rgba(255,255,255,0.05)', borderRadius: 20,
-            border: '1px solid rgba(255,255,255,0.08)', padding: '22px', marginBottom: 24,
-          }}>
-            <p style={{ fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 10 }}>
-              Scene
-            </p>
-            <p style={{ fontSize: 15, fontWeight: 500, color: 'rgba(255,255,255,0.85)', lineHeight: 1.7 }}>
-              {scene}
-            </p>
-          </div>
-
-          {/* Speaker roles */}
-          <p style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 14 }}>
-            {speakers.length} speakers · everyone gathers around one device
-          </p>
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 10, marginBottom: 28 }}>
-            {speakers.map((name, i) => (
-              <div key={i} style={{
-                display: 'flex', alignItems: 'center', gap: 14,
-                background: 'rgba(255,255,255,0.04)', borderRadius: 16,
-                border: '1px solid rgba(255,255,255,0.07)',
-                padding: '14px 16px',
-              }}>
-                <div style={{
-                  width: 36, height: 36, borderRadius: '50%',
-                  background: `${speakerColors[i % speakerColors.length]}22`,
-                  border: `1.5px solid ${speakerColors[i % speakerColors.length]}55`,
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-                }}>
-                  <span style={{ fontSize: 14, fontWeight: 700, color: speakerColors[i % speakerColors.length] }}>
-                    {i + 1}
-                  </span>
-                </div>
-                <p style={{ fontSize: 14, fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>{name}</p>
-              </div>
-            ))}
-          </div>
-
-          {/* How it works */}
-          <div style={{
-            background: 'rgba(255,255,255,0.04)', borderRadius: 16,
-            border: '1px solid rgba(255,255,255,0.07)', padding: '16px',
-          }}>
-            <p style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
-              How it works
-            </p>
-            {[
-              'Each speaker takes the device when it\'s their turn',
-              'Read your line, then tap Record',
-              'Pass the device to the next speaker when prompted',
-            ].map((t, i) => (
-              <div key={i} className="flex items-start gap-2 mb-2">
-                <span style={{ color: 'var(--accent-primary)', fontWeight: 700, flexShrink: 0, marginTop: 0.5 }}>·</span>
-                <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', lineHeight: 1.55 }}>{t}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="px-6 pb-10" style={{ position: 'fixed', bottom: 0, left: 0, right: 0 }}>
-          <motion.button
-            whileTap={{ scale: 0.97 }}
-            onClick={() => setPhase('recording')}
-            style={{
-              width: '100%', height: 58, borderRadius: 999,
-              background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-              border: 'none', cursor: 'pointer',
-              boxShadow: '0px 8px 28px rgba(var(--accent-glow-rgb),0.40), inset 0px 1px 0px rgba(255,255,255,0.18)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-            }}
-          >
-            <Users className="w-5 h-5 text-white" />
-            <span style={{ fontSize: 16, fontWeight: 700, color: '#FFFFFF' }}>Everyone's Ready — Start</span>
-          </motion.button>
-        </div>
-      </div>
-    );
-  }
-
-  /* ── DONE ── */
-  if (phase === 'done') {
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}>
-        <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }}>
-          <div style={{ width: 80, height: 80, borderRadius: '50%', background: '#1E6B40', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
-            <Check className="w-10 h-10 text-white" strokeWidth={2.5} />
-          </div>
-        </motion.div>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: '#FFFFFF', textAlign: 'center', marginBottom: 8 }}>
-          Session Complete
-        </h2>
-        <p style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.4)', textAlign: 'center', marginBottom: 10 }}>
-          {speakers.length} speakers · {turns.length} turns recorded
-        </p>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700, color: 'var(--accent-primary)', marginBottom: 8 }}>
-          +₹{quest?.cashPayout ?? 0}
-        </p>
-        <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.3)', marginBottom: 40 }}>
-          Real voices. Real conversations. Real data.
-        </p>
-        <button
-          onClick={() => navigate('/contributor')}
-          style={{
-            width: '100%', height: 56, borderRadius: 999,
-            background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-            border: 'none', cursor: 'pointer', fontSize: 16, fontWeight: 700, color: '#FFFFFF',
-            boxShadow: '0px 8px 24px rgba(var(--accent-glow-rgb),0.38)',
-          }}
-        >
-          Back to Home
-        </button>
-      </div>
-    );
-  }
-
-  /* ── PASS DEVICE TRANSITION ── */
-  if (waitingPass && nextTurn) {
-    const nextSpeaker = speakers[nextTurn.speakerIdx];
-    const color = speakerColors[nextTurn.speakerIdx % speakerColors.length];
-    return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-8" style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}>
-        <motion.div
-          initial={{ scale: 0.85, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 280, damping: 22 }}
-          className="text-center"
-        >
-          <div style={{
-            width: 80, height: 80, borderRadius: '50%',
-            background: `${color}22`,
-            border: `2px solid ${color}55`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 24px',
-          }}>
-            <span style={{ fontSize: 28, fontWeight: 800, color }}>
-              {nextTurn.speakerIdx + 1}
-            </span>
-          </div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.35)', marginBottom: 8, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            Pass the device to
-          </p>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: '#FFFFFF', marginBottom: 32 }}>
-            {nextSpeaker}
-          </h2>
-          <motion.button
-            whileTap={{ scale: 0.96 }}
-            onClick={proceedAfterPass}
-            style={{
-              padding: '14px 40px', borderRadius: 999,
-              background: color, border: 'none', cursor: 'pointer',
-              fontSize: 15, fontWeight: 700, color: '#FFFFFF',
-              boxShadow: `0px 8px 20px ${color}55`,
-            }}
-          >
-            I'm {nextSpeaker.split(' ')[0]} — Ready
-          </motion.button>
-        </motion.div>
-      </div>
-    );
-  }
-
-  /* ── RECORDING PHASE ── */
-  const speaker = currentTurn ? speakers[currentTurn.speakerIdx] : '';
-  const color = currentTurn ? speakerColors[currentTurn.speakerIdx % speakerColors.length] : 'var(--accent-primary)';
+  const stop = () => onDone([{ label: 'Full room take', seconds: time || 30 }]);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}>
-      <SwipeHint />
-
-      {/* Header */}
-      <div className="px-6 pt-14 pb-3">
-        <div className="flex items-center justify-between mb-1">
-          <QuestFormatEyebrow format="group" />
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.3)' }}>
-            Turn {turnIdx + 1}/{turns.length}
-          </span>
-        </div>
-        <ProgressBar value={(turnIdx / turns.length) * 100} />
+    <StudioShell sticky={`${quest.title} · Room take · ${recording ? 'Rec' : 'Ready'}`} progress={recording ? cue / (script.score.length - 1) : 0} onBack={onBack} recDot={recording}>
+      <div ref={scrollRef} className="flex-1 overflow-y-auto px-7 pt-4 pb-6">
+        {script.score.map((c, i) => {
+          const active = i === cue && recording;
+          const past = i < cue && recording;
+          return (
+            <div key={i} data-active={active} style={{ padding: '11px 0', opacity: active ? 1 : past ? 0.28 : 0.5 }}>
+              <span style={{
+                fontSize: 10, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase',
+                color: active ? 'var(--accent-primary-light)' : 'rgba(255,255,255,0.35)',
+              }}>
+                {active ? `Now: ${c.who}` : c.who}
+              </span>
+              <p style={{
+                fontSize: active ? 22 : 15, fontWeight: active ? 600 : 500,
+                color: active ? 'var(--text-on-navy)' : 'rgba(255,255,255,0.5)',
+                lineHeight: 1.5, marginTop: 3,
+              }}>
+                {c.line}
+              </p>
+            </div>
+          );
+        })}
       </div>
 
-      <div className="flex-1 px-6 pb-4 overflow-y-auto">
-        {/* Speaker indicator */}
-        <div className="flex items-center gap-3 mb-5">
-          <div style={{
-            width: 44, height: 44, borderRadius: '50%',
-            background: `${color}22`,
-            border: `2px solid ${color}55`,
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-          }}>
-            <span style={{ fontSize: 18, fontWeight: 800, color }}>{(currentTurn?.speakerIdx ?? 0) + 1}</span>
-          </div>
-          <div>
-            <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>Now recording</p>
-            <p style={{ fontSize: 15, fontWeight: 700, color: '#FFFFFF' }}>{speaker}</p>
-          </div>
-        </div>
-
-        {/* Previous turn context */}
-        {turnIdx > 0 && turns[turnIdx - 1] && (
-          <div className="flex gap-3 mb-4">
-            <span style={{
-              fontSize: 9, fontWeight: 700, letterSpacing: '0.06em', textTransform: 'uppercase',
-              color: 'rgba(255,255,255,0.2)', width: 52, flexShrink: 0, paddingTop: 2,
-            }}>
-              {speakers[turns[turnIdx - 1].speakerIdx]?.split(' ')[0]}
-            </span>
-            <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.22)', lineHeight: 1.65, fontStyle: 'italic' }}>
-              {turns[turnIdx - 1].text}
-            </p>
+      <ControlDock>
+        {!recording ? (
+          <>
+            <p style={dockHint}>One take — don't stop between lines. Phone stays put.</p>
+            <RecordButton onPress={() => setRecording(true)} />
+          </>
+        ) : (
+          <div className="flex flex-col items-center">
+            <div style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700, color: 'var(--text-on-navy)', marginBottom: 14 }}>{fmt(time)}</div>
+            <StopButton onPress={stop} />
+            <p style={{ ...dockHint, marginTop: 12 }}>End take when the scene is done</p>
           </div>
         )}
+      </ControlDock>
+    </StudioShell>
+  );
+}
 
-        {/* Current line */}
-        <div style={{
-          background: 'rgba(255,255,255,0.05)',
-          borderRadius: 16,
-          border: `1px solid ${color}44`,
-          padding: '20px',
-          marginBottom: 28,
-        }}>
-          <div className="flex items-center gap-2 mb-3">
-            <div style={{ width: 6, height: 6, borderRadius: '50%', background: color, boxShadow: `0 0 0 3px ${color}33` }} />
-            <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color }}>Your Line</span>
+/* ═══════════════════════════════════════════════════════════════════
+   BEAT 3 — Review. Session list (LINES/SCEN/INT) or whole-tape (ROOM).
+   ═══════════════════════════════════════════════════════════════════ */
+
+function Review({ quest, clips, onSubmit, onRetakeAll }: { quest: Quest; clips: Clip[]; onSubmit: () => void; onRetakeAll: () => void }) {
+  const isRoom = quest.format === 'room';
+  const [playing, setPlaying] = useState<number | null>(null);
+
+  return (
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+      <div className="px-6 pt-14 pb-4">
+        <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.14em', color: 'var(--accent-primary-deep)', textTransform: 'uppercase' }}>
+          Review
+        </span>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 25, fontWeight: 800, color: 'var(--text-primary)', marginTop: 6, letterSpacing: '-0.01em' }}>
+          {isRoom ? 'Listen back to your take' : `${clips.length} clips ready`}
+        </h1>
+        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', marginTop: 4 }}>
+          {isRoom ? 'Play the whole take. Keep it, or record the scene again.' : 'Play any clip. Submit when they all sound right.'}
+        </p>
+      </div>
+
+      <div className="flex-1 px-6 pb-40 overflow-y-auto">
+        {clips.map((c, i) => (
+          <div key={i} className="flex items-center gap-3" style={{ ...briefCard, marginBottom: 10, padding: '14px 16px' }}>
+            <button
+              onClick={() => setPlaying(playing === i ? null : i)}
+              style={{
+                width: 42, height: 42, borderRadius: 999, flexShrink: 0, border: 'none', cursor: 'pointer',
+                background: 'var(--accent-50)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}
+            >
+              {playing === i
+                ? <Pause style={{ width: 17, height: 17, color: 'var(--accent-primary-deep)' }} />
+                : <Play style={{ width: 17, height: 17, color: 'var(--accent-primary-deep)' }} />}
+            </button>
+            <div className="flex-1 min-w-0">
+              <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{c.label}</p>
+              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{fmt(c.seconds)}</p>
+            </div>
+            <Check style={{ width: 18, height: 18, color: 'var(--success-500)' }} strokeWidth={2.5} />
           </div>
-          <p style={{ fontSize: 17, fontWeight: 600, color: '#FFFFFF', lineHeight: 1.65 }}>
-            {currentTurn?.text}
-          </p>
-        </div>
+        ))}
+      </div>
 
-        {state === 'recording' && (
-          <div style={{ marginBottom: 16 }}>
-            <VoiceVisualizer active height={80} />
-          </div>
-        )}
-
-        <RecordingControls
-          state={state}
-          time={time}
-          fmtTime={fmtTime}
-          onStart={() => { setState('recording'); setTime(0); }}
-          onStop={() => setState('completed')}
-          onAccept={acceptTurn}
-          onRetry={() => { setState('idle'); setTime(0); }}
-          accentColor={color}
-          submitLabel={turnIdx < turns.length - 1 ? (speakerChanged ? 'Submit & Pass Device' : 'Submit & Next Turn') : 'Submit & Finish'}
-        />
+      <div className="px-6 pb-10" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, var(--background) 68%, transparent)', paddingTop: 20 }}>
+        <motion.button whileTap={{ scale: 0.97 }} onClick={onSubmit} style={primaryCta}>
+          <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-on-accent)' }}>Submit for review</span>
+        </motion.button>
+        <button onClick={onRetakeAll} style={{ ...ghostBtn, marginTop: 6 }}>
+          <RotateCcw style={{ width: 15, height: 15 }} strokeWidth={2} />
+          {isRoom ? 'Record the take again' : 'Record all again'}
+        </button>
       </div>
     </div>
   );
 }
 
-/* ─── Shared sub-components ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════
+   Pending — honest: expected ₹, NOT an instant credit.
+   ═══════════════════════════════════════════════════════════════════ */
 
-function BackButton({ onPress, dark }: { label?: string; onPress: () => void; dark?: boolean }) {
+function Pending({ quest, onHome }: { quest: Quest; onHome: () => void }) {
   return (
-    <button
-      onClick={onPress}
-      style={{
-        display: 'flex', alignItems: 'center',
-        background: 'none', border: 'none', cursor: 'pointer',
-        color: dark ? 'rgba(255,255,255,0.55)' : 'var(--accent-primary)',
-        padding: '4px 0', marginBottom: 8,
-      }}
-    >
-      <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
-    </button>
+    <div className="min-h-screen flex flex-col items-center justify-center px-8 text-center" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+      <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }}>
+        <div style={{ width: 76, height: 76, borderRadius: 999, background: 'var(--status-success-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
+          <Check style={{ width: 38, height: 38, color: 'var(--status-success-text)' }} strokeWidth={2.5} />
+        </div>
+      </motion.div>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10, letterSpacing: '-0.01em' }}>
+        Sent for review
+      </h1>
+      <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 22, maxWidth: 300 }}>
+        A reviewer will check your recording. If it's approved, this lands in your wallet.
+      </p>
+      <div style={{ ...briefCard, padding: '16px 22px', marginBottom: 36 }}>
+        <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 4 }}>
+          Expected on approval
+        </p>
+        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 30, fontWeight: 700, color: 'var(--accent-primary-deep)' }}>
+          ₹{quest.cashPayout}
+        </p>
+      </div>
+      <motion.button whileTap={{ scale: 0.97 }} onClick={onHome} style={{ ...primaryCta, maxWidth: 320 }}>
+        <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-on-accent)' }}>Back to home</span>
+      </motion.button>
+    </div>
   );
 }
 
-function SwipeHint() {
+/* ═══════════════════════════════════════════════════════════════════
+   Guard screens
+   ═══════════════════════════════════════════════════════════════════ */
+
+function NotFound({ onBack }: { onBack: () => void }) {
   return (
-    <div
-      style={{
-        position: 'fixed', top: 0, left: 0, bottom: 0, width: 20, zIndex: 50,
-        background: 'linear-gradient(to right, rgba(255,255,255,0.04), transparent)',
-        pointerEvents: 'none',
-      }}
+    <GuardScreen
+      Icon={AlertCircle}
+      title="Quest not found"
+      body="This quest link is broken or the quest is no longer available."
+      cta="Browse quests"
+      onBack={onBack}
     />
   );
 }
 
-function QuestFormatEyebrow({ format }: { format: 'lines' | 'scenario' | 'group' }) {
-  const labels = { lines: 'QUICK LINES', scenario: 'SOLO SCENARIO', group: 'GROUP SESSION' };
+function WaitingForPrompts({ quest, onBack }: { quest: Quest; onBack: () => void }) {
   return (
-    <span style={{
-      fontSize: 10, fontWeight: 700, letterSpacing: '0.1em',
-      color: format === 'lines' ? 'rgba(255,255,255,0.4)' : 'var(--accent-primary)',
-      textTransform: 'uppercase',
-    }}>
-      {labels[format]}
-    </span>
+    <GuardScreen
+      Icon={Clock}
+      title="Waiting for prompts"
+      body={`"${quest.title}" is an interview quest, but its question track is still being prepared. It'll open for recording soon.`}
+      cta="Browse other quests"
+      onBack={onBack}
+    />
   );
 }
 
-function ProgressBar({ value }: { value: number }) {
+function GuardScreen({ Icon, title, body, cta, onBack }: {
+  Icon: typeof AlertCircle; title: string; body: string; cta: string; onBack: () => void;
+}) {
   return (
-    <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 999, height: 3, marginTop: 8 }}>
-      <motion.div
-        animate={{ width: `${value}%` }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
-        style={{
-          background: 'linear-gradient(90deg, var(--accent-primary-light), var(--accent-primary-deep))',
-          borderRadius: 999, height: 3,
-        }}
-      />
+    <div className="min-h-screen flex flex-col items-center justify-center px-8 text-center" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+      <div style={{ width: 64, height: 64, borderRadius: 999, background: 'var(--surface-sunken)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
+        <Icon style={{ width: 28, height: 28, color: 'var(--text-muted)' }} strokeWidth={2} />
+      </div>
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 23, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>{title}</h1>
+      <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 30, maxWidth: 300 }}>{body}</p>
+      <motion.button whileTap={{ scale: 0.97 }} onClick={onBack} style={{ ...primaryCta, maxWidth: 300 }}>
+        <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-on-accent)' }}>{cta}</span>
+      </motion.button>
     </div>
   );
 }
 
-interface RecordingControlsProps {
-  state: RecordingState;
-  time: number;
-  fmtTime: (s: number) => string;
-  onStart: () => void;
-  onStop: () => void;
-  onAccept: () => void;
-  onRetry: () => void;
-  accentColor?: string;
-  submitLabel?: string;
-}
+/* ═══════════════════════════════════════════════════════════════════
+   Studio chrome — dim shell, sticky one-liner, bottom control dock
+   ═══════════════════════════════════════════════════════════════════ */
 
-function RecordingControls({
-  state, time, fmtTime, onStart, onStop, onAccept, onRetry,
-  accentColor = 'var(--accent-primary)',
-  submitLabel = 'Submit',
-}: RecordingControlsProps) {
+function StudioShell({ children, sticky, progress, onBack, recDot }: {
+  children: React.ReactNode; sticky: string; progress: number; onBack: () => void; recDot?: boolean;
+}) {
   return (
-    <div className="text-center">
-      {state === 'idle' && (
-        <div className="flex flex-col items-center">
-          <motion.button
-            initial={{ scale: 0.92 }} animate={{ scale: 1 }}
-            whileTap={{ scale: 0.94 }}
-            onClick={onStart}
-            style={{
-              width: 80, height: 80, borderRadius: '50%',
-              background: `linear-gradient(145deg, var(--accent-primary-light), var(--accent-primary-deep))`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              margin: '0 auto 12px',
-              boxShadow: `0px 8px 24px rgba(var(--accent-glow-rgb),0.45), inset 0px 1px 0px rgba(255,255,255,0.2)`,
-              border: 'none', cursor: 'pointer',
-            }}
-          >
-            <Mic className="w-10 h-10 text-white" />
-          </motion.button>
-          <p style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.35)' }}>Tap to record</p>
-        </div>
-      )}
-
-      {state === 'recording' && (
-        <div className="flex flex-col items-center">
-          <motion.button
-            animate={{ scale: [1, 1.04, 1] }}
-            transition={{ repeat: Infinity, duration: 1.8 }}
-            whileTap={{ scale: 0.94 }}
-            onClick={onStop}
-            style={{
-              width: 80, height: 80, borderRadius: '50%',
-              background: `linear-gradient(145deg, var(--accent-primary-deep), var(--accent-primary-deep))`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              margin: '0 auto 14px',
-              boxShadow: `0px 8px 28px rgba(var(--accent-deep-rgb),0.55), inset 0px 1px 0px rgba(255,255,255,0.15)`,
-              border: 'none', cursor: 'pointer',
-            }}
-          >
-            <Square className="w-8 h-8 text-white fill-white" />
-          </motion.button>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700, color: '#FFFFFF', marginBottom: 4 }}>
-            {fmtTime(time)}
-          </div>
-          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-primary)' }}>Recording…</p>
-        </div>
-      )}
-
-      {state === 'completed' && (
-        <div className="flex flex-col items-center">
-          <div style={{
-            width: 80, height: 80, borderRadius: '50%',
-            background: '#1E6B40',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            margin: '0 auto 12px',
-          }}>
-            <Check className="w-10 h-10 text-white" strokeWidth={2.5} />
-          </div>
-          <div style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: '#FFFFFF', marginBottom: 4 }}>
-            {fmtTime(time)}
-          </div>
-          <div className="flex items-center gap-3 mb-6 mt-2">
-            <button style={{
-              display: 'flex', alignItems: 'center', gap: 6,
-              padding: '9px 18px', borderRadius: 999,
-              background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.1)',
-              cursor: 'pointer',
-            }}>
-              <Play className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.7)' }}>Play back</span>
-            </button>
-          </div>
-          <button
-            onClick={onAccept}
-            style={{
-              width: '100%', height: 56, borderRadius: 999,
-              background: `linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)`,
-              border: 'none', cursor: 'pointer',
-              boxShadow: `0px 8px 24px rgba(var(--accent-glow-rgb),0.38), inset 0px 1px 0px rgba(255,255,255,0.18)`,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              marginBottom: 12,
-            }}
-          >
-            <span style={{ fontSize: 16, fontWeight: 700, color: '#FFFFFF' }}>{submitLabel}</span>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}>
+      {/* Sticky one-liner */}
+      <div className="px-6 pt-14 pb-3" style={{ flexShrink: 0 }}>
+        <div className="flex items-center gap-3 mb-3">
+          <button onClick={onBack} style={{ ...backBtn, color: 'rgba(255,255,255,0.5)', marginBottom: 0 }}>
+            <ChevronLeft style={{ width: 20, height: 20 }} strokeWidth={2.5} />
           </button>
-          <button
-            onClick={onRetry}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.3)' }}
-          >
-            Record again
-          </button>
+          {recDot && (
+            <span style={{ width: 8, height: 8, borderRadius: 999, background: 'var(--accent-primary)', boxShadow: '0 0 0 4px rgba(var(--accent-glow-rgb),0.25)' }} />
+          )}
+          <span style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.55)', letterSpacing: '0.01em' }}>{sticky}</span>
         </div>
-      )}
+        <div style={{ background: 'rgba(255,255,255,0.1)', borderRadius: 999, height: 3 }}>
+          <motion.div
+            animate={{ width: `${Math.max(0, Math.min(1, progress)) * 100}%` }}
+            transition={{ duration: 0.4, ease: 'easeOut' }}
+            style={{ background: 'var(--accent-primary)', borderRadius: 999, height: 3 }}
+          />
+        </div>
+      </div>
+      {children}
     </div>
   );
+}
+
+/** Bottom-center dock, ≥72px control, safely above the home indicator. */
+function ControlDock({ children }: { children: React.ReactNode }) {
+  return (
+    <div style={{ flexShrink: 0, padding: '18px 24px 40px', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+      {children}
+    </div>
+  );
+}
+
+function RecordButton({ onPress }: { onPress: () => void }) {
+  return (
+    <motion.button
+      whileTap={{ scale: 0.93 }} onClick={onPress}
+      style={{
+        width: 84, height: 84, borderRadius: 999, border: 'none', cursor: 'pointer',
+        background: 'linear-gradient(145deg, var(--accent-primary-light), var(--accent-primary-deep))',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        boxShadow: '0px 10px 30px rgba(var(--accent-glow-rgb),0.45), inset 0px 1px 0px rgba(255,255,255,0.2)',
+      }}
+    >
+      <Mic style={{ width: 34, height: 34, color: 'var(--text-on-accent)' }} />
+    </motion.button>
+  );
+}
+
+function StopButton({ onPress }: { onPress: () => void }) {
+  return (
+    <motion.button
+      animate={{ scale: [1, 1.05, 1] }} transition={{ repeat: Infinity, duration: 1.8 }}
+      whileTap={{ scale: 0.93 }} onClick={onPress}
+      style={{
+        width: 84, height: 84, borderRadius: 999, border: 'none', cursor: 'pointer',
+        background: 'var(--accent-primary-deep)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        boxShadow: '0px 10px 32px rgba(var(--accent-deep-rgb),0.55), inset 0px 1px 0px rgba(255,255,255,0.15)',
+      }}
+    >
+      <Square style={{ width: 30, height: 30, color: 'var(--text-on-accent)', fill: 'var(--text-on-accent)' }} />
+    </motion.button>
+  );
+}
+
+function KeepRetake({ time, onKeep, onRetake, last }: { time: number; onKeep: () => void; onRetake: () => void; last: boolean }) {
+  return (
+    <div className="w-full flex flex-col items-center">
+      <div className="flex items-center gap-2 mb-4">
+        <Check style={{ width: 16, height: 16, color: 'var(--success-500)' }} strokeWidth={2.5} />
+        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 15, fontWeight: 600, color: 'var(--text-on-navy)' }}>{fmt(time)} recorded</span>
+      </div>
+      <motion.button whileTap={{ scale: 0.97 }} onClick={onKeep} style={{ ...primaryCta, maxWidth: 320 }}>
+        <span style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-on-accent)' }}>{last ? 'Keep & review all' : 'Keep & next'}</span>
+      </motion.button>
+      <button onClick={onRetake} style={{ ...ghostBtn, color: 'rgba(255,255,255,0.5)', marginTop: 8 }}>
+        <RotateCcw style={{ width: 15, height: 15 }} strokeWidth={2} />
+        Retake this one
+      </button>
+    </div>
+  );
+}
+
+/* ═══════════════════════════════════════════════════════════════════
+   Small presentational helpers
+   ═══════════════════════════════════════════════════════════════════ */
+
+function MetaChip({ Icon, text, accent }: { Icon: typeof Coins; text: string; accent?: boolean }) {
+  return (
+    <div className="flex items-center gap-1.5">
+      <Icon style={{ width: 15, height: 15, color: accent ? 'var(--accent-primary-deep)' : 'var(--text-muted)' }} strokeWidth={2} />
+      <span style={{
+        fontSize: 14, fontWeight: 700,
+        fontFamily: accent ? 'var(--font-mono)' : 'var(--font-sans)',
+        color: accent ? 'var(--accent-primary-deep)' : 'var(--text-secondary)',
+      }}>
+        {text}
+      </span>
+    </div>
+  );
+}
+
+function SectionLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{ fontSize: 11, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 10, marginTop: 8 }}>
+      {children}
+    </p>
+  );
+}
+
+const backBtn: React.CSSProperties = {
+  display: 'flex', alignItems: 'center', background: 'none', border: 'none',
+  cursor: 'pointer', color: 'var(--accent-primary-deep)', padding: '4px 0', marginBottom: 8,
+};
+
+const briefCard: React.CSSProperties = {
+  background: 'var(--surface)', borderRadius: 16, border: '1px solid var(--card-border)',
+  padding: '18px 20px', marginBottom: 20,
+  boxShadow: '0 1px 2px rgba(var(--accent-deep-rgb),0.04)',
+};
+
+const primaryCta: React.CSSProperties = {
+  width: '100%', height: 56, borderRadius: 999, border: 'none', cursor: 'pointer',
+  background: 'var(--accent-primary-deep)',
+  boxShadow: '0px 8px 24px rgba(var(--accent-glow-rgb),0.32)',
+  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+};
+
+const ghostBtn: React.CSSProperties = {
+  width: '100%', background: 'none', border: 'none', cursor: 'pointer',
+  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 6,
+  fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', padding: '10px 0',
+};
+
+const dockHint: React.CSSProperties = {
+  fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', marginBottom: 14, textAlign: 'center', lineHeight: 1.5,
+};
+
+/* ═══════════════════════════════════════════════════════════════════
+   Content adapters — turn quest data into capture steps
+   ═══════════════════════════════════════════════════════════════════ */
+
+interface Step {
+  prompt: string;       // the big line you read/answer
+  hint?: string;        // quiet helper under the prompt
+  clipLabel: string;    // label in the review list
+  stem?: string;        // interview: the other voice line
+  speaker?: string;     // interview: who's asking
+  context?: string;     // interview: sticky context word
+}
+
+function buildSteps(quest: Quest): Step[] {
+  if (quest.format === 'lines') {
+    const lines = LINES_CONTENT[quest.id] ?? [];
+    return lines.map((text, i) => ({ prompt: text, clipLabel: `Line ${i + 1}` }));
+  }
+  if (quest.format === 'scenario') {
+    const script = SCENARIO_CONTENT[quest.id];
+    if (!script) return [];
+    const you = script.turns.filter((t) => t.role === 'you');
+    return you.map((t, i) => ({ prompt: t.text, clipLabel: `Turn ${i + 1}` }));
+  }
+  if (quest.format === 'interview') {
+    const script = INTERVIEW_CONTENT[quest.id];
+    if (!script) return [];
+    const ctx = script.setup.split(',')[0].split('.')[0].slice(0, 22);
+    return script.questions.map((q, i) => ({
+      prompt: q.youHint,
+      clipLabel: `Answer ${i + 1}`,
+      stem: q.stem,
+      speaker: script.interviewer,
+      context: ctx,
+    }));
+  }
+  return [];
+}
+
+function captureCount(quest: Quest): number {
+  if (quest.format === 'lines') return (LINES_CONTENT[quest.id] ?? []).length;
+  if (quest.format === 'scenario') return quest.turns ?? 0;
+  if (quest.format === 'interview') return quest.questions ?? 0;
+  return quest.speakers ?? 0;
+}
+
+function briefScene(quest: Quest): string {
+  if (quest.format === 'scenario') return SCENARIO_CONTENT[quest.id]?.setup ?? quest.excerpt;
+  if (quest.format === 'interview') return INTERVIEW_CONTENT[quest.id]?.setup ?? quest.excerpt;
+  if (quest.format === 'room') return ROOM_CONTENT[quest.id]?.scene ?? quest.excerpt;
+  return quest.excerpt;
+}
+
+function howItWorks(format: QuestFormat): string[] {
+  switch (format) {
+    case 'lines':
+      return [
+        'A short line appears — read it once, naturally.',
+        'Tap record, say the line, tap stop.',
+        'Keep it or retake, then move to the next line.',
+      ];
+    case 'scenario':
+      return [
+        'You play one role across the whole scene.',
+        'Each turn shows your line — read only your side.',
+        'Record turn by turn; keep or retake each one.',
+      ];
+    case 'interview':
+      return [
+        "You'll hear the interviewer ask a question.",
+        'When it\'s your turn, record your answer naturally.',
+        'Play back, keep or retake, then the next question.',
+      ];
+    case 'room':
+      return [
+        'Gather everyone around this one phone and leave it put.',
+        'Follow the scrolling score — one continuous take.',
+        "Don't stop between lines; end the take when the scene's done.",
+      ];
+    default:
+      return [];
+  }
+}
+
+function fmt(s: number): string {
+  return `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
 }

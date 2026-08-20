@@ -25,7 +25,13 @@ const formatTokens: Record<Quest['format'], { dot: string; eyebrow: string; chip
     chipBg: 'var(--accent-50)',
     chipText: 'var(--accent-900)',
   },
-  group: {
+  interview: {
+    dot: 'var(--accent-primary)',
+    eyebrow: 'var(--accent-primary-deep)',
+    chipBg: 'var(--accent-50)',
+    chipText: 'var(--accent-900)',
+  },
+  room: {
     dot: 'var(--navy)',
     eyebrow: 'var(--text-primary)',
     chipBg: 'var(--navy)',
@@ -75,9 +81,14 @@ export function QuestCard({
               · {quest.turns} turns
             </span>
           )}
-          {quest.format === 'group' && quest.speakers && (
+          {quest.format === 'room' && quest.speakers && (
             <span style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-muted)', marginLeft: 6 }}>
-              · {quest.speakers} speakers
+              · {quest.speakers} people
+            </span>
+          )}
+          {quest.format === 'interview' && quest.questions && (
+            <span style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-muted)', marginLeft: 6 }}>
+              · {quest.questions} questions
             </span>
           )}
         </div>
@@ -108,9 +119,9 @@ export function QuestCard({
           }}>
             {quest.title}
           </h4>
-          {quest.format === 'group' && quest.sessionAt && (
-            <p className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent-primary-deep)' }}>
-              <CalendarClock className="w-3 h-3" /> {quest.sessionAt}
+          {quest.available === false && (
+            <p className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>
+              <CalendarClock className="w-3 h-3" /> Waiting for prompts
             </p>
           )}
         </div>
@@ -173,7 +184,7 @@ export function QuestCard({
             ₹{quest.cashPayout}
           </p>
           <p style={{ fontSize: 10, fontWeight: 600, color: 'var(--text-muted)', marginTop: 3, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-            {quest.format === 'group' ? 'per session' : 'per quest'}
+            {quest.format === 'room' ? 'per take' : 'per quest'}
           </p>
         </div>
       </div>

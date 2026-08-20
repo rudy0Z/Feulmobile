@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { Mail, Phone } from 'lucide-react';
-import { Waveform } from './ui/Waveform';
+import { FeulLogo } from './ui/FeulLogo';
 import { signIn } from '../lib/session';
 
 /**
@@ -40,8 +40,8 @@ export function Onboarding() {
           className="w-full flex flex-col items-center"
           style={{ maxWidth: 360 }}
         >
-          <div className="mb-10 w-full" style={{ maxWidth: 260 }}>
-            <Waveform color="var(--accent-primary)" opacity={1} height={64} />
+          <div className="mb-12 flex justify-center">
+            <FeulLogo />
           </div>
 
           <h1

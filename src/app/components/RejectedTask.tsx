@@ -217,7 +217,7 @@ export function RejectedTask() {
         {/* Action Buttons */}
         <div className="space-y-3 pb-8">
           <button
-            onClick={() => navigate('/recording/rejected-redo')}
+            onClick={() => navigate('/recording/q-scen-3')}
             style={{
               width: '100%', height: 56, borderRadius: 999,
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',

@@ -1,18 +1,17 @@
 import {
-  BookOpen, MessageCircle, Package, Sparkles, Zap, Users2,
-  Utensils, ShoppingBag, Stethoscope, Plane, Phone, Coffee,
+  ShoppingBag, Zap, Hash, Coffee, Phone, Plane,
+  Stethoscope, Briefcase, Landmark, Users2, Tv,
   type LucideIcon,
 } from 'lucide-react';
 
 /**
- * Quest formats
- *  - lines    : 1–2 line micro-clips (fastest, lowest payout)
- *  - scenario : a situational script — you play a role across multiple turns
- *               with surrounding context. Higher cognitive load, bigger payout.
- *  - group    : multi-speaker session — book a slot, record full scenario
- *               with other contributors. Highest payout, scheduled.
+ * Quest formats (§ Pass 2 taxonomy: LINES · SCENARIO · INTERVIEW · ROOM)
+ *  - lines     : fast single-line micro-clips (lowest payout)
+ *  - scenario  : solo scripted role, multi-turn, no other live voice
+ *  - interview : solo, answering against a pre-recorded question track
+ *  - room      : people in one room, one phone, ONE continuous take
  */
-export type QuestFormat = 'lines' | 'scenario' | 'group';
+export type QuestFormat = 'lines' | 'scenario' | 'interview' | 'room';
 
 export type QuestTag =
   | 'high-demand' | 'bonus' | 'expiring' | 'limited' | 'new' | null;
@@ -22,15 +21,18 @@ export interface Quest {
   title: string;
   description: string;
   format: QuestFormat;
-  /** A representative excerpt — for `lines` a sample line, for `scenario`
-   *  a setup + first turn, for `group` the situation framing. */
+  /** A representative excerpt shown in the Brief. */
   excerpt: string;
-  /** Scenario/group only — total speaker turns or beats. */
+  /** Scenario/interview — number of your turns / questions. */
   turns?: number;
-  /** Group only — number of speakers in the session. */
+  /** Interview — number of question stems. */
+  questions?: number;
+  /** Room — number of people gathered around the one device. */
   speakers?: number;
-  /** Group only — scheduled session window. */
-  sessionAt?: string;
+  /** Interview — presence of a pre-recorded question track. Absent ⇒ disabled. */
+  track?: boolean;
+  /** False ⇒ "waiting for prompts", card disabled. Defaults to true. */
+  available?: boolean;
   cashPayout: number;
   xp: number;
   duration: string;
@@ -46,9 +48,10 @@ export interface Quest {
 export const formatMeta: Record<QuestFormat, {
   label: string; short: string; tone: 'neutral' | 'accent' | 'navy';
 }> = {
-  lines:    { label: 'Quick Lines',    short: 'LINES',    tone: 'neutral' },
-  scenario: { label: 'Solo Scenario',  short: 'SCENARIO', tone: 'accent'  },
-  group:    { label: 'Group Session',  short: 'GROUP',    tone: 'navy'    },
+  lines:     { label: 'Quick Lines',   short: 'LINES',     tone: 'neutral' },
+  scenario:  { label: 'Solo Scenario', short: 'SCENARIO',  tone: 'accent'  },
+  interview: { label: 'Interview',     short: 'INTERVIEW', tone: 'accent'  },
+  room:      { label: 'Room Take',     short: 'ROOM',      tone: 'navy'    },
 };
 
 export const quests: Quest[] = [
@@ -56,7 +59,7 @@ export const quests: Quest[] = [
   {
     id: 'q-lines-1',
     title: 'Hindi — Everyday Phrases',
-    description: 'Common Hindi phrases recorded naturally.',
+    description: 'Common Hindi phrases recorded naturally, one line at a time.',
     format: 'lines',
     excerpt: '"नमस्ते, आप कैसे हैं?" · "मुझे एक कप चाय चाहिए।"',
     cashPayout: 12, xp: 100, duration: '3 min', clips: 8, difficulty: 'Easy',
@@ -65,40 +68,39 @@ export const quests: Quest[] = [
   {
     id: 'q-lines-2',
     title: 'Product Names — Marathi',
-    description: 'Short product callouts, 1 line each.',
+    description: 'Short product callouts, one line each.',
     format: 'lines',
     excerpt: '"नवीन सॅमसंग गॅलक्सी आता ३०% सूट सह."',
     cashPayout: 10, xp: 80, duration: '2 min', clips: 6, difficulty: 'Easy',
     language: 'Marathi', Icon: ShoppingBag,
   },
+  {
+    id: 'q-lines-3',
+    title: 'Numbers, Dates & Money — English',
+    description: 'Read out amounts, dates and phone numbers clearly.',
+    format: 'lines',
+    excerpt: '"That comes to ₹1,240." · "Your appointment is on the 3rd of March."',
+    cashPayout: 11, xp: 90, duration: '3 min', clips: 7, difficulty: 'Easy',
+    language: 'English', Icon: Hash,
+  },
 
-  /* ── Solo Scenarios — bigger context, multi-turn ───────────── */
+  /* ── Solo Scenarios — scripted role, multi-turn ────────────── */
   {
     id: 'q-scen-1',
     title: 'Ordering at a Café',
-    description: 'You play the customer. 6-turn back-and-forth with a barista — order, ask about milk options, pay, react to the wait time.',
+    description: 'You play the customer across a 6-turn back-and-forth with a barista — order, ask about milk, pay, react to the wait.',
     format: 'scenario',
-    excerpt: 'SETUP: You walk into a busy café on a Monday morning.\nTURN 1 — YOU: "Hi, can I get a large oat milk latte and one almond croissant, please?"',
+    excerpt: 'You walk into a busy café on a Monday morning and you know exactly what you want.',
     turns: 6,
     cashPayout: 45, xp: 250, duration: '7 min', clips: 1, difficulty: 'Medium',
     language: 'Hindi', Icon: Coffee, tag: 'high-demand', tagLabel: '427 clips needed', slotsLeft: 18,
   },
   {
-    id: 'q-scen-2',
-    title: 'Doctor Visit — Describing Symptoms',
-    description: 'Patient role. Describe a 3-day fever, answer follow-up questions about medication, sleep, appetite. Natural, slightly unsure tone.',
-    format: 'scenario',
-    excerpt: 'SETUP: General physician\'s clinic, late afternoon. You\'ve had a fever for 3 days.\nTURN 1 — YOU: "Doctor, mujhe pichhle teen din se bukhar hai, aur sar bhi bahut bhaari lag raha hai..."',
-    turns: 8,
-    cashPayout: 65, xp: 320, duration: '11 min', clips: 1, difficulty: 'Medium',
-    language: 'Hindi', Icon: Stethoscope, tag: 'bonus', tagLabel: '+20% Bonus',
-  },
-  {
     id: 'q-scen-3',
     title: 'Returning a Product',
-    description: 'You\'re returning a defective pair of headphones. Be polite but firm across a 7-turn exchange with customer service.',
+    description: 'You are returning a defective pair of headphones. Be polite but firm across a 7-turn call with support.',
     format: 'scenario',
-    excerpt: 'SETUP: Phone call to electronics store support. You bought the headphones two weeks ago.\nTURN 1 — YOU: "Hi, I bought a pair of headphones from your Pune store on the 14th, and the left earbud has completely stopped working."',
+    excerpt: 'Phone call to electronics support. You bought the headphones two weeks ago and one earbud is dead.',
     turns: 7,
     cashPayout: 55, xp: 280, duration: '9 min', clips: 1, difficulty: 'Medium',
     language: 'English', Icon: Phone,
@@ -106,36 +108,76 @@ export const quests: Quest[] = [
   {
     id: 'q-scen-4',
     title: 'Booking a Flight (Frustrated)',
-    description: 'Travel agent has cancelled your flight twice. Convey frustration without raising your voice — 9 turns.',
+    description: 'The airline has cancelled your flight twice. Convey frustration without raising your voice — 9 turns.',
     format: 'scenario',
-    excerpt: 'SETUP: It\'s 9pm, you\'ve been on hold for 22 minutes. Your flight to Bengaluru tomorrow has just been cancelled — for the second time this week.\nTURN 1 — YOU: "I\'ve been waiting on this line for almost half an hour, and this is the second cancellation in three days..."',
+    excerpt: "It's 9pm. You've been on hold 22 minutes. Your flight tomorrow has just been cancelled — again.",
     turns: 9,
     cashPayout: 75, xp: 380, duration: '13 min', clips: 1, difficulty: 'Hard',
     language: 'English', Icon: Plane, tag: 'expiring', tagLabel: 'Closes in 2h', slotsLeft: 7,
   },
 
-  /* ── Group Sessions — local multi-speaker, everyone gathers around one device ── */
+  /* ── Interviews — solo, answering against a pre-recorded track ── */
   {
-    id: 'q-group-1',
-    title: 'Family Dinner Table',
-    description: '4-speaker session. Gather 4 people around one device and play family members at dinner discussing weekend plans, school, and the upcoming wedding in Lucknow. Free-flowing, overlapping conversation welcome.',
-    format: 'group',
-    excerpt: 'SCENE: Sunday dinner, four people around a table. The eldest just brought up the upcoming family wedding in Lucknow. Conversation drifts naturally — agreement, mild disagreement, jokes, plans.',
-    turns: 24, speakers: 4,
-    cashPayout: 220, xp: 800, duration: '25 min', clips: 1, difficulty: 'Medium',
-    language: 'Hindi', Icon: Users2, tag: 'high-demand', tagLabel: 'Premium · 4 speakers', slotsLeft: 2,
+    id: 'q-int-1',
+    title: 'Doctor Visit — Symptom Interview',
+    description: "You'll hear a doctor's questions, then answer each one as the patient — a 3-day fever, sleep, appetite, medication.",
+    format: 'interview',
+    excerpt: "You'll hear each question, then it's your turn to answer as the patient.",
+    questions: 8, turns: 8, track: true,
+    cashPayout: 65, xp: 320, duration: '11 min', clips: 8, difficulty: 'Medium',
+    language: 'Hindi', Icon: Stethoscope, tag: 'bonus', tagLabel: '+20% Bonus',
   },
   {
-    id: 'q-group-2',
-    title: 'Restaurant Booking Dispute',
-    description: '3-speaker session: a host, a customer, and the customer\'s partner. Gather 3 people, pass the device, and negotiate the double-booked reservation calmly.',
-    format: 'group',
-    excerpt: 'SCENE: Saturday night, 8:15 PM, busy restaurant lobby. You arrive for a 8 PM reservation only to find the table given to another party.',
-    turns: 18, speakers: 3,
-    cashPayout: 165, xp: 600, duration: '20 min', clips: 1, difficulty: 'Hard',
-    language: 'English', Icon: Utensils, tag: 'limited', tagLabel: '3 slots left', slotsLeft: 3,
+    id: 'q-int-2',
+    title: 'HR Phone Screen',
+    description: "Answer a recruiter's screening questions naturally — your experience, notice period, expectations.",
+    format: 'interview',
+    excerpt: "A recruiter asks; you answer. You'll hear each question before your turn.",
+    questions: 6, turns: 6, track: true,
+    cashPayout: 60, xp: 300, duration: '9 min', clips: 6, difficulty: 'Medium',
+    language: 'English', Icon: Briefcase,
+  },
+  {
+    id: 'q-int-3',
+    title: 'Bank KYC Verification Call',
+    description: 'A verification-call interview. The question track for this quest is still being prepared.',
+    format: 'interview',
+    excerpt: 'Prompts for this interview are being recorded — check back soon.',
+    questions: 7, turns: 7, track: false, available: false,
+    cashPayout: 50, xp: 260, duration: '8 min', clips: 7, difficulty: 'Medium',
+    language: 'Hindi', Icon: Landmark,
+  },
+
+  /* ── Room Takes — one room, one phone, one continuous take ── */
+  {
+    id: 'q-room-1',
+    title: 'Family Dinner Table',
+    description: 'Gather 4 people around one phone and play a family at dinner planning a Lucknow wedding. One continuous take — do not stop between lines.',
+    format: 'room',
+    excerpt: 'Sunday dinner, four people around a table. The eldest just brought up the family wedding in Lucknow.',
+    speakers: 4,
+    cashPayout: 220, xp: 800, duration: '~25 min', clips: 1, difficulty: 'Medium',
+    language: 'Hindi', Icon: Users2, tag: 'high-demand', tagLabel: 'Premium · 4 people', slotsLeft: 2,
+  },
+  {
+    id: 'q-room-2',
+    title: 'Cricket Watch Party',
+    description: 'Three friends watching the last over of a close match on one phone. Overlap, cheer, groan — one take, phone stays put.',
+    format: 'room',
+    excerpt: 'Living room, last over of a tight chase. 8 needed off 6. Everyone is on edge.',
+    speakers: 3,
+    cashPayout: 150, xp: 560, duration: '~18 min', clips: 1, difficulty: 'Medium',
+    language: 'Hindi', Icon: Tv, tag: 'limited', tagLabel: '3 slots left', slotsLeft: 3,
   },
 ];
 
-/* Shorter feed for the Home "Picked for you" list */
-export const pickedForYou: Quest[] = [quests[2], quests[5], quests[3]];
+export function getQuest(id: string | undefined): Quest | undefined {
+  return quests.find((q) => q.id === id);
+}
+
+/* Shorter feed for the Home "Picked for you" list — valid ids only. */
+export const pickedForYou: Quest[] = [
+  quests.find((q) => q.id === 'q-scen-1')!,
+  quests.find((q) => q.id === 'q-int-1')!,
+  quests.find((q) => q.id === 'q-room-1')!,
+];

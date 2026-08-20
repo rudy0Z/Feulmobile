@@ -7,14 +7,15 @@ import { Waveform } from './ui/Waveform';
 import { QuestCardSkeleton } from './ui/FeulSkeleton';
 import { QuestCard } from './ui/QuestCard';
 import { SectionHeading } from './ui/Primitives';
-import { quests, formatMeta, type QuestFormat } from '../lib/quests';
+import { quests, type QuestFormat } from '../lib/quests';
 import { springs, whileTap } from '../lib/motion';
 
 const filters: { id: 'all' | QuestFormat | 'high-reward'; label: string }[] = [
   { id: 'all',         label: 'All' },
   { id: 'lines',       label: 'Lines' },
   { id: 'scenario',    label: 'Scenario' },
-  { id: 'group',       label: 'Group' },
+  { id: 'interview',   label: 'Interview' },
+  { id: 'room',        label: 'Room' },
   { id: 'high-reward', label: 'Top Pay' },
 ];
 
@@ -68,8 +69,9 @@ export function QuestFeed() {
     return () => clearTimeout(id);
   }, []);
 
-  const featured = quests.find(q => q.format === 'group') ?? quests[0];
-  const groupQuests = quests.filter(q => q.format === 'group');
+  const featured = quests.find(q => q.format === 'room') ?? quests[0];
+  const roomQuests = quests.filter(q => q.format === 'room');
+  const interviewQuests = quests.filter(q => q.format === 'interview');
   const scenarioQuests = quests.filter(q => q.format === 'scenario');
   const lineQuests = quests.filter(q => q.format === 'lines');
 
@@ -107,7 +109,7 @@ export function QuestFeed() {
 
       <div className="px-6 pt-1 pb-4">
         <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', marginTop: 4 }}>
-          Quick lines, deeper scenarios, or full group sessions.
+          Quick lines, solo scenarios, interviews, or full room takes.
         </p>
       </div>
 
@@ -181,7 +183,7 @@ export function QuestFeed() {
                   fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 999,
                   letterSpacing: '0.06em',
                 }}>
-                  GROUP · {featured.speakers} SPEAKERS
+                  ROOM · {featured.speakers} PEOPLE
                 </span>
                 <span className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.55)' }}>
                   <Flame className="w-3 h-3" /> Premium tier
@@ -231,7 +233,7 @@ export function QuestFeed() {
                     ₹{featured.cashPayout}
                   </p>
                   <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.45)', marginTop: 4 }}>
-                    {featured.sessionAt ?? `in ${featured.duration}`}
+                    one take · {featured.duration}
                   </p>
                 </div>
                 <button style={{
@@ -265,11 +267,25 @@ export function QuestFeed() {
             </div>
           </div>
 
-          {/* Group Sessions */}
+          {/* Interviews */}
+          <div className="px-6 mb-6">
+            <SectionHeading variant="display" subtitle="Answer a pre-recorded question track, question by question">
+              Interviews
+            </SectionHeading>
+            <div className="space-y-3">
+              {loading
+                ? <QuestCardSkeleton />
+                : interviewQuests.map(q => (
+                    <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
+                  ))}
+            </div>
+          </div>
+
+          {/* Room Takes */}
           <div className="px-6 mb-6">
             <SectionHeading
               variant="display"
-              subtitle="Scheduled multi-speaker sessions"
+              subtitle="Everyone in one room, one phone, one continuous take"
               action={
                 <span className="flex items-center gap-1" style={{
                   fontSize: 11, fontWeight: 700, color: 'var(--accent-primary-deep)',
@@ -279,12 +295,12 @@ export function QuestFeed() {
                 </span>
               }
             >
-              Group Sessions
+              Room Takes
             </SectionHeading>
             <div className="space-y-3">
               {loading
                 ? <QuestCardSkeleton />
-                : groupQuests.filter(q => q.id !== featured.id).map(q => (
+                : roomQuests.filter(q => q.id !== featured.id).map(q => (
                     <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
                   ))}
             </div>
