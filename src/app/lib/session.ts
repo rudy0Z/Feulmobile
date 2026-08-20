@@ -13,7 +13,7 @@ export interface FeulProfile {
   languages: string[];
   upiId: string;
   upiLinked: boolean;
-  /** Progressive new-user journey stage — drives NewUserHome (§6.3). */
+  /** Progressive journey stage — maps to Home data state: day0→empty, session→pending, credited→live. */
   stage: NewUserStage;
   walletBalance: number;
 }

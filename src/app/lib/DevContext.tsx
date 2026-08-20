@@ -5,15 +5,15 @@ export type OverlayId =
   | 'mic-denied' | 'upload-failed' | 'payment-failed' | 'batch-expired' | 'daily-limit'
   | null;
 export type GradingMethodId = 'segmented' | 'pills' | 'arc' | 'keyboard' | 'binary';
-export type NewUserStageId = 'day0' | 'session' | 'credited';
+/** Home is ONE dashboard with three data states. 'auto' = derive from profile. */
+export type HomeStateId = 'auto' | 'empty' | 'pending' | 'live';
 
 interface DevState {
   isPanelOpen: boolean;
   activeOverlay: OverlayId;
 
   // ── Contributor toggles ──
-  isNewUser: boolean;
-  newUserStage: NewUserStageId;
+  homeState: HomeStateId;
   tierLockBypassed: boolean;
   walletEmpty: boolean;
   questsEmpty: boolean;
@@ -26,7 +26,7 @@ interface DevState {
   gradingMethod: GradingMethodId;
 }
 
-type BooleanToggleKey = 'isNewUser' | 'tierLockBypassed' | 'walletEmpty' | 'questsEmpty'
+type BooleanToggleKey = 'tierLockBypassed' | 'walletEmpty' | 'questsEmpty'
   | 'forceNoisePause' | 'validatorHomeEmpty' | 'validatorTasksEmpty' | 'validatorWalletEmpty';
 
 interface DevContextType extends DevState {
@@ -36,7 +36,7 @@ interface DevContextType extends DevState {
   dismissOverlay: () => void;
   setToggle: (key: BooleanToggleKey, value: boolean) => void;
   setGradingMethod: (method: GradingMethodId) => void;
-  setNewUserStage: (stage: NewUserStageId) => void;
+  setHomeState: (state: HomeStateId) => void;
   resetAll: () => void;
 }
 
@@ -45,8 +45,7 @@ const DevContext = createContext<DevContextType | null>(null);
 const defaultState: DevState = {
   isPanelOpen: false,
   activeOverlay: null,
-  isNewUser: false,
-  newUserStage: 'day0',
+  homeState: 'auto',
   tierLockBypassed: false,
   walletEmpty: false,
   questsEmpty: false,
@@ -68,7 +67,7 @@ export function DevProvider({ children }: { children: ReactNode }) {
     dismissOverlay: () => setState(s => ({ ...s, activeOverlay: null })),
     setToggle: (key, value) => setState(s => ({ ...s, [key]: value })),
     setGradingMethod: (method) => setState(s => ({ ...s, gradingMethod: method })),
-    setNewUserStage: (stage) => setState(s => ({ ...s, newUserStage: stage })),
+    setHomeState: (state) => setState(s => ({ ...s, homeState: state })),
     resetAll: () => setState({ ...defaultState }),
   };
 

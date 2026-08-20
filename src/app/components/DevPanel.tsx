@@ -312,9 +312,9 @@ export function DevPanel() {
                 </div>
 
                 {/* Active state badges */}
-                {(dev.isNewUser || dev.tierLockBypassed || dev.walletEmpty || dev.questsEmpty || dev.forceNoisePause || dev.validatorHomeEmpty || dev.validatorTasksEmpty || dev.validatorWalletEmpty) && (
+                {(dev.homeState !== 'auto' || dev.tierLockBypassed || dev.walletEmpty || dev.questsEmpty || dev.forceNoisePause || dev.validatorHomeEmpty || dev.validatorTasksEmpty || dev.validatorWalletEmpty) && (
                   <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6, marginBottom: 14 }}>
-                    {dev.isNewUser             && <ActiveBadge label="New User" />}
+                    {dev.homeState !== 'auto'  && <ActiveBadge label={`Home: ${dev.homeState}`} />}
                     {dev.tierLockBypassed      && <ActiveBadge label="Tier Bypassed" />}
                     {dev.walletEmpty           && <ActiveBadge label="Wallet Empty" />}
                     {dev.questsEmpty           && <ActiveBadge label="Quests Empty" />}
@@ -333,31 +333,31 @@ export function DevPanel() {
                 <div style={{ marginBottom: 20 }}>
                   <SectionHeader label="Contributor" />
                   <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                    <ToggleRow
-                      label="New User Mode"
-                      sublabel="Home → empty / onboarding state"
-                      value={dev.isNewUser}
-                      onChange={v => dev.setToggle('isNewUser', v)}
-                    />
-                    {dev.isNewUser && (
-                      <div style={{ display: 'flex', gap: 6, padding: '4px 12px 8px' }}>
+                    {/* Home data state — same dashboard, different data (§ amended Pass 3) */}
+                    <div style={{ padding: '8px 12px 10px' }}>
+                      <p style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.85)' }}>Home Data State</p>
+                      <p style={{ fontSize: 10.5, fontWeight: 500, color: 'rgba(255,255,255,0.4)', marginBottom: 8 }}>
+                        Same dashboard · auto follows the profile
+                      </p>
+                      <div style={{ display: 'flex', gap: 6 }}>
                         {([
-                          { id: 'day0', label: 'Day 0' },
-                          { id: 'session', label: 'In Review' },
-                          { id: 'credited', label: 'Credited' },
+                          { id: 'auto', label: 'Auto' },
+                          { id: 'empty', label: 'Empty' },
+                          { id: 'pending', label: 'Pending' },
+                          { id: 'live', label: 'Live' },
                         ] as const).map(s => {
-                          const active = dev.newUserStage === s.id;
+                          const active = dev.homeState === s.id;
                           return (
                             <button
                               key={s.id}
-                              onClick={() => dev.setNewUserStage(s.id)}
+                              onClick={() => dev.setHomeState(s.id)}
                               style={{
                                 flex: 1, padding: '7px 4px', borderRadius: 999,
                                 fontSize: 11, fontWeight: 700, cursor: 'pointer',
                                 border: '1px solid',
                                 background: active ? 'var(--accent-primary-deep)' : 'transparent',
-                                borderColor: active ? 'var(--accent-primary-deep)' : 'var(--card-border)',
-                                color: active ? '#FFFFFF' : 'var(--text-secondary)',
+                                borderColor: active ? 'var(--accent-primary-deep)' : 'rgba(255,255,255,0.16)',
+                                color: active ? '#FFFFFF' : 'rgba(255,255,255,0.6)',
                               }}
                             >
                               {s.label}
@@ -365,7 +365,7 @@ export function DevPanel() {
                           );
                         })}
                       </div>
-                    )}
+                    </div>
                     <ToggleRow
                       label="Bypass Tier Lock"
                       sublabel="Withdraw → payout directly"
