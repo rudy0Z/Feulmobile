@@ -202,7 +202,7 @@ export function SilverTierReserveDrawer({ onClose, onStartQuests }: Props) {
             marginTop: 20,
             background: 'var(--surface)',
             border: '1px solid var(--card-border)',
-            borderRadius: 14,
+            borderRadius: 16,
             padding: '14px 16px',
           }}
         >
@@ -258,7 +258,7 @@ export function SilverTierReserveDrawer({ onClose, onStartQuests }: Props) {
             fontWeight: 700,
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0px 8px 24px rgba(224,108,58,0.35)',
+            boxShadow: '0px 8px 24px rgba(var(--accent-glow-rgb),0.35)',
             marginTop: 24,
           }}
         >

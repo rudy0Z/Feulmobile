@@ -29,7 +29,7 @@ export function LabelledPills({ selectedGrade, onGrade, gradeOptions }: Labelled
             style={{
               width: '100%',
               height: 52,
-              borderRadius: 26,
+              borderRadius: 24,
               background: isSelected ? colors.active : colors.bg,
               color: isSelected ? '#FFFFFF' : 'var(--text-primary)',
               display: 'flex',

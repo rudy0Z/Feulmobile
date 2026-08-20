@@ -68,7 +68,7 @@ export function SubmissionGuidelines() {
 
         <h1
           style={{
-            fontFamily: 'var(--font-serif)', fontSize: 30, fontWeight: 800,
+            fontFamily: 'var(--font-display)', fontSize: 30, fontWeight: 800,
             color: 'var(--text-primary)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 8,
           }}
         >
@@ -134,7 +134,7 @@ export function SubmissionGuidelines() {
               >
                 <div
                   style={{
-                    width: 38, height: 38, borderRadius: 11, flexShrink: 0,
+                    width: 38, height: 38, borderRadius: 12, flexShrink: 0,
                     background: 'var(--status-accent-bg)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}
@@ -196,7 +196,7 @@ export function SubmissionGuidelines() {
         {/* Waveform example — what good audio looks like */}
         <div
           style={{
-            background: 'var(--navy)', borderRadius: 18, padding: '18px 20px', marginBottom: 4,
+            background: 'var(--navy)', borderRadius: 16, padding: '18px 20px', marginBottom: 4,
             position: 'relative', overflow: 'hidden',
           }}
         >
@@ -236,7 +236,7 @@ export function SubmissionGuidelines() {
             width: '100%', height: 58, borderRadius: 999,
             background: 'var(--accent-primary-deep)', color: '#FFFFFF',
             fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 6px 24px rgba(196,98,45,0.30)',
+            boxShadow: '0px 6px 24px rgba(var(--accent-deep-rgb),0.30)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
           }}
         >

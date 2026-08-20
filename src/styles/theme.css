@@ -60,12 +60,7 @@
   --error-700:   oklch(0.45  0.165 25);
   --error-900:   oklch(0.30  0.110 25);
 
-  /* — Info (blue, hue ~250) — */
-  --info-50:     oklch(0.97  0.020 250);
-  --info-100:    oklch(0.93  0.045 250);
-  --info-200:    oklch(0.87  0.080 250);
-  --info-500:    oklch(0.58  0.165 250);
-  --info-700:    oklch(0.44  0.135 250);
+  /* Info-blue ramp removed (Pass 0, brief §4): "Under review" now reads warning/neutral. */
 
   /* ─── Semantic aliases (use these in components) ─── */
   --background:        var(--neutral-100);
@@ -77,6 +72,18 @@
 
   --navy:              var(--neutral-950);
   --cream:             #FAF6F0;
+
+  /* ─── Hero dark surface (was hardcoded in Wallet/Home; now formalized) ───
+     Source of truth for the navy hero gradient AND for calibrating clay
+     assets. Values match the previously-inlined hex so nothing shifts. */
+  --surface-hero:             #0F1822;                 /* gradient top    */
+  --surface-hero-elevated:    #0A0C10;                 /* gradient bottom */
+  --surface-hero-accent-glow: rgba(var(--accent-glow-rgb),0.28);   /* orange glow */
+
+  /* Brand-orange RGB channels — compose any alpha via rgba(var(--…),a).
+     One edit re-hues every glow/shadow. Route ALL raw orange rgba() here. */
+  --accent-deep-rgb: 196, 98, 45;   /* == accent-600 / accent-primary-deep */
+  --accent-glow-rgb: 224, 108, 58;  /* == accent-500 warm glow             */
 
   --text-primary:      var(--neutral-900);
   --text-secondary:    var(--neutral-700);
@@ -98,8 +105,9 @@
   --status-warning-text: var(--warning-900);
   --status-error-bg:     var(--error-100);
   --status-error-text:   var(--error-900);
-  --status-info-bg:      var(--info-100);
-  --status-info-text:    var(--info-700);
+  /* "In review / processing" — neutral, not a second blue accent (brief §4) */
+  --status-info-bg:      var(--neutral-100);
+  --status-info-text:    var(--text-secondary);
   --status-accent-bg:    var(--accent-100);
   --status-accent-text:  var(--accent-900);
 
@@ -200,8 +208,6 @@
   --font-sans:    'Plus Jakarta Sans', system-ui, sans-serif;
   /* Display headings (Bricolage Grotesque — editorial grotesque) */
   --font-display: 'Bricolage Grotesque', 'Plus Jakarta Sans', system-ui, sans-serif;
-  /* Legacy alias retained — heading-bearing components inherit display */
-  --font-serif:   var(--font-display);
   /* Tabular ledger — currency, streaks, timers, durations */
   --font-mono:    'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 }
@@ -288,10 +294,7 @@
   --color-error-700:   var(--error-700);
   --color-error-900:   var(--error-900);
 
-  --color-info-50:     var(--info-50);
-  --color-info-100:    var(--info-100);
-  --color-info-500:    var(--info-500);
-  --color-info-700:    var(--info-700);
+  /* info-* Tailwind colors removed (Pass 0) */
 
   /* Semantic */
   --color-text-primary:   var(--text-primary);
@@ -327,10 +330,14 @@
   --color-chart-3:               var(--chart-3);
   --color-chart-4:               var(--chart-4);
   --color-chart-5:               var(--chart-5);
-  --radius-sm:  calc(var(--radius) - 4px);
-  --radius-md:  calc(var(--radius) - 2px);
-  --radius-lg:  var(--radius);
-  --radius-xl:  calc(var(--radius) + 4px);
+  /* Radius exposed to Tailwind utilities — matches the :root px scale so
+     `rounded-*` and inline `var(--radius-*)` agree (Pass 0 reconciliation). */
+  --radius-sm:   8px;
+  --radius-md:   12px;
+  --radius-lg:   16px;
+  --radius-xl:   20px;
+  --radius-2xl:  24px;
+  --radius-full: 999px;
   --color-sidebar:                    var(--sidebar);
   --color-sidebar-foreground:         var(--sidebar-foreground);
   --color-sidebar-primary:            var(--sidebar-primary);
@@ -356,7 +363,7 @@
   }
 
   h1 {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 28px;
     font-weight: 800;
     line-height: 1.2;
@@ -365,7 +372,7 @@
   }
 
   h2 {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 24px;
     font-weight: 800;
     line-height: 1.25;
@@ -374,7 +381,7 @@
   }
 
   h3 {
-    font-family: var(--font-serif);
+    font-family: var(--font-display);
     font-size: 20px;
     font-weight: 700;
     line-height: 1.3;

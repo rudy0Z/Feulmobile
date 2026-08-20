@@ -1,11 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import { Onboarding } from "./components/Onboarding";
-import { FirstEarning } from "./components/FirstEarning";
-import { DataConsent } from "./components/DataConsent";
-import { SubmissionGuidelines } from "./components/SubmissionGuidelines";
-import { VoiceCalibration } from "./components/VoiceCalibration";
 import { EarningCelebration } from "./components/EarningCelebration";
-import { ProfileSetup } from "./components/ProfileSetup";
 import { MainApp } from "./components/MainApp";
 import { Home } from "./components/Home";
 import { QuestFeed } from "./components/QuestFeed";
@@ -33,35 +28,23 @@ import { QuestCreatorCampaigns } from "./components/quest-creator/QuestCreatorCa
 import { QuestCreatorProfile } from "./components/quest-creator/QuestCreatorProfile";
 
 export const router = createBrowserRouter([
-  // ── Onboarding & First Earning Flow ──
+  // ── Auth (product + sign-in, one screen) ──
   {
     path: "/",
     Component: Onboarding,
   },
   {
-    path: "/first-earning",
-    Component: FirstEarning,
-  },
-  {
-    path: "/data-consent",
-    Component: DataConsent,
-  },
-  {
-    path: "/submission-guidelines",
-    Component: SubmissionGuidelines,
-  },
-  {
-    path: "/voice-calibration",
-    Component: VoiceCalibration,
-  },
-  {
     path: "/earning-celebration",
     Component: EarningCelebration,
   },
-  {
-    path: "/profile-setup",
-    Component: ProfileSetup,
-  },
+
+  // ── Retired funnel steps → Home-first. Consent is now a lazy sheet;
+  //    calibration is folded into the standard LINES capture. ──
+  { path: "/first-earning",         element: <Navigate to="/contributor" replace /> },
+  { path: "/data-consent",          element: <Navigate to="/contributor" replace /> },
+  { path: "/submission-guidelines", element: <Navigate to="/contributor" replace /> },
+  { path: "/voice-calibration",     element: <Navigate to="/recording/q-lines-1" replace /> },
+  { path: "/profile-setup",         element: <Navigate to="/contributor" replace /> },
 
   // ── Contributor (Main App) ──
   {

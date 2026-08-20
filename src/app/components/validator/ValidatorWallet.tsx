@@ -61,7 +61,7 @@ export function ValidatorWallet() {
     return (
       <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
         <div className="px-6 pt-16 pb-4">
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
         </div>
 
         {/* Locked Potential Card */}
@@ -110,7 +110,7 @@ export function ValidatorWallet() {
 
         {/* How earnings work */}
         <div className="px-6 mb-6">
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12 }}>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12 }}>
             How Grading Pay Works
           </h3>
           {[
@@ -124,7 +124,7 @@ export function ValidatorWallet() {
                 borderBottom: idx < 2 ? '1px solid #E8EDF3' : 'none',
               }}>
                 <div style={{
-                  width: 44, height: 44, borderRadius: 14,
+                  width: 44, height: 44, borderRadius: 16,
                   background: 'var(--neutral-100)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
@@ -142,7 +142,7 @@ export function ValidatorWallet() {
         {/* First batch bonus teaser */}
         <div className="px-6">
           <div className="flex items-center gap-3" style={{
-            background: '#EFF6E8', borderRadius: 14, padding: '14px 18px',
+            background: '#EFF6E8', borderRadius: 16, padding: '14px 18px',
             border: '1px solid #C3DDBA',
           }}>
             <Gift className="w-5 h-5 flex-shrink-0" style={{ color: '#2C5F1A' }} />
@@ -161,7 +161,7 @@ export function ValidatorWallet() {
               width: '100%', height: 56, borderRadius: 999,
               background: 'var(--accent-primary-deep)', color: 'var(--surface)',
               fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-              boxShadow: '0px 4px 16px rgba(196,98,45,0.30)',
+              boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.30)',
             }}
           >
             Start Grading Now
@@ -176,7 +176,7 @@ export function ValidatorWallet() {
 
       {/* Header */}
       <div className="px-6 pt-16 pb-4">
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
       </div>
 
       {/* Balance Card — ink-navy */}
@@ -205,7 +205,7 @@ export function ValidatorWallet() {
                   Available to withdraw
                 </p>
               </div>
-              <div style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(90,123,109,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ width: 48, height: 48, borderRadius: 16, background: 'rgba(90,123,109,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
                 <ShieldCheck className="w-6 h-6" style={{ color: '#5A7B6D' }} />
               </div>
             </div>
@@ -243,7 +243,7 @@ export function ValidatorWallet() {
       {/* Accuracy bonus strip */}
       <div className="px-6 mb-4">
         <div style={{
-          background: '#EFF6E8', borderRadius: 14, padding: '12px 16px',
+          background: '#EFF6E8', borderRadius: 16, padding: '12px 16px',
           border: '1px solid #C3DDBA',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
@@ -334,7 +334,7 @@ export function ValidatorWallet() {
 
       {/* Earnings Ledger */}
       <div className="px-6">
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 14 }}>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 14 }}>
           Earnings Ledger
         </h3>
 
@@ -413,7 +413,7 @@ export function ValidatorWallet() {
             fontWeight: 700,
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0px 4px 16px rgba(196,98,45,0.30)',
+            boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.30)',
           }}
           onClick={() => navigate('/validator/payout')}
         >

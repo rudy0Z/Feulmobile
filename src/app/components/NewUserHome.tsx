@@ -1,407 +1,214 @@
-import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import {
-  Mic, Clock, Flame, TrendingUp, ChevronRight,
-  Users, Gift, Lock, CreditCard, AlertCircle, CheckCircle2, Zap,
+  Mic, Clock, ChevronRight, CheckCircle2, CreditCard, ShieldCheck, ArrowRight,
 } from 'lucide-react';
 import { FeulLogo } from './ui/FeulLogo';
 import { Waveform } from './ui/Waveform';
+import { useDevContext } from '../lib/DevContext';
+import { useSession, type NewUserStage } from '../lib/session';
 
-interface FeulProfile {
-  name: string;
-  initials: string;
-  languages: string[];
-  upiId: string;
-  setupComplete: boolean;
-  walletBalance: number;
-  upiLinked: boolean;
-}
+const FIRST_QUEST = 'q-lines-1';
 
-const starterQuests = [
-  { id: 'sq-1', title: 'Quick Phrases — Hindi',  cash: 10, duration: '2 min', tag: 'Perfect for beginners', tagBg: 'var(--status-accent-bg)', tagText: 'var(--status-accent-text)' },
-  { id: 'sq-2', title: 'Morning Greetings',       cash: 8,  duration: '1 min', tag: 'Fastest payout',       tagBg: 'var(--status-warning-bg)', tagText: 'var(--status-warning-text)' },
-  { id: 'sq-3', title: 'Restaurant Ordering',     cash: 15, duration: '5 min', tag: 'High demand',          tagBg: 'var(--status-info-bg)', tagText: 'var(--status-info-text)' },
-];
-
-const lockedMilestones = [
-  { label: 'Complete 5 quests',          reward: 'Unlock ₹50 bonus',                          progress: 1, total: 5 },
-  { label: '3-day streak',               reward: '1.1× payout multiplier',                    progress: 1, total: 3 },
-  { label: 'Reach Verified Contributor', reward: 'Priority access to high-paying quests',     progress: 0, total: 1 },
-];
-
+/**
+ * Progressive new-user Home (§6.3). Drives off the profile stage
+ * (day-0 → after-first-session → after-credits); DevPanel can override the
+ * stage for demo. Day-0 is intentionally sparse: one line + one quest CTA.
+ */
 export function NewUserHome() {
   const navigate = useNavigate();
-  const [profile, setProfile] = useState<FeulProfile | null>(null);
+  const dev = useDevContext();
+  const { profile } = useSession();
 
-  useEffect(() => {
-    try {
-      const stored = localStorage.getItem('feul_profile');
-      if (stored) setProfile(JSON.parse(stored));
-    } catch {/* ignore */}
-  }, []);
-
-  const displayName = profile?.name ?? 'there';
-  const firstName   = displayName.split(' ')[0];
-  const initials    = profile?.initials ?? '?';
-  const walletBal   = profile?.walletBalance ?? 50;
-  const upiLinked   = profile?.upiLinked ?? false;
-  const upiId       = profile?.upiId ?? '';
+  const stage: NewUserStage = dev.isNewUser ? dev.newUserStage : (profile?.stage ?? 'day0');
+  const firstName = (profile?.name ?? 'there').split(' ')[0];
+  const initials = profile?.initials ?? '?';
 
   return (
-    <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
-
-      {/* ── Header ── */}
-      <div className="px-6 pt-8 pb-2 flex items-center justify-between">
+    <div className="min-h-screen pb-10" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+      {/* Header */}
+      <div className="px-6 pt-14 pb-2 flex items-center justify-between">
         <FeulLogo />
-        <div className="flex items-center gap-2" style={{ background: 'var(--accent-50)', borderRadius: 999, padding: '5px 12px' }}>
-          <Flame style={{ width: 16, height: 16, color: 'var(--accent-primary)' }} />
-          <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-primary)' }}>1 day streak</span>
-        </div>
-      </div>
-
-      {/* ── Welcome greeting ── */}
-      <div className="px-6 pt-3 pb-4">
-        <div className="flex items-center gap-3">
-          <div style={{
-            width: 44, height: 44, borderRadius: '50%',
-            background: 'var(--accent-primary-deep)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0px 4px 12px rgba(196,98,45,0.25)',
-            flexShrink: 0,
-          }}>
-            <span style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 800, color: '#FFFFFF' }}>
-              {initials}
-            </span>
-          </div>
-          <div>
-            <p style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.2 }}>
-              Welcome, {firstName}
-            </p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 1 }}>
-              Your account is live. Start earning.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Wallet Hero — ₹50 is real, it's in the wallet ── */}
-      <div className="px-6 mb-3">
         <div style={{
-          background: 'radial-gradient(ellipse at 20% 35%, rgba(224,108,58,0.17) 0%, transparent 55%), linear-gradient(150deg, #0F1822 0%, var(--navy) 100%)',
-          borderRadius: 24,
-          padding: '24px', position: 'relative', overflow: 'hidden',
-          boxShadow: 'var(--shadow-floating)',
+          width: 40, height: 40, borderRadius: '50%',
+          background: 'var(--accent-primary-deep)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
         }}>
-          {/* Static waveform texture at bottom — never overlaps text */}
-          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 24px 24px', opacity: 0.11 }}>
-            <Waveform color="#FFFFFF" opacity={1} height={48} />
-          </div>
-
-          <div className="relative z-10">
-            <div className="flex items-start justify-between mb-4">
-              <div>
-                <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent-primary-deep)', marginBottom: 6, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
-                  Wallet Balance
-                </p>
-                <motion.p
-                  initial={{ scale: 0.8, opacity: 0 }}
-                  animate={{ scale: 1, opacity: 1 }}
-                  transition={{ type: 'spring', stiffness: 160, damping: 14, delay: 0.2 }}
-                  style={{ fontFamily: 'var(--font-mono)', fontSize: 44, fontWeight: 700, color: '#FFFFFF', lineHeight: 1, letterSpacing: '-0.02em' }}
-                >
-                  ₹{walletBal.toFixed(2)}
-                </motion.p>
-                <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.35)', marginTop: 5 }}>
-                  Available to withdraw
-                </p>
-              </div>
-
-              {/* Credited badge */}
-              <motion.div
-                initial={{ opacity: 0, y: -8 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.4 }}
-                style={{
-                  background: 'rgba(45,122,79,0.25)', borderRadius: 12,
-                  padding: '8px 12px', display: 'flex', alignItems: 'center', gap: 6,
-                  border: '1px solid rgba(45,122,79,0.3)',
-                }}
-              >
-                <CheckCircle2 style={{ width: 14, height: 14, color: 'var(--success-500)' }} />
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--success-500)' }}>Credited</span>
-              </motion.div>
-            </div>
-
-            {/* Transaction row */}
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.07)', paddingTop: 14 }}>
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Mic style={{ width: 13, height: 13, color: 'rgba(255,255,255,0.3)' }} />
-                  <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>
-                    Voice Calibration — Welcome Bonus
-                  </span>
-                </div>
-                <span style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'var(--accent-primary-deep)' }}>
-                  +₹50.00
-                </span>
-              </div>
-            </div>
-          </div>
+          <span style={{ fontFamily: 'var(--font-display)', fontSize: 15, fontWeight: 800, color: '#FFFFFF' }}>{initials}</span>
         </div>
       </div>
 
-      {/* ── UPI nudge (only if UPI not linked) ── */}
-      {!upiLinked && (
-        <div className="px-6 mb-4">
-          <motion.div
-            initial={{ opacity: 0, y: 6 }} animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.3, duration: 0.4 }}
-            onClick={() => navigate('/contributor/profile')}
-            style={{
-              background: 'var(--warning-50)', borderRadius: 16,
-              border: '1px solid var(--warning-200)', padding: '14px 16px',
-              display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer',
-            }}
-          >
-            <div style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--warning-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
-              <AlertCircle style={{ width: 18, height: 18, color: 'var(--warning-700)' }} />
-            </div>
-            <div className="flex-1">
-              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--status-warning-text)', marginBottom: 2 }}>
-                Add UPI to withdraw your ₹50
-              </p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--warning-700)' }}>
-                Link a UPI ID to receive Monday payouts
-              </p>
-            </div>
-            <ChevronRight style={{ width: 16, height: 16, color: 'var(--warning-700)', flexShrink: 0 }} />
-          </motion.div>
-        </div>
-      )}
+      {stage === 'day0' && <Day0 firstName={firstName} onStart={() => navigate(`/recording/${FIRST_QUEST}`)} />}
+      {stage === 'session' && <AfterSession firstName={firstName} onAnother={() => navigate('/contributor/quests')} onWallet={() => navigate('/contributor/wallet')} />}
+      {stage === 'credited' && <AfterCredits onWithdraw={() => navigate('/contributor/wallet')} onNext={() => navigate('/contributor/quests')} />}
+    </div>
+  );
+}
 
-      {/* ── UPI confirmed (if linked) ── */}
-      {upiLinked && upiId && (
-        <div className="px-6 mb-4">
-          <div style={{
-            background: 'var(--status-success-bg)', borderRadius: 14,
-            border: '1px solid var(--card-border)', padding: '12px 16px',
-            display: 'flex', alignItems: 'center', gap: 10,
-          }}>
-            <CreditCard style={{ width: 16, height: 16, color: 'var(--color-success)', flexShrink: 0 }} />
-            <div className="flex-1">
-              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--status-success-text)' }}>
-                {upiId}
-              </p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--color-success)' }}>
-                UPI linked · ₹50 will be sent next Monday
-              </p>
+/* ── Stage 1: Day 0 — one sentence, one CTA ─────────────────────────── */
+function Day0({ firstName, onStart }: { firstName: string; onStart: () => void }) {
+  return (
+    <div className="px-6 pt-6">
+      <motion.h1
+        initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4 }}
+        style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 10 }}
+      >
+        Welcome, {firstName}.<br />Your first ₹50 is one quest away.
+      </motion.h1>
+      <motion.p
+        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.4, delay: 0.1 }}
+        style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: 320, marginBottom: 32 }}
+      >
+        Read a few short lines out loud. It takes about three minutes.
+      </motion.p>
+
+      {/* One primary CTA */}
+      <motion.button
+        initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.4, delay: 0.16 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={onStart}
+        style={{
+          width: '100%', height: 60, borderRadius: 999,
+          background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
+          color: '#FFFFFF', fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
+          boxShadow: '0px 10px 28px rgba(var(--accent-glow-rgb),0.38)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+        }}
+      >
+        <Mic style={{ width: 20, height: 20 }} />
+        Start your first quest
+      </motion.button>
+
+      {/* Quiet how-it-works — no cards, no clutter */}
+      <div style={{ marginTop: 36 }}>
+        {[
+          { n: '1', label: 'Record short lines', sub: 'Tap, read, done — no script memorising.' },
+          { n: '2', label: 'Clips get reviewed', sub: 'Quality-checked before anything is paid.' },
+          { n: '3', label: 'Cash lands in your wallet', sub: 'Withdraw to UPI once approved.' },
+        ].map((s, i, arr) => (
+          <div key={s.n} className="flex items-start gap-4 py-3" style={{ borderBottom: i < arr.length - 1 ? '1px solid var(--card-border)' : 'none' }}>
+            <span style={{
+              width: 26, height: 26, borderRadius: 999, flexShrink: 0,
+              background: 'var(--status-accent-bg)', color: 'var(--accent-primary-deep)',
+              fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+            }}>{s.n}</span>
+            <div>
+              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>{s.label}</p>
+              <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', marginTop: 1 }}>{s.sub}</p>
             </div>
-            <CheckCircle2 style={{ width: 16, height: 16, color: 'var(--color-success)', flexShrink: 0 }} />
           </div>
-        </div>
-      )}
+        ))}
+      </div>
+    </div>
+  );
+}
 
-      {/* ── Languages confirmed ── */}
-      {profile?.languages && profile.languages.length > 0 && (
-        <div className="px-6 mb-5">
-          <div style={{
-            background: 'var(--surface)', borderRadius: 14,
-            border: '1px solid var(--card-border)', padding: '12px 16px',
-            display: 'flex', alignItems: 'center', gap: 10,
-          }}>
-            <div style={{ flex: 1 }}>
-              <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-                Your languages
-              </p>
-              <div className="flex flex-wrap gap-2">
-                {profile.languages.map(l => (
-                  <span key={l} style={{
-                    fontSize: 12, fontWeight: 700, padding: '4px 12px', borderRadius: 999,
-                    background: 'var(--status-accent-bg)', color: 'var(--status-accent-text)',
-                  }}>{l}</span>
-                ))}
-              </div>
-            </div>
-            <button
-              onClick={() => navigate('/contributor/profile')}
-              style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-primary-deep)', background: 'none', border: 'none', cursor: 'pointer', flexShrink: 0 }}
-            >
-              Edit
-            </button>
+/* ── Stage 2: after first session — clips pending review ────────────── */
+function AfterSession({ firstName, onAnother, onWallet }: { firstName: string; onAnother: () => void; onWallet: () => void }) {
+  return (
+    <div className="px-6 pt-6">
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 8 }}>
+        Nice work, {firstName}.
+      </h1>
+      <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: 320, marginBottom: 24 }}>
+        Your first clips are in. Here's what happens next.
+      </p>
+
+      {/* Pending card — honest, no fake credit */}
+      <div style={{ background: 'var(--surface)', borderRadius: 20, border: '1px solid var(--card-border)', padding: '20px', boxShadow: 'var(--shadow-card)', marginBottom: 20 }}>
+        <div className="flex items-center gap-3 mb-4">
+          <div style={{ width: 44, height: 44, borderRadius: 12, background: 'var(--warning-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <Clock style={{ width: 20, height: 20, color: 'var(--warning-700)' }} />
           </div>
-        </div>
-      )}
-
-      {/* ── Recommended quests ── */}
-      <div className="px-6 mb-6">
-        <div className="flex items-center justify-between mb-3">
           <div>
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>
-              Recommended For You
-            </h3>
-            <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>
-              Matched to your voice calibration
-            </p>
+            <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>Under review</p>
+            <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>Usually cleared within a day</p>
           </div>
-          <button
-            onClick={() => navigate('/contributor/quests')}
-            className="flex items-center gap-1"
-            style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-muted)', padding: '6px 0 6px 12px', minHeight: 44, display: 'flex', alignItems: 'center' }}
-          >
-            All <ChevronRight style={{ width: 14, height: 14 }} />
-          </button>
         </div>
-
-        <div className="space-y-3">
-          {starterQuests.map((quest, idx) => (
-            <motion.div
-              key={quest.id}
-              initial={{ opacity: 0, y: 14 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.15 + idx * 0.08, duration: 0.35 }}
-              onClick={() => navigate(`/recording/${quest.id}`)}
-              style={{
-                background: 'var(--surface)', borderRadius: 18,
-                border: '1px solid var(--card-border)', padding: '18px',
-                cursor: 'pointer', boxShadow: 'var(--shadow-card)',
-              }}
-            >
-              <div className="flex items-center gap-2 mb-3">
-                <span style={{ fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 999, background: quest.tagBg, color: quest.tagText }}>
-                  {quest.tag}
-                </span>
-              </div>
-              <div className="flex items-center justify-between">
-                <div>
-                  <h4 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>{quest.title}</h4>
-                  <span className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>
-                    <Clock style={{ width: 13, height: 13 }} /> {quest.duration}
-                  </span>
-                </div>
-                <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--accent-primary)', lineHeight: 1 }}>
-                    ₹{quest.cash}
-                  </p>
-                  <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>
-                    in {quest.duration}
-                  </p>
-                </div>
-              </div>
-            </motion.div>
-          ))}
+        <div className="flex items-center justify-between" style={{ borderTop: '1px solid var(--card-border)', paddingTop: 14 }}>
+          <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Expected earning</span>
+          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>₹50.00</span>
         </div>
       </div>
 
-      {/* ── Primary CTA ── */}
-      <div className="px-6 mb-7">
-        <motion.button
-          whileTap={{ scale: 0.97 }}
-          onClick={() => navigate('/contributor/quests')}
-          style={{
-            width: '100%', height: 62, borderRadius: 999,
-            background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-            color: '#FFFFFF',
-            fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 10px 28px rgba(224,108,58,0.42), inset 0px 1px 0px rgba(255,255,255,0.18)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-          }}
-        >
-          <Mic style={{ width: 20, height: 20 }} />
-          Start Earning Now
-        </motion.button>
-      </div>
+      <button
+        onClick={onAnother}
+        style={{
+          width: '100%', height: 56, borderRadius: 999,
+          background: 'var(--accent-primary-deep)', color: '#FFFFFF',
+          fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
+          boxShadow: '0px 8px 24px rgba(var(--accent-glow-rgb),0.30)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 12,
+        }}
+      >
+        Record another while you wait <ArrowRight style={{ width: 18, height: 18 }} />
+      </button>
+      <button onClick={onWallet} style={{ width: '100%', padding: 14, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: 'var(--text-muted)' }}>
+        View wallet
+      </button>
+    </div>
+  );
+}
 
-      {/* ── Trust Tier (minimal, new user) ── */}
-      <div className="px-6 mb-6">
-        <div style={{ background: 'var(--surface)', borderRadius: 20, border: '1px solid var(--card-border)', padding: '20px', boxShadow: 'var(--shadow-card)' }}>
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center gap-2">
-              <Zap style={{ width: 16, height: 16, color: 'var(--accent-primary)' }} />
-              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>New Contributor</span>
-            </div>
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>100 / 500 reputation</span>
-          </div>
-          <div style={{ background: 'var(--neutral-100)', borderRadius: 999, height: 8 }}>
-            <div style={{ background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-400))', borderRadius: 999, height: 8, width: '20%' }} />
-          </div>
-          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 10 }}>
-            Reach <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>Verified Contributor</span> to unlock{' '}
-            <span style={{ color: 'var(--accent-primary)', fontWeight: 700 }}>priority access to high-paying quests</span>
-          </p>
-        </div>
-      </div>
+/* ── Stage 3: after credits — real ₹, add UPI to withdraw ───────────── */
+function AfterCredits({ onWithdraw, onNext }: { onWithdraw: () => void; onNext: () => void }) {
+  return (
+    <div className="px-6 pt-6">
+      <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 20 }}>
+        Your first ₹50 is in.
+      </h1>
 
-      {/* ── Locked Milestones ── */}
-      <div className="px-6 mb-6">
-        <div className="flex items-center gap-2 mb-4">
-          <Gift style={{ width: 20, height: 20, color: 'var(--warning-700)' }} />
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>
-            Locked Rewards
-          </h3>
+      {/* Credited money card — the one warm surface */}
+      <div style={{
+        background: 'radial-gradient(ellipse at 20% 35%, var(--surface-hero-accent-glow) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
+        borderRadius: 24, padding: '24px', position: 'relative', overflow: 'hidden',
+        boxShadow: 'var(--shadow-floating)', marginBottom: 20,
+      }}>
+        <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 24px 24px', opacity: 0.10 }}>
+          <Waveform color="#FFFFFF" opacity={1} height={44} />
         </div>
-        <div className="space-y-3">
-          {lockedMilestones.map((m, idx) => (
-            <div key={idx} style={{
-              background: 'var(--surface)', borderRadius: 18,
-              border: '1px solid var(--card-border)', padding: '16px 18px',
-              display: 'flex', alignItems: 'center', gap: 14,
-              boxShadow: 'var(--shadow-card)',
-            }}>
-              <div style={{
-                width: 40, height: 40, borderRadius: 12,
-                background: m.progress > 0 ? 'var(--accent-50)' : 'var(--neutral-100)',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-              }}>
-                <Lock style={{ width: 18, height: 18, color: m.progress > 0 ? 'var(--accent-primary)' : 'var(--text-muted)' }} />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>{m.label}</p>
-                <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{m.reward}</p>
-                <div style={{ background: 'var(--neutral-100)', borderRadius: 999, height: 4, marginTop: 8 }}>
-                  <div style={{
-                    background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-400))',
-                    borderRadius: 999, height: 4,
-                    width: `${(m.progress / m.total) * 100}%`,
-                    transition: 'width 0.5s ease',
-                  }} />
-                </div>
-              </div>
-              <span style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-primary)', flexShrink: 0 }}>
-                {m.progress}/{m.total}
-              </span>
-            </div>
-          ))}
+        <div className="relative z-10">
+          <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--accent-primary-deep)', marginBottom: 6, letterSpacing: '0.08em', textTransform: 'uppercase' }}>Cash balance</p>
+          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 44, fontWeight: 700, color: '#FFFFFF', lineHeight: 1, letterSpacing: '-0.02em' }}>₹50.00</p>
+          <div className="flex items-center gap-2 mt-3">
+            <CheckCircle2 style={{ width: 14, height: 14, color: 'var(--accent-primary)' }} />
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.5)' }}>First quest approved & credited</span>
+          </div>
         </div>
       </div>
 
-      {/* ── Social proof ── */}
-      <div className="px-6">
-        <div style={{ background: 'var(--surface)', borderRadius: 18, border: '1px solid var(--card-border)', padding: '18px 20px', boxShadow: 'var(--shadow-card)' }}>
-          <div className="flex items-center gap-2 mb-3">
-            <Users style={{ width: 16, height: 16, color: 'var(--text-muted)' }} />
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>What contributors earn weekly</span>
-          </div>
-          <div className="flex items-center justify-between">
-            {[
-              { label: 'Casual (2h/wk)', value: '₹250',    highlight: false },
-              { label: 'Active (8h/wk)', value: '₹1,200',  highlight: true  },
-              { label: 'Power (20h/wk)', value: '₹3,500+', highlight: false },
-            ].map((s, idx, arr) => (
-              <div key={s.label} className="flex items-center flex-1">
-                <div className="text-center flex-1">
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 700, color: s.highlight ? 'var(--accent-primary-deep)' : 'var(--text-primary)' }}>
-                    {s.value}
-                  </p>
-                  <p style={{ fontSize: 10, fontWeight: 500, color: 'var(--text-muted)' }}>{s.label}</p>
-                </div>
-                {idx < arr.length - 1 && (
-                  <div style={{ width: 1, height: 32, background: 'var(--divider)', flexShrink: 0 }} />
-                )}
-              </div>
-            ))}
-          </div>
+      {/* Add UPI to withdraw — UPI lives in Wallet now */}
+      <div
+        onClick={onWithdraw}
+        style={{ background: 'var(--warning-50)', borderRadius: 16, border: '1px solid var(--warning-200)', padding: '14px 16px', display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', marginBottom: 20 }}
+      >
+        <div style={{ width: 40, height: 40, borderRadius: 12, background: 'var(--warning-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <CreditCard style={{ width: 18, height: 18, color: 'var(--warning-700)' }} />
         </div>
+        <div className="flex-1">
+          <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--status-warning-text)' }}>Add UPI to withdraw</p>
+          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--warning-700)' }}>Link it in your wallet — payouts run every Monday</p>
+        </div>
+        <ChevronRight style={{ width: 16, height: 16, color: 'var(--warning-700)', flexShrink: 0 }} />
+      </div>
+
+      <button
+        onClick={onNext}
+        style={{
+          width: '100%', height: 56, borderRadius: 999,
+          background: 'var(--accent-primary-deep)', color: '#FFFFFF',
+          fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
+          boxShadow: '0px 8px 24px rgba(var(--accent-glow-rgb),0.30)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8, marginBottom: 16,
+        }}
+      >
+        Find your next quest <ArrowRight style={{ width: 18, height: 18 }} />
+      </button>
+
+      <div className="flex items-center justify-center gap-2">
+        <ShieldCheck style={{ width: 14, height: 14, color: 'var(--text-muted)' }} />
+        <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>Consent recorded · revoke anytime in Profile</span>
       </div>
     </div>
   );

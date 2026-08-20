@@ -48,7 +48,7 @@ const languageExpertise = [
 
 const cardBase: React.CSSProperties = {
   background: 'var(--surface)',
-  borderRadius: 18,
+  borderRadius: 16,
   border: '1px solid var(--card-border)',
   boxShadow: 'var(--shadow-glass)',
 };
@@ -79,7 +79,7 @@ export function Performance() {
         >
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>
           Performance
         </h1>
         <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>How you compare to last month</p>
@@ -92,7 +92,7 @@ export function Performance() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
           style={{
-            background: 'radial-gradient(ellipse at 20% 35%, rgba(224,108,58,0.17) 0%, transparent 55%), linear-gradient(150deg, #0F1822 0%, var(--navy) 100%)',
+            background: 'radial-gradient(ellipse at 20% 35%, rgba(var(--accent-glow-rgb),0.17) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--navy) 100%)',
             borderRadius: 24,
             padding: '22px 22px',
             boxShadow: 'var(--shadow-floating)',
@@ -125,7 +125,7 @@ export function Performance() {
             >
               <div className="flex items-center gap-3 mb-2">
                 <div style={{
-                  width: 38, height: 38, borderRadius: 11,
+                  width: 38, height: 38, borderRadius: 12,
                   background: m.tint,
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
@@ -157,7 +157,7 @@ export function Performance() {
       <div className="px-6">
         <div className="flex items-center gap-2 mb-3">
           <Languages className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
             Language Expertise
           </h2>
         </div>

@@ -30,7 +30,7 @@ export function QuestCardSkeleton() {
     <div
       style={{
         background: '#FFFFFF',
-        borderRadius: 18,
+        borderRadius: 16,
         border: '1px solid var(--card-border)',
         borderLeft: '3px solid var(--divider)',
         padding: '16px 18px 16px 16px',

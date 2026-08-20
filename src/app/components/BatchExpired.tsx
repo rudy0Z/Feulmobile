@@ -39,7 +39,7 @@ export function BatchExpired({ onClose, onPickNew }: Props) {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.05 }}
           style={{
-            width: 96, height: 96, borderRadius: 30,
+            width: 96, height: 96, borderRadius: 24,
             background: 'var(--warning-50)',
             border: '1.5px solid rgba(184,134,11,0.2)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -66,7 +66,7 @@ export function BatchExpired({ onClose, onPickNew }: Props) {
         <div style={{
           width: '100%', maxWidth: 340,
           background: '#FFFFFF',
-          borderRadius: 18, border: '1px solid var(--card-border)',
+          borderRadius: 16, border: '1px solid var(--card-border)',
           boxShadow: '0px 4px 16px rgba(28,36,52,0.06)',
           padding: '18px 20px', marginBottom: 28,
         }}>
@@ -103,7 +103,7 @@ export function BatchExpired({ onClose, onPickNew }: Props) {
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               color: '#FFFFFF', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              boxShadow: '0px 8px 24px rgba(196,98,45,0.28)',
+              boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.28)',
             }}
           >
             <RotateCcw style={{ width: 16, height: 16 }} />

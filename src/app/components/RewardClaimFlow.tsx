@@ -68,7 +68,7 @@ function StepConfirm({
         <button onClick={onBack} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
           Redeem Reward
         </h1>
         <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>Step 1 of 3 · Confirm redemption</p>
@@ -84,14 +84,14 @@ function StepConfirm({
           display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
         }}>
           <div style={{
-            width: 80, height: 80, borderRadius: 22,
+            width: 80, height: 80, borderRadius: 24,
             background: accentBg,
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             fontSize: 42, marginBottom: 16,
           }}>
             {reward.emoji}
           </div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>
             {reward.name}
           </h2>
           <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 18, lineHeight: 1.5 }}>
@@ -198,7 +198,7 @@ function StepProcessing({ onDone }: { onDone: () => void }) {
               style={{
                 position: 'absolute', inset: 0,
                 borderRadius: '50%',
-                border: '2px solid rgba(196,98,45,0.3)',
+                border: '2px solid rgba(var(--accent-deep-rgb),0.3)',
               }}
               animate={{ scale: [1, 1.8], opacity: [0.6, 0] }}
               transition={{ duration: 1.8, delay: i * 0.6, repeat: Infinity, ease: 'easeOut' }}
@@ -206,7 +206,7 @@ function StepProcessing({ onDone }: { onDone: () => void }) {
           ))}
           <div style={{
             position: 'absolute', inset: 0, borderRadius: '50%',
-            background: 'rgba(196,98,45,0.12)',
+            background: 'rgba(var(--accent-deep-rgb),0.12)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
             <motion.div
@@ -313,7 +313,7 @@ function StepSuccess({
           <p style={{ fontSize: 13, fontWeight: 600, color: accentColor, marginBottom: 10, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             {isVoucher ? 'Voucher Issued!' : 'Perk Activated!'}
           </p>
-          <p style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, maxWidth: 280 }}>
+          <p style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, maxWidth: 280 }}>
             {reward.name}
           </p>
           <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.4)', marginTop: 8, lineHeight: 1.5 }}>
@@ -370,7 +370,7 @@ function StepSuccess({
                     <button
                       onClick={handleCopy}
                       style={{
-                        background: accentColor, borderRadius: 10, padding: '8px 14px',
+                        background: accentColor, borderRadius: 12, padding: '8px 14px',
                         border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: 6,
                         flexShrink: 0, marginLeft: 12,
                       }}

@@ -23,7 +23,7 @@ export function FirstEarning() {
           transition={{ duration: 2, repeat: Infinity, ease: 'easeInOut' }}
           style={{
             width: 100, height: 100, borderRadius: '50%',
-            background: 'rgba(196,98,45,0.15)',
+            background: 'rgba(var(--accent-deep-rgb),0.15)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: 40,
           }}
@@ -32,7 +32,7 @@ export function FirstEarning() {
             width: 72, height: 72, borderRadius: '50%',
             background: 'var(--accent-primary-deep)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0px 8px 32px rgba(196,98,45,0.4)',
+            boxShadow: '0px 8px 32px rgba(var(--accent-deep-rgb),0.4)',
           }}>
             <Mic className="w-8 h-8 text-white" strokeWidth={1.75} />
           </div>
@@ -49,7 +49,7 @@ export function FirstEarning() {
             Your first earning
           </p>
           <h1 style={{
-            fontFamily: 'var(--font-serif)',
+            fontFamily: 'var(--font-display)',
             fontSize: 44,
             fontWeight: 800,
             color: '#FFFFFF',
@@ -97,7 +97,7 @@ export function FirstEarning() {
             width: '100%', height: 58, borderRadius: 999,
             background: 'var(--accent-primary-deep)', color: '#FFFFFF',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 6px 28px rgba(196,98,45,0.4)',
+            boxShadow: '0px 6px 28px rgba(var(--accent-deep-rgb),0.4)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
           }}
         >
@@ -122,7 +122,7 @@ export function FirstEarning() {
             }}
           >
             Returning user?{' '}
-            <span style={{ color: '#E8913A', fontWeight: 700 }}>Go to wallet</span>
+            <span style={{ color: 'var(--accent-primary)', fontWeight: 700 }}>Go to wallet</span>
           </button>
         </div>
       </motion.div>

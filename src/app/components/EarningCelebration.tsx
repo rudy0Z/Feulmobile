@@ -1,7 +1,8 @@
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { Wallet, ArrowRight, Flame, TrendingUp } from 'lucide-react';
+import { ArrowRight, Flame, TrendingUp } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
+import { CheckCircle2 } from 'lucide-react';
 
 export function EarningCelebration() {
   const navigate = useNavigate();
@@ -24,7 +25,7 @@ export function EarningCelebration() {
           transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
           style={{
             width: 120, height: 120, borderRadius: '50%',
-            background: 'rgba(196,98,45,0.12)',
+            background: 'rgba(var(--accent-deep-rgb),0.12)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: 40,
           }}
@@ -33,14 +34,9 @@ export function EarningCelebration() {
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.3 }}
-            style={{
-              width: 88, height: 88, borderRadius: '50%',
-              background: 'var(--accent-primary-deep)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0px 12px 40px rgba(196,98,45,0.4)',
-            }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            <Wallet className="w-10 h-10 text-white" strokeWidth={1.5} />
+            <CheckCircle2 style={{ width: 56, height: 56, color: 'var(--accent-primary-deep)' }} strokeWidth={1.75} />
           </motion.div>
         </motion.div>
 
@@ -141,7 +137,7 @@ export function EarningCelebration() {
             width: '100%', height: 58, borderRadius: 999,
             background: 'var(--accent-primary-deep)', color: '#FFFFFF',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 6px 28px rgba(196,98,45,0.4)',
+            boxShadow: '0px 6px 28px rgba(var(--accent-deep-rgb),0.4)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
           }}
         >

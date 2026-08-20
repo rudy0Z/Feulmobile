@@ -71,7 +71,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
       <div
         style={{
           background: 'var(--navy)',
-          borderRadius: 28,
+          borderRadius: 24,
           padding: 28,
           maxWidth: 340,
           width: '100%',
@@ -238,7 +238,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
           style={{
             background: 'var(--warning-50)',
             border: '1px solid var(--warning-200)',
-            borderRadius: 14,
+            borderRadius: 16,
             padding: '14px 16px',
             marginBottom: 20,
           }}

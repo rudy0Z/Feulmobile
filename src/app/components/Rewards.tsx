@@ -74,7 +74,7 @@ export function Rewards() {
         >
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
           XP Rewards Hub
         </h1>
         <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Spend your XP on vouchers, perks &amp; more</p>
@@ -140,7 +140,7 @@ export function Rewards() {
         <div className="px-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <ShoppingBag className="w-4 h-4" style={{ color: 'var(--warning-700)' }} />
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>
               Partner Vouchers
             </h3>
           </div>
@@ -156,7 +156,7 @@ export function Rewards() {
                     borderColor: affordable ? 'var(--warning-200)' : 'var(--card-border)',
                   }}
                 >
-                  <div style={{ width: 48, height: 48, borderRadius: 14, background: 'var(--warning-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
+                  <div style={{ width: 48, height: 48, borderRadius: 16, background: 'var(--warning-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
                     {voucher.emoji}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -193,7 +193,7 @@ export function Rewards() {
         <div className="px-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Sparkles className="w-4 h-4" style={{ color: 'var(--warning-700)' }} />
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>
               Perks &amp; Boosts
             </h3>
           </div>
@@ -254,7 +254,7 @@ export function Rewards() {
         <div className="px-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Award className="w-4 h-4" style={{ color: 'var(--warning-700)' }} />
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>Exclusive</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>Exclusive</h3>
           </div>
           {partnerVouchers.filter(v => v.category === 'exclusive').map((item) => (
             <div key={item.id} style={{ ...cardBase, padding: '18px', opacity: 0.7 }}>
@@ -288,7 +288,7 @@ export function Rewards() {
           textAlign: 'center',
         }}>
           <Gift className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--warning-700)' }} strokeWidth={1.5} />
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 800, color: 'var(--warning-900)', marginBottom: 8 }}>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 800, color: 'var(--warning-900)', marginBottom: 8 }}>
             Want more XP?
           </h3>
           <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 20 }}>

@@ -84,7 +84,7 @@ function StepAmount({
         <button onClick={onBack} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
           Withdraw Funds
         </h1>
         <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>Step 1 of 3 · Select amount</p>
@@ -93,7 +93,7 @@ function StepAmount({
       {/* Balance card — compact navy */}
       <div className="px-6 mb-6">
         <div style={{
-          background: 'var(--navy)', borderRadius: 18, padding: '18px 20px',
+          background: 'var(--navy)', borderRadius: 16, padding: '18px 20px',
           position: 'relative', overflow: 'hidden',
         }}>
           <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 18px 18px', opacity: 0.10 }}>
@@ -203,7 +203,7 @@ function StepAmount({
 
       {/* UPI preview */}
       <div className="px-6 mb-auto">
-        <div style={{ background: 'var(--surface)', borderRadius: 14, border: '1px solid var(--card-border)', padding: '14px 18px' }}>
+        <div style={{ background: 'var(--surface)', borderRadius: 16, border: '1px solid var(--card-border)', padding: '14px 18px' }}>
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <CreditCard className="w-4 h-4" style={{ color: 'var(--color-success)' }} />
@@ -228,7 +228,7 @@ function StepAmount({
             color: !amount || invalid ? 'var(--text-muted)' : '#FFFFFF',
             fontSize: 16, fontWeight: 700, border: 'none',
             cursor: !amount || invalid ? 'not-allowed' : 'pointer',
-            boxShadow: !amount || invalid ? 'none' : '0px 4px 20px rgba(196,98,45,0.30)',
+            boxShadow: !amount || invalid ? 'none' : '0px 4px 20px rgba(var(--accent-deep-rgb),0.30)',
             transition: 'all 0.2s',
           }}
         >
@@ -279,7 +279,7 @@ function StepConfirm({
         <button onClick={onBack} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
           Review Withdrawal
         </h1>
         <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>Step 2 of 3 · Confirm details</p>
@@ -350,7 +350,7 @@ function StepConfirm({
 
       {/* Balance after */}
       <div className="px-6 mb-auto">
-        <div style={{ background: 'var(--surface)', borderRadius: 14, border: '1px solid var(--card-border)', padding: '14px 18px' }}>
+        <div style={{ background: 'var(--surface)', borderRadius: 16, border: '1px solid var(--card-border)', padding: '14px 18px' }}>
           <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 4 }}>Remaining Balance After Withdrawal</p>
           <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)' }}>
             ₹{(cfg.balance - numeric).toFixed(2)}
@@ -366,7 +366,7 @@ function StepConfirm({
             width: '100%', height: 56, borderRadius: 999,
             background: 'var(--accent-primary-deep)', color: '#FFFFFF',
             fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 4px 20px rgba(196,98,45,0.30)',
+            boxShadow: '0px 4px 20px rgba(var(--accent-deep-rgb),0.30)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
           }}
         >
@@ -425,7 +425,7 @@ function StepSuccess({
           transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
           style={{
             width: 120, height: 120, borderRadius: '50%',
-            background: 'rgba(196,98,45,0.12)',
+            background: 'rgba(var(--accent-deep-rgb),0.12)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: 36,
           }}
@@ -438,7 +438,7 @@ function StepSuccess({
               width: 88, height: 88, borderRadius: '50%',
               background: 'var(--accent-primary-deep)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0px 12px 40px rgba(196,98,45,0.4)',
+              boxShadow: '0px 12px 40px rgba(var(--accent-deep-rgb),0.4)',
             }}
           >
             <CheckCircle2 className="w-10 h-10 text-white" strokeWidth={1.75} />
@@ -547,7 +547,7 @@ function StepSuccess({
             width: '100%', height: 56, borderRadius: 999,
             background: 'var(--accent-primary-deep)', color: '#FFFFFF',
             fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 6px 28px rgba(196,98,45,0.4)',
+            boxShadow: '0px 6px 28px rgba(var(--accent-deep-rgb),0.4)',
           }}
         >
           {cfg.nextLabel}

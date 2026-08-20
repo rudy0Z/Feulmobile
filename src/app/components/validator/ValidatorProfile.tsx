@@ -48,10 +48,10 @@ export function ValidatorProfile() {
             background: 'var(--neutral-100)', border: '2.5px solid #E8EDF3',
           }}
         >
-          <span style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>JD</span>
+          <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>JD</span>
         </div>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 3 }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 3 }}>
             Jordan Davis
           </h1>
           <div className="flex items-center gap-2">
@@ -81,7 +81,7 @@ export function ValidatorProfile() {
             >
               <p style={{
                 fontSize: 18, fontWeight: 700, color: 'var(--text-primary)',
-                fontFamily: stat.mono ? 'var(--font-mono)' : 'var(--font-serif)',
+                fontFamily: stat.mono ? 'var(--font-mono)' : 'var(--font-display)',
                 marginBottom: 3,
               }}>
                 {stat.value}
@@ -100,7 +100,7 @@ export function ValidatorProfile() {
           onClick={() => setRoleSwitcherOpen(true)}
           style={{
             width: '100%',
-            background: 'linear-gradient(135deg, #1C2434 0%, #0A0C10 100%)',
+            background: 'linear-gradient(135deg, #1C2434 0%, var(--surface-hero-elevated) 100%)',
             borderRadius: 16,
             padding: '14px 20px',
             display: 'flex',
@@ -113,7 +113,7 @@ export function ValidatorProfile() {
         >
           <div className="flex items-center gap-3">
             <div style={{
-              width: 36, height: 36, borderRadius: 10,
+              width: 36, height: 36, borderRadius: 12,
               background: 'rgba(255,255,255,0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
@@ -198,7 +198,7 @@ export function ValidatorProfile() {
 
       {/* ── Badges ── */}
       <div className="px-6 mb-6">
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 14 }}>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 14 }}>
           Badges Earned
         </h3>
         <div className="grid grid-cols-2 gap-3">
@@ -213,7 +213,7 @@ export function ValidatorProfile() {
               }}
             >
               <div style={{
-                width: 48, height: 48, borderRadius: 14,
+                width: 48, height: 48, borderRadius: 16,
                 background: badge.unlocked ? 'rgba(255,255,255,0.08)' : 'var(--card-border)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 margin: '0 auto 10px', fontSize: 22,

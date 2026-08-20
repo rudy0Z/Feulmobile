@@ -36,7 +36,7 @@ function EmptyBatchState() {
         }}>
           <CheckCircle2 className="w-10 h-10" style={{ color: 'var(--color-success)' }} strokeWidth={1.5} />
         </div>
-        <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
           You're all caught up
         </h2>
         <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: 272, marginBottom: 24 }}>
@@ -185,7 +185,7 @@ export function ValidatorHome() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.28 }}
           style={{
-            background: 'radial-gradient(ellipse at 20% 35%, rgba(45,122,79,0.14) 0%, transparent 55%), linear-gradient(150deg, #0F1822 0%, #0A0C10 100%)',
+            background: 'radial-gradient(ellipse at 20% 35%, rgba(45,122,79,0.14) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
             borderRadius: 24,
             padding: '20px 22px',
             position: 'relative',
@@ -259,7 +259,7 @@ export function ValidatorHome() {
               style={{ padding: '14px 6px', borderRight: idx < 2 ? '1px solid var(--card-border)' : 'none' }}
             >
               <p style={{
-                fontFamily: stat.mono ? 'var(--font-mono)' : 'var(--font-serif)',
+                fontFamily: stat.mono ? 'var(--font-mono)' : 'var(--font-display)',
                 fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, marginBottom: 4,
               }}>
                 {stat.value}
@@ -289,7 +289,7 @@ export function ValidatorHome() {
                 background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
                 color: '#FFFFFF',
                 fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
-                boxShadow: '0px 10px 28px rgba(224,108,58,0.4), inset 0px 1px 0px rgba(255,255,255,0.18)',
+                boxShadow: '0px 10px 28px rgba(var(--accent-glow-rgb),0.4), inset 0px 1px 0px rgba(255,255,255,0.18)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
               }}
             >
@@ -302,7 +302,7 @@ export function ValidatorHome() {
           <div className="px-5 mb-5">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
                   Pending Batches
                 </h3>
                 <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', marginTop: 1 }}>
@@ -335,7 +335,7 @@ export function ValidatorHome() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                     <div style={{
-                      width: 4, height: 36, borderRadius: 99,
+                      width: 4, height: 36, borderRadius: 999,
                       background: batch.priority === 'High' ? 'var(--accent-primary)' : 'var(--card-border)',
                       flexShrink: 0,
                     }} />
@@ -370,7 +370,7 @@ export function ValidatorHome() {
           {/* ── Recent Activity ── */}
           <div className="px-5">
             <div className="flex items-center justify-between mb-3">
-              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
                 Recent Activity
               </h3>
             </div>

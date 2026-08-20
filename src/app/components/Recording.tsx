@@ -7,6 +7,8 @@ import { VoiceVisualizer } from './ui/VoiceVisualizer';
 import { quests, Quest } from '../lib/quests';
 import { AcousticNoisePause } from './AcousticNoisePause';
 import { useDevContext } from '../lib/DevContext';
+import { ConsentSheet } from './ui/ConsentSheet';
+import { hasConsented } from '../lib/session';
 
 /* ─── Script data ──────────────────────────────────────────────────── */
 
@@ -121,6 +123,9 @@ export function Recording() {
   const quest: Quest | undefined = quests.find(q => q.id === questId);
   const format = quest?.format ?? 'lines';
 
+  /* ── Consent gate: lazy, before the first capture (§ Pass 1) ── */
+  const [consentPassed, setConsentPassed] = useState(hasConsented());
+
   /* ── Swipe-from-left-edge to go back ── */
   useEffect(() => {
     let startX = 0;
@@ -135,6 +140,17 @@ export function Recording() {
       document.removeEventListener('touchend', onEnd);
     };
   }, [navigate]);
+
+  if (!consentPassed) {
+    return (
+      <div className="min-h-screen" style={{ background: 'var(--background)' }}>
+        <ConsentSheet
+          onComplete={() => setConsentPassed(true)}
+          onCancel={() => navigate(-1)}
+        />
+      </div>
+    );
+  }
 
   if (format === 'lines') return <LinesRecording quest={quest} />;
   if (format === 'scenario') return <ScenarioRecording quest={quest} />;
@@ -195,7 +211,7 @@ function LinesRecording({ quest }: { quest: Quest | undefined }) {
             {done.length}/{total}
           </span>
         </div>
-        <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 19, fontWeight: 700, color: '#FFFFFF', marginBottom: 14 }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 19, fontWeight: 700, color: '#FFFFFF', marginBottom: 14 }}>
           {quest?.title ?? 'Quick Lines'}
         </h2>
         <ProgressBar value={progress} />
@@ -323,7 +339,7 @@ function ScenarioRecording({ quest }: { quest: Quest | undefined }) {
         <div className="px-6 pt-14 pb-4">
           <BackButton label="Quests" onPress={() => navigate('/contributor/quests')} dark />
           <QuestFormatEyebrow format="scenario" />
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: '#FFFFFF', marginTop: 6, marginBottom: 4 }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: '#FFFFFF', marginTop: 6, marginBottom: 4 }}>
             {quest?.title ?? 'Solo Scenario'}
           </h2>
           <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', marginBottom: 20 }}>
@@ -378,7 +394,7 @@ function ScenarioRecording({ quest }: { quest: Quest | undefined }) {
 
           {/* What to expect */}
           <div style={{
-            background: 'rgba(255,255,255,0.04)', borderRadius: 14,
+            background: 'rgba(255,255,255,0.04)', borderRadius: 16,
             border: '1px solid rgba(255,255,255,0.07)',
             padding: '16px', marginBottom: 8,
           }}>
@@ -407,7 +423,7 @@ function ScenarioRecording({ quest }: { quest: Quest | undefined }) {
               width: '100%', height: 58, borderRadius: 999,
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               border: 'none', cursor: 'pointer',
-              boxShadow: '0px 8px 28px rgba(224,108,58,0.40), inset 0px 1px 0px rgba(255,255,255,0.18)',
+              boxShadow: '0px 8px 28px rgba(var(--accent-glow-rgb),0.40), inset 0px 1px 0px rgba(255,255,255,0.18)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
             }}
           >
@@ -428,7 +444,7 @@ function ScenarioRecording({ quest }: { quest: Quest | undefined }) {
             <Check className="w-10 h-10 text-white" strokeWidth={2.5} />
           </div>
         </motion.div>
-        <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: '#FFFFFF', textAlign: 'center', marginBottom: 8 }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: '#FFFFFF', textAlign: 'center', marginBottom: 8 }}>
           Session Complete
         </h2>
         <p style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.45)', textAlign: 'center', marginBottom: 10 }}>
@@ -446,7 +462,7 @@ function ScenarioRecording({ quest }: { quest: Quest | undefined }) {
             width: '100%', height: 56, borderRadius: 999,
             background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
             border: 'none', cursor: 'pointer', fontSize: 16, fontWeight: 700, color: '#FFFFFF',
-            boxShadow: '0px 8px 24px rgba(224,108,58,0.38)',
+            boxShadow: '0px 8px 24px rgba(var(--accent-glow-rgb),0.38)',
           }}
         >
           Back to Home
@@ -508,7 +524,7 @@ function ScenarioRecording({ quest }: { quest: Quest | undefined }) {
           style={{
             background: 'rgba(255,255,255,0.06)',
             borderRadius: 16,
-            border: '1px solid rgba(224,108,58,0.30)',
+            border: '1px solid rgba(var(--accent-glow-rgb),0.30)',
             padding: '18px',
             marginBottom: 24,
           }}
@@ -517,7 +533,7 @@ function ScenarioRecording({ quest }: { quest: Quest | undefined }) {
             <div style={{
               width: 6, height: 6, borderRadius: '50%',
               background: 'var(--accent-primary)',
-              boxShadow: '0 0 0 3px rgba(224,108,58,0.25)',
+              boxShadow: '0 0 0 3px rgba(var(--accent-glow-rgb),0.25)',
             }} />
             <span style={{ fontSize: 10, fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--accent-primary)' }}>
               Your Turn
@@ -612,7 +628,7 @@ function GroupRecording({ quest }: { quest: Quest | undefined }) {
         <div className="flex-1 px-6 pt-14 pb-32 overflow-y-auto">
           <BackButton label="Quests" onPress={() => navigate('/contributor/quests')} dark />
           <QuestFormatEyebrow format="group" />
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: '#FFFFFF', marginTop: 6, marginBottom: 16 }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: '#FFFFFF', marginTop: 6, marginBottom: 16 }}>
             {quest?.title ?? 'Group Session'}
           </h2>
 
@@ -637,7 +653,7 @@ function GroupRecording({ quest }: { quest: Quest | undefined }) {
             {speakers.map((name, i) => (
               <div key={i} style={{
                 display: 'flex', alignItems: 'center', gap: 14,
-                background: 'rgba(255,255,255,0.04)', borderRadius: 14,
+                background: 'rgba(255,255,255,0.04)', borderRadius: 16,
                 border: '1px solid rgba(255,255,255,0.07)',
                 padding: '14px 16px',
               }}>
@@ -658,7 +674,7 @@ function GroupRecording({ quest }: { quest: Quest | undefined }) {
 
           {/* How it works */}
           <div style={{
-            background: 'rgba(255,255,255,0.04)', borderRadius: 14,
+            background: 'rgba(255,255,255,0.04)', borderRadius: 16,
             border: '1px solid rgba(255,255,255,0.07)', padding: '16px',
           }}>
             <p style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.3)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
@@ -685,7 +701,7 @@ function GroupRecording({ quest }: { quest: Quest | undefined }) {
               width: '100%', height: 58, borderRadius: 999,
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               border: 'none', cursor: 'pointer',
-              boxShadow: '0px 8px 28px rgba(224,108,58,0.40), inset 0px 1px 0px rgba(255,255,255,0.18)',
+              boxShadow: '0px 8px 28px rgba(var(--accent-glow-rgb),0.40), inset 0px 1px 0px rgba(255,255,255,0.18)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
             }}
           >
@@ -706,7 +722,7 @@ function GroupRecording({ quest }: { quest: Quest | undefined }) {
             <Check className="w-10 h-10 text-white" strokeWidth={2.5} />
           </div>
         </motion.div>
-        <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: '#FFFFFF', textAlign: 'center', marginBottom: 8 }}>
+        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: '#FFFFFF', textAlign: 'center', marginBottom: 8 }}>
           Session Complete
         </h2>
         <p style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.4)', textAlign: 'center', marginBottom: 10 }}>
@@ -724,7 +740,7 @@ function GroupRecording({ quest }: { quest: Quest | undefined }) {
             width: '100%', height: 56, borderRadius: 999,
             background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
             border: 'none', cursor: 'pointer', fontSize: 16, fontWeight: 700, color: '#FFFFFF',
-            boxShadow: '0px 8px 24px rgba(224,108,58,0.38)',
+            boxShadow: '0px 8px 24px rgba(var(--accent-glow-rgb),0.38)',
           }}
         >
           Back to Home
@@ -759,7 +775,7 @@ function GroupRecording({ quest }: { quest: Quest | undefined }) {
           <p style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.35)', marginBottom: 8, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Pass the device to
           </p>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#FFFFFF', marginBottom: 32 }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: '#FFFFFF', marginBottom: 32 }}>
             {nextSpeaker}
           </h2>
           <motion.button
@@ -957,7 +973,7 @@ function RecordingControls({
               background: `linear-gradient(145deg, var(--accent-primary-light), var(--accent-primary-deep))`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               margin: '0 auto 12px',
-              boxShadow: `0px 8px 24px rgba(224,108,58,0.45), inset 0px 1px 0px rgba(255,255,255,0.2)`,
+              boxShadow: `0px 8px 24px rgba(var(--accent-glow-rgb),0.45), inset 0px 1px 0px rgba(255,255,255,0.2)`,
               border: 'none', cursor: 'pointer',
             }}
           >
@@ -979,7 +995,7 @@ function RecordingControls({
               background: `linear-gradient(145deg, var(--accent-primary-deep), var(--accent-primary-deep))`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               margin: '0 auto 14px',
-              boxShadow: `0px 8px 28px rgba(196,98,45,0.55), inset 0px 1px 0px rgba(255,255,255,0.15)`,
+              boxShadow: `0px 8px 28px rgba(var(--accent-deep-rgb),0.55), inset 0px 1px 0px rgba(255,255,255,0.15)`,
               border: 'none', cursor: 'pointer',
             }}
           >
@@ -1022,7 +1038,7 @@ function RecordingControls({
               width: '100%', height: 56, borderRadius: 999,
               background: `linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)`,
               border: 'none', cursor: 'pointer',
-              boxShadow: `0px 8px 24px rgba(224,108,58,0.38), inset 0px 1px 0px rgba(255,255,255,0.18)`,
+              boxShadow: `0px 8px 24px rgba(var(--accent-glow-rgb),0.38), inset 0px 1px 0px rgba(255,255,255,0.18)`,
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               marginBottom: 12,
             }}

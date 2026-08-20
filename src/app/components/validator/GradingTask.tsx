@@ -194,7 +194,7 @@ export function GradingTask() {
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
         <div className="flex items-center justify-between mb-4">
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>
             Hindi — Waiter Scenario
           </h2>
 
@@ -319,7 +319,7 @@ export function GradingTask() {
                 width: 56, height: 56, borderRadius: '50%',
                 background: 'var(--accent-primary-deep)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0px 4px 16px rgba(196,98,45,0.30)',
+                boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.30)',
                 border: 'none', cursor: 'pointer',
               }}
             >
@@ -341,7 +341,7 @@ export function GradingTask() {
 
         {/* ── Grading Section ────────────────────────────────────────────────── */}
         <div className="mb-4">
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', marginBottom: 16 }}>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', marginBottom: 16 }}>
             Grade this clip
           </h3>
 
@@ -453,7 +453,7 @@ export function GradingTask() {
                 <AlertTriangle className="w-6 h-6" style={{ color: '#B8860B' }} />
               </div>
 
-              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
                 Your grade differs from others
               </h3>
               <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: 20 }}>
@@ -467,7 +467,7 @@ export function GradingTask() {
               {/* Mini audio player */}
               <div
                 style={{
-                  background: 'var(--background)', borderRadius: 14,
+                  background: 'var(--background)', borderRadius: 16,
                   border: '1px solid #E8EDF3',
                   padding: '14px 18px',
                   display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20,
@@ -480,7 +480,7 @@ export function GradingTask() {
                     background: 'var(--accent-primary)',
                     border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     cursor: 'pointer', flexShrink: 0,
-                    boxShadow: '0px 4px 12px rgba(224,108,58,0.3)',
+                    boxShadow: '0px 4px 12px rgba(var(--accent-glow-rgb),0.3)',
                   }}
                 >
                   {isPlaying
@@ -523,7 +523,7 @@ export function GradingTask() {
                     flex: 1, padding: '14px', borderRadius: 999,
                     background: 'var(--accent-primary)', border: 'none',
                     color: '#FFFFFF', fontSize: 14, fontWeight: 700, cursor: 'pointer',
-                    boxShadow: '0px 4px 12px rgba(224,108,58,0.3)',
+                    boxShadow: '0px 4px 12px rgba(var(--accent-glow-rgb),0.3)',
                   }}
                 >
                   Change Grade

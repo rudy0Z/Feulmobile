@@ -19,7 +19,7 @@ const overlays = [
     where: 'Payout → Step 2',
     accentBg: 'var(--accent-50)',
     accentText: 'var(--accent-primary-deep)',
-    accentBorder: 'rgba(224,108,58,0.18)',
+    accentBorder: 'rgba(var(--accent-glow-rgb),0.18)',
   },
   {
     id: 'dpdp' as OverlayId,
@@ -123,8 +123,8 @@ export function DebugGallery() {
               gap: 6,
               padding: '4px 10px',
               borderRadius: 999,
-              background: 'rgba(224,108,58,0.18)',
-              border: '1px solid rgba(224,108,58,0.3)',
+              background: 'rgba(var(--accent-glow-rgb),0.18)',
+              border: '1px solid rgba(var(--accent-glow-rgb),0.3)',
               marginBottom: 10,
             }}
           >
@@ -178,7 +178,7 @@ export function DebugGallery() {
               style={{
                 width: '100%',
                 background: '#FFFFFF',
-                borderRadius: 18,
+                borderRadius: 16,
                 border: '1px solid var(--card-border)',
                 boxShadow: '0px 4px 16px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.7)',
                 padding: '16px',
@@ -194,7 +194,7 @@ export function DebugGallery() {
                 style={{
                   width: 48,
                   height: 48,
-                  borderRadius: 14,
+                  borderRadius: 16,
                   background: o.accentBg,
                   border: `1px solid ${o.accentBorder}`,
                   display: 'flex',

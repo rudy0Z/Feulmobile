@@ -5,6 +5,7 @@ export type OverlayId =
   | 'mic-denied' | 'upload-failed' | 'payment-failed' | 'batch-expired' | 'daily-limit'
   | null;
 export type GradingMethodId = 'segmented' | 'pills' | 'arc' | 'keyboard' | 'binary';
+export type NewUserStageId = 'day0' | 'session' | 'credited';
 
 interface DevState {
   isPanelOpen: boolean;
@@ -12,6 +13,7 @@ interface DevState {
 
   // ── Contributor toggles ──
   isNewUser: boolean;
+  newUserStage: NewUserStageId;
   tierLockBypassed: boolean;
   walletEmpty: boolean;
   questsEmpty: boolean;
@@ -34,6 +36,7 @@ interface DevContextType extends DevState {
   dismissOverlay: () => void;
   setToggle: (key: BooleanToggleKey, value: boolean) => void;
   setGradingMethod: (method: GradingMethodId) => void;
+  setNewUserStage: (stage: NewUserStageId) => void;
   resetAll: () => void;
 }
 
@@ -43,6 +46,7 @@ const defaultState: DevState = {
   isPanelOpen: false,
   activeOverlay: null,
   isNewUser: false,
+  newUserStage: 'day0',
   tierLockBypassed: false,
   walletEmpty: false,
   questsEmpty: false,
@@ -64,6 +68,7 @@ export function DevProvider({ children }: { children: ReactNode }) {
     dismissOverlay: () => setState(s => ({ ...s, activeOverlay: null })),
     setToggle: (key, value) => setState(s => ({ ...s, [key]: value })),
     setGradingMethod: (method) => setState(s => ({ ...s, gradingMethod: method })),
+    setNewUserStage: (stage) => setState(s => ({ ...s, newUserStage: stage })),
     resetAll: () => setState({ ...defaultState }),
   };
 

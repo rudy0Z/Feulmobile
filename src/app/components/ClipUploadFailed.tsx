@@ -61,7 +61,7 @@ export function ClipUploadFailed({ onClose, onRetry, onSaveDraft }: Props) {
         <div style={{
           background: 'rgba(220,38,38,0.07)',
           border: '1px solid rgba(220,38,38,0.15)',
-          borderRadius: 14, padding: '14px 16px', marginBottom: 20,
+          borderRadius: 16, padding: '14px 16px', marginBottom: 20,
         }}>
           <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.55)', lineHeight: 1.65, margin: 0 }}>
             Your clip was recorded successfully but couldn't be uploaded. This is usually caused by a weak connection or server timeout. <strong style={{ color: 'rgba(255,255,255,0.8)' }}>Your recording is saved locally</strong> and won't be lost.

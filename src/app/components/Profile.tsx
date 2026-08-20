@@ -45,7 +45,7 @@ export function Profile() {
           style={{
             width: 68, height: 68, borderRadius: '50%',
             background: 'linear-gradient(135deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-            boxShadow: '0px 8px 22px rgba(224,108,58,0.28), inset 0 1px 0 rgba(255,255,255,0.35)',
+            boxShadow: '0px 8px 22px rgba(var(--accent-glow-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.35)',
             position: 'relative',
           }}
         >
@@ -74,7 +74,7 @@ export function Profile() {
           className="flex items-center justify-between"
           style={{
             background: 'var(--surface)',
-            borderRadius: 18,
+            borderRadius: 16,
             border: '1px solid var(--card-border)',
             boxShadow: 'var(--shadow-glass)',
             padding: '18px 8px',
@@ -118,7 +118,7 @@ export function Profile() {
         >
           <div className="flex items-center gap-3">
             <div style={{
-              width: 36, height: 36, borderRadius: 10,
+              width: 36, height: 36, borderRadius: 12,
               background: 'rgba(255,255,255,0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
@@ -137,7 +137,7 @@ export function Profile() {
       <div className="px-6 mb-6">
         <div
           style={{
-            background: 'radial-gradient(ellipse at 20% 40%, rgba(224,108,58,0.18) 0%, transparent 55%), linear-gradient(150deg, #0F1822 0%, #0A0C10 100%)',
+            background: 'radial-gradient(ellipse at 20% 40%, rgba(var(--accent-glow-rgb),0.18) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
             borderRadius: 24,
             padding: '24px 24px',
             boxShadow: '0px 10px 32px rgba(0,0,0,0.20), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
@@ -145,12 +145,18 @@ export function Profile() {
         >
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-3">
-              <ShieldCheck className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} />
+              <div style={{
+                width: 40, height: 40, borderRadius: 12,
+                background: 'rgba(var(--accent-glow-rgb),0.15)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                <ShieldCheck className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} strokeWidth={2} />
+              </div>
               <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.5)' }}>Trust Tier</span>
             </div>
             <span
               style={{
-                background: 'rgba(224,108,58,0.15)',
+                background: 'rgba(var(--accent-glow-rgb),0.15)',
                 borderRadius: 999,
                 padding: '5px 14px',
                 fontSize: 12,
@@ -194,7 +200,7 @@ export function Profile() {
             <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6 }}>
               Reach <strong style={{ color: '#FFFFFF' }}>{nextTierName(3)}</strong> to unlock{' '}
               <strong style={{ color: 'var(--accent-primary)' }}>higher-paying campaigns</strong> &amp;{' '}
-              <strong style={{ color: '#FFFFFF' }}>instant approvals</strong>.
+              <strong style={{ color: '#FFFFFF' }}>faster reviews</strong>.
             </p>
           </div>
         </div>
@@ -273,12 +279,12 @@ export function Profile() {
               whileTap={{ scale: 0.97 }}
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               style={{
-                borderRadius: 18,
+                borderRadius: 16,
                 padding: '14px 8px 12px',
                 textAlign: 'center',
                 background: 'var(--surface)',
                 border: '1px solid var(--card-border)',
-                boxShadow: a.unlocked ? '0px 6px 18px rgba(224,108,58,0.12)' : 'var(--shadow-card)',
+                boxShadow: a.unlocked ? '0px 6px 18px rgba(var(--accent-glow-rgb),0.12)' : 'var(--shadow-card)',
                 cursor: 'pointer',
               }}
             >
@@ -297,7 +303,7 @@ export function Profile() {
                     background: a.unlocked ? 'var(--navy)' : 'var(--neutral-100)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                     fontSize: 20,
-                    boxShadow: a.unlocked ? 'inset 0 0 10px rgba(224,108,58,0.35)' : 'none',
+                    boxShadow: a.unlocked ? 'inset 0 0 10px rgba(var(--accent-glow-rgb),0.35)' : 'none',
                   }}>
                     {a.unlocked
                       ? <span style={{ filter: 'saturate(1.1)' }}>{a.emoji}</span>
@@ -427,10 +433,10 @@ export function Profile() {
           >
             <div style={{
               width: 52, height: 52, borderRadius: 16,
-              background: 'var(--info-50)',
+              background: 'var(--neutral-100)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
-              <Building2 className="w-6 h-6" style={{ color: 'var(--info-700)' }} strokeWidth={1.5} />
+              <Building2 className="w-6 h-6" style={{ color: 'var(--text-secondary)' }} strokeWidth={1.5} />
             </div>
             <div className="flex-1 min-w-0">
               <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>Quest Creator</p>

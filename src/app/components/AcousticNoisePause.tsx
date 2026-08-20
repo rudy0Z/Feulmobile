@@ -124,7 +124,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             style={{
               flex: 1,
               background: 'rgba(255,255,255,0.05)',
-              borderRadius: 14,
+              borderRadius: 16,
               padding: 14,
               border: '1px solid rgba(255,165,0,0.2)',
             }}
@@ -161,7 +161,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             style={{
               flex: 1,
               background: 'rgba(255,255,255,0.05)',
-              borderRadius: 14,
+              borderRadius: 16,
               padding: 14,
               border: '1px solid rgba(45,200,100,0.2)',
             }}

@@ -43,7 +43,7 @@ const allNotifications: Notification[] = [
   {
     id: 'n3', type: 'xp_level', group: 'today', unread: true,
     title: 'You are now a Trusted Contributor ⚡',
-    body: 'Unlocked higher-paying campaigns & instant approvals.',
+    body: 'Unlocked higher-paying campaigns & faster reviews.',
     time: '8:00 AM',
     actionLabel: 'View rewards',
   },
@@ -251,7 +251,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                             onClick={() => markRead(notif.id)}
                             style={{
                               background: '#FFFFFF',
-                              borderRadius: 18,
+                              borderRadius: 16,
                               padding: '14px 16px',
                               border: notif.unread
                                 ? `1.5px solid ${cfg.dot}30`

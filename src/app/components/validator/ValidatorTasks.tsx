@@ -38,7 +38,7 @@ export function ValidatorTasks() {
       {/* ── Header ── */}
       <div className="px-6 pt-16 pb-2 flex items-center gap-2">
         <ShieldCheck className="w-5 h-5" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
           Available Tasks
         </h1>
       </div>
@@ -63,7 +63,7 @@ export function ValidatorTasks() {
               background: activeCategory === cat ? 'var(--accent-primary)' : '#FFFFFF',
               borderColor: activeCategory === cat ? 'var(--accent-primary)' : 'var(--card-border)',
               color: activeCategory === cat ? '#FFFFFF' : 'var(--text-secondary)',
-              boxShadow: activeCategory === cat ? '0px 6px 14px rgba(224,108,58,0.22)' : 'none',
+              boxShadow: activeCategory === cat ? '0px 6px 14px rgba(var(--accent-glow-rgb),0.22)' : 'none',
               transition: 'all 0.15s',
             }}
           >
@@ -82,7 +82,7 @@ export function ValidatorTasks() {
           }}>
             <CheckCircle2 className="w-12 h-12" style={{ color: 'var(--color-success)' }} strokeWidth={1.5} />
           </div>
-          <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
+          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
             You're all caught up
           </h2>
           <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: 272, marginBottom: 20 }}>
@@ -121,7 +121,7 @@ export function ValidatorTasks() {
                   display: 'flex', alignItems: 'center', gap: 14,
                 }}
               >
-                <div style={{ width: 4, alignSelf: 'stretch', borderRadius: 99, background: pCfg.bar, flexShrink: 0, minHeight: 52 }} />
+                <div style={{ width: 4, alignSelf: 'stretch', borderRadius: 999, background: pCfg.bar, flexShrink: 0, minHeight: 52 }} />
                 <div className="flex-1">
                   <h4 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 7 }}>{task.title}</h4>
                   <div className="flex items-center gap-3 flex-wrap mb-3">
@@ -148,7 +148,7 @@ export function ValidatorTasks() {
                   width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
                   background: task.priority === 'High' ? 'var(--accent-primary-deep)' : 'var(--neutral-100)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: task.priority === 'High' ? '0px 4px 12px rgba(196,98,45,0.25)' : 'none',
+                  boxShadow: task.priority === 'High' ? '0px 4px 12px rgba(var(--accent-deep-rgb),0.25)' : 'none',
                 }}>
                   <Play className="w-5 h-5" style={{ color: task.priority === 'High' ? '#FFFFFF' : 'var(--text-primary)' }} fill={task.priority === 'High' ? '#FFFFFF' : 'var(--text-primary)'} />
                 </div>

@@ -98,7 +98,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
           style={{
             background: 'var(--status-error-bg)',
             border: '1px solid rgba(220,38,38,0.2)',
-            borderRadius: 14,
+            borderRadius: 16,
             padding: 16,
             marginBottom: 16,
           }}

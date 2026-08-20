@@ -88,7 +88,7 @@ export function GradingStyleDrawer({ currentMethod, onSelect, open, onOpenChange
           <div className="mx-auto w-12 h-1.5 flex-shrink-0 rounded-full bg-slate-200 my-4" />
           
           <div className="px-6 pb-8 overflow-y-auto">
-            <Drawer.Title style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 8, textAlign: 'center' }}>
+            <Drawer.Title style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 8, textAlign: 'center' }}>
               Choose Grading Style
             </Drawer.Title>
             <Drawer.Description style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginBottom: 24 }}>

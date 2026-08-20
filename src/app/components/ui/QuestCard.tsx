@@ -143,9 +143,12 @@ export function QuestCard({
         </p>
       </div>
 
-      {/* Bottom row: meta + earning */}
-      <div className="flex items-end justify-between gap-3">
-        <div className="flex items-center gap-3 flex-wrap">
+      {/* Bottom row: meta + earning.
+          items-center (not items-end) keeps the payout balanced against the
+          meta whether it stays on one line or wraps to two — otherwise the
+          two-line payout block floats upward when meta wraps. */}
+      <div className="flex items-center justify-between gap-3">
+        <div className="flex items-center gap-x-3 gap-y-1 flex-wrap">
           <span className="flex items-center gap-1" style={{ fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)' }}>
             <Clock className="w-3.5 h-3.5" /> {quest.duration}
           </span>

@@ -27,7 +27,7 @@ export function QuestCreatorCampaigns() {
       <div className="px-6 pt-16 pb-2">
         <div className="flex items-center gap-2 mb-1">
           <BarChart2 className="w-5 h-5" style={{ color: '#1C2434' }} strokeWidth={2} />
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: '#1C2434', letterSpacing: '-0.02em' }}>
             Campaign Manager
           </h1>
         </div>
@@ -71,7 +71,7 @@ export function QuestCreatorCampaigns() {
                 style={{
                   padding: '14px 16px',
                   background: '#FFFFFF',
-                  borderRadius: 14,
+                  borderRadius: 16,
                   border: '1px solid #E8EDF3',
                   opacity: 0.75,
                 }}
@@ -95,7 +95,7 @@ export function QuestCreatorCampaigns() {
                   background: 'var(--accent-primary-deep)', color: '#FFFFFF',
                   fontSize: 12, fontWeight: 700, border: 'none', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', gap: 6,
-                  boxShadow: '0px 3px 10px rgba(196,98,45,0.25)',
+                  boxShadow: '0px 3px 10px rgba(var(--accent-deep-rgb),0.25)',
                 }}>
                   <Play className="w-3.5 h-3.5 fill-white" />
                   Resume
@@ -109,14 +109,14 @@ export function QuestCreatorCampaigns() {
               key={campaign.id}
               style={{
                 background: '#FFFFFF',
-                borderRadius: 18,
+                borderRadius: 16,
                 border: '1px solid #E8EDF3',
                 padding: '20px',
               }}
             >
               {/* Header */}
               <div className="flex items-start justify-between mb-3">
-                <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: '#1C2434', flex: 1, paddingRight: 12 }}>
+                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: '#1C2434', flex: 1, paddingRight: 12 }}>
                   {campaign.name}
                 </h3>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 10, flexShrink: 0 }}>
@@ -189,7 +189,7 @@ export function QuestCreatorCampaigns() {
           color: '#FFFFFF',
           fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          boxShadow: '0px 6px 24px rgba(196,98,45,0.30)',
+          boxShadow: '0px 6px 24px rgba(var(--accent-deep-rgb),0.30)',
         }}>
           <Plus className="w-5 h-5" />
           Create New Campaign

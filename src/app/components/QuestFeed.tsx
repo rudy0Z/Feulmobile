@@ -158,8 +158,8 @@ export function QuestFeed() {
             transition={springs.tap}
             onClick={() => navigate(`/recording/${featured.id}`)}
             style={{
-              background: 'radial-gradient(ellipse at 80% 0%, rgba(224,108,58,0.22) 0%, transparent 55%), var(--navy)',
-              borderRadius: 22, padding: '22px',
+              background: 'radial-gradient(ellipse at 80% 0%, rgba(var(--accent-glow-rgb),0.22) 0%, transparent 55%), var(--navy)',
+              borderRadius: 24, padding: '22px',
               cursor: 'pointer', position: 'relative', overflow: 'hidden',
               boxShadow: 'var(--shadow-floating)',
             }}
@@ -235,10 +235,10 @@ export function QuestFeed() {
                   </p>
                 </div>
                 <button style={{
-                  width: 48, height: 48, borderRadius: 14,
+                  width: 48, height: 48, borderRadius: 16,
                   background: 'var(--accent-primary)', border: 'none',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  cursor: 'pointer', boxShadow: '0px 4px 12px rgba(224,108,58,0.4)',
+                  cursor: 'pointer', boxShadow: '0px 4px 12px rgba(var(--accent-glow-rgb),0.4)',
                 }}>
                   <ArrowUpRight className="w-5 h-5 text-white" />
                 </button>
@@ -259,7 +259,7 @@ export function QuestFeed() {
             <div className="space-y-3">
               {loading
                 ? Array.from({ length: 2 }).map((_, i) => <QuestCardSkeleton key={`sk-s-${i}`} />)
-                : scenarioQuests.map(q => (
+                : scenarioQuests.map((q) => (
                     <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
                   ))}
             </div>

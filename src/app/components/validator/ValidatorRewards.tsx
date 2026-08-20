@@ -100,7 +100,7 @@ export function ValidatorRewards() {
         <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
           XP Rewards Hub
         </h1>
         <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Spend your Validator XP on perks &amp; vouchers</p>
@@ -160,7 +160,7 @@ export function ValidatorRewards() {
 
       {/* How to earn XP */}
       <div className="px-6 mb-5">
-        <div style={{ background: '#F0F6F4', borderRadius: 14, padding: '14px 16px', border: '1px solid #C9DDD8' }}>
+        <div style={{ background: '#F0F6F4', borderRadius: 16, padding: '14px 16px', border: '1px solid #C9DDD8' }}>
           <p style={{ fontSize: 12, fontWeight: 700, color: '#1A3A2F', marginBottom: 8 }}>How you earn XP</p>
           <div className="flex items-center gap-4 flex-wrap">
             {[
@@ -207,7 +207,7 @@ export function ValidatorRewards() {
         <div className="px-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Gift className="w-4 h-4" style={{ color: 'var(--success-700)' }} />
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>Partner Vouchers</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>Partner Vouchers</h3>
           </div>
           <div className="space-y-3">
             {voucherList.map((voucher) => {
@@ -221,7 +221,7 @@ export function ValidatorRewards() {
                     borderColor: affordable ? '#C9DDD8' : 'var(--card-border)',
                   }}
                 >
-                  <div style={{ width: 48, height: 48, borderRadius: 14, background: '#E8F2EE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
+                  <div style={{ width: 48, height: 48, borderRadius: 16, background: '#E8F2EE', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
                     {voucher.emoji}
                   </div>
                   <div className="flex-1 min-w-0">
@@ -258,7 +258,7 @@ export function ValidatorRewards() {
         <div className="px-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Sparkles className="w-4 h-4" style={{ color: 'var(--success-700)' }} />
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>Validator Perks</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>Validator Perks</h3>
           </div>
           <div className="grid grid-cols-2 gap-3">
             {perkList.map((perk) => {
@@ -317,7 +317,7 @@ export function ValidatorRewards() {
         <div className="px-6 mb-8">
           <div className="flex items-center gap-2 mb-4">
             <Award className="w-4 h-4" style={{ color: 'var(--success-700)' }} />
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>Exclusive</h3>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>Exclusive</h3>
           </div>
           <div className="space-y-3">
             {exclusiveList.map((item) => (
@@ -353,7 +353,7 @@ export function ValidatorRewards() {
           textAlign: 'center',
         }}>
           <ShieldCheck className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--success-700)' }} strokeWidth={1.5} />
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 800, color: '#1A3A2F', marginBottom: 8 }}>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 800, color: '#1A3A2F', marginBottom: 8 }}>
             Grade more, earn more XP
           </h3>
           <p style={{ fontSize: 14, fontWeight: 500, color: '#2C5F4A', marginBottom: 20 }}>

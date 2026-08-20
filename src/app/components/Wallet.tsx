@@ -52,7 +52,7 @@ export function Wallet() {
     return (
       <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
         <div className="px-6 pt-16 pb-4">
-          <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Wallet</h1>
+          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Wallet</h1>
         </div>
 
         {/* Locked Potential Card */}
@@ -94,7 +94,7 @@ export function Wallet() {
                 Unlock your first ₹50
               </p>
               <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, maxWidth: 260 }}>
-                Complete the voice calibration to earn your welcome bonus instantly.
+                Record your first few lines. Cash lands in your wallet once your clips pass review.
               </p>
             </div>
           </div>
@@ -102,7 +102,7 @@ export function Wallet() {
 
         {/* What you'll earn section */}
         <div className="px-6 mb-6">
-          <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12 }}>
+          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12 }}>
             How Earnings Work
           </h3>
           {[
@@ -116,7 +116,7 @@ export function Wallet() {
                 borderBottom: idx < 2 ? '1px solid var(--card-border)' : 'none',
               }}>
                 <div style={{
-                  width: 44, height: 44, borderRadius: 14,
+                  width: 44, height: 44, borderRadius: 16,
                   background: 'var(--neutral-100)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
@@ -134,13 +134,13 @@ export function Wallet() {
         {/* Welcome bonus teaser */}
         <div className="px-6">
           <div className="flex items-center gap-3" style={{
-            background: 'var(--status-accent-bg)', borderRadius: 14, padding: '14px 18px',
+            background: 'var(--status-accent-bg)', borderRadius: 16, padding: '14px 18px',
             border: '1px solid var(--accent-200)',
           }}>
             <Gift className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--accent-primary-deep)' }} />
             <div>
               <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--status-accent-text)' }}>Welcome Bonus: ₹50</p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--accent-primary-deep)' }}>Complete voice calibration to claim</p>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--accent-primary-deep)' }}>Record your first quest to claim</p>
             </div>
           </div>
         </div>
@@ -148,12 +148,12 @@ export function Wallet() {
         {/* CTA */}
         <div className="fixed bottom-16 left-0 right-0 px-6 py-4 z-40" style={{ background: 'linear-gradient(to bottom, transparent, var(--background) 30%)' }}>
           <button
-            onClick={() => navigate('/first-earning')}
+            onClick={() => navigate('/recording/q-lines-1')}
             style={{
               width: '100%', height: 56, borderRadius: 999,
               background: 'var(--accent-primary-deep)', color: '#FFFFFF',
               fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-              boxShadow: '0px 4px 16px rgba(196,98,45,0.30)',
+              boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.30)',
             }}
           >
             Start Earning Now
@@ -167,14 +167,14 @@ export function Wallet() {
     <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
       {/* Header */}
       <div className="px-6 pt-16 pb-4">
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Wallet</h1>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Wallet</h1>
       </div>
 
       {/* Balance Card — NAVY */}
       <div className="px-6 mb-5">
         <div
           style={{
-            background: 'radial-gradient(ellipse at 20% 35%, rgba(196,98,45,0.20) 0%, transparent 52%), linear-gradient(150deg, #0F1822 0%, #0A0C10 100%)',
+            background: 'radial-gradient(ellipse at 20% 35%, var(--surface-hero-accent-glow) 0%, transparent 52%), linear-gradient(150deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
             borderRadius: 20,
             padding: '24px',
             position: 'relative',
@@ -198,11 +198,6 @@ export function Wallet() {
                 <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.4)', marginTop: 5 }}>
                   Available to withdraw
                 </p>
-              </div>
-              <div
-                style={{ width: 48, height: 48, borderRadius: 14, background: 'rgba(196,98,45,0.15)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}
-              >
-                <WalletIcon className="w-6 h-6" style={{ color: 'var(--accent-primary-deep)' }} />
               </div>
             </div>
 
@@ -306,7 +301,7 @@ export function Wallet() {
 
       {/* Earnings Ledger */}
       <div className="px-6">
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 14 }}>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 14 }}>
           Earnings Ledger
         </h3>
 
@@ -375,7 +370,7 @@ export function Wallet() {
             fontWeight: 700,
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0px 8px 24px rgba(196,98,45,0.38), inset 0px 1px 0px rgba(255,255,255,0.18)',
+            boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.38), inset 0px 1px 0px rgba(255,255,255,0.18)',
           }}
           onClick={() => dev.tierLockBypassed ? navigate('/contributor/payout') : setShowReserveDrawer(true)}
         >

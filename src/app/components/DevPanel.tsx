@@ -24,7 +24,7 @@ function ToggleRow({
       style={{
         width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '11px 16px', borderRadius: 12, border: 'none', cursor: 'pointer',
-        background: value ? 'rgba(224,108,58,0.10)' : 'rgba(255,255,255,0.04)',
+        background: value ? 'rgba(var(--accent-glow-rgb),0.10)' : 'rgba(255,255,255,0.04)',
         textAlign: 'left', transition: 'background 0.15s',
       }}
     >
@@ -75,7 +75,7 @@ function LaunchRow({
       }}
     >
       <div style={{
-        width: 36, height: 36, borderRadius: 10, flexShrink: 0,
+        width: 36, height: 36, borderRadius: 12, flexShrink: 0,
         background: `${accentColor}18`, border: `1px solid ${accentColor}30`,
         display: 'flex', alignItems: 'center', justifyContent: 'center',
       }}>
@@ -123,8 +123,8 @@ function MethodSelector() {
             onClick={() => dev.setGradingMethod(m.id)}
             style={{
               padding: '5px 10px', borderRadius: 8, fontSize: 11, fontWeight: 700,
-              border: `1px solid ${dev.gradingMethod === m.id ? 'rgba(224,108,58,0.5)' : 'rgba(255,255,255,0.08)'}`,
-              background: dev.gradingMethod === m.id ? 'rgba(224,108,58,0.18)' : 'transparent',
+              border: `1px solid ${dev.gradingMethod === m.id ? 'rgba(var(--accent-glow-rgb),0.5)' : 'rgba(255,255,255,0.08)'}`,
+              background: dev.gradingMethod === m.id ? 'rgba(var(--accent-glow-rgb),0.18)' : 'transparent',
               color: dev.gradingMethod === m.id ? 'var(--accent-primary)' : 'rgba(255,255,255,0.4)',
               cursor: 'pointer', transition: 'all 0.15s',
             }}
@@ -275,7 +275,7 @@ export function DevPanel() {
                     <div style={{
                       display: 'inline-flex', alignItems: 'center', gap: 6,
                       padding: '3px 8px', borderRadius: 6,
-                      background: 'rgba(224,108,58,0.15)', border: '1px solid rgba(224,108,58,0.25)',
+                      background: 'rgba(var(--accent-glow-rgb),0.15)', border: '1px solid rgba(var(--accent-glow-rgb),0.25)',
                       marginBottom: 4,
                     }}>
                       <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 800, color: 'var(--accent-primary)', letterSpacing: '0.1em' }}>
@@ -339,6 +339,33 @@ export function DevPanel() {
                       value={dev.isNewUser}
                       onChange={v => dev.setToggle('isNewUser', v)}
                     />
+                    {dev.isNewUser && (
+                      <div style={{ display: 'flex', gap: 6, padding: '4px 12px 8px' }}>
+                        {([
+                          { id: 'day0', label: 'Day 0' },
+                          { id: 'session', label: 'In Review' },
+                          { id: 'credited', label: 'Credited' },
+                        ] as const).map(s => {
+                          const active = dev.newUserStage === s.id;
+                          return (
+                            <button
+                              key={s.id}
+                              onClick={() => dev.setNewUserStage(s.id)}
+                              style={{
+                                flex: 1, padding: '7px 4px', borderRadius: 999,
+                                fontSize: 11, fontWeight: 700, cursor: 'pointer',
+                                border: '1px solid',
+                                background: active ? 'var(--accent-primary-deep)' : 'transparent',
+                                borderColor: active ? 'var(--accent-primary-deep)' : 'var(--card-border)',
+                                color: active ? '#FFFFFF' : 'var(--text-secondary)',
+                              }}
+                            >
+                              {s.label}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    )}
                     <ToggleRow
                       label="Bypass Tier Lock"
                       sublabel="Withdraw → payout directly"
@@ -430,7 +457,7 @@ export function DevPanel() {
                       icon={Lock}
                       label="Daily Limit Reached"
                       sublabel="Recording → clip quota exhausted"
-                      accentColor="#818CF8"
+                      accentColor="var(--text-muted)"
                       onLaunch={() => dev.launchOverlay('daily-limit')}
                     />
                   </div>
@@ -444,7 +471,7 @@ export function DevPanel() {
                       icon={ShieldAlert}
                       label="Spoofing Verification Hold"
                       sublabel="Payout → Step 2 biometric check"
-                      accentColor="rgba(224,108,58,1)"
+                      accentColor="rgba(var(--accent-glow-rgb),1)"
                       onLaunch={() => dev.launchOverlay('spoofing')}
                     />
                     <LaunchRow
@@ -498,7 +525,7 @@ function ActiveBadge({ label }: { label: string }) {
   return (
     <div style={{
       padding: '3px 8px', borderRadius: 6,
-      background: 'rgba(224,108,58,0.15)', border: '1px solid rgba(224,108,58,0.3)',
+      background: 'rgba(var(--accent-glow-rgb),0.15)', border: '1px solid rgba(var(--accent-glow-rgb),0.3)',
       fontSize: 10, fontWeight: 700, color: 'var(--accent-primary)',
       fontFamily: 'var(--font-mono)',
     }}>

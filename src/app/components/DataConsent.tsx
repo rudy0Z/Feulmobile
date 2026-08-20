@@ -14,7 +14,7 @@ const consentPoints = [
   {
     icon: Eye,
     iconBg: '#EEF2FF',
-    iconColor: '#4F46E5',
+    iconColor: 'var(--text-secondary)',
     title: 'Who sees your data',
     desc: 'AI companies and research teams who commission datasets through Feul. Your name and personal details are never shared — only anonymised audio clips.',
   },
@@ -71,7 +71,7 @@ export function DataConsent() {
           <div
             style={{
               display: 'inline-flex', alignItems: 'center', gap: 6,
-              background: 'rgba(196,98,45,0.18)', borderRadius: 999,
+              background: 'rgba(var(--accent-deep-rgb),0.18)', borderRadius: 999,
               padding: '5px 14px', marginBottom: 20,
             }}
           >
@@ -83,7 +83,7 @@ export function DataConsent() {
 
           <h1
             style={{
-              fontFamily: 'var(--font-serif)', fontSize: 32, fontWeight: 800,
+              fontFamily: 'var(--font-display)', fontSize: 32, fontWeight: 800,
               color: '#FFFFFF', lineHeight: 1.15, letterSpacing: '-0.02em', marginBottom: 12,
             }}
           >
@@ -144,7 +144,7 @@ export function DataConsent() {
         {/* Legal note */}
         <div
           style={{
-            background: 'var(--warning-50)', borderRadius: 14, border: '1px solid #F5E4B8',
+            background: 'var(--warning-50)', borderRadius: 16, border: '1px solid #F5E4B8',
             padding: '14px 16px', marginTop: 16,
             display: 'flex', gap: 10, alignItems: 'flex-start',
           }}

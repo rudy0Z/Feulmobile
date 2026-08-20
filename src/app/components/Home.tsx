@@ -14,6 +14,7 @@ import { SectionHeading } from './ui/Primitives';
 import { tierName, nextTierName } from '../lib/tier';
 import { pickedForYou } from '../lib/quests';
 import { springs, whileTap } from '../lib/motion';
+import { useSession } from '../lib/session';
 
 type ActivityStatus = 'auto_check' | 'under_review' | 'approved' | 'rejected';
 
@@ -63,8 +64,11 @@ function getMotivationalLine(todayEarned: number): string {
 export function Home() {
   const navigate = useNavigate();
   const dev = useDevContext();
+  const { profile } = useSession();
   const [streak] = useState(5);
-  const isNewUser = dev.isNewUser;
+  // Home-first: a freshly-authed profile lands on the progressive new-user
+  // experience; the rich dashboard is the established/no-profile default.
+  const isNewUser = dev.isNewUser || !!profile;
   const [greeting, setGreeting] = useState(getGreeting());
   const [notifOpen, setNotifOpen] = useState(false);
   const unreadCount = 3;
@@ -154,7 +158,7 @@ export function Home() {
                 width: 56, height: 56, borderRadius: '50%',
                 background: 'linear-gradient(135deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0px 6px 20px rgba(224,108,58,0.35)',
+                boxShadow: '0px 6px 20px rgba(var(--accent-glow-rgb),0.35)',
               }}
             >
               <span style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>A</span>
@@ -180,7 +184,7 @@ export function Home() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.28 }}
           style={{
-            background: 'radial-gradient(ellipse at 15% 40%, rgba(224,108,58,0.28) 0%, transparent 52%), radial-gradient(ellipse at 85% 10%, rgba(224,108,58,0.10) 0%, transparent 45%), linear-gradient(150deg, #0F1822 0%, var(--navy) 100%)',
+            background: 'radial-gradient(ellipse at 15% 40%, var(--surface-hero-accent-glow) 0%, transparent 52%), radial-gradient(ellipse at 85% 10%, rgba(var(--accent-glow-rgb),0.10) 0%, transparent 45%), linear-gradient(150deg, var(--surface-hero) 0%, var(--navy) 100%)',
             borderRadius: 24,
             padding: '20px 22px',
             position: 'relative',
@@ -236,8 +240,8 @@ export function Home() {
                   />
                   <defs>
                     <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                      <stop offset="0%" stopColor="var(--accent-primary-light)" />
-                      <stop offset="100%" stopColor="#FF9D6C" />
+                      <stop offset="0%" style={{ stopColor: 'var(--accent-primary)' }} />
+                      <stop offset="100%" style={{ stopColor: 'var(--accent-primary-light)' }} />
                     </linearGradient>
                   </defs>
                 </svg>
@@ -338,14 +342,14 @@ export function Home() {
           whileTap={whileTap.card}
           style={{
             background: 'var(--warning-50)',
-            borderRadius: 14, padding: '11px 14px',
+            borderRadius: 16, padding: '11px 14px',
             border: '1px solid var(--warning-200)',
             boxShadow: 'none',
             cursor: 'pointer',
           }}
         >
           <div style={{
-            width: 32, height: 32, borderRadius: 9,
+            width: 32, height: 32, borderRadius: 8,
             background: 'var(--warning-100)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             flexShrink: 0,
@@ -377,7 +381,7 @@ export function Home() {
             background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
             color: '#FFFFFF',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 10px 28px rgba(224,108,58,0.42), inset 0px 1px 0px rgba(255,255,255,0.18)',
+            boxShadow: '0px 10px 28px rgba(var(--accent-glow-rgb),0.42), inset 0px 1px 0px rgba(255,255,255,0.18)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
           }}
         >
@@ -502,7 +506,7 @@ export function Home() {
                 width: 28, height: 28, borderRadius: 8,
                 background: 'linear-gradient(135deg, var(--accent-primary-light), var(--accent-primary-deep))',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0 3px 8px rgba(224,108,58,0.28)',
+                boxShadow: '0 3px 8px rgba(var(--accent-glow-rgb),0.28)',
               }}>
                 <Zap className="w-3.5 h-3.5" style={{ color: '#FFFFFF' }} fill="currentColor" />
               </div>
@@ -527,7 +531,7 @@ export function Home() {
               animate={{ width: '76%' }}
               transition={{ duration: 1.1, ease: 'easeOut', delay: 0.6 }}
               style={{
-                background: 'linear-gradient(90deg, var(--accent-primary), #FF9D6C)',
+                background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-primary-light))',
                 borderRadius: 999, height: 7,
               }}
             />
@@ -535,7 +539,7 @@ export function Home() {
 
           <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', marginTop: 9, lineHeight: 1.5 }}>
             <span style={{ color: 'var(--text-primary)', fontWeight: 700 }}>470 XP to {nextTierName(3)}</span>
-            {' '}— unlocks higher-paying campaigns &amp; instant approvals.
+            {' '}— unlocks higher-paying campaigns &amp; faster reviews.
           </p>
         </motion.div>
       </div>

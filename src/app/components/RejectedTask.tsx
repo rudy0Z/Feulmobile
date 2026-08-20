@@ -42,7 +42,7 @@ export function RejectedTask() {
         <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>
           Repair Studio
         </h1>
       </div>
@@ -52,7 +52,7 @@ export function RejectedTask() {
         {/* Hero — preserved-effort framing */}
         <div
           style={{
-            background: 'linear-gradient(160deg, #0F1822 0%, #0A0C10 100%)',
+            background: 'linear-gradient(160deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
             borderRadius: 20,
             padding: '24px',
             position: 'relative',
@@ -61,12 +61,12 @@ export function RejectedTask() {
           }}
         >
           <div className="relative z-10">
-            <p style={{ fontSize: 11, fontWeight: 700, color: '#E8913A', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-primary)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
               Almost there
             </p>
-            <h2 style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, marginBottom: 10 }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, marginBottom: 10 }}>
               {validCount} of {TOTAL_PROMPTS} clips passed.<br />Just fix 1 to unlock{' '}
-              <span style={{ fontFamily: 'var(--font-mono)', color: '#E8913A' }}>
+              <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent-primary)' }}>
                 ₹{rejectedSubmission.pendingPayout.toFixed(2)}
               </span>
             </h2>
@@ -223,7 +223,7 @@ export function RejectedTask() {
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               color: '#FFFFFF',
               fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
-              boxShadow: '0px 8px 24px rgba(196,98,45,0.38), inset 0px 1px 0px rgba(255,255,255,0.18)',
+              boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.38), inset 0px 1px 0px rgba(255,255,255,0.18)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}
           >

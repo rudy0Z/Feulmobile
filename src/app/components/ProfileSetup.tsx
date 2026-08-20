@@ -148,7 +148,7 @@ export function ProfileSetup() {
         <div
           style={{
             display: 'inline-flex', alignItems: 'center', gap: 6,
-            background: 'rgba(196,98,45,0.18)', borderRadius: 999,
+            background: 'rgba(var(--accent-deep-rgb),0.18)', borderRadius: 999,
             padding: '5px 14px', marginBottom: 14,
           }}
         >
@@ -167,7 +167,7 @@ export function ProfileSetup() {
           >
             {step === 1 && (
               <>
-                <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: 6 }}>
+                <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: 6 }}>
                   What should<br />we call you?
                 </h1>
                 <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.4)' }}>
@@ -177,7 +177,7 @@ export function ProfileSetup() {
             )}
             {step === 2 && (
               <>
-                <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: 6 }}>
+                <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: 6 }}>
                   Which languages<br />do you speak?
                 </h1>
                 <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.4)' }}>
@@ -196,7 +196,7 @@ export function ProfileSetup() {
                     <p style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700, color: '#FFFFFF', lineHeight: 1 }}>₹50.00</p>
                   </div>
                 </div>
-                <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 24, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: 6 }}>
+                <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, letterSpacing: '-0.02em', marginBottom: 6 }}>
                   Where should we<br />send your money?
                 </h1>
                 <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.4)' }}>
@@ -223,13 +223,13 @@ export function ProfileSetup() {
                 <div style={{
                   width: 88, height: 88, borderRadius: '50%',
                   background: initials ? 'var(--accent-primary-deep)' : 'var(--neutral-100)',
-                  border: initials ? '3px solid rgba(196,98,45,0.3)' : '3px dashed #CBD5E0',
+                  border: initials ? '3px solid rgba(var(--accent-deep-rgb),0.3)' : '3px dashed #CBD5E0',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: initials ? '0px 8px 24px rgba(196,98,45,0.25)' : 'none',
+                  boxShadow: initials ? '0px 8px 24px rgba(var(--accent-deep-rgb),0.25)' : 'none',
                   transition: 'all 0.3s',
                 }}>
                   {initials ? (
-                    <span style={{ fontFamily: 'var(--font-serif)', fontSize: 28, fontWeight: 800, color: '#FFFFFF' }}>
+                    <span style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: '#FFFFFF' }}>
                       {initials}
                     </span>
                   ) : (
@@ -250,7 +250,7 @@ export function ProfileSetup() {
                   placeholder="e.g. Priya Sharma"
                   autoFocus
                   style={{
-                    width: '100%', height: 54, borderRadius: 14,
+                    width: '100%', height: 54, borderRadius: 16,
                     border: nameError ? '1.5px solid var(--color-error)' : '1.5px solid #E8EDF3',
                     background: '#FFFFFF', padding: '0 18px',
                     fontSize: 16, fontWeight: 600, color: 'var(--text-primary)',
@@ -295,7 +295,7 @@ export function ProfileSetup() {
                           background: selected ? 'var(--accent-primary-deep)' : '#FFFFFF',
                           color: selected ? '#FFFFFF' : 'var(--text-secondary)',
                           cursor: 'pointer',
-                          boxShadow: selected ? '0px 4px 12px rgba(196,98,45,0.25)' : 'none',
+                          boxShadow: selected ? '0px 4px 12px rgba(var(--accent-deep-rgb),0.25)' : 'none',
                           transition: 'all 0.2s',
                           display: 'flex', alignItems: 'center', gap: 6,
                         }}
@@ -349,7 +349,7 @@ export function ProfileSetup() {
                   placeholder="yourname@upi"
                   autoFocus
                   style={{
-                    width: '100%', height: 54, borderRadius: 14,
+                    width: '100%', height: 54, borderRadius: 16,
                     border: upiError ? '1.5px solid var(--color-error)' : '1.5px solid #E8EDF3',
                     background: '#FFFFFF', padding: '0 18px',
                     fontSize: 16, fontWeight: 600, color: 'var(--text-primary)',
@@ -386,7 +386,7 @@ export function ProfileSetup() {
               {/* Payout info */}
               <div
                 style={{
-                  background: 'var(--warning-50)', borderRadius: 14, border: '1px solid #F5E4B8',
+                  background: 'var(--warning-50)', borderRadius: 16, border: '1px solid #F5E4B8',
                   padding: '14px 16px', marginBottom: 16,
                 }}
               >
@@ -416,7 +416,7 @@ export function ProfileSetup() {
               background: name.trim().length >= 2 ? 'var(--accent-primary-deep)' : '#D4BAB0',
               color: '#FFFFFF', fontSize: 16, fontWeight: 700,
               border: 'none', cursor: 'pointer',
-              boxShadow: name.trim().length >= 2 ? '0px 6px 24px rgba(196,98,45,0.30)' : 'none',
+              boxShadow: name.trim().length >= 2 ? '0px 6px 24px rgba(var(--accent-deep-rgb),0.30)' : 'none',
               transition: 'all 0.2s',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}
@@ -435,7 +435,7 @@ export function ProfileSetup() {
               background: selectedLangs.length > 0 ? 'var(--accent-primary-deep)' : '#D4BAB0',
               color: '#FFFFFF', fontSize: 16, fontWeight: 700,
               border: 'none', cursor: 'pointer',
-              boxShadow: selectedLangs.length > 0 ? '0px 6px 24px rgba(196,98,45,0.30)' : 'none',
+              boxShadow: selectedLangs.length > 0 ? '0px 6px 24px rgba(var(--accent-deep-rgb),0.30)' : 'none',
               transition: 'all 0.2s',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}
@@ -455,7 +455,7 @@ export function ProfileSetup() {
                 background: 'var(--accent-primary-deep)', color: '#FFFFFF',
                 fontSize: 16, fontWeight: 700,
                 border: 'none', cursor: 'pointer',
-                boxShadow: '0px 6px 24px rgba(196,98,45,0.30)',
+                boxShadow: '0px 6px 24px rgba(var(--accent-deep-rgb),0.30)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               }}
             >

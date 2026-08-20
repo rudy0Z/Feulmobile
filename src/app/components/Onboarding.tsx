@@ -1,175 +1,147 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion } from 'motion/react';
+import { Mail, Phone } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
+import { signIn } from '../lib/session';
 
-const onboardingSteps = [
-  {
-    title: "You are the source.",
-    subtitle: "Feul is your refinery.",
-    description:
-      "Your data is the invisible engine behind AI's growth. Feul turns that invisible force into tangible rewards because you built this future.",
-    waveColor: 'var(--accent-primary)',
-  },
-  {
-    title: "Share Your Voice",
-    subtitle: "Train the future",
-    description:
-      "Record short audio clips to help train cutting-edge AI models. Every contribution makes a difference.",
-    waveColor: 'var(--accent-primary)',
-  },
-  {
-    title: "Earn ₹ Instantly",
-    subtitle: "Your voice = real cash",
-    description:
-      "Complete quests to earn cash in INR — credited directly to your wallet. Build reputation to unlock higher-paying campaigns.",
-    waveColor: 'var(--accent-primary)',
-  },
-];
-
+/**
+ * Screen 1 = product + auth, in one light screen (§ Pass 1).
+ * One sentence, one number, three stubbed sign-in methods → Home-first.
+ * The 3 marketing slides + the navy /first-earning hook are collapsed away.
+ */
 export function Onboarding() {
-  const [currentStep, setCurrentStep] = useState(0);
   const navigate = useNavigate();
+  const [busy, setBusy] = useState<string | null>(null);
 
-  const handleNext = () => {
-    if (currentStep < onboardingSteps.length - 1) {
-      setCurrentStep(currentStep + 1);
-    } else {
-      navigate('/first-earning');
-    }
+  const handleAuth = (method: 'google' | 'email' | 'phone') => {
+    if (busy) return;
+    setBusy(method);
+    signIn(method);
+    // Stubbed auth "resolves", then Home-first — no funnel.
+    setTimeout(() => navigate('/contributor'), 420);
   };
-
-  const handleSkip = () => {
-    navigate('/first-earning');
-  };
-
-  const step = onboardingSteps[currentStep];
 
   return (
     <div
       className="min-h-screen flex flex-col"
-      style={{ background: 'linear-gradient(170deg, var(--accent-50) 0%, color-mix(in oklch, var(--accent-100) 40%, white) 100%)', fontFamily: 'var(--font-sans)' }}
+      style={{
+        background:
+          'linear-gradient(175deg, var(--accent-50) 0%, color-mix(in oklch, var(--accent-100) 45%, white) 42%, var(--background) 100%)',
+        fontFamily: 'var(--font-sans)',
+      }}
     >
-      {/* Content */}
-      <div className="flex-1 flex flex-col items-center justify-center px-6 pb-36">
-        <AnimatePresence mode="wait">
-          <motion.div
-            key={currentStep}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="w-full max-w-md flex flex-col items-center text-center"
+      {/* Product */}
+      <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="w-full flex flex-col items-center"
+          style={{ maxWidth: 360 }}
+        >
+          <div className="mb-10 w-full" style={{ maxWidth: 260 }}>
+            <Waveform color="var(--accent-primary)" opacity={1} height={64} />
+          </div>
+
+          <h1
+            style={{
+              fontFamily: 'var(--font-display)',
+              fontSize: 34,
+              fontWeight: 800,
+              color: 'var(--text-primary)',
+              lineHeight: 1.12,
+              letterSpacing: '-0.02em',
+              marginBottom: 16,
+            }}
           >
-            {/* Waveform signature element */}
-            <div className="mb-10 w-full" style={{ maxWidth: 280 }}>
-              <Waveform color={step.waveColor} opacity={1} height={70} />
-            </div>
+            Record your voice.<br />Get paid in rupees.
+          </h1>
 
-            {/* Title — 36px weight 800 */}
-            <h1
-              style={{
-                fontFamily: 'var(--font-serif)',
-                fontSize: 36,
-                fontWeight: 800,
-                color: 'var(--text-primary)',
-                marginBottom: 10,
-                textAlign: 'center',
-                letterSpacing: '-0.02em',
-                lineHeight: 1.1,
-              }}
-            >
-              {step.title}
-            </h1>
-
-            {/* Subtitle */}
-            <p
-              style={{
-                fontSize: 16,
-                fontWeight: 700,
-                color: 'var(--accent-primary)',
-                marginBottom: 20,
-                textAlign: 'center',
-              }}
-            >
-              {step.subtitle}
-            </p>
-
-            {/* Description */}
-            <p
-              style={{
-                fontSize: 15,
-                fontWeight: 500,
-                color: 'var(--text-secondary)',
-                lineHeight: 1.65,
-                maxWidth: 300,
-                textAlign: 'center',
-              }}
-            >
-              {step.description}
-            </p>
-          </motion.div>
-        </AnimatePresence>
+          <p
+            style={{
+              fontSize: 15,
+              fontWeight: 500,
+              color: 'var(--text-secondary)',
+              lineHeight: 1.6,
+              maxWidth: 300,
+            }}
+          >
+            Contributors earn <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, color: 'var(--accent-primary-deep)' }}>₹10–220</span> per quest.
+            Cash lands in your wallet after review.
+          </p>
+        </motion.div>
       </div>
 
-      {/* Bottom Nav */}
-      <div
-        className="fixed bottom-0 left-0 right-0 px-6 py-8"
-        style={{ background: 'linear-gradient(to top, var(--accent-50) 70%, transparent)' }}
+      {/* Auth */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, delay: 0.15 }}
+        className="px-6 pb-10 pt-2"
+        style={{ background: 'linear-gradient(to top, var(--background) 60%, transparent)' }}
       >
-        {/* Pagination dots */}
-        <div className="flex justify-center gap-2 mb-8">
-          {onboardingSteps.map((_, index) => (
-            <div
-              key={index}
+        {/* Google (primary) */}
+        <button
+          onClick={() => handleAuth('google')}
+          style={{
+            width: '100%', height: 56, borderRadius: 999,
+            background: 'var(--accent-primary-deep)', color: '#FFFFFF',
+            fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
+            boxShadow: '0px 8px 24px rgba(var(--accent-glow-rgb),0.32)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
+            opacity: busy && busy !== 'google' ? 0.5 : 1,
+            transition: 'opacity 0.2s',
+          }}
+        >
+          <GoogleG />
+          {busy === 'google' ? 'Signing in…' : 'Continue with Google'}
+        </button>
+
+        {/* Email / Phone (secondary, muted) */}
+        <div className="flex gap-3 mt-3">
+          {([
+            { id: 'email', label: 'Email', Icon: Mail },
+            { id: 'phone', label: 'Phone', Icon: Phone },
+          ] as const).map(({ id, label, Icon }) => (
+            <button
+              key={id}
+              onClick={() => handleAuth(id)}
               style={{
-                height: 6,
-                borderRadius: 999,
-                background: index === currentStep ? 'var(--accent-primary)' : 'var(--accent-200)',
-                width: index === currentStep ? 28 : 6,
-                transition: 'all 0.3s ease',
+                flex: 1, height: 52, borderRadius: 999,
+                background: 'var(--surface)', color: 'var(--text-secondary)',
+                fontSize: 14, fontWeight: 700, cursor: 'pointer',
+                border: '1.5px solid var(--card-border)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+                opacity: busy && busy !== id ? 0.5 : 1,
+                transition: 'opacity 0.2s',
               }}
-            />
+            >
+              <Icon style={{ width: 16, height: 16 }} strokeWidth={2} />
+              {label}
+            </button>
           ))}
         </div>
 
-        {/* Full-width 56px orange pill CTA */}
-        <button
-          onClick={handleNext}
-          style={{
-            width: '100%',
-            height: 58,
-            borderRadius: 999,
-            background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-            color: '#FFFFFF',
-            fontSize: 17,
-            fontWeight: 700,
-            border: 'none',
-            cursor: 'pointer',
-            boxShadow: '0px 10px 28px rgba(224,108,58,0.35), inset 0px 1px 0px rgba(255,255,255,0.18)',
-          }}
-        >
-          {currentStep < onboardingSteps.length - 1 ? 'Continue' : 'Get Started'}
-        </button>
-
-        {/* Returning user shortcut — explicit, intentional, not a hidden "skip" */}
-        <div style={{ textAlign: 'center', marginTop: 14 }}>
-          <button
-            onClick={handleSkip}
-            style={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: 'var(--text-secondary)',
-              background: 'none',
-              border: 'none',
-              cursor: 'pointer',
-            }}
-          >
-            Returning user?{' '}
-            <span style={{ color: 'var(--accent-primary-deep)', fontWeight: 700 }}>Sign in</span>
-          </button>
-        </div>
-      </div>
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 16, lineHeight: 1.5 }}>
+          New here or returning — same button. We'll set you up in seconds.
+        </p>
+      </motion.div>
     </div>
+  );
+}
+
+function GoogleG() {
+  return (
+    <span
+      style={{
+        width: 20, height: 20, borderRadius: '50%', background: '#FFFFFF',
+        display: 'inline-flex', alignItems: 'center', justifyContent: 'center',
+        fontFamily: 'var(--font-display)', fontSize: 13, fontWeight: 800,
+        color: 'var(--accent-primary-deep)',
+      }}
+    >
+      G
+    </span>
   );
 }

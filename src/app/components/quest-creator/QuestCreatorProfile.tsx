@@ -48,7 +48,7 @@ export function QuestCreatorProfile() {
         >
           <Building2 className="w-11 h-11" style={{ color: 'var(--text-primary)' }} strokeWidth={1.5} />
         </div>
-        <h1 style={{ fontFamily: 'var(--font-serif)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>
+        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 6 }}>
           TechVoice AI
         </h1>
         <div className="flex items-center gap-2">
@@ -77,7 +77,7 @@ export function QuestCreatorProfile() {
                 }}
               >
                 <Icon className="w-4 h-4 mx-auto mb-2" style={{ color: 'var(--text-muted)' }} strokeWidth={1.75} />
-                <p style={{ fontFamily: 'var(--font-serif)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>
+                <p style={{ fontFamily: 'var(--font-display)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>
                   {stat.value}
                 </p>
                 <p style={{ fontSize: 9, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -95,7 +95,7 @@ export function QuestCreatorProfile() {
           onClick={() => setRoleSwitcherOpen(true)}
           style={{
             width: '100%',
-            background: 'linear-gradient(135deg, #1C2434 0%, #0A0C10 100%)',
+            background: 'linear-gradient(135deg, #1C2434 0%, var(--surface-hero-elevated) 100%)',
             borderRadius: 16,
             padding: '14px 20px',
             display: 'flex',
@@ -108,7 +108,7 @@ export function QuestCreatorProfile() {
         >
           <div className="flex items-center gap-3">
             <div style={{
-              width: 36, height: 36, borderRadius: 10,
+              width: 36, height: 36, borderRadius: 12,
               background: 'rgba(255,255,255,0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
@@ -125,7 +125,7 @@ export function QuestCreatorProfile() {
 
       {/* ── Company Information ── */}
       <div className="px-6 mb-6">
-        <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 14 }}>
+        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 14 }}>
           Company Information
         </h3>
         <div style={{ background: '#FFFFFF', borderRadius: 16, border: '1px solid #E8EDF3', overflow: 'hidden' }}>
@@ -141,7 +141,7 @@ export function QuestCreatorProfile() {
                 }}
               >
                 <div style={{
-                  width: 38, height: 38, borderRadius: 10,
+                  width: 38, height: 38, borderRadius: 12,
                   background: 'var(--neutral-100)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
@@ -167,7 +167,7 @@ export function QuestCreatorProfile() {
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-2">
               <Shield className="w-5 h-5" style={{ color: 'rgba(255,255,255,0.5)' }} />
-              <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 20, fontWeight: 700, color: '#FFFFFF' }}>
+              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: '#FFFFFF' }}>
                 Enterprise Plan
               </h3>
             </div>

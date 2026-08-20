@@ -59,7 +59,7 @@ export function PaymentFailed({ onClose, onRetry }: Props) {
         {/* Error code */}
         <div style={{
           background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.18)',
-          borderRadius: 14, padding: '14px 16px', marginBottom: 16,
+          borderRadius: 16, padding: '14px 16px', marginBottom: 16,
         }}>
           <div style={{ display: 'flex', items: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
             <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 800, color: '#F87171', letterSpacing: '0.08em' }}>
@@ -93,7 +93,7 @@ export function PaymentFailed({ onClose, onRetry }: Props) {
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               color: '#FFFFFF', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              boxShadow: '0px 8px 24px rgba(196,98,45,0.3)',
+              boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.3)',
             }}
           >
             <RefreshCw style={{ width: 16, height: 16 }} />

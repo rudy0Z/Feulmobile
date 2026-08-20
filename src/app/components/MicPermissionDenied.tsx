@@ -30,7 +30,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 280, damping: 22, delay: 0.1 }}
           style={{
-            width: 88, height: 88, borderRadius: 28,
+            width: 88, height: 88, borderRadius: 24,
             background: 'rgba(220,38,38,0.12)',
             border: '1.5px solid rgba(220,38,38,0.25)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
@@ -57,7 +57,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
         <div style={{
           width: '100%', maxWidth: 340,
           background: 'rgba(255,255,255,0.05)',
-          borderRadius: 18, border: '1px solid rgba(255,255,255,0.08)',
+          borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)',
           padding: '20px',
           marginBottom: 28,
         }}>
@@ -73,7 +73,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: i < 3 ? 12 : 0 }}>
               <div style={{
                 width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
-                background: 'rgba(224,108,58,0.15)', border: '1px solid rgba(224,108,58,0.3)',
+                background: 'rgba(var(--accent-glow-rgb),0.15)', border: '1px solid rgba(var(--accent-glow-rgb),0.3)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 fontSize: 11, fontWeight: 800, color: 'var(--accent-primary)',
               }}>
@@ -95,7 +95,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               color: '#FFFFFF', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              boxShadow: '0px 8px 24px rgba(196,98,45,0.35)',
+              boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.35)',
             }}
           >
             <RefreshCw style={{ width: 16, height: 16 }} />

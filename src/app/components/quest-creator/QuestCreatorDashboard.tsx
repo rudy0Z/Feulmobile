@@ -170,7 +170,7 @@ export function QuestCreatorDashboard() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.28 }}
           style={{
-            background: 'radial-gradient(ellipse at 20% 35%, rgba(80,88,164,0.14) 0%, transparent 55%), linear-gradient(150deg, #0F1822 0%, #0A0C10 100%)',
+            background: 'radial-gradient(ellipse at 20% 35%, rgba(80,88,164,0.14) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
             borderRadius: 24,
             padding: '20px 22px',
             position: 'relative',
@@ -217,7 +217,7 @@ export function QuestCreatorDashboard() {
                 initial={{ width: 0 }}
                 animate={{ width: `${overallProgress}%` }}
                 transition={{ duration: 1.3, ease: 'easeOut', delay: 0.4 }}
-                style={{ background: 'linear-gradient(90deg, var(--accent-primary), #FF9D6C)', borderRadius: 999, height: 5 }}
+                style={{ background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-primary-light))', borderRadius: 999, height: 5 }}
               />
             </div>
 
@@ -255,7 +255,7 @@ export function QuestCreatorDashboard() {
                 }}
               >
                 <div style={{
-                  width: 34, height: 34, borderRadius: 10,
+                  width: 34, height: 34, borderRadius: 12,
                   background: 'var(--background)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   margin: '0 auto 8px',
@@ -278,7 +278,7 @@ export function QuestCreatorDashboard() {
       {showUnderperform && (
         <div className="px-5 mb-4">
           <div style={{
-            background: 'var(--warning-50)', borderRadius: 18,
+            background: 'var(--warning-50)', borderRadius: 16,
             border: '1px solid #F5E4B8',
             borderLeft: '4px solid #B8860B',
             padding: '18px',
@@ -334,7 +334,7 @@ export function QuestCreatorDashboard() {
               marginTop: 14, width: '100%', padding: '12px', borderRadius: 999,
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               color: '#FFFFFF', fontSize: 13, fontWeight: 700, border: 'none', cursor: 'pointer',
-              boxShadow: '0px 4px 16px rgba(196,98,45,0.3)',
+              boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.3)',
             }}>
               Adjust Campaign Settings
             </button>
@@ -346,7 +346,7 @@ export function QuestCreatorDashboard() {
       <div className="px-5 mb-5">
         <div className="flex items-center justify-between mb-3">
           <div>
-            <h3 style={{ fontFamily: 'var(--font-serif)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
               Active Campaigns
             </h3>
             <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', marginTop: 1 }}>
@@ -388,7 +388,7 @@ export function QuestCreatorDashboard() {
                 <div style={{
                   background: campaign.progress >= 90
                     ? 'linear-gradient(90deg, #2D7A4F, #4EC992)'
-                    : 'linear-gradient(90deg, var(--accent-primary), #FF9D6C)',
+                    : 'linear-gradient(90deg, var(--accent-primary), var(--accent-primary-light))',
                   borderRadius: 999, height: 4, width: `${campaign.progress}%`,
                   transition: 'width 0.5s ease',
                 }} />
@@ -416,7 +416,7 @@ export function QuestCreatorDashboard() {
             color: '#FFFFFF',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
-            boxShadow: '0px 10px 28px rgba(224,108,58,0.42), inset 0px 1px 0px rgba(255,255,255,0.18)',
+            boxShadow: '0px 10px 28px rgba(var(--accent-glow-rgb),0.42), inset 0px 1px 0px rgba(255,255,255,0.18)',
           }}
         >
           <Plus className="w-5 h-5" />

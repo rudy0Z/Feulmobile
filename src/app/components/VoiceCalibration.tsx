@@ -157,7 +157,7 @@ export function VoiceCalibration() {
                     Say this naturally
                   </p>
                   <p style={{
-                    fontFamily: 'var(--font-serif)',
+                    fontFamily: 'var(--font-display)',
                     fontSize: 22,
                     fontWeight: 700,
                     color: 'var(--text-primary)',
@@ -215,7 +215,7 @@ export function VoiceCalibration() {
               display: 'flex', alignItems: 'center', justifyContent: 'center',
               boxShadow: isRecording
                 ? '0px 0px 0px 8px rgba(192,57,43,0.15)'
-                : '0px 8px 32px rgba(196,98,45,0.35)',
+                : '0px 8px 32px rgba(var(--accent-deep-rgb),0.35)',
               transition: 'all 0.2s ease',
             }}
           >

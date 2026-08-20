@@ -1,5 +1,5 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { Moon, TrendingUp, ChevronLeft } from 'lucide-react';
+import { TrendingUp, ChevronLeft, Moon } from 'lucide-react';
 
 interface Props {
   onClose: () => void;
@@ -42,14 +42,11 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.05 }}
           style={{
-            width: 96, height: 96, borderRadius: 30,
-            background: 'rgba(99,102,241,0.10)',
-            border: '1.5px solid rgba(99,102,241,0.22)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: 28,
           }}
         >
-          <Moon style={{ width: 46, height: 46, color: '#818CF8' }} />
+          <Moon style={{ width: 44, height: 44, color: 'var(--text-muted)' }} strokeWidth={1.5} />
         </motion.div>
 
         <h2 style={{
@@ -69,7 +66,7 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
         <div style={{
           width: '100%', maxWidth: 340,
           background: '#FFFFFF',
-          borderRadius: 18, border: '1px solid var(--card-border)',
+          borderRadius: 16, border: '1px solid var(--card-border)',
           boxShadow: '0px 4px 16px rgba(28,36,52,0.06)',
           padding: '18px 20px', marginBottom: 28,
         }}>
@@ -103,7 +100,7 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <span style={{
                 fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 700,
-                color: '#818CF8',
+                color: 'var(--text-muted)',
               }}>
                 {nextDate} · {resetHour}
               </span>
@@ -119,7 +116,7 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
               color: '#FFFFFF', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              boxShadow: '0px 8px 24px rgba(196,98,45,0.28)',
+              boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.28)',
             }}
           >
             <TrendingUp style={{ width: 16, height: 16 }} />

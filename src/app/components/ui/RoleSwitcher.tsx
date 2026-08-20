@@ -24,7 +24,7 @@ const roles: RoleConfig[] = [
     icon: Mic,
     color: 'var(--accent-primary)',
     bg: 'linear-gradient(135deg, #FFF0E8 0%, #FFE8D8 100%)',
-    borderColor: 'rgba(224,108,58,0.2)',
+    borderColor: 'rgba(var(--accent-glow-rgb),0.2)',
     path: '/contributor',
     unlocked: true,
   },
@@ -159,7 +159,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
 
                     {/* Icon tile */}
                     <div style={{
-                      width: 48, height: 48, borderRadius: 14, flexShrink: 0,
+                      width: 48, height: 48, borderRadius: 16, flexShrink: 0,
                       background: isActive
                         ? `${role.color}18`
                         : isLocked ? 'var(--neutral-100)' : '#ECEEF2',
