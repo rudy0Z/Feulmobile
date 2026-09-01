@@ -2,7 +2,7 @@
 
 import { useState, useRef } from 'react';
 import { motion } from 'motion/react';
-import { Mic, UserCircle2, X } from 'lucide-react';
+import { Mic, UserCircle2, X, Check } from 'lucide-react';
 
 interface Props {
   onClose: () => void;
@@ -64,7 +64,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        background: 'rgba(10,12,16,0.92)',
+        background: 'rgba(var(--carbon-rgb),0.92)',
       }}
     >
       {/* Card */}
@@ -184,7 +184,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
                 width: 7,
                 height: 7,
                 borderRadius: '50%',
-                background: '#ef4444',
+                background: 'var(--state-failed)',
               }}
             />
             <span
@@ -289,7 +289,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
               gap: 8,
               fontSize: 15,
               fontWeight: 700,
-              color: '#FFFFFF',
+              color: 'var(--t-bone-0)',
               overflow: 'hidden',
             }}
           >
@@ -308,11 +308,12 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
               }}
             />
             {!verified && !holding && <Mic size={18} style={{ position: 'relative', zIndex: 1 }} />}
+            {verified && <Check size={18} strokeWidth={2.5} style={{ position: 'relative', zIndex: 1 }} />}
             <span style={{ position: 'relative', zIndex: 1 }}>
               {holding
                 ? `Verifying… ${holdProgress}%`
                 : verified
-                ? '✓ Identity Verified'
+                ? 'Identity Verified'
                 : 'Hold to Record & Verify'}
             </span>
           </button>

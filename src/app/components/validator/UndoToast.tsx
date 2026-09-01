@@ -30,18 +30,18 @@ export function UndoToast({ gradeLabel, onUndo, onDismiss, visible }: UndoToastP
           <div
             style={{
               background: 'var(--text-primary)',
-              borderRadius: 999,
+              borderRadius: 'var(--r-full)',
               padding: '10px 20px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
               gap: 12,
-              boxShadow: '0px 12px 32px rgba(28,36,52,0.25)',
+              boxShadow: 'var(--e-3)',
               margin: '0 auto',
               width: 'max-content',
             }}
           >
-            <span style={{ fontSize: 13, fontWeight: 700, color: '#FFFFFF' }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-on-studio)' }}>
               Graded: {gradeLabel}
             </span>
             <div style={{ width: 1, height: 12, background: 'rgba(255,255,255,0.2)' }} />

@@ -1,90 +1,64 @@
-import { motion, AnimatePresence } from 'motion/react';
-import { useEffect } from 'react';
+import { motion } from 'motion/react';
 
-interface KeyboardGradeProps {
+interface Props {
   selectedGrade: number | null;
   onGrade: (grade: number) => void;
-  gradeOptions: { id: number; label: string; color: string }[];
+  gradeOptions: { id: number; label: string; description: string; color: string }[];
 }
 
-export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: KeyboardGradeProps) {
-  const flashColors = ['var(--status-error-text)', 'var(--status-error-text)', 'var(--warning-700)', 'var(--color-success)', 'var(--color-success)'];
-
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      const n = parseInt(e.key);
-      if (n >= 1 && n <= 5) onGrade(n);
-    };
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [onGrade]);
-
-  const selectedGradeObj = gradeOptions.find(g => g.id === selectedGrade);
-  const flashColor = selectedGrade !== null ? flashColors[selectedGrade - 1] : 'transparent';
+// Keyboard Grade — number-key affordance made visual. Each grade shows its
+// keycap so power users learn the 1–5 shortcut. (Live keydown handling lives
+// in GradingTask so it works regardless of the visible instrument.)
+export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: Props) {
+  const selected = gradeOptions.find((g) => g.id === selectedGrade);
 
   return (
     <div className="w-full">
-      <AnimatePresence>
-        {selectedGrade !== null && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.1 }}
-            style={{
-              position: 'fixed', inset: 0,
-              background: flashColor,
-              zIndex: 9999,
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              pointerEvents: 'none',
-            }}
-          >
-            <motion.h2
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              transition={{ delay: 0.05 }}
+      <div className="flex justify-center gap-2 mb-4">
+        {gradeOptions.map((opt) => {
+          const isSelected = selectedGrade === opt.id;
+          return (
+            <motion.button
+              key={opt.id}
+              onClick={() => onGrade(opt.id)}
+              whileTap={{ scale: 0.94, y: 2 }}
               style={{
-                fontSize: 48, fontWeight: 900, color: '#FFFFFF',
-                letterSpacing: 2, textShadow: '0px 4px 12px rgba(0,0,0,0.2)',
+                flex: 1, maxWidth: 60, cursor: 'pointer', border: 'none', background: 'transparent',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
               }}
             >
-              {selectedGradeObj?.label.toUpperCase()}
-            </motion.h2>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      <div className="flex w-full h-16 bg-[#F1F3F5] rounded-xl overflow-hidden shadow-inner mb-4">
-        {gradeOptions.map((opt, idx) => (
-          <button
-            key={opt.id}
-            onClick={() => onGrade(opt.id)}
-            style={{
-              flex: 1,
-              height: '100%',
-              background: '#FFFFFF',
-              border: '1px solid #E8EDF3',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              cursor: 'pointer',
-              transition: 'background 0.1s',
-            }}
-            className="hover:bg-slate-50 active:bg-slate-100"
-          >
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 18, fontWeight: 800, color: 'var(--text-primary)' }}>
+              <span
+                style={{
+                  width: '100%', height: 52, borderRadius: 'var(--r-sm)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontFamily: 'var(--font-number)', fontSize: 20, fontWeight: 800,
+                  background: isSelected ? opt.color : 'var(--surface-raised)',
+                  color: isSelected ? 'var(--text-on-studio)' : 'var(--text-secondary)',
+                  border: isSelected ? `1.5px solid ${opt.color}` : '1px solid var(--border-subtle)',
+                  boxShadow: isSelected ? 'var(--e-2)' : '0 2px 0 var(--border-strong)',
+                  transition: 'all 0.12s',
+                }}
+              >
                 {opt.id}
               </span>
-              <div 
-                style={{ width: 8, height: 2, borderRadius: 2, background: flashColors[idx], marginTop: 4 }} 
-              />
-            </div>
-          </button>
-        ))}
+              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: isSelected ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+                {opt.label}
+              </span>
+            </motion.button>
+          );
+        })}
       </div>
-      
-      <p style={{ textAlign: 'center', fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-        Tap or Press keys 1–5 to grade
-      </p>
+
+      <div style={{ minHeight: 24, textAlign: 'center' }}>
+        {selected && (
+          <motion.span
+            initial={{ opacity: 0 }} animate={{ opacity: 1 }}
+            style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}
+          >
+            {selected.id} — {selected.description}
+          </motion.span>
+        )}
+      </div>
     </div>
   );
 }

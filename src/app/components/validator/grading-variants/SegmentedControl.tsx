@@ -40,10 +40,10 @@ export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: Segme
             >
               <span
                 style={{
-                  fontFamily: 'var(--font-mono)',
+                  fontFamily: 'var(--font-number)',
                   fontSize: isSelected ? 22 : 16,
                   fontWeight: isSelected ? 800 : 500,
-                  color: isSelected ? '#FFFFFF' : 'var(--text-muted)',
+                  color: isSelected ? 'var(--text-on-studio)' : 'var(--text-muted)',
                   transition: 'font-size 0.12s',
                   lineHeight: 1,
                 }}
@@ -77,7 +77,7 @@ export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: Segme
           initial={{ opacity: 0, y: 4 }}
           animate={{ opacity: 1, y: 0 }}
           className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl mb-4"
-          style={{ background: '#FFFFFF', border: '1px solid #E8EDF3' }}
+          style={{ background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)' }}
         >
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: selectedGradeObj.color, flexShrink: 0 }} />
           <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>

@@ -37,7 +37,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
         position: 'fixed',
         inset: 0,
         zIndex: 50,
-        background: 'rgba(10,12,16,0.95)',
+        background: 'rgba(var(--carbon-rgb),0.95)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
@@ -62,7 +62,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
               fontFamily: 'var(--font-display)',
               fontSize: 22,
               fontWeight: 800,
-              color: '#FFFFFF',
+              color: 'var(--t-bone-0)',
               margin: '12px 0 0',
             }}
           >
@@ -126,7 +126,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
               background: 'rgba(255,255,255,0.05)',
               borderRadius: 16,
               padding: 14,
-              border: '1px solid rgba(255,165,0,0.2)',
+              border: '1px solid rgba(var(--ochre-rgb),0.2)',
             }}
           >
             <div
@@ -163,7 +163,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
               background: 'rgba(255,255,255,0.05)',
               borderRadius: 16,
               padding: 14,
-              border: '1px solid rgba(45,200,100,0.2)',
+              border: '1px solid rgba(var(--verdigris-rgb),0.2)',
             }}
           >
             <div
@@ -286,7 +286,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             borderRadius: 999,
             background:
               'linear-gradient(160deg, var(--accent-primary-light), var(--accent-primary-deep))',
-            color: '#FFFFFF',
+            color: 'var(--t-bone-0)',
             fontSize: 16,
             fontWeight: 700,
             border: 'none',

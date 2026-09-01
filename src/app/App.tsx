@@ -4,14 +4,17 @@ import { PhoneFrame } from './components/PhoneFrame';
 import { DevProvider } from './lib/DevContext';
 import { DevPanel, DevOverlayHost } from './components/DevPanel';
 
+/** Debug tooling ships only in dev — never in the production/portfolio embed. */
+const DEV = import.meta.env.DEV;
+
 export default function App() {
   return (
     <DevProvider>
       <PhoneFrame>
         <RouterProvider router={router} />
-        <DevOverlayHost />
+        {DEV && <DevOverlayHost />}
       </PhoneFrame>
-      <DevPanel />
+      {DEV && <DevPanel />}
     </DevProvider>
   );
 }

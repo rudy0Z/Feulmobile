@@ -59,7 +59,7 @@ export function ValidatorApplication() {
             onClick={() => navigate('/contributor')}
             style={{
               height: 56, borderRadius: 999, padding: '0 40px',
-              background: 'var(--accent-primary-deep)', color: '#FFFFFF',
+              background: 'var(--accent-primary-deep)', color: 'var(--t-bone-0)',
               fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
               boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.28)',
             }}
@@ -89,7 +89,7 @@ export function ValidatorApplication() {
           padding: '24px', position: 'relative', overflow: 'hidden',
         }}>
           <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 22px 22px', opacity: 0.10 }}>
-            <Waveform color="#FFFFFF" opacity={1} height={80} variant="precision" />
+            <Waveform color="var(--t-bone-0)" opacity={1} height={80} variant="precision" />
           </div>
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-3">
@@ -98,7 +98,7 @@ export function ValidatorApplication() {
                 Validator Program
               </span>
             </div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: '#FFFFFF', marginBottom: 8, lineHeight: 1.2 }}>
+            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--t-bone-0)', marginBottom: 8, lineHeight: 1.2 }}>
               Earn more by reviewing audio quality
             </h2>
             <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
@@ -119,8 +119,8 @@ export function ValidatorApplication() {
             const Icon = req.icon;
             return (
               <div key={req.label} style={{
-                flex: 1, background: '#FFFFFF', borderRadius: 16,
-                border: '1px solid #E8EDF3', padding: '14px 10px', textAlign: 'center',
+                flex: 1, background: 'var(--t-bone-0)', borderRadius: 16,
+                border: '1px solid var(--border-subtle)', padding: '14px 10px', textAlign: 'center',
               }}>
                 <Icon className="w-4 h-4 mx-auto mb-2" style={{ color: req.met ? 'var(--color-success)' : 'var(--text-muted)' }} />
                 <p style={{ fontSize: 11, fontWeight: 600, color: req.met ? 'var(--text-primary)' : 'var(--text-muted)', lineHeight: 1.4 }}>
@@ -151,9 +151,9 @@ export function ValidatorApplication() {
                   padding: '8px 16px', borderRadius: 999,
                   fontSize: 13, fontWeight: 600,
                   border: '1.5px solid',
-                  background: selectedLanguages.includes(lang) ? 'var(--text-primary)' : '#FFFFFF',
+                  background: selectedLanguages.includes(lang) ? 'var(--text-primary)' : 'var(--t-bone-0)',
                   borderColor: selectedLanguages.includes(lang) ? 'var(--text-primary)' : 'var(--card-border)',
-                  color: selectedLanguages.includes(lang) ? '#FFFFFF' : 'var(--text-secondary)',
+                  color: selectedLanguages.includes(lang) ? 'var(--t-bone-0)' : 'var(--text-secondary)',
                   cursor: 'pointer', transition: 'all 0.15s',
                 }}
               >
@@ -177,9 +177,9 @@ export function ValidatorApplication() {
                   flex: 1, padding: '12px 8px', borderRadius: 12,
                   fontSize: 12, fontWeight: 600, textAlign: 'center',
                   border: '1.5px solid',
-                  background: hoursPerWeek === opt ? 'var(--text-primary)' : '#FFFFFF',
+                  background: hoursPerWeek === opt ? 'var(--text-primary)' : 'var(--t-bone-0)',
                   borderColor: hoursPerWeek === opt ? 'var(--text-primary)' : 'var(--card-border)',
-                  color: hoursPerWeek === opt ? '#FFFFFF' : 'var(--text-secondary)',
+                  color: hoursPerWeek === opt ? 'var(--t-bone-0)' : 'var(--text-secondary)',
                   cursor: 'pointer', transition: 'all 0.15s',
                 }}
               >
@@ -201,7 +201,7 @@ export function ValidatorApplication() {
             rows={3}
             style={{
               width: '100%', borderRadius: 16,
-              border: '1.5px solid #E8EDF3', padding: '14px 16px',
+              border: '1.5px solid var(--border-subtle)', padding: '14px 16px',
               fontSize: 14, fontWeight: 500, color: 'var(--text-primary)',
               resize: 'none', outline: 'none',
               fontFamily: 'var(--font-sans)',
@@ -217,7 +217,7 @@ export function ValidatorApplication() {
           style={{
             width: '100%', height: 56, borderRadius: 999,
             background: canSubmit ? 'var(--accent-primary-deep)' : 'var(--card-border)',
-            color: canSubmit ? '#FFFFFF' : 'var(--text-muted)',
+            color: canSubmit ? 'var(--t-bone-0)' : 'var(--text-muted)',
             fontSize: 16, fontWeight: 700, border: 'none',
             cursor: canSubmit ? 'pointer' : 'not-allowed',
             boxShadow: canSubmit ? '0px 4px 16px rgba(var(--accent-deep-rgb),0.28)' : 'none',

@@ -20,7 +20,7 @@ export function SwipeButton({
   onComplete,
   disabled = false,
   fillColor = 'var(--accent-primary-deep)',
-  successColor = '#2D7A4F',
+  successColor = 'var(--t-verdigris-500)',
   height = 58,
 }: SwipeButtonProps) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -40,7 +40,7 @@ export function SwipeButton({
     x,
     [0, maxDrag],
     [
-      '0px 6px 18px rgba(28,36,52,0.18)',
+      '0px 6px 18px rgba(var(--carbon-rgb),0.18)',
       `0px 6px 24px ${successColor}66`,
     ]
   );
@@ -74,9 +74,9 @@ export function SwipeButton({
         width: '100%',
         height,
         borderRadius: 999,
-        background: '#F0EDE6',
-        border: '1px solid #E8E2D3',
-        boxShadow: 'inset 0px 1px 2px rgba(28,36,52,0.05)',
+        background: 'var(--surface-sunken)',
+        border: '1px solid var(--border-subtle)',
+        boxShadow: 'inset 0px 1px 2px rgba(var(--carbon-rgb),0.05)',
         overflow: 'hidden',
         opacity: disabled ? 0.55 : 1,
         userSelect: 'none',

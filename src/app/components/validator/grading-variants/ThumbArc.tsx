@@ -1,66 +1,61 @@
 import { motion } from 'motion/react';
 
-interface ThumbArcProps {
+interface Props {
   selectedGrade: number | null;
   onGrade: (grade: number) => void;
-  gradeOptions: { id: number; label: string; color: string }[];
+  gradeOptions: { id: number; label: string; description: string; color: string }[];
 }
 
-export function ThumbArc({ selectedGrade, onGrade, gradeOptions }: ThumbArcProps) {
-  const gradeColors = ['var(--status-error-text)', 'var(--accent-primary-deep)', 'var(--warning-700)', 'var(--color-success)', 'var(--success-900)'];
-
-  const selectedGradeObj = gradeOptions.find(g => g.id === selectedGrade);
+// Thumb Arc — grades laid out on a shallow arc so all five sit within one-thumb
+// reach at the bottom of the screen. Optimised for one-handed rapid grading.
+export function ThumbArc({ selectedGrade, onGrade, gradeOptions }: Props) {
+  const selected = gradeOptions.find((g) => g.id === selectedGrade);
+  // Shallow arc: middle button sits lowest, ends lift up.
+  const lift = (i: number, n: number) => {
+    const mid = (n - 1) / 2;
+    return Math.abs(i - mid) * 10; // px upward offset
+  };
 
   return (
-    <div className="w-full flex flex-col items-center justify-end mb-6">
-      {/* Grade text above arc */}
-      <div className="h-10 mb-2 flex items-center justify-center">
-        {selectedGradeObj && (
-          <motion.span
-            initial={{ opacity: 0, y: 8 }}
-            animate={{ opacity: 1, y: 0 }}
-            style={{ fontSize: 18, fontWeight: 800, color: 'var(--text-primary)' }}
-          >
-            {selectedGradeObj.id} — {selectedGradeObj.label.toUpperCase()}
-          </motion.span>
-        )}
-      </div>
-
-      <div className="relative w-full flex items-end justify-between px-4" style={{ height: 100 }}>
-        {gradeOptions.map((opt, idx) => {
+    <div className="w-full">
+      <div className="flex items-end justify-center gap-2.5" style={{ height: 128, paddingTop: 24 }}>
+        {gradeOptions.map((opt, i) => {
           const isSelected = selectedGrade === opt.id;
-          const isDimmed = selectedGrade !== null && !isSelected;
-          
-          // Calculate y offset for arc (0 for center, -24 for edges)
-          // 0 1 2 3 4
-          // offset: 24 12 0 12 24
-          const yOffset = [24, 8, 0, 8, 24][idx];
-          const color = gradeColors[idx];
-
           return (
-            <button
+            <motion.button
               key={opt.id}
               onClick={() => onGrade(opt.id)}
+              whileTap={{ scale: 0.9 }}
+              animate={{ y: isSelected ? -8 : 0 }}
+              transition={{ type: 'spring', stiffness: 420, damping: 26 }}
               style={{
-                width: 64, height: 64,
-                borderRadius: '50%',
-                background: isSelected ? color : '#FFFFFF',
-                color: isSelected ? '#FFFFFF' : color,
-                border: `2px solid ${color}`,
+                marginBottom: lift(i, gradeOptions.length),
+                width: 56, height: 56, borderRadius: 'var(--r-full)', flexShrink: 0,
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                cursor: 'pointer',
-                transition: 'all 0.2s cubic-bezier(0.16, 1, 0.3, 1)',
-                transform: `translateY(${-yOffset}px) scale(${isSelected ? 1.15 : 1})`,
-                opacity: isDimmed ? 0.3 : 1,
-                boxShadow: isSelected ? `0px 8px 16px ${color}33` : '0px 4px 12px rgba(28,36,52,0.06)',
+                fontFamily: 'var(--font-number)',
+                fontSize: isSelected ? 22 : 18, fontWeight: 800,
+                cursor: 'pointer', border: 'none',
+                background: isSelected ? opt.color : 'var(--neutral-100)',
+                color: isSelected ? 'var(--text-on-studio)' : 'var(--text-secondary)',
+                boxShadow: isSelected ? 'var(--e-3)' : 'var(--e-1)',
+                transition: 'background 0.15s, color 0.15s, font-size 0.12s',
               }}
             >
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 24, fontWeight: 800 }}>
-                {opt.id}
-              </span>
-            </button>
+              {opt.id}
+            </motion.button>
           );
         })}
+      </div>
+
+      <div style={{ minHeight: 44, marginTop: 8, textAlign: 'center' }}>
+        {selected ? (
+          <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}>
+            <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>{selected.label}</span>
+            <span style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 1 }}>{selected.description}</span>
+          </motion.div>
+        ) : (
+          <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>Tap a score — 1 poor, 5 perfect</span>
+        )}
       </div>
     </div>
   );

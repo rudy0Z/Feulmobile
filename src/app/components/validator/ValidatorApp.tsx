@@ -21,7 +21,7 @@ export function ValidatorApp() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+    <div className="theme-verdigris min-h-screen flex flex-col" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
       <div className="flex-1 overflow-auto pb-20">
         <Outlet />
       </div>
@@ -29,9 +29,9 @@ export function ValidatorApp() {
       <nav
         className="fixed bottom-0 left-0 right-0 z-50"
         style={{
-          background: 'rgba(255,255,255,0.94)',
-          borderTop: '1px solid rgba(232,237,243,0.8)',
-          boxShadow: '0px -4px 20px rgba(28,36,52,0.07)',
+          background: 'var(--surface-raised)',
+          borderTop: '1px solid var(--border-subtle)',
+          boxShadow: 'var(--e-2)',
           backdropFilter: 'blur(16px)',
           WebkitBackdropFilter: 'blur(16px)',
         }}

@@ -1,19 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { DPDPConsentRevocation } from './DPDPConsentRevocation';
-import { Award, Settings, LogOut, ChevronRight, Shield, Trash2, Zap, ShieldCheck, Building2, Repeat2, BarChart3 } from 'lucide-react';
+import { Award, Settings, LogOut, ChevronRight, Shield, Trash2, ShieldCheck, Repeat2, BarChart3 } from 'lucide-react';
 import { motion } from 'motion/react';
 import { RoleSwitcher } from './ui/RoleSwitcher';
 import { tierName, nextTierName } from '../lib/tier';
-
-const achievements = [
-  { id: 1, name: 'First Steps',  emoji: '🎯', description: 'Complete your first quest',    unlocked: true  },
-  { id: 2, name: 'Week Warrior', emoji: '🔥', description: 'Record for 7 days in a row',   unlocked: true  },
-  { id: 3, name: 'Voice Master', emoji: '🎙️', description: 'Record 50 clips',              unlocked: false },
-  { id: 4, name: 'Reputation Builder', emoji: '⚡', description: 'Reach 5,000 reputation',   unlocked: false },
-  { id: 5, name: 'Dedicated',    emoji: '💪', description: 'Record for 30 days in a row',  unlocked: false },
-  { id: 6, name: 'Elite',        emoji: '👑', description: 'Complete 100 quests',          unlocked: false },
-];
+import { useSession } from '../lib/session';
 
 const dataVaultItems = [
   { id: 'ds-1', dataset: 'Customer Service Dataset 1', submitted: 'Jan 12, 2026', clips: 42, status: 'Active' },
@@ -26,11 +18,15 @@ const menuItems = [
 
 export function Profile() {
   const navigate = useNavigate();
+  const { profile } = useSession();
   const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
   const [showRevokeSheet, setShowRevokeSheet]   = useState(false);
 
+  const standingLevel = profile?.standing?.level ?? 3;
+  const reliability   = profile?.standing?.reliability ?? 78;
+
   return (
-    <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-6" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       <RoleSwitcher
         isOpen={roleSwitcherOpen}
@@ -38,60 +34,62 @@ export function Profile() {
         onClose={() => setRoleSwitcherOpen(false)}
       />
 
-      {/* Profile Header — avatar left, name/level dominant */}
+      {/* Profile Header — avatar left, name dominant */}
       <div className="flex items-center gap-4 px-6 pt-16 pb-6">
         <div
           className="flex items-center justify-center flex-shrink-0"
           style={{
             width: 68, height: 68, borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-            boxShadow: '0px 8px 22px rgba(var(--accent-glow-rgb),0.28), inset 0 1px 0 rgba(255,255,255,0.35)',
+            background: 'linear-gradient(135deg, var(--t-terracotta-300, var(--action-primary)) 0%, var(--action-primary) 100%)',
+            boxShadow: 'var(--e-2)',
             position: 'relative',
           }}
         >
-          <span style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: '#FFFFFF', letterSpacing: '-0.02em' }}>AJ</span>
+          <span style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-on-accent)', letterSpacing: '-0.02em' }}>
+            {profile?.initials ?? 'AJ'}
+          </span>
           <div style={{
             position: 'absolute', bottom: -2, right: -2,
             width: 22, height: 22, borderRadius: '50%',
-            background: 'var(--navy)',
-            border: '2px solid var(--background)',
+            background: 'var(--surface-raised)',
+            border: '2px solid var(--surface-ground)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
           }}>
-            <ShieldCheck className="w-3 h-3" style={{ color: 'var(--accent-primary)' }} strokeWidth={2.5} />
+            <ShieldCheck className="w-3 h-3" style={{ color: 'var(--state-settled)' }} strokeWidth={2.5} />
           </div>
         </div>
         <div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
-            Alex Johnson
+          <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
+            {profile?.name ?? 'Alex Johnson'}
           </h1>
           <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>alex.johnson@email.com</p>
         </div>
       </div>
 
-      {/* Stats — card with elevation, larger figures */}
+      {/* Stats — lifetime figures */}
       <div className="px-6 mb-6">
         <div
           className="flex items-center justify-between"
           style={{
-            background: 'var(--surface)',
-            borderRadius: 16,
-            border: '1px solid var(--card-border)',
-            boxShadow: 'var(--shadow-glass)',
+            background: 'var(--surface-raised)',
+            borderRadius: 'var(--r-md)',
+            border: '1px solid var(--border-subtle)',
+            boxShadow: 'var(--e-1)',
             padding: '18px 8px',
           }}
         >
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>₹1,250</p>
+            <p style={{ fontFamily: 'var(--font-number)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>₹1,250</p>
             <p style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 6 }}>Earned</p>
           </div>
           <div style={{ width: 1, height: 36, background: 'var(--divider)' }} />
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>23</p>
+            <p style={{ fontFamily: 'var(--font-number)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>23</p>
             <p style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 6 }}>Quests</p>
           </div>
           <div style={{ width: 1, height: 36, background: 'var(--divider)' }} />
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>94%</p>
+            <p style={{ fontFamily: 'var(--font-number)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>94%</p>
             <p style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 6 }}>Acceptance</p>
           </div>
         </div>
@@ -105,102 +103,96 @@ export function Profile() {
           onClick={() => setRoleSwitcherOpen(true)}
           style={{
             width: '100%',
-            background: 'linear-gradient(135deg, var(--neutral-800) 0%, var(--navy) 100%)',
-            borderRadius: 16,
+            background: 'var(--surface-raised)',
+            borderRadius: 'var(--r-md)',
+            border: '1px solid var(--border-subtle)',
             padding: '14px 20px',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            boxShadow: '0px 4px 12px rgba(10,12,16,0.12)',
+            boxShadow: 'var(--e-1)',
             cursor: 'pointer',
-            border: 'none',
           }}
         >
           <div className="flex items-center gap-3">
             <div style={{
-              width: 36, height: 36, borderRadius: 12,
-              background: 'rgba(255,255,255,0.1)',
+              width: 36, height: 36, borderRadius: 'var(--r-sm)',
+              background: 'var(--t-terracotta-50)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Repeat2 className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
+              <Repeat2 className="w-4 h-4" style={{ color: 'var(--action-primary)' }} />
             </div>
             <div className="text-left">
-              <p style={{ fontSize: 14, fontWeight: 700, color: '#FFFFFF' }}>Switch App Role</p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.5)' }}>Currently: Contributor</p>
+              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>Switch App Role</p>
+              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>Currently: Contributor</p>
             </div>
           </div>
-          <ChevronRight className="w-4 h-4" style={{ color: 'rgba(255,255,255,0.3)' }} />
+          <ChevronRight className="w-4 h-4" style={{ color: 'var(--text-faint)' }} />
         </motion.button>
       </div>
 
-      {/* Trust Tier Block — NAVY background, white text, orange progress */}
+      {/* Standing Block — reliability, not reputation-as-currency */}
       <div className="px-6 mb-6">
         <div
           style={{
-            background: 'radial-gradient(ellipse at 20% 40%, rgba(var(--accent-glow-rgb),0.18) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
-            borderRadius: 24,
-            padding: '24px 24px',
-            boxShadow: '0px 10px 32px rgba(0,0,0,0.20), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
+            background: 'var(--surface-raised)',
+            borderRadius: 'var(--r-lg)',
+            border: '1px solid var(--border-subtle)',
+            boxShadow: 'var(--e-2)',
+            padding: '24px',
           }}
         >
-          <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-3">
               <div style={{
-                width: 40, height: 40, borderRadius: 12,
-                background: 'rgba(var(--accent-glow-rgb),0.15)',
+                width: 40, height: 40, borderRadius: 'var(--r-sm)',
+                background: 'var(--t-terracotta-50)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
-                <ShieldCheck className="w-5 h-5" style={{ color: 'var(--accent-primary)' }} strokeWidth={2} />
+                <ShieldCheck className="w-5 h-5" style={{ color: 'var(--action-primary)' }} strokeWidth={2} />
               </div>
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.5)' }}>Trust Tier</span>
+              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Standing</span>
             </div>
             <span
               style={{
-                background: 'rgba(var(--accent-glow-rgb),0.15)',
-                borderRadius: 999,
+                background: 'var(--t-terracotta-50)',
+                borderRadius: 'var(--r-full)',
                 padding: '5px 14px',
                 fontSize: 12,
                 fontWeight: 700,
-                color: 'var(--accent-primary)',
+                color: 'var(--action-primary)',
               }}
             >
-              {tierName(3)}
+              {tierName(standingLevel)}
             </span>
           </div>
 
-          {/* Reputation number — hero element */}
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 36, fontWeight: 700, color: '#FFFFFF', lineHeight: 1, marginBottom: 4 }}>
-            1,530
-          </p>
-          <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.45)', marginBottom: 12, letterSpacing: '0.04em', textTransform: 'uppercase' }}>
-            Reputation
-          </p>
-
-          {/* Progress bar */}
-          <div style={{ background: 'rgba(255,255,255,0.08)', borderRadius: 999, height: 10, marginBottom: 10 }}>
+          {/* Reliability meter — the honest signal, not a spendable number */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
+            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>Reliability</span>
+            <span style={{ fontFamily: 'var(--font-number)', fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>{reliability}%</span>
+          </div>
+          <div style={{ background: 'var(--surface-sunken)', borderRadius: 'var(--r-full)', height: 10, marginBottom: 16, overflow: 'hidden' }}>
             <div
               style={{
-                background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-400))',
-                borderRadius: 999,
+                background: 'var(--state-settled)',
+                borderRadius: 'var(--r-full)',
                 height: 10,
-                width: '65%',
+                width: `${Math.max(4, reliability)}%`,
                 transition: 'width 0.5s ease',
               }}
             />
           </div>
-          <div className="flex items-center justify-end">
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>470 to {nextTierName(3)}</span>
-          </div>
 
           {/* Unlock preview */}
           <div
-            className="mt-5 px-4 py-4 rounded-xl"
-            style={{ background: 'rgba(255,255,255,0.04)', border: '1px solid rgba(255,255,255,0.06)' }}
+            style={{ background: 'var(--surface-sunken)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--r-md)', padding: '14px 16px' }}
           >
-            <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6 }}>
-              Reach <strong style={{ color: '#FFFFFF' }}>{nextTierName(3)}</strong> to unlock{' '}
-              <strong style={{ color: 'var(--accent-primary)' }}>higher-paying campaigns</strong> &amp;{' '}
-              <strong style={{ color: '#FFFFFF' }}>faster reviews</strong>.
+            <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+              Keep your work on-time and accepted to reach{' '}
+              <strong style={{ color: 'var(--text-primary)' }}>{nextTierName(standingLevel)}</strong> — it unlocks{' '}
+              <strong style={{ color: 'var(--action-primary)' }}>earlier access to campaigns</strong> &amp;{' '}
+              <strong style={{ color: 'var(--text-primary)' }}>faster reviews</strong>. Standing is not money.
             </p>
           </div>
         </div>
@@ -213,14 +205,14 @@ export function Profile() {
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           onClick={() => navigate('/contributor/performance')}
           style={{
-            width: '100%', background: '#FFFFFF', borderRadius: 16,
-            border: '1px solid var(--card-border)', padding: '14px 18px',
+            width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',
+            border: '1px solid var(--border-subtle)', padding: '14px 18px',
             display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', textAlign: 'left',
-            boxShadow: 'var(--shadow-card)',
+            boxShadow: 'var(--e-1)',
           }}
         >
           <div style={{
-            width: 40, height: 40, borderRadius: 12,
+            width: 40, height: 40, borderRadius: 'var(--r-sm)',
             background: 'var(--surface-sunken)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
           }}>
@@ -234,99 +226,41 @@ export function Profile() {
         </motion.button>
       </div>
 
-      {/* XP Rewards — single link card, no duplication with Rewards screen */}
+      {/* Recognition — perks & badges, no XP currency */}
       <div className="px-6 mb-6">
         <motion.button
           whileTap={{ scale: 0.985, y: 0.5 }}
           transition={{ type: 'spring', stiffness: 400, damping: 30 }}
           onClick={() => navigate('/contributor/rewards')}
           style={{
-            width: '100%', background: 'var(--surface)', borderRadius: 16,
-            border: '1px solid var(--card-border)', padding: '16px 18px',
+            width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',
+            border: '1px solid var(--border-subtle)', padding: '16px 18px',
             display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer',
-            textAlign: 'left', boxShadow: 'var(--shadow-card)',
+            textAlign: 'left', boxShadow: 'var(--e-1)',
           }}
         >
           <div style={{
-            width: 40, height: 40, borderRadius: 12,
-            background: 'var(--warning-100)',
+            width: 40, height: 40, borderRadius: 'var(--r-sm)',
+            background: 'var(--t-terracotta-50)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
           }}>
-            <Zap className="w-5 h-5" style={{ color: 'var(--warning-700)' }} fill="currentColor" />
+            <Award className="w-5 h-5" style={{ color: 'var(--action-primary)' }} strokeWidth={1.9} />
           </div>
           <div className="flex-1 min-w-0 text-left">
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>XP Rewards Hub</p>
+            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>Recognition</p>
             <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>
-              1,530 XP · redeem vouchers &amp; unlock perks
+              Perks and badges you&apos;ve unlocked through your standing
             </p>
           </div>
           <ChevronRight className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
         </motion.button>
       </div>
 
-      {/* Achievements — 64×64 cards */}
-      <div className="px-6 mb-6">
-        <div className="flex items-center justify-between mb-4">
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>Achievements</h3>
-          <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>
-            {achievements.filter(a => a.unlocked).length} / {achievements.length}
-          </span>
-        </div>
-        <div className="grid grid-cols-3 gap-3">
-          {achievements.map((a) => (
-            <motion.div
-              key={a.id}
-              whileTap={{ scale: 0.97 }}
-              transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-              style={{
-                borderRadius: 16,
-                padding: '14px 8px 12px',
-                textAlign: 'center',
-                background: 'var(--surface)',
-                border: '1px solid var(--card-border)',
-                boxShadow: a.unlocked ? '0px 6px 18px rgba(var(--accent-glow-rgb),0.12)' : 'var(--shadow-card)',
-                cursor: 'pointer',
-              }}
-            >
-              {/* Hex-style framed badge */}
-              <div style={{ position: 'relative', width: 52, height: 52, margin: '0 auto 8px' }}>
-                {/* outer tier ring */}
-                <div style={{
-                  position: 'absolute', inset: 0, borderRadius: '50%',
-                  background: a.unlocked
-                    ? 'conic-gradient(from 180deg, var(--accent-primary-light), var(--accent-primary), var(--accent-primary-deep), var(--accent-primary-light))'
-                    : 'var(--divider)',
-                  padding: 2,
-                }}>
-                  <div style={{
-                    width: '100%', height: '100%', borderRadius: '50%',
-                    background: a.unlocked ? 'var(--navy)' : 'var(--neutral-100)',
-                    display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    fontSize: 20,
-                    boxShadow: a.unlocked ? 'inset 0 0 10px rgba(var(--accent-glow-rgb),0.35)' : 'none',
-                  }}>
-                    {a.unlocked
-                      ? <span style={{ filter: 'saturate(1.1)' }}>{a.emoji}</span>
-                      : <Award className="w-5 h-5" style={{ color: 'var(--text-muted)' }} strokeWidth={1.75} />}
-                  </div>
-                </div>
-              </div>
-              <p style={{ fontSize: 11.5, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2, lineHeight: 1.2 }}>
-                {a.name}
-              </p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.35 }}>
-                {a.unlocked ? 'Unlocked' : a.description}
-              </p>
-            </motion.div>
-          ))}
-        </div>
-      </div>
-
-      {/* Data Vault & Consent — amber background, amber left-border */}
+      {/* Data Vault & Consent */}
       <div className="px-6 mb-6">
         <div className="flex items-center gap-2 mb-2">
-          <Shield className="w-5 h-5" style={{ color: 'var(--warning-700)' }} />
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <Shield className="w-5 h-5" style={{ color: 'var(--action-primary)' }} />
+          <h3 style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
             Data Vault &amp; Consent
           </h3>
         </div>
@@ -338,9 +272,9 @@ export function Profile() {
             <div
               key={item.id}
               style={{
-                background: 'var(--warning-50)',
-                borderRadius: 16,
-                border: '1px solid var(--warning-100)',
+                background: 'var(--surface-raised)',
+                borderRadius: 'var(--r-md)',
+                border: '1px solid var(--border-subtle)',
                 padding: '18px',
               }}
             >
@@ -354,8 +288,8 @@ export function Profile() {
                 <span
                   style={{
                     fontSize: 11, fontWeight: 700,
-                    padding: '4px 12px', borderRadius: 999,
-                    background: 'var(--status-success-bg)', color: 'var(--status-success-text)', flexShrink: 0,
+                    padding: '4px 12px', borderRadius: 'var(--r-full)',
+                    background: 'var(--t-terracotta-50)', color: 'var(--state-settled)', flexShrink: 0,
                   }}
                 >
                   {item.status}
@@ -366,8 +300,8 @@ export function Profile() {
                 style={{
                   width: '100%',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                  padding: '10px', borderRadius: 999,
-                  border: '1.5px solid var(--error-200)', background: 'var(--status-error-bg)', color: 'var(--status-error-text)',
+                  padding: '10px', borderRadius: 'var(--r-full)',
+                  border: '1.5px solid var(--border-subtle)', background: 'var(--surface-ground)', color: 'var(--state-failed)',
                   fontSize: 13, fontWeight: 600, cursor: 'pointer',
                 }}
               >
@@ -381,11 +315,11 @@ export function Profile() {
 
       {/* ── Grow with Feul — Pro Roles ── */}
       <div className="px-6 mb-8">
-        <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 19, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 3, letterSpacing: '-0.01em' }}>
+        <h3 style={{ fontSize: 19, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3, letterSpacing: '-0.01em' }}>
           Grow with Feul
         </h3>
         <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 16 }}>
-          Unlock exclusive roles and maximize your earning potential.
+          Take on new roles as your standing grows.
         </p>
 
         <div className="space-y-4">
@@ -395,19 +329,19 @@ export function Profile() {
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             onClick={() => navigate('/validator-apply')}
             style={{
-              width: '100%', background: 'var(--surface)', borderRadius: 20,
-              border: '1px solid var(--card-border)', padding: '20px',
+              width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
+              border: '1px solid var(--border-subtle)', padding: '20px',
               display: 'flex', alignItems: 'center', gap: 16, cursor: 'pointer',
               textAlign: 'left',
-              boxShadow: '0px 4px 12px rgba(90, 123, 109, 0.08)',
+              boxShadow: 'var(--e-1)',
             }}
           >
             <div style={{
-              width: 52, height: 52, borderRadius: 16,
-              background: 'var(--success-50)',
+              width: 52, height: 52, borderRadius: 'var(--r-md)',
+              background: 'var(--surface-sunken)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
-              <ShieldCheck className="w-6 h-6" style={{ color: 'var(--success-700)' }} strokeWidth={1.5} />
+              <ShieldCheck className="w-6 h-6" style={{ color: 'var(--state-settled)' }} strokeWidth={1.5} />
             </div>
             <div className="flex-1 min-w-0">
               <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>Validator Tier</p>
@@ -417,51 +351,21 @@ export function Profile() {
             </div>
             <ChevronRight className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
           </motion.button>
-
-          {/* Company — Quest Creator */}
-          <motion.button
-            whileTap={{ scale: 0.985, y: 0.5 }}
-            transition={{ type: 'spring', stiffness: 400, damping: 30 }}
-            onClick={() => navigate('/quest-creator-apply')}
-            style={{
-              width: '100%', background: 'var(--surface)', borderRadius: 20,
-              border: '1px solid var(--card-border)', padding: '20px',
-              display: 'flex', alignItems: 'center', gap: 16, cursor: 'pointer',
-              textAlign: 'left',
-              boxShadow: '0px 4px 12px rgba(107, 115, 148, 0.08)',
-            }}
-          >
-            <div style={{
-              width: 52, height: 52, borderRadius: 16,
-              background: 'var(--neutral-100)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
-            }}>
-              <Building2 className="w-6 h-6" style={{ color: 'var(--text-secondary)' }} strokeWidth={1.5} />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>Quest Creator</p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.5 }}>
-                Create campaigns and manage large-scale data collection. Business account required.
-              </p>
-            </div>
-            <ChevronRight className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
-          </motion.button>
         </div>
       </div>
 
-      {/* Menu — naked dividers, no card wrappers */}
+      {/* Menu — naked dividers */}
       <div className="px-6 mb-12">
         {menuItems.map((item, idx) => {
           const Icon = item.icon;
           return (
             <motion.button
-              whileTap={{ scale: 0.985, backgroundColor: 'rgba(28,36,52,0.03)' }}
+              whileTap={{ scale: 0.985 }}
               transition={{ type: 'spring', stiffness: 400, damping: 30 }}
               key={item.id}
               className="flex items-center justify-between w-full"
               style={{
                 padding: '16px 0',
-                borderBottom: idx < menuItems.length - 1 ? '1px solid var(--divider)' : 'none',
                 background: 'transparent',
                 cursor: 'pointer',
                 border: 'none',

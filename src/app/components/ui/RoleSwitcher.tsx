@@ -1,8 +1,8 @@
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
-import { Mic, ShieldCheck, Target, ArrowRight, CheckCircle2, Lock } from 'lucide-react';
+import { Mic, ShieldCheck, ArrowRight, CheckCircle2, Lock } from 'lucide-react';
 
-export type Role = 'contributor' | 'validator' | 'quest-creator';
+export type Role = 'contributor' | 'validator';
 
 interface RoleConfig {
   id: Role;
@@ -23,7 +23,7 @@ const roles: RoleConfig[] = [
     descriptor: 'Earn by recording your voice for AI',
     icon: Mic,
     color: 'var(--accent-primary)',
-    bg: 'linear-gradient(135deg, #FFF0E8 0%, #FFE8D8 100%)',
+    bg: 'linear-gradient(135deg, var(--t-terracotta-50) 0%, var(--t-terracotta-100) 100%)',
     borderColor: 'rgba(var(--accent-glow-rgb),0.2)',
     path: '/contributor',
     unlocked: true,
@@ -34,20 +34,9 @@ const roles: RoleConfig[] = [
     descriptor: 'Grade & approve audio clips',
     icon: ShieldCheck,
     color: 'var(--color-success)',
-    bg: 'linear-gradient(135deg, #EAF5EF 0%, #D8EEE3 100%)',
-    borderColor: 'rgba(45,122,79,0.2)',
+    bg: 'linear-gradient(135deg, var(--t-verdigris-50) 0%, var(--t-verdigris-50) 100%)',
+    borderColor: 'rgba(var(--verdigris-rgb),0.2)',
     path: '/validator',
-    unlocked: true,
-  },
-  {
-    id: 'quest-creator',
-    label: 'Quest Creator',
-    descriptor: 'Build AI training datasets at scale',
-    icon: Target,
-    color: '#5058A4',
-    bg: 'linear-gradient(135deg, #EEEFFE 0%, #E0E2FF 100%)',
-    borderColor: 'rgba(80,88,164,0.2)',
-    path: '/quest-creator',
     unlocked: true,
   },
 ];
@@ -81,7 +70,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
             onClick={onClose}
             style={{
               position: 'fixed', inset: 0, zIndex: 100,
-              background: 'rgba(10,12,16,0.6)',
+              background: 'rgba(var(--carbon-rgb),0.6)',
               backdropFilter: 'blur(4px)',
             }}
           />
@@ -96,7 +85,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
             style={{
               position: 'fixed', bottom: 0, left: 0, right: 0,
               zIndex: 101,
-              background: '#FFFFFF',
+              background: 'var(--t-bone-0)',
               borderRadius: '28px 28px 0 0',
               padding: '12px 20px 40px',
               boxShadow: '0px -8px 40px rgba(0,0,0,0.18)',
@@ -162,7 +151,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                       width: 48, height: 48, borderRadius: 16, flexShrink: 0,
                       background: isActive
                         ? `${role.color}18`
-                        : isLocked ? 'var(--neutral-100)' : '#ECEEF2',
+                        : isLocked ? 'var(--neutral-100)' : 'var(--border-subtle)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
                       {isLocked
@@ -183,7 +172,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                         {isActive && (
                           <span style={{
                             fontSize: 10, fontWeight: 700,
-                            background: role.color, color: '#FFFFFF',
+                            background: role.color, color: 'var(--t-bone-0)',
                             padding: '2px 8px', borderRadius: 999,
                           }}>
                             Active

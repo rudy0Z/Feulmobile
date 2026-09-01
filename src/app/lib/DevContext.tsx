@@ -1,12 +1,14 @@
 import { createContext, useContext, useState, ReactNode } from 'react';
 
 export type OverlayId =
-  | 'spoofing' | 'dpdp' | 'reserve' | 'noise' | 'collision' | 'consensus'
+  | 'spoofing' | 'dpdp' | 'noise' | 'collision' | 'consensus'
   | 'mic-denied' | 'upload-failed' | 'payment-failed' | 'batch-expired' | 'daily-limit'
   | null;
-export type GradingMethodId = 'segmented' | 'pills' | 'arc' | 'keyboard' | 'binary';
 /** Home is ONE dashboard with three data states. 'auto' = derive from profile. */
 export type HomeStateId = 'auto' | 'empty' | 'pending' | 'live';
+/** Grading-instrument variants — DEV-ONLY exploration. The shipping validator
+ *  surface always renders 'segmented'; dev mode can preview the alternatives. */
+export type GradingMethodId = 'segmented' | 'pills' | 'arc' | 'keyboard' | 'binary';
 
 interface DevState {
   isPanelOpen: boolean;
@@ -53,7 +55,7 @@ const defaultState: DevState = {
   validatorHomeEmpty: false,
   validatorTasksEmpty: false,
   validatorWalletEmpty: false,
-  gradingMethod: 'binary',
+  gradingMethod: 'segmented',
 };
 
 export function DevProvider({ children }: { children: ReactNode }) {

@@ -97,7 +97,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
         <div
           style={{
             background: 'var(--status-error-bg)',
-            border: '1px solid rgba(220,38,38,0.2)',
+            border: '1px solid rgba(var(--crimson-rgb),0.2)',
             borderRadius: 16,
             padding: 16,
             marginBottom: 16,
@@ -145,7 +145,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
             marginBottom: 20,
           }}
         >
-          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Reserve Deduction</div>
+          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Clips still in review</div>
           <div
             style={{
               fontFamily: 'var(--font-mono)',
@@ -158,7 +158,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
             -₹60.00
           </div>
           <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>
-            Deducted from your ₹127.50 wallet balance
+            These clips can't be reviewed once you withdraw consent. Your ₹127.50 of settled earnings stays yours.
           </div>
         </div>
 
@@ -207,7 +207,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
             height: 52,
             borderRadius: 999,
             background: isConfirmed ? 'var(--status-error-text)' : 'var(--neutral-100)',
-            color: isConfirmed ? '#FFFFFF' : 'var(--text-muted)',
+            color: isConfirmed ? 'var(--t-bone-0)' : 'var(--text-muted)',
             border: 'none',
             fontSize: 15,
             fontWeight: 700,

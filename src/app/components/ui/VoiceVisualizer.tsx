@@ -79,22 +79,22 @@ export function VoiceVisualizer({ active, height = 110, bars = BAR_COUNT_DEFAULT
     'too-quiet': {
       label: 'Speak up a little',
       sub: 'We can barely hear you',
-      color: '#B8860B',
-      bg: 'rgba(184,134,11,0.14)',
+      color: 'var(--t-ochre-700)',
+      bg: 'rgba(var(--ochre-rgb),0.14)',
       Icon: VolumeX,
     },
     'ideal': {
       label: 'Sounds great',
       sub: 'Ideal room level',
-      color: '#2D7A4F',
-      bg: 'rgba(45,122,79,0.14)',
+      color: 'var(--t-verdigris-500)',
+      bg: 'rgba(var(--verdigris-rgb),0.14)',
       Icon: Volume2,
     },
     'clipping': {
       label: 'A bit too loud',
       sub: 'Pull back from the mic',
-      color: '#C0392B',
-      bg: 'rgba(192,57,43,0.14)',
+      color: 'var(--t-crimson-500)',
+      bg: 'rgba(var(--crimson-rgb),0.14)',
       Icon: AlertTriangle,
     },
   };
@@ -119,7 +119,7 @@ export function VoiceVisualizer({ active, height = 110, bars = BAR_COUNT_DEFAULT
           const h = Math.max(6, v * (height - 16));
           const isPeak = v > 0.82;
           const isQuiet = v < 0.32;
-          const color = isPeak ? '#C0392B' : isQuiet ? '#8896A7' : 'var(--accent-primary-deep)';
+          const color = isPeak ? 'var(--t-crimson-500)' : isQuiet ? 'var(--text-muted)' : 'var(--accent-primary-deep)';
           return (
             <div
               key={i}

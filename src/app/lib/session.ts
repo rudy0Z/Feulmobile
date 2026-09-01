@@ -7,15 +7,40 @@ import { useEffect, useState } from 'react';
 
 export type NewUserStage = 'day0' | 'session' | 'credited';
 
+/** Identity-verification state (spoofing hold, UPI name-match, etc.). */
+export type VerificationStage = 'unverified' | 'pending' | 'verified' | 'hold';
+
+/**
+ * Standing = reliability over time. Governs ACCESS (which campaigns open) and
+ * SETTLEMENT SPEED — never a clip's pay. `level` maps to lib/tier.ts (1–4).
+ */
+export interface Standing {
+  level: number;      // 1 New · 2 Verified · 3 Trusted · 4 Elite
+  reliability: number; // 0–100, rolling on-time + accepted submissions
+}
+
+/** Craft = demonstrated skill, tracked per format × language. 0–100. */
+export type CraftKey = string; // `${format}:${language}` e.g. "room:Hindi"
+export type Craft = Record<CraftKey, number>;
+
 export interface FeulProfile {
   name: string;
   initials: string;
   languages: string[];
+  /** BCP-47-ish code of the contributor's chosen UI/consent language. */
+  consentLang: string;
   upiId: string;
   upiLinked: boolean;
+  /** Whether the UPI VPA holder name matched the profile name. */
+  upiNameMatched: boolean;
+  verification: VerificationStage;
+  standing: Standing;
+  craft: Craft;
   /** Progressive journey stage — maps to Home data state: day0→empty, session→pending, credited→live. */
   stage: NewUserStage;
   walletBalance: number;
+  /** Whether the in-context mic-permission prime has been shown once (persists across quests). */
+  micPrimed: boolean;
 }
 
 const PROFILE_KEY = 'feul_profile';
@@ -51,10 +76,16 @@ export function setProfile(patch: Partial<FeulProfile>) {
     name: 'there',
     initials: '?',
     languages: [],
+    consentLang: 'en',
     upiId: '',
     upiLinked: false,
+    upiNameMatched: false,
+    verification: 'unverified',
+    standing: { level: 1, reliability: 0 },
+    craft: {},
     stage: 'day0',
     walletBalance: 0,
+    micPrimed: false,
     ...current,
     ...patch,
   };
@@ -76,6 +107,15 @@ export function signIn(_method: 'google' | 'email' | 'phone', name = 'Alex Johns
 
 export function advanceStage(stage: NewUserStage) {
   return setProfile({ stage });
+}
+
+/** Mic-permission prime is a once-ever in-context screen, not per-quest. */
+export function isMicPrimed(): boolean {
+  return getProfile()?.micPrimed ?? false;
+}
+
+export function primeMic() {
+  return setProfile({ micPrimed: true });
 }
 
 export function hasConsented(): boolean {

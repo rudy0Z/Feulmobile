@@ -11,7 +11,7 @@ export function FeulLogo({ size = 36 }: { size?: number }) {
         width: size,
         height: size,
         borderRadius: Math.round(size * 0.3),
-        background: '#24231F',
+        background: 'var(--t-carbon-900)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

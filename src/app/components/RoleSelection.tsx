@@ -18,15 +18,7 @@ const roles = [
     tagline: 'Review & Grade Quality',
     description: 'Ensure dataset quality by grading audio submissions. Earn per batch.',
     path: '/validator',
-    borderColor: '#5A7B6D', // muted sage
-  },
-  {
-    id: 'quest-creator',
-    title: 'Quest Creator',
-    tagline: 'Build & Manage Datasets',
-    description: 'Create campaigns and monitor data collection for your AI projects.',
-    path: '/quest-creator',
-    borderColor: '#6B7394', // muted slate
+    borderColor: 'var(--t-verdigris-500)', // muted sage
   },
 ];
 
@@ -40,7 +32,7 @@ export function RoleSelection() {
     >
       {/* Waveform background texture */}
       <div className="absolute top-24 left-0 right-0 pointer-events-none">
-        <Waveform color="#FFFFFF" opacity={0.04} height={100} />
+        <Waveform color="var(--t-bone-0)" opacity={0.04} height={100} />
       </div>
 
       {/* Logo placeholder */}
@@ -54,7 +46,7 @@ export function RoleSelection() {
           style={{
             fontSize: 32,
             fontWeight: 800,
-            color: '#FFFFFF',
+            color: 'var(--t-bone-0)',
             letterSpacing: '-0.02em',
             lineHeight: 1.15,
             textAlign: 'center',
@@ -91,7 +83,7 @@ export function RoleSelection() {
               style={{
                 fontSize: 18,
                 fontWeight: 700,
-                color: '#FFFFFF',
+                color: 'var(--t-bone-0)',
                 marginBottom: 4,
               }}
             >

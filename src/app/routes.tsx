@@ -9,10 +9,18 @@ import { Rewards } from "./components/Rewards";
 import { Profile } from "./components/Profile";
 import { Recording } from "./components/Recording";
 import { RejectedTask } from "./components/RejectedTask";
+import { RoomConsentRollCall } from "./components/RoomConsentRollCall";
+import { CoverageFullState } from "./components/CoverageFullState";
+import { CampaignClosedHonour } from "./components/CampaignClosedHonour";
+import { DialectMismatch } from "./components/DialectMismatch";
+import { SessionInterrupted } from "./components/SessionInterrupted";
+import { SilentRoomReview } from "./components/SilentRoomReview";
+import { CampaignOversubscribed } from "./components/CampaignOversubscribed";
+import { QualityGradeDispute } from "./components/QualityGradeDispute";
+import { BatteryWarning } from "./components/BatteryWarning";
 import { Performance } from "./components/Performance";
 import { RoleSelection } from "./components/RoleSelection";
 import { ValidatorApplication } from "./components/ValidatorApplication";
-import { QuestCreatorApplication } from "./components/QuestCreatorApplication";
 import { PayoutFlow } from "./components/PayoutFlow";
 import { RewardClaimFlow } from "./components/RewardClaimFlow";
 import { ValidatorApp } from "./components/validator/ValidatorApp";
@@ -22,10 +30,9 @@ import { ValidatorProfile } from "./components/validator/ValidatorProfile";
 import { ValidatorWallet } from "./components/validator/ValidatorWallet";
 import { ValidatorRewards } from "./components/validator/ValidatorRewards";
 import { GradingTask } from "./components/validator/GradingTask";
-import { QuestCreatorApp } from "./components/quest-creator/QuestCreatorApp";
-import { QuestCreatorDashboard } from "./components/quest-creator/QuestCreatorDashboard";
-import { QuestCreatorCampaigns } from "./components/quest-creator/QuestCreatorCampaigns";
-import { QuestCreatorProfile } from "./components/quest-creator/QuestCreatorProfile";
+import { DisagreementEscalation } from "./components/validator/DisagreementEscalation";
+import { AccuracyWarning } from "./components/validator/AccuracyWarning";
+import { ValidatorQueueEmpty } from "./components/validator/ValidatorQueueEmpty";
 
 export const router = createBrowserRouter([
   // ── Auth (product + sign-in, one screen) ──
@@ -71,6 +78,17 @@ export const router = createBrowserRouter([
     Component: RejectedTask,
   },
 
+  // ── Contributor edge-case states (P0) ──
+  { path: "/contributor/room-consent",    Component: RoomConsentRollCall }, // C-01/C-10
+  { path: "/contributor/coverage-full",   Component: CoverageFullState },   // C-02
+  { path: "/contributor/campaign-closed", Component: CampaignClosedHonour },// C-03/C-16
+  { path: "/contributor/dialect-mismatch",Component: DialectMismatch },     // C-07
+  { path: "/contributor/session-interrupted", Component: SessionInterrupted },   // C-04
+  { path: "/contributor/silent-room",         Component: SilentRoomReview },     // C-08
+  { path: "/contributor/campaign-oversubscribed", Component: CampaignOversubscribed }, // C-21
+  { path: "/contributor/quality-dispute",     Component: QualityGradeDispute },  // C-09
+  { path: "/contributor/battery-warning",     Component: BatteryWarning },       // C-15
+
   // ── Contributor: Payout & Rewards Claim Flows ──
   {
     path: "/contributor/payout",
@@ -85,10 +103,6 @@ export const router = createBrowserRouter([
   {
     path: "/validator-apply",
     Component: ValidatorApplication,
-  },
-  {
-    path: "/quest-creator-apply",
-    Component: QuestCreatorApplication,
   },
 
   // ── Validator (accessed after approval) ──
@@ -108,6 +122,20 @@ export const router = createBrowserRouter([
     Component: GradingTask,
   },
 
+  // ── Validator edge-case states (C-17/18/19) ──
+  {
+    path: "/validator/disagreement/:taskId?",
+    Component: DisagreementEscalation,
+  },
+  {
+    path: "/validator/accuracy-warning",
+    Component: AccuracyWarning,
+  },
+  {
+    path: "/validator/queue-empty",
+    Component: ValidatorQueueEmpty,
+  },
+
   // ── Validator: Payout & Rewards Claim Flows ──
   {
     path: "/validator/payout",
@@ -118,16 +146,11 @@ export const router = createBrowserRouter([
     Component: RewardClaimFlow,
   },
 
-  // ── Quest Creator (accessed after approval) ──
-  {
-    path: "/quest-creator",
-    Component: QuestCreatorApp,
-    children: [
-      { index: true,           Component: QuestCreatorDashboard },
-      { path: "campaigns",     Component: QuestCreatorCampaigns },
-      { path: "profile",       Component: QuestCreatorProfile   },
-    ],
-  },
+  // ── Quest Creator: retired (dropped from scope, 2026-08-31). Any old
+  //    quest-creator link redirects to the contributor app. ──
+  { path: "/quest-creator",       element: <Navigate to="/contributor" replace /> },
+  { path: "/quest-creator/*",     element: <Navigate to="/contributor" replace /> },
+  { path: "/quest-creator-apply", element: <Navigate to="/contributor" replace /> },
 
   // ── Redirects ──
   { path: "/role-selection", Component: RoleSelection },

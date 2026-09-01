@@ -31,18 +31,18 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
           transition={{ type: 'spring', stiffness: 280, damping: 22, delay: 0.1 }}
           style={{
             width: 88, height: 88, borderRadius: 24,
-            background: 'rgba(220,38,38,0.12)',
-            border: '1.5px solid rgba(220,38,38,0.25)',
+            background: 'rgba(var(--crimson-rgb),0.12)',
+            border: '1.5px solid rgba(var(--crimson-rgb),0.25)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: 28,
           }}
         >
-          <MicOff style={{ width: 40, height: 40, color: '#F87171' }} />
+          <MicOff style={{ width: 40, height: 40, color: 'var(--state-failed)' }} />
         </motion.div>
 
         <h2 style={{
           fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800,
-          color: '#FFFFFF', textAlign: 'center', marginBottom: 12, lineHeight: 1.2,
+          color: 'var(--t-bone-0)', textAlign: 'center', marginBottom: 12, lineHeight: 1.2,
         }}>
           Microphone Access Blocked
         </h2>
@@ -93,7 +93,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
             style={{
               width: '100%', height: 52, borderRadius: 999,
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-              color: '#FFFFFF', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
+              color: 'var(--t-bone-0)', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.35)',
             }}

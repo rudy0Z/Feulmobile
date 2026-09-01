@@ -8,7 +8,7 @@
  *   'data'      → spiky data-chart bars (Quest Creator screens)
  */
 export function Waveform({
-  color = 'var(--accent-primary-deep)',
+  color = 'var(--action-primary)',
   opacity = 0.08,
   height = 60,
   className = '',
@@ -84,7 +84,7 @@ export function Waveform({
  * Prominent waveform used on recording / grading screens
  */
 export function WaveformProminent({
-  color = 'var(--accent-primary-deep)',
+  color = 'var(--action-primary)',
   height = 80,
   className = '',
   variant = 'audio',

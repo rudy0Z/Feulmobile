@@ -4,121 +4,198 @@
   --font-size: 16px;
 
   /* ═══════════════════════════════════════════════════════════
-     COLOR SYSTEM — oklch tonal ramps (perceptually uniform)
-     Convention: 50 = barely tinted bg, 500 = base, 950 = deepest
-     Reserve full-saturation 500 for primary actions only.
+     LAYER 1 — PRIMITIVES  (raw values, never referenced directly)
+     Warm two-layer system. Per 01-DESIGN-SYSTEM §1.1.
      ═══════════════════════════════════════════════════════════ */
 
-  /* — Accent (vermillion orange, hue ~34) — */
-  --accent-50:   oklch(0.975 0.012 34);
-  --accent-100:  oklch(0.95  0.030 34);
-  --accent-200:  oklch(0.91  0.060 36);
-  --accent-300:  oklch(0.85  0.110 38);
-  --accent-400:  oklch(0.74  0.180 39);
-  --accent-500:  oklch(0.63  0.250 34);   /* BASE — primary action */
-  --accent-600:  oklch(0.55  0.220 32);
-  --accent-700:  oklch(0.47  0.190 30);
-  --accent-800:  oklch(0.38  0.150 28);
-  --accent-900:  oklch(0.30  0.110 26);
-  --accent-950:  oklch(0.20  0.070 24);
+  /* Terracotta — brand. Work in motion, primary action, money moving. */
+  --t-terracotta-50:  #FBEEE6;
+  --t-terracotta-100: #F6D9C7;
+  --t-terracotta-300: #EFAE86;
+  --t-terracotta-500: #E06C3A;   /* BASE */
+  --t-terracotta-600: #C4622D;   /* deep — button fills, pressed */
+  --t-terracotta-800: #8E4520;
 
-  /* — Neutral (quiet warm, hue ~70) — one warm base per brief (§ light UI).
-     Was cool slate (hue 250); warmed so the whole light UI + --cream agree. */
-  --neutral-0:   #FFFFFF;
-  --neutral-50:  oklch(0.985 0.003 70);
-  --neutral-100: oklch(0.97  0.006 70);
-  --neutral-200: oklch(0.93  0.010 70);
-  --neutral-300: oklch(0.88  0.014 70);
-  --neutral-400: oklch(0.75  0.016 70);
-  --neutral-500: oklch(0.62  0.018 70);
-  --neutral-600: oklch(0.48  0.022 70);
-  --neutral-700: oklch(0.37  0.024 70);
-  --neutral-800: oklch(0.24  0.026 70);
-  --neutral-900: oklch(0.18  0.022 70);
-  --neutral-950: oklch(0.10  0.016 70);
+  /* Carbon — warm near-black. Text on light; Studio ground. */
+  --t-carbon-900: #201611;   /* primary ink */
+  --t-carbon-700: #5C4A3E;   /* secondary ink */
+  --t-carbon-500: #8A7563;   /* muted ink */
+  --t-carbon-300: #B5A595;   /* faint / disabled ink */
+  --t-carbon-200: #E9E0D6;   /* border */
+  --t-carbon-100: #F1EAE0;   /* divider */
 
-  /* — Success (green, hue ~150) — */
-  --success-50:  oklch(0.97  0.020 150);
-  --success-100: oklch(0.93  0.045 150);
-  --success-200: oklch(0.86  0.080 150);
-  --success-500: oklch(0.58  0.130 150);
-  --success-700: oklch(0.44  0.105 150);
-  --success-900: oklch(0.28  0.075 150);
+  /* Bone — warm off-white grounds */
+  --t-bone-0:   #FFFFFF;   /* raised card */
+  --t-bone-50:  #FAF7F2;   /* page ground */
+  --t-bone-100: #F4EEE5;   /* sunken */
 
-  /* — Warning (amber, hue ~75) — */
-  --warning-50:  oklch(0.97  0.025 75);
-  --warning-100: oklch(0.93  0.055 75);
-  --warning-200: oklch(0.87  0.090 75);
-  --warning-500: oklch(0.70  0.150 75);
-  --warning-700: oklch(0.50  0.115 70);
-  --warning-900: oklch(0.32  0.080 70);
+  /* Verdigris — settled / verified / trust earned over time. Locked 2026-08-27. */
+  --t-verdigris-50:  #E8F0EC;
+  --t-verdigris-300: #7FA99B;   /* light — success marks on the dark studio ground */
+  --t-verdigris-500: #3D6B5E;
+  --t-verdigris-700: #2E5245;
 
-  /* — Error (red, hue ~25) — */
-  --error-50:    oklch(0.97  0.018 25);
-  --error-100:   oklch(0.93  0.040 25);
-  --error-200:   oklch(0.87  0.075 25);
-  --error-500:   oklch(0.58  0.200 25);
-  --error-700:   oklch(0.45  0.165 25);
-  --error-900:   oklch(0.30  0.110 25);
+  /* Ochre — pending / in review. A wait, not a warning. */
+  --t-ochre-50:  #F6F0DC;
+  --t-ochre-500: #C8922E;
+  --t-ochre-700: #9A6E1E;
 
-  /* Info-blue ramp removed (Pass 0, brief §4): "Under review" now reads warning/neutral. */
-
-  /* ─── Semantic aliases (use these in components) ─── */
-  --background:        var(--neutral-100);
-  --surface:           var(--neutral-0);
-  --surface-sunken:    var(--neutral-50);
-  --card-border:       var(--neutral-200);
-  --divider:           var(--neutral-200);
-  --border-strong:     var(--neutral-300);
-
-  --navy:              var(--neutral-950);
-  /* --cream retired into the one warm base; kept as an alias so any stragglers resolve. */
-  --cream:             var(--neutral-100);
-
-  /* ─── Hero dark surface (was hardcoded in Wallet/Home; now formalized) ───
-     Source of truth for the navy hero gradient AND for calibrating clay
-     assets. Values match the previously-inlined hex so nothing shifts. */
-  --surface-hero:             #0F1822;                 /* gradient top    */
-  --surface-hero-elevated:    #0A0C10;                 /* gradient bottom */
-  --surface-hero-accent-glow: rgba(var(--accent-glow-rgb),0.28);   /* orange glow */
-
-  /* Brand-orange RGB channels — compose any alpha via rgba(var(--…),a).
-     One edit re-hues every glow/shadow. Route ALL raw orange rgba() here. */
-  --accent-deep-rgb: 196, 98, 45;   /* == accent-600 / accent-primary-deep */
-  --accent-glow-rgb: 224, 108, 58;  /* == accent-500 warm glow             */
-
-  --text-primary:      var(--neutral-900);
-  --text-secondary:    var(--neutral-700);
-  --text-muted:        var(--neutral-500);
-  --text-on-accent:    #FFFFFF;
-  --text-on-navy:      var(--neutral-100);
-
-  --accent-primary:        var(--accent-500);
-  --accent-primary-light:  var(--accent-400);
-  --accent-primary-deep:   var(--accent-600);
-  --accent-soft-bg:        var(--accent-50);
-  --accent-soft-border:    var(--accent-200);
-  --accent-xp:             var(--warning-700);
-
-  /* Status surface pairs (bg + text) — use these instead of raw hexes */
-  --status-success-bg:   var(--success-100);
-  --status-success-text: var(--success-900);
-  --status-warning-bg:   var(--warning-100);
-  --status-warning-text: var(--warning-900);
-  --status-error-bg:     var(--error-100);
-  --status-error-text:   var(--error-900);
-  /* "In review / processing" — neutral, not a second blue accent (brief §4) */
-  --status-info-bg:      var(--neutral-100);
-  --status-info-text:    var(--text-secondary);
-  --status-accent-bg:    var(--accent-100);
-  --status-accent-text:  var(--accent-900);
-
-  --color-success:     var(--success-700);
-  --color-warning:     var(--warning-700);
-  --color-error:       var(--error-700);
+  /* Crimson — error / rejected. Hue ~15, dark, never confusable with terracotta. */
+  --t-crimson-50:  #F7E4E4;
+  --t-crimson-500: #8E2434;
+  --t-crimson-700: #6E1926;
 
   /* ═══════════════════════════════════════════════════════════
-     SPACING SCALE (4-base) — use these only.
+     LAYER 2 — SEMANTIC TOKENS  (what components reference)
+     Per 01-DESIGN-SYSTEM §1.2.
+     ═══════════════════════════════════════════════════════════ */
+
+  /* Grounds */
+  --surface-ground:   var(--t-bone-50);     /* page */
+  --surface-raised:   var(--t-bone-0);      /* cards */
+  --surface-sunken:   var(--t-bone-100);    /* insets, script preview wells */
+  --surface-studio:   var(--t-carbon-900);  /* ONLY Studio capture */
+
+  /* Text */
+  --text-primary:     var(--t-carbon-900);
+  --text-secondary:   var(--t-carbon-700);
+  --text-muted:       var(--t-carbon-500);
+  --text-faint:       var(--t-carbon-300);
+  --text-on-accent:   #FFF6EF;
+  --text-on-studio:   #FBEFE4;
+
+  /* Action */
+  --action-primary:         var(--t-terracotta-600);
+  --action-primary-pressed: var(--t-terracotta-800);
+  --action-disabled:        var(--t-carbon-200);
+
+  /* State — always paired with icon + label, never color alone */
+  --state-settled:  var(--t-verdigris-500);
+  --state-pending:  var(--t-ochre-500);
+  --state-failed:   var(--t-crimson-500);
+
+  /* Money — figure is ink, not orange */
+  --money-figure:   var(--t-carbon-900);
+  --money-positive: var(--t-verdigris-700);
+  --money-pending:  var(--t-ochre-700);
+
+  /* Structure */
+  --border-subtle:  var(--t-carbon-200);
+  --border-strong:  var(--t-carbon-300);
+  --divider:        var(--t-carbon-100);
+  --focus-ring:     var(--t-terracotta-500);
+
+  /* ═══════════════════════════════════════════════════════════
+     LEGACY RAMPS — retargeted onto the warm primitives.
+     Old code (bg-accent-500, --neutral-700, --success-500 …) keeps
+     resolving; values now warm. Do NOT use these in new screens —
+     reference the semantic tokens above.
+     ═══════════════════════════════════════════════════════════ */
+
+  /* Accent → Terracotta */
+  --accent-50:   var(--t-terracotta-50);
+  --accent-100:  var(--t-terracotta-100);
+  --accent-200:  var(--t-terracotta-300);
+  --accent-300:  var(--t-terracotta-300);
+  --accent-400:  var(--t-terracotta-500);
+  --accent-500:  var(--t-terracotta-500);
+  --accent-600:  var(--t-terracotta-600);
+  --accent-700:  var(--t-terracotta-800);
+  --accent-800:  var(--t-terracotta-800);
+  --accent-900:  #6E3418;
+  --accent-950:  #4A2310;
+
+  /* Neutral → Bone / Carbon */
+  --neutral-0:   var(--t-bone-0);
+  --neutral-50:  var(--t-bone-50);
+  --neutral-100: var(--t-bone-100);
+  --neutral-200: var(--t-carbon-200);
+  --neutral-300: var(--t-carbon-300);
+  --neutral-400: var(--t-carbon-300);
+  --neutral-500: var(--t-carbon-500);
+  --neutral-600: var(--t-carbon-700);
+  --neutral-700: var(--t-carbon-700);
+  --neutral-800: var(--t-carbon-900);
+  --neutral-900: var(--t-carbon-900);
+  --neutral-950: var(--t-carbon-900);
+
+  /* Success → Verdigris */
+  --success-50:  var(--t-verdigris-50);
+  --success-100: var(--t-verdigris-50);
+  --success-200: #CADED5;
+  --success-500: var(--t-verdigris-500);
+  --success-700: var(--t-verdigris-700);
+  --success-900: #1E362D;
+
+  /* Warning → Ochre */
+  --warning-50:  var(--t-ochre-50);
+  --warning-100: var(--t-ochre-50);
+  --warning-200: #EAD9A6;
+  --warning-500: var(--t-ochre-500);
+  --warning-700: var(--t-ochre-700);
+  --warning-900: #6B4C15;
+
+  /* Error → Crimson */
+  --error-50:    var(--t-crimson-50);
+  --error-100:   var(--t-crimson-50);
+  --error-200:   #E9C0C4;
+  --error-500:   var(--t-crimson-500);
+  --error-700:   var(--t-crimson-700);
+  --error-900:   #4E121B;
+
+  /* ─── Semantic aliases (legacy names → new semantics) ─── */
+  --background:        var(--surface-ground);
+  --surface:           var(--surface-raised);
+  --card-border:       var(--border-subtle);
+
+  --navy:              var(--t-carbon-900);
+  --cream:             var(--t-bone-50);
+
+  /* Studio / hero dark surface — now carbon, not navy-blue. */
+  --surface-hero:             var(--t-carbon-900);
+  --surface-hero-elevated:    #17100C;
+  --surface-hero-accent-glow: rgba(var(--accent-glow-rgb),0.28);
+
+  /* Brand-terracotta RGB channels — compose any alpha via rgba(var(--…),a). */
+  --accent-deep-rgb: 196, 98, 45;   /* == terracotta-600 */
+  --accent-glow-rgb: 224, 108, 58;  /* == terracotta-500 */
+  --carbon-rgb:      32, 22, 17;    /* == carbon-900, for elevation tints */
+
+  /* State-colour channels — compose tinted fills/scrims via rgba(var(--…),a).
+     Use these instead of literal rgb() so error/success/pending tints stay
+     locked to the palette. */
+  --crimson-rgb:   142, 36, 52;   /* == crimson-500 */
+  --verdigris-rgb: 61, 107, 94;   /* == verdigris-500 */
+  --ochre-rgb:     200, 146, 46;  /* == ochre-500 */
+
+  --text-on-navy:      var(--text-on-studio);
+
+  --accent-primary:        var(--action-primary);
+  --accent-primary-light:  var(--t-terracotta-500);
+  --accent-primary-deep:   var(--action-primary-pressed);
+  --accent-soft-bg:        var(--t-terracotta-50);
+  --accent-soft-border:    var(--t-terracotta-100);
+  --accent-xp:             var(--t-ochre-700);
+
+  /* Status surface pairs (bg + text) */
+  --status-success-bg:   var(--t-verdigris-50);
+  --status-success-text: var(--t-verdigris-700);
+  --status-warning-bg:   var(--t-ochre-50);
+  --status-warning-text: var(--t-ochre-700);
+  --status-error-bg:     var(--t-crimson-50);
+  --status-error-text:   var(--t-crimson-700);
+  /* "In review / processing" — neutral, not a second accent */
+  --status-info-bg:      var(--t-bone-100);
+  --status-info-text:    var(--text-secondary);
+  --status-accent-bg:    var(--t-terracotta-50);
+  --status-accent-text:  var(--t-terracotta-800);
+
+  --color-success:     var(--state-settled);
+  --color-warning:     var(--state-pending);
+  --color-error:       var(--state-failed);
+
+  /* ═══════════════════════════════════════════════════════════
+     SPACING SCALE (4pt) — 01-DESIGN-SYSTEM §3.1
      ═══════════════════════════════════════════════════════════ */
   --space-1:  4px;
   --space-2:  8px;
@@ -129,130 +206,175 @@
   --space-7:  32px;
   --space-8:  40px;
   --space-9:  56px;
+  --space-10: 72px;
 
   /* ═══════════════════════════════════════════════════════════
-     RADIUS SCALE — 4 sizes, plus full-pill
+     RADIUS — 4 only (8/14/24/999). 01-DESIGN-SYSTEM §3.2
+     Exactly one --r-lg hero object per screen.
      ═══════════════════════════════════════════════════════════ */
-  --radius-sm:    8px;
-  --radius-md:    12px;
-  --radius-lg:    16px;
-  --radius-xl:    20px;
-  --radius-2xl:   24px;
-  --radius-full:  999px;
+  --r-sm:   8px;    /* chips, tags, small controls */
+  --r-md:   14px;   /* cards, inputs, list rows */
+  --r-lg:   24px;   /* THE ONE hero object per screen */
+  --r-full: 999px;  /* pills, avatars, record trigger */
 
-  --radius-card:    var(--radius-lg);
-  --radius-button:  var(--radius-full);
-  --radius-tag:     var(--radius-full);
-  --radius-input:   var(--radius-md);
+  /* Legacy radius aliases → new scale (12/16/20 collapse to 14). */
+  --radius-sm:    var(--r-sm);
+  --radius-md:    var(--r-md);
+  --radius-lg:    var(--r-md);
+  --radius-xl:    var(--r-md);
+  --radius-2xl:   var(--r-lg);
+  --radius-full:  var(--r-full);
 
-  /* ═══════════════════════════════════════════════════════════
-     ELEVATION — single source of truth
-     ═══════════════════════════════════════════════════════════ */
-  --shadow-card:        0px 4px 12px rgba(28, 36, 52, 0.04);
-  --shadow-card-hover:  0px 8px 24px rgba(28, 36, 52, 0.08);
-  --shadow-glass:       0px 6px 18px rgba(28, 36, 52, 0.05), inset 0px 1px 0px rgba(255, 255, 255, 0.65);
-  --shadow-floating:    0px 12px 40px rgba(10, 12, 16, 0.22), inset 0 0 0 0.5px rgba(255, 255, 255, 0.06);
-  --shadow-accent-glow: 0px 0px 0px 1px oklch(0.63 0.25 34 / 0.12), 0px 8px 24px oklch(0.63 0.25 34 / 0.22);
+  --radius-card:    var(--r-md);
+  --radius-button:  var(--r-full);
+  --radius-tag:     var(--r-full);
+  --radius-input:   var(--r-md);
 
   /* ═══════════════════════════════════════════════════════════
-     MOTION — durations & easings
+     ELEVATION — carbon-tinted, two-layer. 01-DESIGN-SYSTEM §3.3
      ═══════════════════════════════════════════════════════════ */
+  --e-0: none;
+  --e-1: 0 1px 2px rgba(32,22,17,.05);
+  --e-2: 0 1px 3px rgba(32,22,17,.06), 0 8px 20px -6px rgba(32,22,17,.08);
+  --e-3: 0 2px 6px rgba(32,22,17,.08), 0 16px 32px -10px rgba(32,22,17,.12);
+  --e-glow: 0 0 0 1px rgba(224,108,58,.12), 0 8px 32px rgba(224,108,58,.28);
+
+  /* Legacy shadow aliases → new elevation. */
+  --shadow-card:        var(--e-0);
+  --shadow-card-hover:  var(--e-2);
+  --shadow-glass:       var(--e-1);
+  --shadow-floating:    var(--e-3);
+  --shadow-accent-glow: var(--e-glow);
+
+  /* ═══════════════════════════════════════════════════════════
+     MOTION — 01-DESIGN-SYSTEM §4
+     ═══════════════════════════════════════════════════════════ */
+  --ease:            cubic-bezier(0.2, 0, 0, 1);
   --duration-fast:   120ms;
   --duration-base:   180ms;
   --duration-slow:   280ms;
+  --d-fast:          120ms;
+  --d-base:          180ms;
+  --d-slow:          280ms;
   --ease-standard:   cubic-bezier(0.2, 0, 0, 1);
   --ease-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
 
-  /* ─── Tailwind / shadcn compatibility ─────────────── */
+  /* ─── Tailwind / shadcn compatibility (retargeted, do not remove) ─── */
   --foreground:            var(--text-primary);
-  --card:                  var(--surface);
+  --card:                  var(--surface-raised);
   --card-foreground:       var(--text-primary);
-  --popover:               var(--surface);
+  --popover:               var(--surface-raised);
   --popover-foreground:    var(--text-primary);
-  --primary:               var(--accent-primary);
-  --primary-foreground:    #FFFFFF;
-  --secondary:             var(--accent-xp);
+  --primary:               var(--action-primary);
+  --primary-foreground:    var(--text-on-accent);
+  --secondary:             var(--t-ochre-700);
   --secondary-foreground:  #FFFFFF;
-  --muted:                 #F0F4F8;
+  --muted:                 var(--t-bone-100);
   --muted-foreground:      var(--text-secondary);
-  --accent:                var(--accent-primary);
-  --accent-foreground:     #FFFFFF;
-  --destructive:           var(--color-error);
-  --destructive-foreground: #ffffff;
-  --border:                var(--card-border);
+  --accent:                var(--action-primary);
+  --accent-foreground:     var(--text-on-accent);
+  --destructive:           var(--state-failed);
+  --destructive-foreground: #FFFFFF;
+  --border:                var(--border-subtle);
   --input:                 transparent;
-  --input-background:      #FFFFFF;
+  --input-background:      var(--t-bone-0);
   --switch-background:     var(--divider);
   --font-weight-medium:    500;
   --font-weight-normal:    400;
-  --ring:                  var(--accent-primary);
-  --radius:                0.625rem;
+  --ring:                  var(--focus-ring);
+  --radius:                0.875rem;   /* 14px == --r-md */
 
-  /* Chart colours */
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6   0.118 184.704);
-  --chart-3: oklch(0.398 0.07  227.392);
-  --chart-4: oklch(0.828 0.189  84.429);
-  --chart-5: oklch(0.769 0.188  70.08);
+  /* Chart colours — warm palette */
+  --chart-1: var(--t-terracotta-500);
+  --chart-2: var(--t-verdigris-500);
+  --chart-3: var(--t-ochre-500);
+  --chart-4: var(--t-carbon-500);
+  --chart-5: var(--t-crimson-500);
 
-  /* Sidebar (unchanged) */
-  --sidebar:                    oklch(0.985 0 0);
-  --sidebar-foreground:         oklch(0.145 0 0);
-  --sidebar-primary:            #030213;
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent:             oklch(0.97 0 0);
-  --sidebar-accent-foreground:  oklch(0.205 0 0);
-  --sidebar-border:             oklch(0.922 0 0);
-  --sidebar-ring:               oklch(0.708 0 0);
+  /* Sidebar (kept for shadcn compat) */
+  --sidebar:                    var(--t-bone-50);
+  --sidebar-foreground:         var(--t-carbon-900);
+  --sidebar-primary:            var(--t-carbon-900);
+  --sidebar-primary-foreground: var(--t-bone-50);
+  --sidebar-accent:             var(--t-bone-100);
+  --sidebar-accent-foreground:  var(--t-carbon-900);
+  --sidebar-border:             var(--t-carbon-200);
+  --sidebar-ring:               var(--t-terracotta-500);
 
-  /* ─── Typography — 2026 dual-typeface system ─────── */
-  /* Body & UI labels */
-  --font-sans:    'Plus Jakarta Sans', system-ui, sans-serif;
-  /* Display headings (Bricolage Grotesque — editorial grotesque) */
-  --font-display: 'Bricolage Grotesque', 'Plus Jakarta Sans', system-ui, sans-serif;
-  /* Tabular ledger — currency, streaks, timers, durations */
-  --font-mono:    'Space Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+  /* ─── Typography — Anek superfamily. 01-DESIGN-SYSTEM §2.1 ─── */
+  --font-ui:      'Anek Latin', 'Anek Devanagari', 'Anek Tamil', system-ui, sans-serif;
+  --font-script:  'Anek Devanagari', 'Anek Tamil', system-ui, sans-serif;
+  --font-number:  'Anek Latin', system-ui, sans-serif;
+
+  /* Legacy font aliases → Anek. */
+  --font-sans:    var(--font-ui);
+  --font-display: var(--font-ui);
+  --font-mono:    var(--font-number);
+
+  /* Per-script line-heights. 01-DESIGN-SYSTEM §2.3 */
+  --lh-latin: 1.5;
+  --lh-deva:  1.72;
+  --lh-taml:  1.72;
+}
+
+/* ═══════════════════════════════════════════════════════════
+   VALIDATOR THEME — verdigris accent scope.
+   Validators live in the verification world (settled/trust), not the
+   terracotta earning world. Applied on validator screen roots; every
+   accent token remaps to verdigris so chrome (buttons, play controls,
+   progress, focus, nav pill) turns green WITHOUT touching semantic
+   state colours (grades stay red/ochre/green, money stays ink).
+   ═══════════════════════════════════════════════════════════ */
+.theme-verdigris {
+  --accent-primary:        var(--t-verdigris-500);
+  --accent-primary-light:  var(--t-verdigris-300);
+  --accent-primary-deep:   var(--t-verdigris-700);
+  --accent-soft-bg:        var(--t-verdigris-50);
+  --accent-soft-border:    #CADED5;
+
+  --action-primary:         var(--t-verdigris-500);
+  --action-primary-pressed: var(--t-verdigris-700);
+
+  --accent-50:  var(--t-verdigris-50);
+  --accent-500: var(--t-verdigris-500);
+  --accent-600: var(--t-verdigris-500);
+  --accent-700: var(--t-verdigris-700);
+
+  --focus-ring: var(--t-verdigris-500);
+  --ring:       var(--t-verdigris-500);
+  --primary:    var(--t-verdigris-500);
+
+  /* Accent channels for rgba() glows → verdigris. */
+  --accent-glow-rgb: 61, 107, 94;   /* == verdigris-500 */
+  --accent-deep-rgb: 46, 82, 69;    /* == verdigris-700 */
 }
 
 .dark {
-  --background:         oklch(0.145 0 0);
-  --foreground:         oklch(0.985 0 0);
-  --card:               oklch(0.145 0 0);
-  --card-foreground:    oklch(0.985 0 0);
-  --popover:            oklch(0.145 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary:            oklch(0.985 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary:          oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted:              oklch(0.269 0 0);
-  --muted-foreground:   oklch(0.708 0 0);
-  --accent:             oklch(0.269 0 0);
-  --accent-foreground:  oklch(0.985 0 0);
-  --destructive:        oklch(0.396 0.141 25.723);
-  --destructive-foreground: oklch(0.637 0.237 25.331);
-  --border:             oklch(0.269 0 0);
-  --input:              oklch(0.269 0 0);
-  --ring:               oklch(0.439 0 0);
-  --font-weight-medium: 500;
-  --font-weight-normal: 400;
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17  162.48);
-  --chart-3: oklch(0.769 0.188  70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246  16.439);
-  --sidebar:                    oklch(0.205 0 0);
-  --sidebar-foreground:         oklch(0.985 0 0);
-  --sidebar-primary:            oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent:             oklch(0.269 0 0);
-  --sidebar-accent-foreground:  oklch(0.205 0 0);
-  --sidebar-border:             oklch(0.269 0 0);
-  --sidebar-ring:               oklch(0.439 0 0);
+  /* Unused app-wide dark theme — kept only for shadcn primitive compat.
+     Studio darkness uses --surface-studio explicitly, NOT this class. */
+  --background:         var(--t-carbon-900);
+  --foreground:         var(--t-bone-50);
+  --card:               var(--t-carbon-900);
+  --card-foreground:    var(--t-bone-50);
+  --popover:            var(--t-carbon-900);
+  --popover-foreground: var(--t-bone-50);
+  --primary:            var(--t-terracotta-500);
+  --primary-foreground: var(--t-carbon-900);
+  --secondary:          var(--t-carbon-700);
+  --secondary-foreground: var(--t-bone-50);
+  --muted:              var(--t-carbon-700);
+  --muted-foreground:   var(--t-carbon-300);
+  --accent:             var(--t-terracotta-500);
+  --accent-foreground:  var(--t-carbon-900);
+  --destructive:        var(--t-crimson-500);
+  --destructive-foreground: #FFFFFF;
+  --border:             var(--t-carbon-700);
+  --input:              var(--t-carbon-700);
+  --ring:               var(--t-terracotta-500);
 }
 
 @theme inline {
-  /* Tonal ramps exposed as Tailwind utilities */
+  /* Tonal ramps exposed as Tailwind utilities (retargeted values) */
   --color-accent-50:   var(--accent-50);
   --color-accent-100:  var(--accent-100);
   --color-accent-200:  var(--accent-200);
@@ -296,14 +418,56 @@
   --color-error-700:   var(--error-700);
   --color-error-900:   var(--error-900);
 
-  /* info-* Tailwind colors removed (Pass 0) */
+  /* Warm primitives exposed as Tailwind utilities (new-screen use) */
+  --color-terracotta-50:  var(--t-terracotta-50);
+  --color-terracotta-100: var(--t-terracotta-100);
+  --color-terracotta-300: var(--t-terracotta-300);
+  --color-terracotta-500: var(--t-terracotta-500);
+  --color-terracotta-600: var(--t-terracotta-600);
+  --color-terracotta-800: var(--t-terracotta-800);
+  --color-carbon-100:     var(--t-carbon-100);
+  --color-carbon-200:     var(--t-carbon-200);
+  --color-carbon-300:     var(--t-carbon-300);
+  --color-carbon-500:     var(--t-carbon-500);
+  --color-carbon-700:     var(--t-carbon-700);
+  --color-carbon-900:     var(--t-carbon-900);
+  --color-bone-0:         var(--t-bone-0);
+  --color-bone-50:        var(--t-bone-50);
+  --color-bone-100:       var(--t-bone-100);
+  --color-verdigris-50:   var(--t-verdigris-50);
+  --color-verdigris-500:  var(--t-verdigris-500);
+  --color-verdigris-700:  var(--t-verdigris-700);
+  --color-ochre-50:       var(--t-ochre-50);
+  --color-ochre-500:      var(--t-ochre-500);
+  --color-ochre-700:      var(--t-ochre-700);
+  --color-crimson-50:     var(--t-crimson-50);
+  --color-crimson-500:    var(--t-crimson-500);
+  --color-crimson-700:    var(--t-crimson-700);
 
-  /* Semantic */
-  --color-text-primary:   var(--text-primary);
-  --color-text-secondary: var(--text-secondary);
-  --color-text-muted:     var(--text-muted);
+  /* Semantic surface/text utilities */
+  --color-surface-ground:  var(--surface-ground);
+  --color-surface-raised:  var(--surface-raised);
+  --color-surface-sunken:  var(--surface-sunken);
+  --color-surface-studio:  var(--surface-studio);
+  --color-text-primary:    var(--text-primary);
+  --color-text-secondary:  var(--text-secondary);
+  --color-text-muted:      var(--text-muted);
+  --color-text-faint:      var(--text-faint);
+  --color-text-on-accent:  var(--text-on-accent);
+  --color-text-on-studio:  var(--text-on-studio);
+  --color-action-primary:  var(--action-primary);
+  --color-state-settled:   var(--state-settled);
+  --color-state-pending:   var(--state-pending);
+  --color-state-failed:    var(--state-failed);
+  --color-money-figure:    var(--money-figure);
+  --color-money-positive:  var(--money-positive);
+  --color-money-pending:   var(--money-pending);
+  --color-border-subtle:   var(--border-subtle);
+  --color-border-strong:   var(--border-strong);
+  --color-divider:         var(--divider);
+
+  /* Semantic (legacy names kept) */
   --color-surface:        var(--surface);
-  --color-surface-sunken: var(--surface-sunken);
   --color-navy:           var(--navy);
 
   --color-background:            var(--background);
@@ -332,14 +496,15 @@
   --color-chart-3:               var(--chart-3);
   --color-chart-4:               var(--chart-4);
   --color-chart-5:               var(--chart-5);
-  /* Radius exposed to Tailwind utilities — matches the :root px scale so
-     `rounded-*` and inline `var(--radius-*)` agree (Pass 0 reconciliation). */
+
+  /* Radius exposed to Tailwind — new scale (8/14/24/999). */
   --radius-sm:   8px;
-  --radius-md:   12px;
-  --radius-lg:   16px;
-  --radius-xl:   20px;
+  --radius-md:   14px;
+  --radius-lg:   24px;
+  --radius-xl:   14px;
   --radius-2xl:  24px;
   --radius-full: 999px;
+
   --color-sidebar:                    var(--sidebar);
   --color-sidebar-foreground:         var(--sidebar-foreground);
   --color-sidebar-primary:            var(--sidebar-primary);
@@ -357,79 +522,93 @@
 
   body {
     @apply bg-background text-foreground;
-    font-family: var(--font-sans);
+    font-family: var(--font-ui);
+    font-feature-settings: "ss01";
   }
 
   html {
     font-size: var(--font-size);
   }
 
+  /* ── Type scale. 01-DESIGN-SYSTEM §2.2. Body floor 16px on every device.
+     Display/heading steps: 16/18/20/24/30/38/48/64 (headings below).
+     Sanctioned caption/label sub-steps (dense mobile UI): 10/11/12/13/15/17/22/26.
+     Do NOT introduce fractional or ad-hoc sizes outside this set. ── */
   h1 {
-    font-family: var(--font-display);
-    font-size: 28px;
-    font-weight: 800;
+    font-family: var(--font-ui);
+    font-size: 30px;
+    font-weight: 700;
     line-height: 1.2;
+    letter-spacing: -0.015em;
     color: var(--text-primary);
-    letter-spacing: -0.3px;
   }
 
   h2 {
-    font-family: var(--font-display);
+    font-family: var(--font-ui);
     font-size: 24px;
-    font-weight: 800;
-    line-height: 1.25;
+    font-weight: 700;
+    line-height: 1.3;
+    letter-spacing: -0.01em;
     color: var(--text-primary);
-    letter-spacing: -0.2px;
   }
 
   h3 {
-    font-family: var(--font-display);
+    font-family: var(--font-ui);
     font-size: 20px;
-    font-weight: 700;
-    line-height: 1.3;
+    font-weight: 600;
+    line-height: 1.35;
+    letter-spacing: -0.005em;
     color: var(--text-primary);
   }
 
   h4 {
-    font-family: var(--font-sans);
-    font-size: 16px;
+    font-family: var(--font-ui);
+    font-size: 18px;
     font-weight: 600;
-    line-height: 1.4;
+    line-height: 1.5;
     color: var(--text-primary);
   }
 
   label {
-    font-family: var(--font-sans);
+    font-family: var(--font-ui);
     font-size: 12px;
     font-weight: 500;
-    line-height: 1.5;
+    line-height: 1.45;
   }
 
   button {
-    font-family: var(--font-sans);
-    font-size: 14px;
+    font-family: var(--font-ui);
+    font-size: 16px;
     font-weight: 600;
     line-height: 1.5;
   }
 
   input {
-    font-family: var(--font-sans);
-    font-size: 14px;
+    font-family: var(--font-ui);
+    font-size: 16px;
     font-weight: 400;
     line-height: 1.5;
     border-radius: var(--radius-input);
   }
 
   p {
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.5;
+    font-family: var(--font-ui);
+    font-size: 16px;
+    font-weight: 400;
+    line-height: var(--lh-latin);
     color: var(--text-secondary);
   }
 
-  /* Tabular ledger feel for mono usages (currency, timers, streaks) */
-  .font-mono {
+  /* Native-script blocks get the taller Indic line-height. */
+  :lang(hi), :lang(mr), :lang(ta), .font-script {
+    font-family: var(--font-script);
+    line-height: var(--lh-deva);
+  }
+
+  /* Tabular ledger feel for numbers. */
+  .font-mono,
+  .tabular {
+    font-family: var(--font-number);
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.01em;
   }

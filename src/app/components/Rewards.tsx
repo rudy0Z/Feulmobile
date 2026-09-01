@@ -1,33 +1,54 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
-import { Gift, Award, Sparkles, Lock, Check, Zap, ShoppingBag, ChevronLeft } from 'lucide-react';
+import { useNavigate } from 'react-router';
+import { Award, Lock, Check, ChevronLeft, Zap, Clock, BadgeCheck, Sparkles } from 'lucide-react';
+import { useSession } from '../lib/session';
 
-const rewardCategories: { id: string; label: string }[] = [
-  { id: 'all',       label: 'All'       },
-  { id: 'vouchers',  label: 'Vouchers'  },
-  { id: 'perks',     label: 'Perks'     },
-  { id: 'exclusive', label: 'Exclusive' },
+/**
+ * Recognition — NOT a store. There is no spendable currency here.
+ * Perks unlock through Standing (reliable, accepted work over time) and are
+ * explicitly non-monetary: they never compete with, or convert into, the ₹ wallet.
+ * Badges mark milestones already reached; perks are access & speed, not payouts.
+ */
+
+const STANDING_NAMES = ['', 'New', 'Verified', 'Trusted', 'Elite'];
+
+interface Perk {
+  id: string;
+  name: string;
+  description: string;
+  icon: 'zap' | 'clock' | 'badge' | 'sparkles';
+  /** Standing level (1–4) at which this perk becomes available. */
+  unlocksAt: number;
+}
+
+const PERKS: Perk[] = [
+  { id: 'verified-badge', name: 'Verified profile badge', description: 'A verified mark on your profile so labs know your work is trusted.', icon: 'badge', unlocksAt: 2 },
+  { id: 'early-access',   name: 'Early access to campaigns', description: 'See and claim new high-coverage campaigns a day before they open widely.', icon: 'zap', unlocksAt: 3 },
+  { id: 'priority-review', name: 'Priority review', description: 'Your submitted clips move to the front of the review queue — settle sooner.', icon: 'clock', unlocksAt: 3 },
+  { id: 'elite-circle',   name: 'Elite contributor circle', description: 'Direct line to campaign creators and a say in what gets built next.', icon: 'sparkles', unlocksAt: 4 },
 ];
 
-const partnerVouchers = [
-  { id: 'v-1', name: '₹500 Swiggy Voucher',   description: 'Food delivery credit',                             xpCost: 5000, emoji: '🍔', category: 'vouchers',  available: true,  redeemed: false },
-  { id: 'v-2', name: '₹200 Amazon Gift Card',  description: 'Shop anything on Amazon',                          xpCost: 2000, emoji: '🛒', category: 'vouchers',  available: true,  redeemed: false },
-  { id: 'v-3', name: '₹100 BookMyShow',        description: 'Movie tickets & events',                           xpCost: 1000, emoji: '🎬', category: 'vouchers',  available: true,  redeemed: false },
-  { id: 'v-4', name: '₹300 Flipkart Voucher',  description: 'Electronics & fashion deals',                      xpCost: 3000, emoji: '🛍️', category: 'vouchers', available: true,  redeemed: false },
-  { id: 'p-1', name: 'Premium Badge',          description: 'Exclusive gold badge on profile',                  xpCost:  500, emoji: '🏆', category: 'perks',     available: true,  redeemed: true  },
-  { id: 'p-2', name: 'Early Access Pass',      description: 'Get early access to high-paying quests',           xpCost: 1500, emoji: '🎫', category: 'perks',     available: true,  redeemed: false },
-  { id: 'p-3', name: 'Priority Queue',         description: 'Skip the wait on popular quests for 7 days',       xpCost:  800, emoji: '⚡', category: 'perks',     available: true,  redeemed: false },
-  { id: 'e-1', name: 'Custom Voice Avatar',    description: 'Personalised AI voice avatar (Level 5+)',          xpCost: 8000, emoji: '🎭', category: 'exclusive', available: false, redeemed: false },
+interface Badge {
+  id: string;
+  name: string;
+  detail: string;
+  earned: boolean;
+}
+
+const BADGES: Badge[] = [
+  { id: 'first-clip',   name: 'First recording',    detail: 'Recorded your first clip',        earned: true  },
+  { id: 'hundred',      name: '100 clips',          detail: 'Recorded 100 accepted clips',      earned: true  },
+  { id: 'clarity',      name: 'Clarity master',     detail: '95%+ acceptance across 50 clips',  earned: true  },
+  { id: 'multilingual', name: 'Two languages',      detail: 'Contributed in 2+ languages',      earned: false },
 ];
 
-const userXP = 1530;
+const PERK_ICONS = { zap: Zap, clock: Clock, badge: BadgeCheck, sparkles: Sparkles };
 
 export function Rewards() {
   const navigate = useNavigate();
-  const [activeCategory, setActiveCategory] = useState('all');
-
-  const canAfford = (xp: number) => userXP >= xp;
+  const { profile } = useSession();
+  const standingLevel = profile?.standing?.level ?? 1;
+  const reliability = profile?.standing?.reliability ?? 0;
 
   useEffect(() => {
     let sx = 0;
@@ -41,269 +62,168 @@ export function Rewards() {
     };
   }, [navigate]);
 
-  const handleRedeem = (voucher: typeof partnerVouchers[0]) => {
+  const activatePerk = (perk: Perk) => {
     navigate('/contributor/rewards/claim', {
-      state: {
-        reward: {
-          id: voucher.id, name: voucher.name, description: voucher.description,
-          xpCost: voucher.xpCost, emoji: voucher.emoji, category: voucher.category,
-        },
-      },
+      state: { perk: { id: perk.id, name: perk.name, description: perk.description } },
     });
   };
 
-  const showVouchers  = activeCategory === 'all' || activeCategory === 'vouchers';
-  const showPerks     = activeCategory === 'all' || activeCategory === 'perks';
-  const showExclusive = activeCategory === 'all' || activeCategory === 'exclusive';
+  const earnedBadges = BADGES.filter(b => b.earned).length;
 
-  const cardBase: React.CSSProperties = {
-    background: 'var(--surface)',
-    borderRadius: 16,
-    border: '1px solid var(--card-border)',
-    boxShadow: 'var(--shadow-glass)',
+  const card: React.CSSProperties = {
+    background: 'var(--surface-raised)',
+    borderRadius: 'var(--r-md)',
+    border: '1px solid var(--border-subtle)',
+    boxShadow: 'var(--e-1)',
   };
 
   return (
-    <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-10" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       {/* Header */}
       <div className="px-6 pt-14 pb-4">
         <button
           onClick={() => navigate(-1)}
-          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}
+          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 }}
         >
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
-          XP Rewards Hub
+        <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
+          Recognition
         </h1>
-        <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>Spend your XP on vouchers, perks &amp; more</p>
+        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)' }}>
+          What reliable work has earned you — perks and standing, not payouts.
+        </p>
       </div>
 
-      {/* XP Balance */}
-      <div className="px-6 mb-6">
+      {/* Standing block — the ONE r-lg hero object on this screen */}
+      <div className="px-6 mb-7">
         <div style={{
-          ...cardBase, padding: '20px 24px',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-          borderLeft: '4px solid var(--warning-700)',
+          background: 'var(--surface-raised)',
+          borderRadius: 'var(--r-lg)',
+          border: '1px solid var(--border-subtle)',
+          boxShadow: 'var(--e-2)',
+          padding: '22px 24px',
         }}>
-          <div>
-            <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 6, letterSpacing: '0.5px', textTransform: 'uppercase' }}>
-              Your XP Balance
-            </p>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 36, fontWeight: 700, color: 'var(--warning-900)', lineHeight: 1 }}>
-              {userXP.toLocaleString()} XP
-            </p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 6 }}>
-              Gained by completing quests · never expires
-            </p>
+          <div className="flex items-center justify-between" style={{ marginBottom: 16 }}>
+            <div>
+              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6 }}>
+                Your standing
+              </p>
+              <p style={{ fontSize: 30, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, letterSpacing: '-0.02em' }}>
+                {STANDING_NAMES[standingLevel]}
+              </p>
+            </div>
+            <div style={{ width: 52, height: 52, borderRadius: 'var(--r-md)', background: 'var(--t-terracotta-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <Award className="w-7 h-7" style={{ color: 'var(--action-primary)' }} strokeWidth={1.75} />
+            </div>
           </div>
-          <div style={{ width: 52, height: 52, borderRadius: 16, background: 'var(--warning-100)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-            <Zap className="w-7 h-7" style={{ color: 'var(--warning-700)' }} />
+          {/* Reliability meter */}
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
+            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)' }}>Reliability</span>
+            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-number)' }}>{reliability}%</span>
           </div>
+          <div style={{ height: 8, borderRadius: 'var(--r-full)', background: 'var(--surface-sunken)', overflow: 'hidden' }}>
+            <div style={{ width: `${Math.max(4, reliability)}%`, height: '100%', borderRadius: 'var(--r-full)', background: 'var(--state-settled)' }} />
+          </div>
+          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 12, lineHeight: 1.5 }}>
+            Standing rises with on-time, accepted work. It unlocks the perks below — it is not money and can&apos;t be withdrawn.
+          </p>
         </div>
       </div>
 
-      {/* Category Filter — with right-edge fade hint */}
-      <div style={{ position: 'relative', marginBottom: 16 }}>
-        <div className="flex gap-2 overflow-x-auto px-6 pb-4" style={{ scrollbarWidth: 'none' }}>
-          {rewardCategories.map((cat) => {
-            const isActive = activeCategory === cat.id;
+      {/* Perks */}
+      <div className="px-6 mb-8">
+        <div className="flex items-center gap-2 mb-4">
+          <Sparkles className="w-4 h-4" style={{ color: 'var(--action-primary)' }} />
+          <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>Perks</h3>
+        </div>
+        <div className="space-y-3">
+          {PERKS.map((perk) => {
+            const Icon = PERK_ICONS[perk.icon];
+            const unlocked = standingLevel >= perk.unlocksAt;
             return (
-              <button
-                key={cat.id}
-                onClick={() => setActiveCategory(cat.id)}
+              <div
+                key={perk.id}
                 style={{
-                  padding: '7px 18px', borderRadius: 999,
-                  fontSize: 13, fontWeight: 600, whiteSpace: 'nowrap', border: '1.5px solid',
-                  background:   isActive ? 'var(--warning-700)' : 'var(--surface)',
-                  borderColor:  isActive ? 'var(--warning-700)' : 'var(--card-border)',
-                  color:        isActive ? '#FFFFFF'            : 'var(--text-secondary)',
-                  transition: 'background 0.15s, color 0.15s, border-color 0.15s',
-                  cursor: 'pointer',
+                  ...card,
+                  padding: 16,
+                  display: 'flex', alignItems: 'flex-start', gap: 14,
+                  opacity: unlocked ? 1 : 0.92,
                 }}
               >
-                {cat.label}
-              </button>
+                <div style={{
+                  width: 44, height: 44, borderRadius: 'var(--r-md)', flexShrink: 0,
+                  background: unlocked ? 'var(--t-terracotta-50)' : 'var(--surface-sunken)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                }}>
+                  <Icon className="w-5 h-5" style={{ color: unlocked ? 'var(--action-primary)' : 'var(--text-faint)' }} strokeWidth={1.9} />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>{perk.name}</p>
+                  <p style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 12 }}>{perk.description}</p>
+                  {unlocked ? (
+                    <button
+                      onClick={() => activatePerk(perk)}
+                      style={{
+                        display: 'inline-flex', alignItems: 'center', gap: 6,
+                        fontSize: 12.5, fontWeight: 700, padding: '7px 16px',
+                        borderRadius: 'var(--r-full)', border: 'none', cursor: 'pointer',
+                        background: 'var(--action-primary)', color: 'var(--text-on-accent)',
+                      }}
+                    >
+                      Activate
+                    </button>
+                  ) : (
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                      <Lock className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
+                      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>
+                        Unlocks at {STANDING_NAMES[perk.unlocksAt]} standing
+                      </span>
+                    </div>
+                  )}
+                </div>
+              </div>
             );
           })}
         </div>
-        {/* Scroll fade hint */}
-        <div style={{
-          position: 'absolute', right: 0, top: 0, bottom: 4, width: 40, pointerEvents: 'none',
-          background: 'linear-gradient(to right, transparent, var(--background))',
-        }} />
       </div>
 
-      {/* ── Partner Vouchers ── */}
-      {showVouchers && (
-        <div className="px-6 mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <ShoppingBag className="w-4 h-4" style={{ color: 'var(--warning-700)' }} />
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>
-              Partner Vouchers
-            </h3>
+      {/* Badges */}
+      <div className="px-6">
+        <div className="flex items-center justify-between mb-4">
+          <div className="flex items-center gap-2">
+            <BadgeCheck className="w-4 h-4" style={{ color: 'var(--action-primary)' }} />
+            <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>Badges</h3>
           </div>
-          <div className="space-y-3">
-            {partnerVouchers.filter(v => v.category === 'vouchers').map((voucher) => {
-              const affordable = canAfford(voucher.xpCost);
-              return (
-                <div
-                  key={voucher.id}
-                  style={{
-                    ...cardBase, padding: '16px',
-                    display: 'flex', alignItems: 'center', gap: 14,
-                    borderColor: affordable ? 'var(--warning-200)' : 'var(--card-border)',
-                  }}
-                >
-                  <div style={{ width: 48, height: 48, borderRadius: 16, background: 'var(--warning-100)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 24, flexShrink: 0 }}>
-                    {voucher.emoji}
-                  </div>
-                  <div className="flex-1 min-w-0">
-                    <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>{voucher.name}</p>
-                    <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{voucher.description}</p>
-                  </div>
-                  <div className="flex flex-col items-end gap-2 flex-shrink-0">
-                    <span className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: 'var(--warning-700)' }}>
-                      <Zap className="w-3 h-3" />{voucher.xpCost.toLocaleString()}
-                    </span>
-                    <button
-                      disabled={!affordable}
-                      onClick={() => affordable && handleRedeem(voucher)}
-                      style={{
-                        fontSize: 12, fontWeight: 700,
-                        padding: '5px 14px', borderRadius: 999, border: 'none',
-                        background: affordable ? 'var(--warning-700)' : 'var(--neutral-100)',
-                        color:      affordable ? '#FFFFFF'            : 'var(--text-muted)',
-                        cursor:     affordable ? 'pointer'            : 'not-allowed',
-                      }}
-                    >
-                      {affordable ? 'Redeem' : 'Need more XP'}
-                    </button>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
+          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', fontFamily: 'var(--font-number)' }}>
+            {earnedBadges}/{BADGES.length}
+          </span>
         </div>
-      )}
-
-      {/* ── Perks & Boosts ── */}
-      {showPerks && (
-        <div className="px-6 mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="w-4 h-4" style={{ color: 'var(--warning-700)' }} />
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>
-              Perks &amp; Boosts
-            </h3>
-          </div>
-          <div className="grid grid-cols-2 gap-3">
-            {partnerVouchers.filter(v => v.category === 'perks').map((perk) => {
-              const affordable = canAfford(perk.xpCost);
-              const { redeemed } = perk;
-              return (
-                <div
-                  key={perk.id}
-                  style={{
-                    ...cardBase, padding: '16px',
-                    opacity: redeemed ? 0.65 : 1,
-                    borderColor: redeemed ? 'var(--card-border)' : affordable ? 'var(--warning-200)' : 'var(--card-border)',
-                    background: redeemed ? 'var(--surface-sunken)' : 'var(--surface)',
-                  }}
-                >
-                  {redeemed && (
-                    <div className="flex justify-end mb-2">
-                      <div style={{ width: 22, height: 22, borderRadius: '50%', background: 'var(--status-success-bg)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                        <Check className="w-3 h-3" style={{ color: 'var(--color-success)' }} />
-                      </div>
-                    </div>
-                  )}
-                  <div style={{ fontSize: 28, textAlign: 'center', marginBottom: 10 }}>{perk.emoji}</div>
-                  <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>{perk.name}</p>
-                  <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 12, lineHeight: 1.45 }}>{perk.description}</p>
-                  <div className="flex items-center justify-between">
-                    <span className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: 'var(--warning-700)' }}>
-                      <Zap className="w-3 h-3" />{perk.xpCost.toLocaleString()}
-                    </span>
-                    {redeemed
-                      ? <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-success)' }}>Redeemed</span>
-                      : (
-                        <button
-                          disabled={!affordable}
-                          onClick={() => affordable && handleRedeem(perk)}
-                          style={{
-                            fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 999, border: 'none',
-                            background: affordable ? 'var(--warning-700)' : 'var(--neutral-100)',
-                            color:      affordable ? '#FFFFFF'            : 'var(--text-muted)',
-                            cursor:     affordable ? 'pointer'            : 'not-allowed',
-                          }}
-                        >
-                          {affordable ? 'Redeem' : 'Locked'}
-                        </button>
-                      )}
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        </div>
-      )}
-
-      {/* ── Exclusive ── */}
-      {showExclusive && (
-        <div className="px-6 mb-8">
-          <div className="flex items-center gap-2 mb-4">
-            <Award className="w-4 h-4" style={{ color: 'var(--warning-700)' }} />
-            <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)' }}>Exclusive</h3>
-          </div>
-          {partnerVouchers.filter(v => v.category === 'exclusive').map((item) => (
-            <div key={item.id} style={{ ...cardBase, padding: '18px', opacity: 0.7 }}>
-              <div className="flex items-center gap-4">
-                <div style={{ width: 56, height: 56, borderRadius: 16, background: 'var(--surface-sunken)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: 28, flexShrink: 0 }}>
-                  {item.emoji}
-                </div>
-                <div className="flex-1">
-                  <div className="flex items-center gap-2 mb-1">
-                    <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{item.name}</p>
-                    <Lock className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
-                  </div>
-                  <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 4 }}>{item.description}</p>
-                  <span className="flex items-center gap-1" style={{ fontSize: 12, fontWeight: 700, color: 'var(--warning-700)' }}>
-                    <Zap className="w-3 h-3" />{item.xpCost.toLocaleString()} XP
-                  </span>
-                </div>
+        <div className="grid grid-cols-2 gap-3">
+          {BADGES.map((badge) => (
+            <div
+              key={badge.id}
+              style={{
+                ...card,
+                padding: 16,
+                opacity: badge.earned ? 1 : 0.6,
+                background: badge.earned ? 'var(--surface-raised)' : 'var(--surface-sunken)',
+              }}
+            >
+              <div style={{
+                width: 40, height: 40, borderRadius: 'var(--r-full)', marginBottom: 12,
+                background: 'var(--surface-sunken)',
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+              }}>
+                {badge.earned
+                  ? <Check className="w-5 h-5" style={{ color: 'var(--state-settled)' }} strokeWidth={2.5} />
+                  : <Lock className="w-4 h-4" style={{ color: 'var(--text-faint)' }} />}
               </div>
+              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>{badge.name}</p>
+              <p style={{ fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.4 }}>{badge.detail}</p>
             </div>
           ))}
-        </div>
-      )}
-
-      {/* ── Gain More CTA ── */}
-      <div className="px-6">
-        <div style={{
-          background: 'var(--warning-50)',
-          borderRadius: 20,
-          border: '1.5px solid var(--warning-200)',
-          padding: '24px',
-          textAlign: 'center',
-        }}>
-          <Gift className="w-10 h-10 mx-auto mb-3" style={{ color: 'var(--warning-700)' }} strokeWidth={1.5} />
-          <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 20, fontWeight: 800, color: 'var(--warning-900)', marginBottom: 8 }}>
-            Want more XP?
-          </h3>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 20 }}>
-            Complete quests to gain XP and unlock rewards
-          </p>
-          <button
-            onClick={() => navigate('/contributor/quests')}
-            style={{
-              background: 'var(--warning-700)', color: '#FFFFFF',
-              padding: '12px 32px', borderRadius: 999,
-              fontSize: 14, fontWeight: 700, border: 'none', cursor: 'pointer',
-            }}
-          >
-            Browse Quests
-          </button>
         </div>
       </div>
     </div>

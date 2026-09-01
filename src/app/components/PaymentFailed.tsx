@@ -1,26 +1,23 @@
 import { motion, AnimatePresence } from 'motion/react';
 import { XCircle, RefreshCw, MessageCircle } from 'lucide-react';
+import { Amount, Button } from './ui/Primitives';
 
 interface Props {
+  amount: number;
+  vpa: string;
   onClose: () => void;
   onRetry: () => void;
 }
 
-const FAILURE_REASONS = [
-  { code: 'BANK_DECLINED', label: 'Bank declined transaction', detail: 'Your bank rejected the UPI transfer. This can happen due to daily limits or security holds.' },
-  { code: 'UPI_TIMEOUT',   label: 'UPI gateway timeout',      detail: 'The payment request timed out after 30 seconds. No amount was debited from Feul.' },
-  { code: 'VPA_INVALID',   label: 'VPA not registered',       detail: 'The UPI ID linked to your account returned an invalid response. Please relink it in Profile.' },
-];
-
-export function PaymentFailed({ onClose, onRetry }: Props) {
-  const reason = FAILURE_REASONS[1]; // UPI timeout as default demo
-
+/* A withdrawal can fail at the bank/UPI layer even after identity checks
+   pass. The one promise that matters: the money is still yours. */
+export function PaymentFailed({ amount, vpa, onClose, onRetry }: Props) {
   return (
     <AnimatePresence>
       <motion.div
         key="pay-backdrop"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(15,17,23,0.88)', backdropFilter: 'blur(10px)' }}
+        style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'rgba(var(--carbon-rgb),0.42)', backdropFilter: 'blur(2px)' }}
         onClick={onClose}
       />
       <motion.div
@@ -29,88 +26,41 @@ export function PaymentFailed({ onClose, onRetry }: Props) {
         transition={{ type: 'spring', stiffness: 340, damping: 34 }}
         style={{
           position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 201,
-          background: '#0F1117',
-          borderRadius: '28px 28px 0 0',
-          padding: '28px 24px 44px',
+          background: 'var(--surface-raised)', borderRadius: 'var(--r-lg) var(--r-lg) 0 0',
+          padding: '10px 20px 40px', boxShadow: 'var(--e-3)',
         }}
-        onClick={e => e.stopPropagation()}
+        onClick={(e) => e.stopPropagation()}
       >
-        <div style={{ width: 36, height: 3, borderRadius: 999, background: 'rgba(255,255,255,0.1)', margin: '0 auto 28px' }} />
+        <div style={{ width: 40, height: 4, borderRadius: 'var(--r-full)', background: 'var(--border-strong)', margin: '0 auto 24px' }} />
 
-        {/* Failure icon */}
-        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 24 }}>
-          <motion.div
-            initial={{ scale: 0.5 }} animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 260, damping: 20 }}
-          >
-            <XCircle style={{ width: 64, height: 64, color: '#F87171' }} />
-          </motion.div>
-          <h3 style={{
-            fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800,
-            color: '#FFFFFF', margin: '16px 0 6px', textAlign: 'center',
-          }}>
-            Payment Failed
-          </h3>
-          <p style={{ fontSize: 13, color: 'rgba(255,255,255,0.4)', textAlign: 'center' }}>
-            ₹127.50 withdrawal to <span style={{ fontFamily: 'var(--font-mono)', color: 'rgba(255,255,255,0.6)' }}>arjun@oksbi</span>
-          </p>
-        </div>
-
-        {/* Error code */}
-        <div style={{
-          background: 'rgba(220,38,38,0.08)', border: '1px solid rgba(220,38,38,0.18)',
-          borderRadius: 16, padding: '14px 16px', marginBottom: 16,
-        }}>
-          <div style={{ display: 'flex', items: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-            <span style={{ fontFamily: 'var(--font-mono)', fontSize: 10, fontWeight: 800, color: '#F87171', letterSpacing: '0.08em' }}>
-              {reason.code}
-            </span>
+        <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginBottom: 20 }}>
+          <div style={{ width: 64, height: 64, borderRadius: 'var(--r-full)', background: 'var(--t-crimson-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <XCircle style={{ width: 34, height: 34, color: 'var(--t-crimson-700)' }} strokeWidth={2} />
           </div>
-          <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)', lineHeight: 1.6, margin: 0 }}>
-            {reason.detail}
+          <h3 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', margin: '14px 0 6px', letterSpacing: '-0.015em' }}>
+            The transfer didn't go through
+          </h3>
+          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', textAlign: 'center' }}>
+            <Amount value={amount} size={14} color="var(--text-secondary)" /> to {vpa}
           </p>
         </div>
 
-        {/* Confirmation */}
-        <div style={{
-          background: 'rgba(45,122,79,0.08)', border: '1px solid rgba(45,122,79,0.18)',
-          borderRadius: 12, padding: '12px 16px', marginBottom: 24,
-          display: 'flex', alignItems: 'center', gap: 10,
-        }}>
-          <div style={{
-            width: 8, height: 8, borderRadius: '50%', background: '#4EC992', flexShrink: 0,
-          }} />
-          <span style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.55)' }}>
-            No amount was deducted from your Feul wallet
+        <div style={{ background: 'var(--t-crimson-50)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--r-md)', padding: '14px 16px', marginBottom: 12 }}>
+          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, margin: 0 }}>
+            The UPI gateway timed out before your bank confirmed. This happens occasionally — it's not something you did wrong.
+          </p>
+        </div>
+
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10, background: 'var(--t-verdigris-50)', borderRadius: 'var(--r-md)', padding: '12px 16px', marginBottom: 24 }}>
+          <span style={{ width: 8, height: 8, borderRadius: 'var(--r-full)', background: 'var(--state-settled)', flexShrink: 0 }} />
+          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--t-verdigris-700)' }}>
+            Your money is still in your wallet — nothing was deducted
           </span>
         </div>
 
         <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-          <button
-            onClick={onRetry}
-            style={{
-              width: '100%', height: 52, borderRadius: 999,
-              background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-              color: '#FFFFFF', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.3)',
-            }}
-          >
-            <RefreshCw style={{ width: 16, height: 16 }} />
-            Try Again
-          </button>
-          <button
-            onClick={onClose}
-            style={{
-              width: '100%', height: 48, borderRadius: 999,
-              background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-              color: 'rgba(255,255,255,0.5)', fontSize: 14, fontWeight: 600, cursor: 'pointer',
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-            }}
-          >
-            <MessageCircle style={{ width: 15, height: 15 }} />
-            Contact Support
-          </button>
+          <Button full size="lg" onClick={onRetry} icon={<RefreshCw size={16} />}>Try again</Button>
+          <Button full size="md" variant="secondary" onClick={onClose} icon={<MessageCircle size={15} />}>Contact support</Button>
         </div>
       </motion.div>
     </AnimatePresence>

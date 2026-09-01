@@ -1,343 +1,285 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDevContext } from '../lib/DevContext';
 import { motion } from 'motion/react';
-import { Star, ArrowUpRight, Flame, Users, Users2 } from 'lucide-react';
-import { Waveform } from './ui/Waveform';
-import { QuestCardSkeleton } from './ui/FeulSkeleton';
-import { QuestCard } from './ui/QuestCard';
-import { SectionHeading } from './ui/Primitives';
-import { quests, type QuestFormat } from '../lib/quests';
+import { Search, SlidersHorizontal, Inbox } from 'lucide-react';
+import { QuestRow, TierGate, Sheet, Button } from './ui/Primitives';
+import { quests, questTotal, formatMeta, type Quest, type QuestFormat } from '../lib/quests';
+import { tierName } from '../lib/tier';
+import { useSession } from '../lib/session';
 import { springs, whileTap } from '../lib/motion';
 
-const filters: { id: 'all' | QuestFormat | 'high-reward'; label: string }[] = [
-  { id: 'all',         label: 'All' },
-  { id: 'lines',       label: 'Lines' },
-  { id: 'scenario',    label: 'Scenario' },
-  { id: 'interview',   label: 'Interview' },
-  { id: 'room',        label: 'Room' },
-  { id: 'high-reward', label: 'Top Pay' },
+/* ─────────────────────────────────────────────────────────────────────
+ * Quests marketplace — ROWS, not tiles (§2D). Native-script excerpt lives
+ * in the row; pay is right-aligned INK; coverage multiplier is a chip.
+ * Locked rows are aspirational TierGates that state the exact unlock path.
+ * A LINES row is guaranteed open at every standing (same-work-same-pay).
+ * ───────────────────────────────────────────────────────────────────── */
+
+type FilterId = 'all' | QuestFormat | 'top-pay';
+const filters: { id: FilterId; label: string }[] = [
+  { id: 'all',       label: 'All' },
+  { id: 'lines',     label: 'Lines' },
+  { id: 'scenario',  label: 'Scenario' },
+  { id: 'interview', label: 'Interview' },
+  { id: 'room',      label: 'Room' },
+  { id: 'top-pay',   label: 'Top pay' },
 ];
 
-function EmptyQuestFeed() {
-  const navigate = useNavigate();
-  return (
-    <div className="flex flex-col items-center justify-center px-8 py-16 relative" style={{ minHeight: '50vh' }}>
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
-        <div style={{ width: '80%' }}>
-          <Waveform color="var(--accent-primary)" opacity={0.12} height={100} />
-        </div>
-      </div>
-      <div className="relative z-10 flex flex-col items-center">
-        <h2 style={{
-          fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800,
-          color: 'var(--text-primary)', textAlign: 'center', marginBottom: 12, lineHeight: 1.2,
-          letterSpacing: '-0.02em',
-        }}>
-          New quests dropping soon
-        </h2>
-        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', textAlign: 'center', lineHeight: 1.65, maxWidth: 280, marginBottom: 8 }}>
-          High-demand scenarios in <strong style={{ color: 'var(--text-primary)' }}>Hindi</strong> and{' '}
-          <strong style={{ color: 'var(--text-primary)' }}>Marathi</strong> are coming. You'll be first to know.
-        </p>
-        <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-primary-deep)', marginBottom: 32 }}>
-          Turn on notifications to never miss a high-paying quest
-        </p>
-        <button
-          onClick={() => navigate('/contributor/profile')}
-          style={{
-            background: 'transparent', color: 'var(--accent-primary-deep)', borderRadius: 999,
-            padding: '13px 28px', fontSize: 14, fontWeight: 700,
-            border: '1.5px solid var(--accent-primary-deep)', cursor: 'pointer',
-          }}
-        >
-          Update Language Preferences
-        </button>
-      </div>
-    </div>
-  );
+const SECTION_ORDER: { format: QuestFormat; blurb: string }[] = [
+  { format: 'lines',     blurb: 'Fast one- and two-line clips — quick wins.' },
+  { format: 'scenario',  blurb: 'Scripted roles, multi-turn. Pay scales with depth.' },
+  { format: 'interview', blurb: 'Answer a pre-recorded question track, turn by turn.' },
+  { format: 'room',      blurb: 'Everyone in one room, one phone, one continuous take.' },
+];
+
+function unlockHint(q: Quest, level: number): string {
+  const need = q.minTier ?? 1;
+  return `Unlocks at ${tierName(need)} standing · you're ${tierName(level)}`;
 }
 
 export function QuestFeed() {
   const navigate = useNavigate();
   const dev = useDevContext();
-  const [activeFilter, setActiveFilter] = useState<typeof filters[number]['id']>('all');
+  const { profile } = useSession();
+  const level = profile?.standing.level ?? 1;
+
+  const [filter, setFilter] = useState<FilterId>('all');
+  const [query, setQuery] = useState('');
+  const [filterOpen, setFilterOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const id = setTimeout(() => setLoading(false), 650);
+    const id = setTimeout(() => setLoading(false), 500);
     return () => clearTimeout(id);
   }, []);
 
-  const featured = quests.find(q => q.format === 'room') ?? quests[0];
-  const roomQuests = quests.filter(q => q.format === 'room');
-  const interviewQuests = quests.filter(q => q.format === 'interview');
-  const scenarioQuests = quests.filter(q => q.format === 'scenario');
-  const lineQuests = quests.filter(q => q.format === 'lines');
+  const matches = (q: Quest) => {
+    if (!query.trim()) return true;
+    const hay = `${q.title} ${q.client} ${q.language} ${q.excerpt}`.toLowerCase();
+    return hay.includes(query.trim().toLowerCase());
+  };
 
-  const filteredList = (() => {
-    if (activeFilter === 'all') return quests.filter(q => q.id !== featured.id);
-    if (activeFilter === 'high-reward') return [...quests].sort((a, b) => b.cashPayout - a.cashPayout);
-    return quests.filter(q => q.format === activeFilter);
-  })();
+  const isLocked = (q: Quest) => (q.minTier ?? 1) > level;
 
+  const visible = useMemo(() => quests.filter(matches), [query]);
+
+  /* ROOM takes record multiple people — DPDP requires on-tape consent from each
+     before recording, so a room quest routes through the consent roll-call first
+     (C-01/C-10). Every other format goes straight to recording. */
+  const open = (q: Quest) =>
+    navigate(q.format === 'room' ? '/contributor/room-consent' : `/recording/${q.id}`);
+
+  const goToRow = (q: Quest) =>
+    isLocked(q)
+      ? <TierGate key={q.id} title={`${formatMeta[q.format].label} · ${q.title}`} unlockHint={unlockHint(q, level)} />
+      : <QuestRow key={q.id} quest={q} onClick={() => open(q)} />;
+
+  /* ── DevPanel forced-empty ── */
   if (dev.questsEmpty) {
     return (
-      <div className="min-h-screen" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
-        <div className="px-6 pt-16 pb-4">
-          <h1 style={{
-            fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800,
-            color: 'var(--text-primary)', letterSpacing: '-0.02em',
-          }}>Available Quests</h1>
-        </div>
-        <EmptyQuestFeed />
-      </div>
+      <Shell>
+        <EmptyState
+          title="No Marathi Scenario tasks right now"
+          body="12 contributors are waiting ahead of you for this coverage. New Marathi and Hindi campaigns are being prepared — turn on alerts and you'll be first in when they open."
+          cta="Notify me when they open"
+          onCta={() => navigate('/contributor/profile')}
+        />
+      </Shell>
     );
   }
 
+  const filtered = (() => {
+    if (filter === 'top-pay') return [...visible].sort((a, b) => questTotal(b) - questTotal(a));
+    if (filter !== 'all') return visible.filter((q) => q.format === filter);
+    return visible;
+  })();
+
   return (
-    <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
-      {/* Header */}
-      <div className="px-6 pt-16 pb-2 flex items-center justify-between">
-        <h1 style={{
-          fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800,
-          color: 'var(--text-primary)', letterSpacing: '-0.02em',
+    <Shell>
+      {/* Search */}
+      <div className="px-5 pb-3">
+        <div style={{
+          display: 'flex', alignItems: 'center', gap: 10, height: 48, padding: '0 14px',
+          background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
+          borderRadius: 'var(--r-full)',
         }}>
-          Available Quests
-        </h1>
-      </div>
-
-      <div className="px-6 pt-1 pb-4">
-        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', marginTop: 4 }}>
-          Quick lines, solo scenarios, interviews, or full room takes.
-        </p>
-      </div>
-
-      {/* Filter chips — right-edge fade hints at horizontal scroll */}
-      <div style={{ position: 'relative' }}>
-      <div className="flex gap-2 overflow-x-auto px-6 pb-4 mb-2" style={{ scrollbarWidth: 'none' }}>
-        {filters.map((cat) => {
-          const isActive = activeFilter === cat.id;
-          return (
-            <motion.button
-              key={cat.id}
-              whileTap={whileTap.button}
-              transition={springs.tap}
-              onClick={() => setActiveFilter(cat.id)}
-              style={{
-                padding: '7px 18px', borderRadius: 999, fontSize: 13, fontWeight: 700,
-                whiteSpace: 'nowrap', border: '1.5px solid',
-                background: isActive ? 'var(--accent-primary)' : 'var(--surface)',
-                borderColor: isActive ? 'var(--accent-primary)' : 'var(--card-border)',
-                color: isActive ? '#FFFFFF' : 'var(--text-secondary)',
-                boxShadow: isActive ? 'var(--shadow-card)' : 'none',
-                transition: 'background 0.15s, color 0.15s, border-color 0.15s',
-              }}
-            >
-              {cat.label}
-            </motion.button>
-          );
-        })}
-      </div>
-      {/* Right-edge fade overlay */}
-      <div style={{ position: 'absolute', right: 0, top: 0, bottom: 4, width: 48, pointerEvents: 'none', background: 'linear-gradient(to right, transparent, var(--background))' }} />
-      </div>
-
-      {/* Featured — premium navy hero featuring a group session */}
-      {activeFilter === 'all' && (
-        <div className="px-6 mb-7">
-          <div className="flex items-center gap-2 mb-3">
-            <Star className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} fill="currentColor" />
-            <h3 style={{
-              fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800,
-              color: 'var(--text-primary)', letterSpacing: '-0.02em',
-            }}>
-              Premium Session
-            </h3>
-          </div>
-          <motion.div
-            whileTap={whileTap.card}
-            transition={springs.tap}
-            onClick={() => navigate(`/recording/${featured.id}`)}
+          <Search size={18} style={{ color: 'var(--text-muted)', flexShrink: 0 }} />
+          <input
+            value={query}
+            onChange={(e) => setQuery(e.target.value)}
+            placeholder="Search quests, clients, languages"
             style={{
-              background: 'radial-gradient(ellipse at 80% 0%, rgba(var(--accent-glow-rgb),0.22) 0%, transparent 55%), var(--navy)',
-              borderRadius: 24, padding: '22px',
-              cursor: 'pointer', position: 'relative', overflow: 'hidden',
-              boxShadow: 'var(--shadow-floating)',
+              flex: 1, border: 'none', outline: 'none', background: 'transparent',
+              fontSize: 15, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)',
+            }}
+          />
+        </div>
+      </div>
+
+      {/* Filter chips + sheet trigger */}
+      <div style={{ position: 'relative' }}>
+        <div className="flex gap-2 overflow-x-auto px-5 pb-4" style={{ scrollbarWidth: 'none' }}>
+          <motion.button
+            whileTap={whileTap.button} transition={springs.tap}
+            onClick={() => setFilterOpen(true)}
+            style={{
+              display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 14px',
+              borderRadius: 'var(--r-full)', border: '1px solid var(--border-strong)',
+              background: 'var(--surface-raised)', color: 'var(--text-secondary)',
+              fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0, cursor: 'pointer',
             }}
           >
-            {/* Waveform anchored to bottom — clears all text content above */}
-            <motion.div
-              className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden"
-              style={{ borderRadius: '0 0 22px 22px' }}
-              animate={{ opacity: [0.07, 0.11, 0.07] }}
-              transition={{ duration: 4.2, repeat: Infinity, ease: 'easeInOut' }}
-            >
-              <Waveform color="#FAD4BC" opacity={1} height={34} />
-            </motion.div>
+            <SlidersHorizontal size={15} /> Filter
+          </motion.button>
+          {filters.map((f) => {
+            const active = filter === f.id;
+            return (
+              <motion.button
+                key={f.id}
+                whileTap={whileTap.button} transition={springs.tap}
+                onClick={() => setFilter(f.id)}
+                style={{
+                  height: 38, padding: '0 16px', borderRadius: 'var(--r-full)', fontSize: 13, fontWeight: 700,
+                  whiteSpace: 'nowrap', flexShrink: 0, cursor: 'pointer',
+                  border: `1px solid ${active ? 'var(--action-primary)' : 'var(--border-subtle)'}`,
+                  background: active ? 'var(--action-primary)' : 'var(--surface-raised)',
+                  color: active ? 'var(--text-on-accent)' : 'var(--text-secondary)',
+                }}
+              >
+                {f.label}
+              </motion.button>
+            );
+          })}
+        </div>
+        <div style={{ position: 'absolute', right: 0, top: 0, bottom: 4, width: 40, pointerEvents: 'none', background: 'linear-gradient(to right, transparent, var(--surface-ground))' }} />
+      </div>
 
-            <div className="relative z-10">
-              <div className="flex items-center gap-2 mb-3 flex-wrap">
-                <span style={{
-                  background: 'var(--accent-primary-deep)', color: '#FFFFFF',
-                  fontSize: 10, fontWeight: 700, padding: '4px 10px', borderRadius: 999,
-                  letterSpacing: '0.06em',
-                }}>
-                  ROOM · {featured.speakers} PEOPLE
-                </span>
-                <span className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.55)' }}>
-                  <Flame className="w-3 h-3" /> Premium tier
-                </span>
-                {featured.slotsLeft != null && (
-                  <span className="flex items-center gap-1" style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-primary-light)' }}>
-                    <Users className="w-3 h-3" /> {featured.slotsLeft} slots left
-                  </span>
-                )}
-              </div>
-
-              <h4 style={{
-                fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800,
-                color: '#FFFFFF', marginBottom: 6, letterSpacing: '-0.01em',
-              }}>
-                {featured.title}
-              </h4>
-              <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)', lineHeight: 1.55, marginBottom: 14 }}>
-                {featured.description}
-              </p>
-
-              {/* Scene preview */}
-              <div style={{
-                background: 'rgba(255,255,255,0.06)',
-                borderRadius: 12,
-                padding: '12px 14px',
-                marginBottom: 16,
-                border: '1px solid rgba(255,255,255,0.06)',
-              }}>
-                <p style={{
-                  fontSize: 10, fontWeight: 700, color: 'rgba(255,255,255,0.45)',
-                  letterSpacing: '0.10em', textTransform: 'uppercase', marginBottom: 4,
-                }}>
-                  Scene
-                </p>
-                <p style={{ fontSize: 12.5, fontWeight: 500, color: 'rgba(255,255,255,0.78)', lineHeight: 1.55, fontStyle: 'italic' }}>
-                  {featured.excerpt}
-                </p>
-              </div>
-
-              <div className="flex items-center justify-between">
-                <div>
-                  <p style={{
-                    fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700,
-                    color: 'var(--accent-primary-light)', lineHeight: 1, fontVariantNumeric: 'tabular-nums',
-                  }}>
-                    ₹{featured.cashPayout}
-                  </p>
-                  <p style={{ fontSize: 11, fontWeight: 500, color: 'rgba(255,255,255,0.45)', marginTop: 4 }}>
-                    one take · {featured.duration}
-                  </p>
+      {loading ? (
+        <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          {Array.from({ length: 4 }).map((_, i) => <RowSkeleton key={i} />)}
+        </div>
+      ) : filtered.length === 0 ? (
+        <EmptyState
+          title="Nothing matches that"
+          body={query ? `No open quests match "${query}". Try a different language or clear the search.` : 'No quests in this filter yet.'}
+          cta={query ? 'Clear search' : 'Show all'}
+          onCta={() => { setQuery(''); setFilter('all'); }}
+        />
+      ) : filter === 'all' ? (
+        <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+          {SECTION_ORDER.map(({ format, blurb }) => {
+            const rows = filtered.filter((q) => q.format === format);
+            if (rows.length === 0) return null;
+            /* Open rows first; cap aspirational locked rows to a 2-row teaser
+               so a fully-locked format doesn't become a wall of gates. */
+            const openRows   = rows.filter((q) => !isLocked(q));
+            const lockedRows = rows.filter(isLocked);
+            const LOCK_CAP = 2;
+            const shownLocked = lockedRows.slice(0, LOCK_CAP);
+            const hiddenLocked = lockedRows.slice(LOCK_CAP);
+            /* Lowest standing that would open the hidden ones. */
+            const hiddenUnlockTier = hiddenLocked.length
+              ? tierName(Math.min(...hiddenLocked.map((q) => q.minTier ?? 1)))
+              : '';
+            return (
+              <section key={format}>
+                <div style={{ marginBottom: 12 }}>
+                  <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                    {formatMeta[format].label}
+                  </h2>
+                  <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', margin: '2px 0 0' }}>{blurb}</p>
                 </div>
-                <button style={{
-                  width: 48, height: 48, borderRadius: 16,
-                  background: 'var(--accent-primary)', border: 'none',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  cursor: 'pointer', boxShadow: '0px 4px 12px rgba(var(--accent-glow-rgb),0.4)',
-                }}>
-                  <ArrowUpRight className="w-5 h-5 text-white" />
-                </button>
-              </div>
-            </div>
-          </motion.div>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                  {[...openRows, ...shownLocked].map(goToRow)}
+                  {hiddenLocked.length > 0 && (
+                    <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', textAlign: 'center', margin: '2px 0 0' }}>
+                      {hiddenLocked.length} more unlock at {hiddenUnlockTier} standing
+                    </p>
+                  )}
+                </div>
+              </section>
+            );
+          })}
         </div>
-      )}
-
-      {/* Sectioned lists when on 'all' filter */}
-      {activeFilter === 'all' ? (
-        <>
-          {/* Solo Scenarios */}
-          <div className="px-6 mb-6">
-            <SectionHeading variant="display" subtitle="Multi-turn scripts with context — pay scales with depth">
-              Solo Scenarios
-            </SectionHeading>
-            <div className="space-y-3">
-              {loading
-                ? Array.from({ length: 2 }).map((_, i) => <QuestCardSkeleton key={`sk-s-${i}`} />)
-                : scenarioQuests.map((q) => (
-                    <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
-                  ))}
-            </div>
-          </div>
-
-          {/* Interviews */}
-          <div className="px-6 mb-6">
-            <SectionHeading variant="display" subtitle="Answer a pre-recorded question track, question by question">
-              Interviews
-            </SectionHeading>
-            <div className="space-y-3">
-              {loading
-                ? <QuestCardSkeleton />
-                : interviewQuests.map(q => (
-                    <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
-                  ))}
-            </div>
-          </div>
-
-          {/* Room Takes */}
-          <div className="px-6 mb-6">
-            <SectionHeading
-              variant="display"
-              subtitle="Everyone in one room, one phone, one continuous take"
-              action={
-                <span className="flex items-center gap-1" style={{
-                  fontSize: 11, fontWeight: 700, color: 'var(--accent-primary-deep)',
-                  background: 'var(--accent-50)', padding: '4px 10px', borderRadius: 999,
-                }}>
-                  <Users2 className="w-3 h-3" /> Premium
-                </span>
-              }
-            >
-              Room Takes
-            </SectionHeading>
-            <div className="space-y-3">
-              {loading
-                ? <QuestCardSkeleton />
-                : roomQuests.filter(q => q.id !== featured.id).map(q => (
-                    <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
-                  ))}
-            </div>
-          </div>
-
-          {/* Quick Lines */}
-          <div className="px-6">
-            <SectionHeading variant="display" subtitle="Fast 1–2 line clips for quick wins">
-              Quick Lines
-            </SectionHeading>
-            <div className="space-y-3">
-              {loading
-                ? <QuestCardSkeleton />
-                : lineQuests.map(q => (
-                    <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
-                  ))}
-            </div>
-          </div>
-        </>
       ) : (
-        <div className="px-6">
-          <h3 style={{
-            fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 700,
-            color: 'var(--text-muted)', marginBottom: 12,
-            letterSpacing: '0.08em', textTransform: 'uppercase',
-          }}>
-            {filters.find(f => f.id === activeFilter)?.label} · {filteredList.length}
-          </h3>
-          <div className="space-y-3">
-            {loading
-              ? Array.from({ length: 4 }).map((_, i) => <QuestCardSkeleton key={`skel-${i}`} />)
-              : filteredList.map(q => (
-                  <QuestCard key={q.id} quest={q} onClick={() => navigate(`/recording/${q.id}`)} />
-                ))}
-          </div>
+        <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+          <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', margin: '0 0 2px' }}>
+            {filters.find((f) => f.id === filter)?.label} · {filtered.length}
+          </p>
+          {filtered.map(goToRow)}
         </div>
       )}
+
+      {/* Filter sheet — same options, deliberate surface */}
+      <Sheet open={filterOpen} onClose={() => setFilterOpen(false)} title="Filter quests">
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
+          {filters.map((f) => {
+            const active = filter === f.id;
+            return (
+              <button
+                key={f.id}
+                onClick={() => { setFilter(f.id); setFilterOpen(false); }}
+                style={{
+                  height: 48, borderRadius: 'var(--r-md)', fontSize: 15, fontWeight: 700, cursor: 'pointer',
+                  border: `1px solid ${active ? 'var(--action-primary)' : 'var(--border-subtle)'}`,
+                  background: active ? 'var(--t-terracotta-50)' : 'var(--surface-raised)',
+                  color: active ? 'var(--t-terracotta-800)' : 'var(--text-secondary)',
+                }}
+              >
+                {f.label}
+              </button>
+            );
+          })}
+        </div>
+        <Button full onClick={() => setFilterOpen(false)}>Show results</Button>
+      </Sheet>
+    </Shell>
+  );
+}
+
+function Shell({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="min-h-screen pb-24" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
+      <div className="px-5 pt-16 pb-4">
+        <h1 style={{ fontSize: 30, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.015em', margin: 0 }}>
+          Quests
+        </h1>
+        <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+          Same work, same pay. Standing changes what opens and how fast it settles.
+        </p>
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function RowSkeleton() {
+  return (
+    <div style={{
+      height: 96, borderRadius: 'var(--r-md)', background: 'var(--surface-raised)',
+      border: '1px solid var(--border-subtle)', overflow: 'hidden', position: 'relative',
+    }}>
+      <motion.div
+        animate={{ opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 1.4, repeat: Infinity }}
+        style={{ position: 'absolute', inset: 16, borderRadius: 6, background: 'var(--surface-sunken)' }}
+      />
+    </div>
+  );
+}
+
+function EmptyState({ title, body, cta, onCta }: { title: string; body: string; cta: string; onCta: () => void }) {
+  return (
+    <div className="flex flex-col items-center justify-center px-8 text-center" style={{ minHeight: '46vh' }}>
+      <div style={{
+        width: 64, height: 64, borderRadius: 'var(--r-full)', background: 'var(--surface-sunken)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20,
+      }}>
+        <Inbox size={28} style={{ color: 'var(--text-muted)' }} />
+      </div>
+      <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 8px' }}>{title}</h2>
+      <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, maxWidth: 300, margin: '0 0 22px' }}>{body}</p>
+      <Button variant="secondary" onClick={onCta}>{cta}</Button>
     </div>
   );
 }

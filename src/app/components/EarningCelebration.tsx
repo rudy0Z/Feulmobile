@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { ArrowRight, Flame, TrendingUp } from 'lucide-react';
+import { ArrowRight, TrendingUp } from 'lucide-react';
 import { Waveform } from './ui/Waveform';
 import { CheckCircle2 } from 'lucide-react';
 
@@ -14,7 +14,7 @@ export function EarningCelebration() {
     >
       {/* Background waveform */}
       <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
-        <Waveform color="#FFFFFF" opacity={1} height={200} />
+        <Waveform color="var(--t-bone-0)" opacity={1} height={200} />
       </div>
 
       <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
@@ -58,7 +58,7 @@ export function EarningCelebration() {
               fontFamily: 'var(--font-mono)',
               fontSize: 72,
               fontWeight: 700,
-              color: '#FFFFFF',
+              color: 'var(--t-bone-0)',
               lineHeight: 1,
               letterSpacing: '-0.03em',
             }}
@@ -70,7 +70,7 @@ export function EarningCelebration() {
           </p>
         </motion.div>
 
-        {/* XP bonus */}
+        {/* Standing note — honest recognition, not a currency bonus */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -83,9 +83,9 @@ export function EarningCelebration() {
             border: '1px solid rgba(255,255,255,0.08)',
           }}
         >
-          <Flame className="w-4 h-4" style={{ color: 'var(--accent-primary-deep)' }} />
+          <TrendingUp className="w-4 h-4" style={{ color: 'var(--action-primary)' }} />
           <span style={{ fontSize: 13, fontWeight: 600, color: 'rgba(255,255,255,0.6)' }}>
-            +100 reputation · Welcome bonus unlocked
+            First clip accepted · your standing starts building
           </span>
         </motion.div>
 
@@ -135,7 +135,7 @@ export function EarningCelebration() {
           onClick={() => navigate('/profile-setup')}
           style={{
             width: '100%', height: 58, borderRadius: 999,
-            background: 'var(--accent-primary-deep)', color: '#FFFFFF',
+            background: 'var(--accent-primary-deep)', color: 'var(--t-bone-0)',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
             boxShadow: '0px 6px 28px rgba(var(--accent-deep-rgb),0.4)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,

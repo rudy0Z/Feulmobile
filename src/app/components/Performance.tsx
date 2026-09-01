@@ -13,8 +13,8 @@ const metrics = [
     deltaPositive: true,
     description: 'Share of submissions approved by validators',
     icon: CheckCircle2,
-    tint: 'var(--status-success-bg)',
-    iconColor: 'var(--status-success-text)',
+    tint: 'var(--surface-sunken)',
+    iconColor: 'var(--state-settled)',
   },
   {
     id: 'quality',
@@ -24,8 +24,8 @@ const metrics = [
     deltaPositive: true,
     description: 'Signal clarity, noise floor, mic technique',
     icon: Mic2,
-    tint: 'var(--accent-50)',
-    iconColor: 'var(--accent-primary-deep)',
+    tint: 'var(--t-terracotta-50)',
+    iconColor: 'var(--action-primary)',
   },
   {
     id: 'consistency',
@@ -35,8 +35,8 @@ const metrics = [
     deltaPositive: true,
     description: 'Reliability across recent submissions',
     icon: Activity,
-    tint: 'var(--status-info-bg)',
-    iconColor: 'var(--status-info-text)',
+    tint: 'var(--surface-sunken)',
+    iconColor: 'var(--text-secondary)',
   },
 ];
 
@@ -47,10 +47,10 @@ const languageExpertise = [
 ];
 
 const cardBase: React.CSSProperties = {
-  background: 'var(--surface)',
-  borderRadius: 16,
-  border: '1px solid var(--card-border)',
-  boxShadow: 'var(--shadow-glass)',
+  background: 'var(--surface-raised)',
+  borderRadius: 'var(--r-md)',
+  border: '1px solid var(--border-subtle)',
+  boxShadow: 'var(--e-1)',
 };
 
 export function Performance() {
@@ -69,17 +69,17 @@ export function Performance() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen pb-12" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-12" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       {/* Header */}
       <div className="px-6 pt-14 pb-2">
         <button
           onClick={() => navigate(-1)}
-          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}
+          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 }}
         >
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>
+        <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)' }}>
           Performance
         </h1>
         <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>How you compare to last month</p>
@@ -92,21 +92,22 @@ export function Performance() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
           style={{
-            background: 'radial-gradient(ellipse at 20% 35%, rgba(var(--accent-glow-rgb),0.17) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--navy) 100%)',
-            borderRadius: 24,
+            background: 'var(--surface-raised)',
+            borderRadius: 'var(--r-lg)',
+            border: '1px solid var(--border-subtle)',
             padding: '22px 22px',
-            boxShadow: 'var(--shadow-floating)',
+            boxShadow: 'var(--e-2)',
           }}
         >
-          <p style={{ fontSize: 11, fontWeight: 700, color: 'rgba(255,255,255,0.4)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
+          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
             Total Accepted Contributions
           </p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 44, fontWeight: 700, color: '#FFFFFF', lineHeight: 1, marginBottom: 6, letterSpacing: '-0.02em' }}>
+          <p style={{ fontFamily: 'var(--font-number)', fontSize: 44, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, marginBottom: 6, letterSpacing: '-0.02em' }}>
             207
           </p>
-          <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)' }}>
+          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>
             clips contributed to live datasets as a{' '}
-            <span style={{ color: 'var(--accent-primary)', fontWeight: 700 }}>{tierName(3)}</span>
+            <span style={{ color: 'var(--action-primary)', fontWeight: 700 }}>{tierName(3)}</span>
           </p>
         </motion.div>
       </div>
@@ -137,12 +138,12 @@ export function Performance() {
                 </div>
               </div>
               <div className="flex items-baseline justify-between">
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
+                <p style={{ fontFamily: 'var(--font-number)', fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
                   {m.value}
                 </p>
                 <span className="flex items-center gap-1" style={{
                   fontSize: 11, fontWeight: 700,
-                  color: m.deltaPositive ? 'var(--status-success-text)' : 'var(--status-error-text)',
+                  color: m.deltaPositive ? 'var(--state-settled)' : 'var(--state-failed)',
                 }}>
                   <TrendingUp className="w-3 h-3" />
                   {m.delta}
@@ -157,7 +158,7 @@ export function Performance() {
       <div className="px-6">
         <div className="flex items-center gap-2 mb-3">
           <Languages className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <h2 style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
             Language Expertise
           </h2>
         </div>
@@ -178,21 +179,21 @@ export function Performance() {
                 </div>
                 <span style={{
                   fontSize: 11, fontWeight: 700,
-                  padding: '4px 12px', borderRadius: 999,
-                  background: lang.bar > 0.8 ? 'var(--status-success-bg)' : lang.bar > 0.5 ? 'var(--accent-50)' : 'var(--neutral-100)',
-                  color:      lang.bar > 0.8 ? 'var(--status-success-text)' : lang.bar > 0.5 ? 'var(--status-accent-text)' : 'var(--text-secondary)',
+                  padding: '4px 12px', borderRadius: 'var(--r-full)',
+                  background: lang.bar > 0.5 ? 'var(--t-terracotta-50)' : 'var(--surface-sunken)',
+                  color:      lang.bar > 0.8 ? 'var(--state-settled)' : lang.bar > 0.5 ? 'var(--action-primary)' : 'var(--text-secondary)',
                 }}>
                   {lang.level}
                 </span>
               </div>
-              <div style={{ background: 'var(--neutral-100)', borderRadius: 999, height: 6 }}>
+              <div style={{ background: 'var(--surface-sunken)', borderRadius: 'var(--r-full)', height: 6 }}>
                 <motion.div
                   initial={{ width: 0 }}
                   animate={{ width: `${lang.bar * 100}%` }}
                   transition={{ duration: 1, ease: 'easeOut', delay: 0.3 + idx * 0.1 }}
                   style={{
-                    background: 'linear-gradient(90deg, var(--accent-primary), var(--accent-400))',
-                    borderRadius: 999, height: 6,
+                    background: 'var(--action-primary)',
+                    borderRadius: 'var(--r-full)', height: 6,
                   }}
                 />
               </div>

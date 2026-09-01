@@ -1,19 +1,20 @@
 import { useNavigate } from 'react-router';
 import { useEffect } from 'react';
 import { motion } from 'motion/react';
-import { Mic, AlertCircle, Check, FileText, Lightbulb, Volume2, ChevronLeft } from 'lucide-react';
+import { Mic, AlertCircle, Check, FileText, Lightbulb, ChevronLeft } from 'lucide-react';
+import { rejectionReason, type RejectionReasonId } from '../lib/rejectionTaxonomy';
 
 // ─── Data ─────────────────────────────────────────────────────────────────────
+// Partial rejection (C-12): most clips pass, one is flagged with a shared-taxonomy
+// reason. Accepted clips are preserved; only the flagged prompt is re-recorded.
 
 const TOTAL_PROMPTS = 10;
 const FLAGGED_PROMPTS = [4];
 
 const rejectedSubmission = {
-  questName:    'Customer Service Dialogue',
-  submittedAt:  'Feb 24, 2026 at 2:45 PM',
-  primaryReason: 'Background traffic noise detected on prompt 4',
-  category:     'Background noise',
-  improvementTip: 'Move to a quieter room and keep the mic 6–8 inches from your mouth. Even soft traffic doubles in pitch on a phone mic.',
+  questName:     'Customer Service Dialogue',
+  submittedAt:   'Feb 24, 2026 at 2:45 PM',
+  reasonId:      'noise' as RejectionReasonId,
   prompt4:
     '"Thank you for calling Sunrise Telecom. My name is Priya, and I\'ll be happy to assist you with your account today."',
   pendingPayout: 25.00,
@@ -25,6 +26,8 @@ export function RejectedTask() {
   const navigate = useNavigate();
   const validCount = TOTAL_PROMPTS - FLAGGED_PROMPTS.length;
   const firstFlagged = FLAGGED_PROMPTS[0];
+  const reason = rejectionReason(rejectedSubmission.reasonId);
+  const ReasonIcon = reason.icon;
 
   useEffect(() => {
     let sx = 0;
@@ -36,13 +39,13 @@ export function RejectedTask() {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex flex-col" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen flex flex-col" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
       {/* Header */}
       <div className="px-6 pt-14 pb-2">
-        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 }}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>
+        <h1 style={{ fontFamily: 'var(--font-ui)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
           Repair Studio
         </h1>
       </div>
@@ -52,26 +55,28 @@ export function RejectedTask() {
         {/* Hero — preserved-effort framing */}
         <div
           style={{
-            background: 'linear-gradient(160deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
-            borderRadius: 20,
+            background: 'var(--surface-studio)',
+            borderRadius: 'var(--r-lg)',
             padding: '24px',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0px 12px 40px rgba(0,0,0,0.22), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
+            boxShadow: 'var(--e-3)',
           }}
         >
           <div className="relative z-10">
-            <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--accent-primary)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
+            <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--action-primary)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
               Almost there
             </p>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: '#FFFFFF', lineHeight: 1.2, marginBottom: 10 }}>
+            <h2 style={{ fontFamily: 'var(--font-ui)', fontSize: 24, fontWeight: 800, color: 'var(--text-on-studio)', lineHeight: 1.2, marginBottom: 10, letterSpacing: '-0.02em' }}>
               {validCount} of {TOTAL_PROMPTS} clips passed.<br />Just fix 1 to unlock{' '}
-              <span style={{ fontFamily: 'var(--font-mono)', color: 'var(--accent-primary)' }}>
+              <span style={{ fontFamily: 'var(--font-number)', color: 'var(--action-primary)' }}>
                 ₹{rejectedSubmission.pendingPayout.toFixed(2)}
               </span>
             </h2>
-            <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.55)', lineHeight: 1.55 }}>
-              Your other recordings are safe. Re-record only the flagged prompt to release the full payout.
+            <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(var(--carbon-rgb),0.0)', lineHeight: 1.55 }}>
+              <span style={{ color: 'var(--text-on-studio)', opacity: 0.6 }}>
+                Your other recordings are safe. Re-record only the flagged prompt to release the full payout.
+              </span>
             </p>
           </div>
         </div>
@@ -79,10 +84,10 @@ export function RejectedTask() {
         {/* Prompt Matrix */}
         <div
           style={{
-            background: '#FFFFFF',
-            borderRadius: 16,
-            border: '1px solid #E8EDF3',
-            boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
+            background: 'var(--surface-raised)',
+            borderRadius: 'var(--r-md)',
+            border: '1px solid var(--border-subtle)',
+            boxShadow: 'var(--e-1)',
             padding: '20px',
           }}
         >
@@ -105,30 +110,27 @@ export function RejectedTask() {
                   transition={{ delay: idx * 0.04, duration: 0.25 }}
                   style={{
                     aspectRatio: '1 / 1',
-                    borderRadius: 12,
+                    borderRadius: 'var(--r-sm)',
                     background: flagged ? 'var(--status-error-bg)' : 'var(--status-success-bg)',
-                    border: flagged ? '1.5px solid #F5C5C5' : '1px solid #C8E6D5',
+                    border: flagged ? '1.5px solid var(--state-failed)' : '1px solid var(--state-settled)',
                     display: 'flex',
                     flexDirection: 'column',
                     alignItems: 'center',
                     justifyContent: 'center',
                     position: 'relative',
-                    boxShadow: flagged
-                      ? '0px 4px 12px rgba(192,57,43,0.10), inset 0px 1px 0px rgba(255,255,255,0.6)'
-                      : 'inset 0px 1px 0px rgba(255,255,255,0.6)',
                   }}
                 >
                   {flagged ? (
-                    <AlertCircle style={{ width: 16, height: 16, color: 'var(--color-error)' }} />
+                    <AlertCircle style={{ width: 16, height: 16, color: 'var(--state-failed)' }} />
                   ) : (
-                    <Check style={{ width: 16, height: 16, color: 'var(--color-success)' }} strokeWidth={2.6} />
+                    <Check style={{ width: 16, height: 16, color: 'var(--state-settled)' }} strokeWidth={2.6} />
                   )}
                   <span
                     style={{
-                      fontFamily: 'var(--font-mono)',
+                      fontFamily: 'var(--font-number)',
                       fontSize: 11,
                       fontWeight: 700,
-                      color: flagged ? 'var(--status-error-text)' : 'var(--status-success-text)',
+                      color: flagged ? 'var(--state-failed)' : 'var(--state-settled)',
                       marginTop: 4,
                     }}
                   >
@@ -140,30 +142,41 @@ export function RejectedTask() {
           </div>
         </div>
 
-        {/* Flagged prompt detail */}
+        {/* Flagged prompt detail — shared taxonomy: sentence + why + fix */}
         <div
           style={{
-            background: '#FFF8F8',
-            borderRadius: 16,
-            border: '1px solid #F5C5C5',
-            borderLeft: '3px solid #B8860B',
+            background: 'var(--status-error-bg)',
+            borderRadius: 'var(--r-md)',
+            border: '1px solid var(--state-failed)',
+            borderLeft: '3px solid var(--state-failed)',
             padding: '18px',
           }}
         >
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-center gap-2 mb-3">
             <span
               style={{
-                fontFamily: 'var(--font-mono)', fontSize: 11, fontWeight: 700,
-                padding: '3px 9px', borderRadius: 999,
-                background: 'var(--status-error-bg)', color: 'var(--status-error-text)', border: '1px solid #F5C5C5',
+                fontFamily: 'var(--font-number)', fontSize: 11, fontWeight: 700,
+                padding: '3px 9px', borderRadius: 'var(--r-full)',
+                background: 'var(--surface-raised)', color: 'var(--state-failed)', border: '1px solid var(--state-failed)',
               }}
             >
               PROMPT {String(firstFlagged).padStart(2, '0')}
             </span>
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--status-error-text)' }}>
-              Background noise
+            <span className="flex items-center gap-1.5" style={{ fontSize: 12, fontWeight: 700, color: 'var(--state-failed)' }}>
+              <ReasonIcon className="w-3.5 h-3.5" />
+              {reason.label}
             </span>
           </div>
+
+          {/* one clear sentence */}
+          <p style={{ fontSize: 13.5, fontWeight: 600, color: 'var(--text-primary)', lineHeight: 1.5, marginBottom: 8 }}>
+            {reason.sentence}
+          </p>
+          {/* why */}
+          <p style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 12 }}>
+            {reason.why}
+          </p>
+
           <div className="flex items-center gap-2 mb-2">
             <FileText className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
             <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
@@ -175,43 +188,38 @@ export function RejectedTask() {
           </p>
         </div>
 
-        {/* Skill development tip */}
+        {/* Corrective tip from the taxonomy */}
         <div
           style={{
-            background: '#FFFFFF',
-            borderRadius: 16,
-            border: '1px solid #E8EDF3',
-            boxShadow: '0px 6px 18px rgba(28,36,52,0.05), inset 0px 1px 0px rgba(255,255,255,0.65)',
+            background: 'var(--surface-raised)',
+            borderRadius: 'var(--r-md)',
+            border: '1px solid var(--border-subtle)',
+            boxShadow: 'var(--e-1)',
             padding: '16px 18px',
           }}
         >
-          <div className="flex items-center gap-2 mb-2">
+          <div className="flex items-start gap-2">
             <div style={{
-              width: 28, height: 28, borderRadius: 8,
+              width: 28, height: 28, borderRadius: 'var(--r-sm)', flexShrink: 0,
               background: 'var(--status-accent-bg)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Volume2 className="w-3.5 h-3.5" style={{ color: 'var(--accent-primary-deep)' }} />
+              <Lightbulb className="w-3.5 h-3.5" style={{ color: 'var(--action-primary)' }} />
             </div>
-            <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.04em' }}>
-              Category · {rejectedSubmission.category}
-            </p>
-          </div>
-          <div className="flex items-start gap-2">
-            <Lightbulb className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: '#B8860B' }} />
             <div>
               <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 4 }}>
-                How to improve next time
+                How to fix it
               </p>
               <p style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
-                {rejectedSubmission.improvementTip}
+                {reason.fix}
               </p>
             </div>
           </div>
         </div>
 
-        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5 }}>
-          ✓ Re-recording doesn't affect your streak or level
+        <p className="flex items-center justify-center gap-1.5" style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', lineHeight: 1.5 }}>
+          <Check className="w-3.5 h-3.5" style={{ color: 'var(--state-settled)' }} strokeWidth={2.5} />
+          Re-recording doesn&apos;t affect your standing
         </p>
 
         {/* Action Buttons */}
@@ -219,11 +227,11 @@ export function RejectedTask() {
           <button
             onClick={() => navigate('/recording/q-scen-3')}
             style={{
-              width: '100%', height: 56, borderRadius: 999,
-              background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-              color: '#FFFFFF',
+              width: '100%', height: 56, borderRadius: 'var(--r-full)',
+              background: 'var(--action-primary)',
+              color: 'var(--text-on-accent)',
               fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
-              boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.38), inset 0px 1px 0px rgba(255,255,255,0.18)',
+              boxShadow: 'var(--e-glow)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}
           >
@@ -233,14 +241,14 @@ export function RejectedTask() {
           <button
             onClick={() => navigate('/contributor')}
             style={{
-              width: '100%', padding: '15px', borderRadius: 999,
+              width: '100%', padding: '15px', borderRadius: 'var(--r-full)',
               background: 'transparent', color: 'var(--text-muted)',
               fontSize: 14, fontWeight: 600,
               border: 'none',
               cursor: 'pointer',
             }}
           >
-            I'll come back to this later
+            I&apos;ll come back to this later
           </button>
         </div>
       </div>

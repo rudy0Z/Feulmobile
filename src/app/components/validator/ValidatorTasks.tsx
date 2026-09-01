@@ -1,8 +1,9 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDevContext } from '../../lib/DevContext';
-import { Play, Clock, Languages, CheckCircle2, PlusCircle, ShieldCheck } from 'lucide-react';
+import { Play, Clock, Languages, ShieldCheck } from 'lucide-react';
 import { Waveform } from '../ui/Waveform';
+import { ValidatorQueueEmpty } from './ValidatorQueueEmpty';
 
 const tasks = [
   { id: 'task-1', title: 'Hindi — Waiter Scenario',      clips: 45, language: 'Hindi',    priority: 'High',   category: 'Dialogue', payout: 90  },
@@ -18,7 +19,7 @@ const categories = ['All Tasks', 'High Priority', 'English', 'Dialogue'];
 const priorityConfig: Record<string, { bg: string; text: string; bar: string }> = {
   High:   { bg: 'var(--accent-50)', text: 'var(--accent-primary-deep)', bar: 'var(--accent-primary)' },
   Medium: { bg: 'var(--neutral-100)', text: 'var(--text-secondary)', bar: 'var(--text-muted)' },
-  Low:    { bg: 'var(--neutral-100)', text: 'var(--text-muted)', bar: '#D0D8E0' },
+  Low:    { bg: 'var(--neutral-100)', text: 'var(--text-muted)', bar: 'var(--border-strong)' },
 };
 
 export function ValidatorTasks() {
@@ -33,12 +34,12 @@ export function ValidatorTasks() {
     : tasks.filter(t => t.language === activeCategory || t.category === activeCategory);
 
   return (
-    <div className="min-h-screen pb-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-6" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       {/* ── Header ── */}
       <div className="px-6 pt-16 pb-2 flex items-center gap-2">
         <ShieldCheck className="w-5 h-5" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontFamily: 'var(--font-ui)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
           Available Tasks
         </h1>
       </div>
@@ -46,7 +47,7 @@ export function ValidatorTasks() {
       <div className="px-6 pb-4">
         <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)' }}>Choose a batch and start grading</p>
         <div style={{ marginTop: 10, opacity: 0.08 }}>
-          <Waveform color="#1C2434" opacity={1} height={24} variant="precision" />
+          <Waveform color="var(--surface-studio)" opacity={1} height={24} variant="precision" />
         </div>
       </div>
 
@@ -57,12 +58,12 @@ export function ValidatorTasks() {
             key={cat}
             onClick={() => setActiveCategory(cat)}
             style={{
-              padding: '7px 18px', borderRadius: 999,
+              padding: '7px 18px', borderRadius: 'var(--r-full)',
               fontSize: 13, fontWeight: 600, whiteSpace: 'nowrap',
               border: '1.5px solid',
-              background: activeCategory === cat ? 'var(--accent-primary)' : '#FFFFFF',
+              background: activeCategory === cat ? 'var(--accent-primary)' : 'var(--surface-raised)',
               borderColor: activeCategory === cat ? 'var(--accent-primary)' : 'var(--card-border)',
-              color: activeCategory === cat ? '#FFFFFF' : 'var(--text-secondary)',
+              color: activeCategory === cat ? 'var(--text-on-accent)' : 'var(--text-secondary)',
               boxShadow: activeCategory === cat ? '0px 6px 14px rgba(var(--accent-glow-rgb),0.22)' : 'none',
               transition: 'all 0.15s',
             }}
@@ -72,41 +73,9 @@ export function ValidatorTasks() {
         ))}
       </div>
 
-      {/* ── Empty State ── */}
+      {/* ── Empty State — C-19 cross-subsidy: offer contributor work when the queue is empty ── */}
       {dev.validatorTasksEmpty ? (
-        <div className="flex flex-col items-center px-8 py-16" style={{ textAlign: 'center' }}>
-          <div style={{
-            width: 96, height: 96, borderRadius: '50%',
-            background: 'var(--neutral-100)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24,
-          }}>
-            <CheckCircle2 className="w-12 h-12" style={{ color: 'var(--color-success)' }} strokeWidth={1.5} />
-          </div>
-          <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
-            You're all caught up
-          </h2>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: 272, marginBottom: 20 }}>
-            No clips waiting in your assigned languages. Check back in a few hours or pick up a new language batch.
-          </p>
-          <div style={{
-            background: '#FFFFFF', borderRadius: 16, border: '1px solid #E8EDF3',
-            padding: '16px 28px', marginBottom: 28,
-            display: 'inline-flex', flexDirection: 'column', alignItems: 'center', gap: 4,
-          }}>
-            <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>Your accuracy this week</p>
-            <p style={{ fontFamily: 'var(--font-mono)', fontSize: 34, fontWeight: 700, color: 'var(--color-success)' }}>94.8%</p>
-            <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>Above top-10% of validators</p>
-          </div>
-          <button style={{
-            background: '#FFFFFF', border: '1.5px solid var(--accent-primary-deep)',
-            color: 'var(--accent-primary-deep)', borderRadius: 999,
-            padding: '13px 28px', fontSize: 14, fontWeight: 700,
-            display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer',
-          }}>
-            <PlusCircle className="w-4 h-4" />
-            Add Another Language
-          </button>
-        </div>
+        <ValidatorQueueEmpty />
       ) : (
         <div className="px-6 space-y-2.5">
           {filtered.map((task) => {
@@ -116,12 +85,12 @@ export function ValidatorTasks() {
                 key={task.id}
                 onClick={() => navigate(`/validator/grading/${task.id}`)}
                 style={{
-                  background: '#FFFFFF', borderRadius: 16, border: '1px solid #E8EDF3',
+                  background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)',
                   padding: '18px', cursor: 'pointer',
                   display: 'flex', alignItems: 'center', gap: 14,
                 }}
               >
-                <div style={{ width: 4, alignSelf: 'stretch', borderRadius: 999, background: pCfg.bar, flexShrink: 0, minHeight: 52 }} />
+                <div style={{ width: 4, alignSelf: 'stretch', borderRadius: 'var(--r-full)', background: pCfg.bar, flexShrink: 0, minHeight: 52 }} />
                 <div className="flex-1">
                   <h4 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 7 }}>{task.title}</h4>
                   <div className="flex items-center gap-3 flex-wrap mb-3">
@@ -133,13 +102,13 @@ export function ValidatorTasks() {
                       <Languages className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
                       <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{task.language}</span>
                     </div>
-                    <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: 'var(--accent-primary-deep)' }}>₹{task.payout}</span>
+                    <span style={{ fontFamily: 'var(--font-number)', fontSize: 13, fontWeight: 700, color: 'var(--accent-primary-deep)' }}>₹{task.payout}</span>
                   </div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 999, background: pCfg.bg, color: pCfg.text }}>
+                    <span style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 'var(--r-full)', background: pCfg.bg, color: pCfg.text }}>
                       {task.priority} Priority
                     </span>
-                    <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 999, background: 'var(--neutral-100)', color: 'var(--text-secondary)' }}>
+                    <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 'var(--r-full)', background: 'var(--neutral-100)', color: 'var(--text-secondary)' }}>
                       {task.category}
                     </span>
                   </div>
@@ -150,7 +119,7 @@ export function ValidatorTasks() {
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                   boxShadow: task.priority === 'High' ? '0px 4px 12px rgba(var(--accent-deep-rgb),0.25)' : 'none',
                 }}>
-                  <Play className="w-5 h-5" style={{ color: task.priority === 'High' ? '#FFFFFF' : 'var(--text-primary)' }} fill={task.priority === 'High' ? '#FFFFFF' : 'var(--text-primary)'} />
+                  <Play className="w-5 h-5" style={{ color: task.priority === 'High' ? 'var(--text-on-accent)' : 'var(--text-primary)' }} fill={task.priority === 'High' ? 'var(--text-on-accent)' : 'var(--text-primary)'} />
                 </div>
               </div>
             );

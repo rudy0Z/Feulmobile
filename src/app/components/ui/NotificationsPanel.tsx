@@ -42,7 +42,7 @@ const allNotifications: Notification[] = [
   },
   {
     id: 'n3', type: 'xp_level', group: 'today', unread: true,
-    title: 'You are now a Trusted Contributor ⚡',
+    title: 'You are now a Trusted Contributor',
     body: 'Unlocked higher-paying campaigns & faster reviews.',
     time: '8:00 AM',
     actionLabel: 'View rewards',
@@ -89,11 +89,11 @@ const notifConfig: Record<NotifType, {
 }> = {
   rejected:           { icon: AlertCircle,      iconColor: 'var(--color-error)', iconBg: 'var(--status-error-bg)', dot: 'var(--color-error)' },
   approved:           { icon: CheckCircle2,     iconColor: 'var(--color-success)', iconBg: 'var(--status-success-bg)', dot: 'var(--color-success)' },
-  xp_level:          { icon: Zap,              iconColor: 'var(--warning-700)', iconBg: '#FFF3D6', dot: '#D4A017' },
-  payout:             { icon: Wallet,           iconColor: 'var(--status-info-text)', iconBg: 'var(--status-info-bg)', dot: '#3B62A8' },
+  xp_level:          { icon: Zap,              iconColor: 'var(--warning-700)', iconBg: 'var(--t-ochre-50)', dot: 'var(--t-ochre-500)' },
+  payout:             { icon: Wallet,           iconColor: 'var(--status-info-text)', iconBg: 'var(--status-info-bg)', dot: 'var(--t-carbon-500)' },
   validator_approved: { icon: ShieldCheck,      iconColor: 'var(--color-success)', iconBg: 'var(--status-success-bg)', dot: 'var(--color-success)' },
   quest_new:          { icon: Mic,              iconColor: 'var(--accent-primary)', iconBg: 'var(--status-accent-bg)', dot: 'var(--accent-primary)' },
-  campaign_alert:     { icon: AlertCircle,      iconColor: 'var(--warning-700)', iconBg: '#FFF3D6', dot: '#D4A017' },
+  campaign_alert:     { icon: AlertCircle,      iconColor: 'var(--warning-700)', iconBg: 'var(--t-ochre-50)', dot: 'var(--t-ochre-500)' },
 };
 
 const groupLabels: Record<string, string> = {
@@ -136,7 +136,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
             onClick={onClose}
             style={{
               position: 'fixed', inset: 0, zIndex: 100,
-              background: 'rgba(10,12,16,0.55)',
+              background: 'rgba(var(--carbon-rgb),0.55)',
               backdropFilter: 'blur(4px)',
             }}
           />
@@ -169,8 +169,8 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
             <div
               style={{
                 padding: '16px 20px 14px',
-                borderBottom: '1px solid #EDF0F5',
-                background: '#FFFFFF',
+                borderBottom: '1px solid var(--border-subtle)',
+                background: 'var(--t-bone-0)',
                 flexShrink: 0,
               }}
             >
@@ -182,9 +182,9 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                       <span style={{
                         position: 'absolute', top: -5, right: -6,
                         width: 16, height: 16, borderRadius: '50%',
-                        background: 'var(--accent-primary)', border: '2px solid #FFFFFF',
+                        background: 'var(--accent-primary)', border: '2px solid var(--t-bone-0)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
-                        fontSize: 9, fontWeight: 800, color: '#FFFFFF',
+                        fontSize: 9, fontWeight: 800, color: 'var(--t-bone-0)',
                       }}>
                         {unreadCount}
                       </span>
@@ -250,12 +250,12 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                             transition={{ duration: 0.25, delay: i * 0.04 }}
                             onClick={() => markRead(notif.id)}
                             style={{
-                              background: '#FFFFFF',
+                              background: 'var(--t-bone-0)',
                               borderRadius: 16,
                               padding: '14px 16px',
                               border: notif.unread
                                 ? `1.5px solid ${cfg.dot}30`
-                                : '1.5px solid #EDF0F5',
+                                : '1.5px solid var(--border-subtle)',
                               cursor: 'pointer',
                               position: 'relative',
                               overflow: 'hidden',
@@ -360,11 +360,11 @@ export function BellButton({ unreadCount, onClick }: BellButtonProps) {
       style={{
         position: 'relative',
         width: 36, height: 36, borderRadius: '50%',
-        background: '#FFFFFF',
-        border: '1px solid #EDF0F5',
+        background: 'var(--t-bone-0)',
+        border: '1px solid var(--border-subtle)',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
         cursor: 'pointer',
-        boxShadow: '0px 2px 8px rgba(28,36,52,0.07)',
+        boxShadow: '0px 2px 8px rgba(var(--carbon-rgb),0.07)',
       }}
     >
       <Bell className="w-4 h-4" style={{ color: 'var(--text-primary)' }} />
@@ -374,7 +374,7 @@ export function BellButton({ unreadCount, onClick }: BellButtonProps) {
           minWidth: 16, height: 16, borderRadius: 999,
           background: 'var(--accent-primary)', border: '2px solid var(--background)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: 9, fontWeight: 800, color: '#FFFFFF', padding: '0 3px',
+          fontSize: 9, fontWeight: 800, color: 'var(--t-bone-0)', padding: '0 3px',
         }}>
           {unreadCount > 9 ? '9+' : unreadCount}
         </span>

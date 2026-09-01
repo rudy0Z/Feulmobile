@@ -1,617 +1,372 @@
 import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router';
+import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
+import { ChevronLeft, CheckCircle2, Clock, Copy, ShieldCheck, Loader2 } from 'lucide-react';
 import { SpoofingVerificationHold } from './SpoofingVerificationHold';
-import { motion, AnimatePresence } from 'motion/react';
-import {
-  CreditCard, CheckCircle2, Clock,
-  Wallet, ChevronRight, ChevronLeft, Copy, Zap, TrendingUp, ShieldCheck,
-} from 'lucide-react';
-import { Waveform } from './ui/Waveform';
+import { PaymentFailed } from './PaymentFailed';
+import { Amount, Button } from './ui/Primitives';
+import { useDevContext } from '../lib/DevContext';
+import { getProfile, setProfile } from '../lib/session';
 
-/* ── helpers ────────────────────────────────────────── */
+/* ═══════════════════════════════════════════════════════════════════
+   Payout — the honest withdrawal path. First-ever withdrawal links a
+   UPI VPA and verifies the holder's name matches; every withdrawal has
+   a ₹100 floor; the money is never described as "instant". Bank-layer
+   failure is a real, reachable branch (money stays in the wallet).
+   ═══════════════════════════════════════════════════════════════════ */
+
+const WITHDRAW_FLOOR = 100;
+
 function getRole(pathname: string): 'contributor' | 'validator' {
   return pathname.startsWith('/validator') ? 'validator' : 'contributor';
 }
 
 const roleConfig = {
-  contributor: {
-    balance: 127.50,
-    minWithdraw: 50,
-    upi: 'alex@upi',
-    weeklyLabel: '+₹185.00 this week',
-    backPath: '/contributor/wallet',
-    nextPath: '/contributor/quests',
-    nextLabel: 'Find More Quests',
-    teasers: [
-      { label: 'Hindi Quests',   amount: '₹15–50' },
-      { label: 'Quick Phrases',  amount: '₹10'    },
-      { label: 'High Demand',    amount: '₹35+'   },
-    ],
-  },
-  validator: {
-    balance: 568.00,
-    minWithdraw: 100,
-    upi: 'alex@upi',
-    weeklyLabel: '+₹254.00 this week',
-    backPath: '/validator/wallet',
-    nextPath: '/validator/tasks',
-    nextLabel: 'Keep Grading',
-    teasers: [
-      { label: 'Hindi Batch',    amount: '₹90'   },
-      { label: 'English Batch',  amount: '₹64'   },
-      { label: 'Accuracy Bonus', amount: '+20%'  },
-    ],
-  },
+  contributor: { balance: 127.5, backPath: '/contributor/wallet', nextPath: '/contributor/quests', nextLabel: 'Find more quests', presets: [100, 200] },
+  validator:   { balance: 568.0, backPath: '/validator/wallet',    nextPath: '/validator/tasks',    nextLabel: 'Keep grading',      presets: [100, 200, 500] },
 };
 
-const PRESETS_CONTRIB  = [50, 100, 200];
-const PRESETS_VALID    = [100, 200, 500];
+type Step = 'add-upi' | 'name-match' | 'amount' | 'confirm' | 'success';
 
-/* ── Step components ────────────────────────────────── */
+const shell: React.CSSProperties = { background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' };
+const backBtn: React.CSSProperties = { display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 };
+const stepAnim = (reduce: boolean | null) => ({
+  initial: reduce ? false : { opacity: 0, x: 32 },
+  animate: { opacity: 1, x: 0 },
+  exit: reduce ? undefined : { opacity: 0, x: -32 },
+  transition: { duration: 0.26 },
+});
 
-/* STEP 1 — Select Amount */
-function StepAmount({
-  role,
-  amount,
-  setAmount,
-  onNext,
-  onBack,
-}: {
-  role: 'contributor' | 'validator';
-  amount: string;
-  setAmount: (v: string) => void;
-  onNext: () => void;
-  onBack: () => void;
-}) {
-  const cfg      = roleConfig[role];
-  const presets  = role === 'validator' ? PRESETS_VALID : PRESETS_CONTRIB;
-  const numeric  = parseFloat(amount) || 0;
-  const invalid  = numeric < cfg.minWithdraw || numeric > cfg.balance;
-  const inputRef = useRef<HTMLInputElement>(null);
-
+function Header({ title, sub, onBack }: { title: string; sub: string; onBack: () => void }) {
   return (
-    <motion.div
-      key="step-amount"
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -40 }}
-      transition={{ duration: 0.28 }}
-      className="flex flex-col min-h-screen"
-      style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}
-    >
-      {/* Header */}
-      <div className="px-6 pt-14 pb-4">
-        <button onClick={onBack} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
-          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
-        </button>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-          Withdraw Funds
-        </h1>
-        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>Step 1 of 3 · Select amount</p>
-      </div>
-
-      {/* Balance card — compact navy */}
-      <div className="px-6 mb-6">
-        <div style={{
-          background: 'var(--navy)', borderRadius: 16, padding: '18px 20px',
-          position: 'relative', overflow: 'hidden',
-        }}>
-          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 18px 18px', opacity: 0.10 }}>
-            <Waveform color="#FFFFFF" opacity={1} height={48} variant="precision" />
-          </div>
-          <div className="relative z-10 flex items-center justify-between">
-            <div>
-              <p style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.4)', marginBottom: 4, textTransform: 'uppercase', letterSpacing: '0.08em' }}>
-                Available Balance
-              </p>
-              <p style={{ fontFamily: 'var(--font-mono)', fontSize: 30, fontWeight: 700, color: '#FFFFFF', lineHeight: 1 }}>
-                ₹{cfg.balance.toFixed(2)}
-              </p>
-            </div>
-            <div className="flex items-center gap-1.5">
-              <TrendingUp className="w-3.5 h-3.5" style={{ color: 'var(--accent-primary-deep)' }} />
-              <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-primary-deep)' }}>{cfg.weeklyLabel}</span>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* Amount input */}
-      <div className="px-6 mb-5">
-        <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-          Enter Amount
-        </p>
-        <div
-          onClick={() => inputRef.current?.focus()}
-          style={{
-            background: '#FFFFFF', borderRadius: 16, border: `2px solid ${!amount || !invalid ? 'var(--accent-primary)' : 'var(--card-border)'}`,
-            padding: '18px 20px',
-            display: 'flex', alignItems: 'center', gap: 8, cursor: 'text',
-            boxShadow: '0px 2px 8px rgba(28,36,52,0.04)',
-            transition: 'border-color 0.15s',
-          }}
-        >
-          <span style={{ fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700, color: 'var(--text-muted)' }}>₹</span>
-          <input
-            ref={inputRef}
-            type="number"
-            value={amount}
-            onChange={e => setAmount(e.target.value)}
-            placeholder="0.00"
-            style={{
-              flex: 1, border: 'none', outline: 'none', background: 'transparent',
-              fontFamily: 'var(--font-mono)', fontSize: 28, fontWeight: 700,
-              color: 'var(--text-primary)',
-            }}
-          />
-          {amount && (
-            <button
-              onClick={() => setAmount('')}
-              style={{ background: 'var(--neutral-100)', borderRadius: '50%', width: 22, height: 22, border: 'none', cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}
-            >
-              <span style={{ fontSize: 13, color: 'var(--text-muted)', lineHeight: 1 }}>×</span>
-            </button>
-          )}
-        </div>
-
-        {amount && invalid && (
-          <p style={{ fontSize: 12, fontWeight: 500, color: '#D94F4F', marginTop: 6 }}>
-            {numeric < cfg.minWithdraw
-              ? `Minimum withdrawal is ₹${cfg.minWithdraw}`
-              : `Exceeds available balance (₹${cfg.balance.toFixed(2)})`}
-          </p>
-        )}
-      </div>
-
-      {/* Quick presets */}
-      <div className="px-6 mb-8">
-        <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 10, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-          Quick Select
-        </p>
-        <div className="flex gap-2 flex-wrap">
-          {presets.map(p => (
-            <button
-              key={p}
-              onClick={() => setAmount(String(p))}
-              style={{
-                padding: '9px 20px', borderRadius: 999,
-                border: `1.5px solid ${amount === String(p) ? 'var(--accent-primary)' : 'var(--card-border)'}`,
-                background: amount === String(p) ? 'var(--accent-50)' : '#FFFFFF',
-                color: amount === String(p) ? 'var(--accent-primary-deep)' : 'var(--text-secondary)',
-                fontSize: 13, fontWeight: 700,
-                fontFamily: 'var(--font-mono)',
-                cursor: 'pointer', transition: 'all 0.15s',
-              }}
-            >
-              ₹{p}
-            </button>
-          ))}
-          <button
-            onClick={() => setAmount(cfg.balance.toFixed(2))}
-            style={{
-              padding: '9px 20px', borderRadius: 999,
-              border: `1.5px solid ${amount === cfg.balance.toFixed(2) ? 'var(--accent-primary)' : 'var(--card-border)'}`,
-              background: amount === cfg.balance.toFixed(2) ? 'var(--accent-50)' : '#FFFFFF',
-              color: amount === cfg.balance.toFixed(2) ? 'var(--accent-primary-deep)' : 'var(--text-secondary)',
-              fontSize: 13, fontWeight: 700, cursor: 'pointer', transition: 'all 0.15s',
-            }}
-          >
-            Full ₹{cfg.balance.toFixed(2)}
-          </button>
-        </div>
-      </div>
-
-      {/* UPI preview */}
-      <div className="px-6 mb-auto">
-        <div style={{ background: 'var(--surface)', borderRadius: 16, border: '1px solid var(--card-border)', padding: '14px 18px' }}>
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <CreditCard className="w-4 h-4" style={{ color: 'var(--color-success)' }} />
-              <div>
-                <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>{cfg.upi}</p>
-                <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>Funds will be sent to this UPI ID</p>
-              </div>
-            </div>
-            <ChevronRight className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
-          </div>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="px-6 py-8">
-        <button
-          disabled={!amount || invalid}
-          onClick={onNext}
-          style={{
-            width: '100%', height: 56, borderRadius: 999,
-            background: !amount || invalid ? 'var(--card-border)' : 'var(--accent-primary-deep)',
-            color: !amount || invalid ? 'var(--text-muted)' : '#FFFFFF',
-            fontSize: 16, fontWeight: 700, border: 'none',
-            cursor: !amount || invalid ? 'not-allowed' : 'pointer',
-            boxShadow: !amount || invalid ? 'none' : '0px 4px 20px rgba(var(--accent-deep-rgb),0.30)',
-            transition: 'all 0.2s',
-          }}
-        >
-          Continue to Review
-        </button>
-        <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 10 }}>
-          No fees · Minimum ₹{cfg.minWithdraw} · Paid out Monday
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
-/* STEP 2 — Review & Confirm */
-function StepConfirm({
-  role,
-  amount,
-  onConfirm,
-  onBack,
-}: {
-  role: 'contributor' | 'validator';
-  amount: string;
-  onConfirm: () => void;
-  onBack: () => void;
-}) {
-  const cfg     = roleConfig[role];
-  const numeric = parseFloat(amount) || 0;
-
-  // Next Monday calculation
-  const today = new Date(2026, 2, 31); // March 31 2026 (Tuesday)
-  const daysToMonday = (7 - today.getDay() + 1) % 7 || 7;
-  const nextMonday = new Date(today);
-  nextMonday.setDate(today.getDate() + daysToMonday);
-  const arrivalDate = nextMonday.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
-
-  return (
-    <motion.div
-      key="step-confirm"
-      initial={{ opacity: 0, x: 40 }}
-      animate={{ opacity: 1, x: 0 }}
-      exit={{ opacity: 0, x: -40 }}
-      transition={{ duration: 0.28 }}
-      className="flex flex-col min-h-screen"
-      style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}
-    >
-      {/* Header */}
-      <div className="px-6 pt-14 pb-4">
-        <button onClick={onBack} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
-          <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
-        </button>
-        <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
-          Review Withdrawal
-        </h1>
-        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>Step 2 of 3 · Confirm details</p>
-      </div>
-
-      {/* Big amount */}
-      <div className="px-6 mb-6 text-center pt-4">
-        <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.06em' }}>
-          Withdrawing
-        </p>
-        <motion.p
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 14, delay: 0.1 }}
-          style={{ fontFamily: 'var(--font-mono)', fontSize: 58, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, letterSpacing: '-0.02em' }}
-        >
-          ₹{numeric.toFixed(2)}
-        </motion.p>
-      </div>
-
-      {/* Summary card */}
-      <div className="px-6 mb-5">
-        <div style={{ background: 'var(--surface)', borderRadius: 20, border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: '0px 4px 16px rgba(28,36,52,0.04)' }}>
-          {[
-            { label: 'Amount',       value: `₹${numeric.toFixed(2)}`,       mono: true,  color: 'var(--text-primary)'  },
-            { label: 'Processing Fee', value: '₹0.00 (Free)',              mono: true,  color: 'var(--color-success)'  },
-            { label: 'You Receive',  value: `₹${numeric.toFixed(2)}`,       mono: true,  color: 'var(--accent-primary-deep)'  },
-            { label: 'To',           value: cfg.upi,                         mono: false, color: 'var(--text-primary)'  },
-            { label: 'Method',       value: 'UPI',                           mono: false, color: 'var(--text-primary)'  },
-          ].map((row, idx, arr) => (
-            <div
-              key={row.label}
-              className="flex items-center justify-between"
-              style={{
-                padding: '14px 20px',
-                borderBottom: idx < arr.length - 1 ? '1px solid var(--card-border)' : 'none',
-              }}
-            >
-              <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>{row.label}</span>
-              <span style={{
-                fontSize: 13, fontWeight: 700, color: row.color,
-                fontFamily: row.mono ? 'var(--font-mono)' : 'var(--font-sans)',
-              }}>
-                {row.value}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Arrival timeline */}
-      <div className="px-6 mb-5">
-        <div style={{
-          background: 'var(--accent-50)', borderRadius: 16, border: '1px solid #F2C4AD', padding: '16px 18px',
-          display: 'flex', alignItems: 'flex-start', gap: 12,
-        }}>
-          <Clock className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--accent-primary-deep)' }} />
-          <div>
-            <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--status-accent-text)', marginBottom: 3 }}>
-              Expected Arrival: {arrivalDate}
-            </p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--accent-primary-deep)', lineHeight: 1.5 }}>
-              Payouts process every Monday. Allow 2–3 business days after initiation.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      {/* Balance after */}
-      <div className="px-6 mb-auto">
-        <div style={{ background: 'var(--surface)', borderRadius: 16, border: '1px solid var(--card-border)', padding: '14px 18px' }}>
-          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 4 }}>Remaining Balance After Withdrawal</p>
-          <p style={{ fontFamily: 'var(--font-mono)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)' }}>
-            ₹{(cfg.balance - numeric).toFixed(2)}
-          </p>
-        </div>
-      </div>
-
-      {/* CTA */}
-      <div className="px-6 py-8">
-        <button
-          onClick={onConfirm}
-          style={{
-            width: '100%', height: 56, borderRadius: 999,
-            background: 'var(--accent-primary-deep)', color: '#FFFFFF',
-            fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 4px 20px rgba(var(--accent-deep-rgb),0.30)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          }}
-        >
-          <Wallet className="w-5 h-5" />
-          Confirm Withdrawal
-        </button>
-        <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 10 }}>
-          Funds cannot be recalled after confirmation
-        </p>
-      </div>
-    </motion.div>
-  );
-}
-
-/* STEP 3 — Success */
-function StepSuccess({
-  role,
-  amount,
-}: {
-  role: 'contributor' | 'validator';
-  amount: string;
-}) {
-  const navigate  = useNavigate();
-  const cfg       = roleConfig[role];
-  const numeric   = parseFloat(amount) || 0;
-  const refNum    = `FUL-${Math.random().toString(36).slice(2, 10).toUpperCase()}`;
-  const [copied, setCopied] = useState(false);
-
-  const today = new Date(2026, 2, 31);
-  const daysToMonday = (7 - today.getDay() + 1) % 7 || 7;
-  const nextMonday = new Date(today);
-  nextMonday.setDate(today.getDate() + daysToMonday);
-  const arrivalDate = nextMonday.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
-
-  const handleCopy = () => {
-    navigator.clipboard.writeText(refNum).catch(() => {});
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
-  return (
-    <div
-      className="min-h-screen flex flex-col relative overflow-hidden"
-      style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}
-    >
-      {/* Waveform bg */}
-      <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
-        <Waveform color="#FFFFFF" opacity={1} height={200} variant="precision" />
-      </div>
-
-      <div className="flex-1 flex flex-col items-center justify-center px-6 relative z-10">
-        {/* Success ring */}
-        <motion.div
-          initial={{ scale: 0, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
-          style={{
-            width: 120, height: 120, borderRadius: '50%',
-            background: 'rgba(var(--accent-deep-rgb),0.12)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: 36,
-          }}
-        >
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.3 }}
-            style={{
-              width: 88, height: 88, borderRadius: '50%',
-              background: 'var(--accent-primary-deep)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              boxShadow: '0px 12px 40px rgba(var(--accent-deep-rgb),0.4)',
-            }}
-          >
-            <CheckCircle2 className="w-10 h-10 text-white" strokeWidth={1.75} />
-          </motion.div>
-        </motion.div>
-
-        {/* Amount */}
-        <motion.div
-          initial={{ opacity: 0, y: 24 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.55, duration: 0.45 }}
-          className="text-center"
-        >
-          <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--accent-primary-deep)', marginBottom: 10, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-            Withdrawal Initiated
-          </p>
-          <motion.p
-            initial={{ scale: 0.6 }}
-            animate={{ scale: 1 }}
-            transition={{ type: 'spring', stiffness: 150, damping: 10, delay: 0.7 }}
-            style={{
-              fontFamily: 'var(--font-mono)', fontSize: 68, fontWeight: 700,
-              color: '#FFFFFF', lineHeight: 1, letterSpacing: '-0.03em',
-            }}
-          >
-            ₹{numeric.toFixed(2)}
-          </motion.p>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.4)', marginTop: 10 }}>
-            Arriving by {arrivalDate}
-          </p>
-        </motion.div>
-
-        {/* Details card */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.9, duration: 0.4 }}
-          style={{
-            marginTop: 28, width: '100%', background: 'rgba(255,255,255,0.05)',
-            borderRadius: 16, border: '1px solid rgba(255,255,255,0.08)',
-            overflow: 'hidden',
-          }}
-        >
-          <div className="flex items-center justify-between" style={{ padding: '14px 18px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>Reference</span>
-            <button
-              onClick={handleCopy}
-              className="flex items-center gap-2"
-              style={{ background: 'none', border: 'none', cursor: 'pointer' }}
-            >
-              <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>{refNum}</span>
-              {copied
-                ? <CheckCircle2 className="w-3.5 h-3.5" style={{ color: 'var(--color-success)' }} />
-                : <Copy className="w-3.5 h-3.5" style={{ color: 'rgba(255,255,255,0.3)' }} />}
-            </button>
-          </div>
-          <div className="flex items-center justify-between" style={{ padding: '14px 18px', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>To</span>
-            <span style={{ fontSize: 12, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>{cfg.upi}</span>
-          </div>
-          <div className="flex items-center justify-between" style={{ padding: '14px 18px' }}>
-            <span style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>Status</span>
-            <span className="flex items-center gap-1.5" style={{ fontSize: 12, fontWeight: 700, color: '#B8860B' }}>
-              <Clock className="w-3.5 h-3.5" />Processing
-            </span>
-          </div>
-        </motion.div>
-
-        {/* XP / earn more teaser */}
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.2, duration: 0.4 }}
-          className="mt-8 text-center w-full"
-        >
-          <div className="flex items-center gap-2 justify-center mb-3">
-            <Zap className="w-3.5 h-3.5" style={{ color: 'rgba(255,255,255,0.25)' }} />
-            <span style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.25)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-              Keep earning while you wait
-            </span>
-          </div>
-          <div className="flex items-center gap-3 justify-center">
-            {cfg.teasers.map(t => (
-              <div key={t.label} style={{
-                background: 'rgba(255,255,255,0.04)', borderRadius: 12,
-                padding: '10px 14px', textAlign: 'center',
-              }}>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'var(--accent-primary-deep)', marginBottom: 2 }}>{t.amount}</p>
-                <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>{t.label}</p>
-              </div>
-            ))}
-          </div>
-        </motion.div>
-      </div>
-
-      {/* CTAs */}
-      <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 1.3, duration: 0.45 }}
-        className="px-6 pb-12 flex flex-col gap-3 relative z-10"
-      >
-        <button
-          onClick={() => navigate(cfg.nextPath)}
-          style={{
-            width: '100%', height: 56, borderRadius: 999,
-            background: 'var(--accent-primary-deep)', color: '#FFFFFF',
-            fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 6px 28px rgba(var(--accent-deep-rgb),0.4)',
-          }}
-        >
-          {cfg.nextLabel}
-        </button>
-        <button
-          onClick={() => navigate(cfg.backPath)}
-          style={{
-            width: '100%', height: 48, borderRadius: 999,
-            background: 'rgba(255,255,255,0.06)', color: 'rgba(255,255,255,0.55)',
-            fontSize: 14, fontWeight: 600, border: '1px solid rgba(255,255,255,0.08)', cursor: 'pointer',
-          }}
-        >
-          Back to Wallet
-        </button>
-      </motion.div>
+    <div className="px-6 pt-14 pb-4">
+      <button onClick={onBack} style={backBtn}><ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} /></button>
+      <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', margin: 0 }}>{title}</h1>
+      <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', marginTop: 4 }}>{sub}</p>
     </div>
   );
 }
 
-/* ── Main export ────────────────────────────────────── */
+/* ── AddUPI — first withdrawal only ──────────────────────── */
+function AddUPI({ onNext, onBack }: { onNext: (vpa: string) => void; onBack: () => void }) {
+  const [vpa, setVpa] = useState('');
+  const valid = /^[\w.\-]{2,}@[a-z]{2,}$/i.test(vpa.trim());
+  return (
+    <motion.div key="add-upi" {...stepAnim(useReducedMotion())} className="flex flex-col min-h-screen" style={shell}>
+      <Header title="Where should we send it?" sub="One-time setup · Add your UPI ID" onBack={onBack} />
+      <div className="flex-1 px-6">
+        <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, marginBottom: 20 }}>
+          Enter the UPI ID where you want your rupees. We'll check the account name matches yours before anything is sent.
+        </p>
+        <input
+          value={vpa}
+          onChange={(e) => setVpa(e.target.value)}
+          placeholder="yourname@okbank"
+          autoCapitalize="none"
+          style={{
+            width: '100%', height: 60, padding: '0 18px', fontSize: 18, fontWeight: 600,
+            color: 'var(--text-primary)', background: 'var(--surface-raised)',
+            border: `1px solid ${vpa && !valid ? 'var(--state-failed)' : valid ? 'var(--action-primary)' : 'var(--border-strong)'}`,
+            borderRadius: 'var(--r-md)', outline: 'none',
+          }}
+        />
+        {vpa && !valid && (
+          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--state-failed)', marginTop: 8 }}>
+            That doesn't look like a UPI ID yet — it should read like name@bank.
+          </p>
+        )}
+      </div>
+      <div className="px-6 pb-10">
+        <Button full size="lg" disabled={!valid} onClick={() => onNext(vpa.trim())}>Continue</Button>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── UPINameMatch — verify VPA holder name ───────────────── */
+function UPINameMatch({ vpa, name, onMatched, onBack }: { vpa: string; name: string; onMatched: () => void; onBack: () => void }) {
+  const reduce = useReducedMotion();
+  const [phase, setPhase] = useState<'checking' | 'matched'>('checking');
+  useEffect(() => {
+    const t = setTimeout(() => setPhase('matched'), reduce ? 0 : 1400);
+    return () => clearTimeout(t);
+  }, [reduce]);
+
+  return (
+    <motion.div key="name-match" {...stepAnim(reduce)} className="flex flex-col min-h-screen" style={shell}>
+      <Header title="Checking the name" sub="One-time setup · UPI verification" onBack={onBack} />
+      <div className="flex-1 flex flex-col items-center justify-center px-8 text-center">
+        <div style={{ width: 84, height: 84, borderRadius: 'var(--r-full)', background: phase === 'matched' ? 'var(--t-verdigris-50)' : 'var(--surface-sunken)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 22 }}>
+          {phase === 'matched'
+            ? <ShieldCheck style={{ width: 38, height: 38, color: 'var(--t-verdigris-700)' }} strokeWidth={2} />
+            : <motion.span animate={reduce ? undefined : { rotate: 360 }} transition={{ repeat: Infinity, duration: 1, ease: 'linear' }} style={{ display: 'inline-flex' }}><Loader2 style={{ width: 34, height: 34, color: 'var(--text-muted)' }} /></motion.span>}
+        </div>
+        <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 6px' }}>
+          {phase === 'matched' ? 'Name matched' : 'Verifying with your bank…'}
+        </p>
+        <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: 300 }}>
+          {phase === 'matched'
+            ? <>The account behind <strong style={{ color: 'var(--text-primary)' }}>{vpa}</strong> belongs to <strong style={{ color: 'var(--text-primary)' }}>{name}</strong>. Safe to send.</>
+            : <>Making sure {vpa} is registered to you.</>}
+        </p>
+      </div>
+      <div className="px-6 pb-10">
+        <Button full size="lg" disabled={phase !== 'matched'} onClick={onMatched}>
+          {phase === 'matched' ? 'Looks right — continue' : 'Verifying…'}
+        </Button>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── StepAmount ──────────────────────────────────────────── */
+function StepAmount({ balance, vpa, presets, amount, setAmount, onNext, onBack }: {
+  balance: number; vpa: string; presets: number[]; amount: string;
+  setAmount: (v: string) => void; onNext: () => void; onBack: () => void;
+}) {
+  const numeric = parseFloat(amount) || 0;
+  const belowFloor = numeric < WITHDRAW_FLOOR;
+  const overBalance = numeric > balance;
+  const invalid = belowFloor || overBalance;
+  const gap = Math.max(0, WITHDRAW_FLOOR - numeric);
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  return (
+    <motion.div key="amount" {...stepAnim(useReducedMotion())} className="flex flex-col min-h-screen" style={shell}>
+      <Header title="Withdraw" sub="Step 1 of 2 · Choose an amount" onBack={onBack} />
+
+      <div className="px-6 mb-5">
+        <div style={{ background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--r-md)', padding: '16px 18px', display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Available</span>
+          <Amount value={balance} size={22} color="var(--money-positive)" />
+        </div>
+      </div>
+
+      <div className="px-6 mb-4">
+        <div
+          onClick={() => inputRef.current?.focus()}
+          style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: `1px solid ${amount && invalid ? 'var(--state-failed)' : 'var(--action-primary)'}`, padding: '18px 20px', display: 'flex', alignItems: 'center', gap: 8, cursor: 'text' }}
+        >
+          <span className="tabular" style={{ fontSize: 30, fontWeight: 700, color: 'var(--text-muted)' }}>₹</span>
+          <input
+            ref={inputRef} type="number" inputMode="decimal" value={amount}
+            onChange={(e) => setAmount(e.target.value)} placeholder="0"
+            className="tabular"
+            style={{ flex: 1, border: 'none', outline: 'none', background: 'transparent', fontSize: 30, fontWeight: 700, color: 'var(--text-primary)' }}
+          />
+        </div>
+        {amount && invalid && (
+          <p style={{ fontSize: 13, fontWeight: 500, color: belowFloor ? 'var(--text-secondary)' : 'var(--state-failed)', marginTop: 8 }}>
+            {belowFloor ? <><Amount value={gap} size={13} color="var(--text-primary)" /> more to reach the ₹{WITHDRAW_FLOOR} minimum</>
+              : `That's more than your ₹${balance.toFixed(2)} balance`}
+          </p>
+        )}
+      </div>
+
+      <div className="px-6 mb-auto">
+        <div className="flex gap-2 flex-wrap">
+          {presets.filter((p) => p <= balance).map((p) => (
+            <button key={p} onClick={() => setAmount(String(p))}
+              className="tabular"
+              style={{
+                padding: '9px 20px', borderRadius: 'var(--r-full)', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+                border: `1px solid ${amount === String(p) ? 'var(--action-primary)' : 'var(--border-subtle)'}`,
+                background: amount === String(p) ? 'var(--t-terracotta-50)' : 'var(--surface-raised)',
+                color: amount === String(p) ? 'var(--action-primary)' : 'var(--text-secondary)',
+              }}>₹{p}</button>
+          ))}
+          <button onClick={() => setAmount(balance.toFixed(2))}
+            style={{ padding: '9px 20px', borderRadius: 'var(--r-full)', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+              border: `1px solid ${amount === balance.toFixed(2) ? 'var(--action-primary)' : 'var(--border-subtle)'}`,
+              background: amount === balance.toFixed(2) ? 'var(--t-terracotta-50)' : 'var(--surface-raised)',
+              color: amount === balance.toFixed(2) ? 'var(--action-primary)' : 'var(--text-secondary)' }}>All</button>
+        </div>
+      </div>
+
+      <div className="px-6 py-8">
+        <Button full size="lg" disabled={!amount || invalid} onClick={onNext}>Review</Button>
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 10 }}>
+          No fees · minimum ₹{WITHDRAW_FLOOR} · sent to {vpa}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── StepConfirm ─────────────────────────────────────────── */
+function StepConfirm({ balance, vpa, amount, onConfirm, onBack }: {
+  balance: number; vpa: string; amount: string; onConfirm: () => void; onBack: () => void;
+}) {
+  const numeric = parseFloat(amount) || 0;
+  const today = new Date(2026, 2, 31);
+  const daysToMonday = (7 - today.getDay() + 1) % 7 || 7;
+  const nextMonday = new Date(today); nextMonday.setDate(today.getDate() + daysToMonday);
+  const arrival = nextMonday.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  const rows = [
+    ['Amount', <Amount key="a" value={numeric} size={15} />],
+    ['Fee', <span key="f" style={{ color: 'var(--t-verdigris-700)', fontWeight: 700, fontSize: 14 }}>Free</span>],
+    ['To', <span key="t" style={{ color: 'var(--text-primary)', fontWeight: 700, fontSize: 14 }}>{vpa}</span>],
+    ['Balance after', <Amount key="b" value={balance - numeric} size={15} color="var(--text-secondary)" />],
+  ] as const;
+
+  return (
+    <motion.div key="confirm" {...stepAnim(useReducedMotion())} className="flex flex-col min-h-screen" style={shell}>
+      <Header title="Review withdrawal" sub="Step 2 of 2 · Confirm" onBack={onBack} />
+
+      <div className="px-6 mb-6 text-center pt-2">
+        <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 10 }}>Withdrawing</p>
+        <Amount value={numeric} size={48} align="center" />
+      </div>
+
+      <div className="px-6 mb-5">
+        <div style={{ background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--r-md)', overflow: 'hidden' }}>
+          {rows.map(([label, val], i) => (
+            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '14px 18px', borderBottom: i < rows.length - 1 ? '1px solid var(--divider)' : 'none' }}>
+              <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>{label}</span>
+              {val}
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="px-6 mb-auto">
+        <div style={{ background: 'var(--t-ochre-50)', borderRadius: 'var(--r-md)', padding: '14px 16px', display: 'flex', gap: 12 }}>
+          <Clock className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--t-ochre-700)' }} />
+          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, margin: 0 }}>
+            Expected by <strong style={{ color: 'var(--text-primary)' }}>{arrival}</strong>. Payouts settle after the Monday cycle — allow 2–3 working days.
+          </p>
+        </div>
+      </div>
+
+      <div className="px-6 py-8">
+        <Button full size="lg" onClick={onConfirm}>Confirm withdrawal</Button>
+        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 10 }}>
+          Funds can't be recalled once sent
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
+/* ── StepSuccess (light) ─────────────────────────────────── */
+function StepSuccess({ amount, vpa, nextPath, nextLabel, backPath }: {
+  amount: number; vpa: string; nextPath: string; nextLabel: string; backPath: string;
+}) {
+  const navigate = useNavigate();
+  const reduce = useReducedMotion();
+  const refNum = useRef(`FUL-${Math.random().toString(36).slice(2, 10).toUpperCase()}`).current;
+  const [copied, setCopied] = useState(false);
+  const today = new Date(2026, 2, 31);
+  const daysToMonday = (7 - today.getDay() + 1) % 7 || 7;
+  const nextMonday = new Date(today); nextMonday.setDate(today.getDate() + daysToMonday);
+  const arrival = nextMonday.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
+
+  return (
+    <div className="min-h-screen flex flex-col" style={shell}>
+      <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
+        <motion.div
+          initial={reduce ? false : { scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+          transition={{ type: 'spring', stiffness: 200, damping: 15 }}
+          style={{ width: 96, height: 96, borderRadius: 'var(--r-full)', background: 'var(--t-verdigris-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 28 }}
+        >
+          <CheckCircle2 style={{ width: 46, height: 46, color: 'var(--t-verdigris-700)' }} strokeWidth={2} />
+        </motion.div>
+
+        <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 10 }}>On its way</p>
+        <Amount value={amount} size={48} align="center" />
+        <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', marginTop: 12 }}>
+          Expected by <strong style={{ color: 'var(--text-primary)' }}>{arrival}</strong>
+        </p>
+
+        <div style={{ marginTop: 28, width: '100%', maxWidth: 340, background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--r-md)', overflow: 'hidden' }}>
+          <button onClick={() => { navigator.clipboard.writeText(refNum).catch(() => {}); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+            style={{ width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '14px 18px', borderBottom: '1px solid var(--divider)', background: 'none', border: 'none', cursor: 'pointer' }}>
+            <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>Reference</span>
+            <span className="tabular" style={{ display: 'inline-flex', alignItems: 'center', gap: 6, fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)' }}>
+              {refNum}{copied ? <CheckCircle2 size={14} style={{ color: 'var(--t-verdigris-700)' }} /> : <Copy size={14} style={{ color: 'var(--text-muted)' }} />}
+            </span>
+          </button>
+          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '14px 18px' }}>
+            <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>To</span>
+            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-secondary)' }}>{vpa}</span>
+          </div>
+        </div>
+      </div>
+
+      <div className="px-6 pb-12 flex flex-col gap-3">
+        <Button full size="lg" onClick={() => navigate(nextPath)}>{nextLabel}</Button>
+        <Button full size="md" variant="secondary" onClick={() => navigate(backPath)}>Back to wallet</Button>
+      </div>
+    </div>
+  );
+}
+
+/* ── Main export ─────────────────────────────────────────── */
 export function PayoutFlow() {
   const location = useLocation();
-  const navigate  = useNavigate();
-  const role      = getRole(location.pathname);
-  const cfg       = roleConfig[role];
+  const navigate = useNavigate();
+  const dev = useDevContext();
+  const role = getRole(location.pathname);
+  const cfg = roleConfig[role];
 
-  const [step, setStep]               = useState<1 | 2 | 3>(1);
-  const [amount, setAmount]           = useState('');
-  const [showSpoofCheck, setShowSpoofCheck] = useState(false);
+  const profile = getProfile();
+  const isContributor = role === 'contributor';
+  const linked = isContributor ? (profile?.upiLinked ?? false) : true;
+  const name = profile?.name ?? 'Alex Johnson';
 
-  // Reset scroll on step change
+  const [vpa, setVpa] = useState(isContributor ? (profile?.upiId || '') : 'alex@okaxis');
+  const [step, setStep] = useState<Step>(linked ? 'amount' : 'add-upi');
+  const [amount, setAmount] = useState('');
+  const [showSpoof, setShowSpoof] = useState(false);
+  const [showFailed, setShowFailed] = useState(false);
+
   useEffect(() => { window.scrollTo(0, 0); }, [step]);
+
+  const numeric = parseFloat(amount) || 0;
+  const failNext = dev.activeOverlay === 'payment-failed'; // reviewer-flippable failure branch
+
+  const afterVerify = () => {
+    setShowSpoof(false);
+    if (failNext) setShowFailed(true);
+    else setStep('success');
+  };
 
   return (
     <>
       <AnimatePresence mode="wait">
-        {step === 1 && (
-          <StepAmount
-            key="1"
-            role={role}
-            amount={amount}
-            setAmount={setAmount}
-            onNext={() => setStep(2)}
-            onBack={() => navigate(cfg.backPath)}
-          />
+        {step === 'add-upi' && (
+          <AddUPI key="add-upi" onBack={() => navigate(cfg.backPath)}
+            onNext={(v) => { setVpa(v); setStep('name-match'); }} />
         )}
-        {step === 2 && (
-          <StepConfirm
-            key="2"
-            role={role}
-            amount={amount}
-            onConfirm={() => setShowSpoofCheck(true)}
-            onBack={() => setStep(1)}
-          />
+        {step === 'name-match' && (
+          <UPINameMatch key="name-match" vpa={vpa} name={name} onBack={() => setStep('add-upi')}
+            onMatched={() => { setProfile({ upiId: vpa, upiLinked: true, upiNameMatched: true }); setStep('amount'); }} />
         )}
-        {step === 3 && (
-          <StepSuccess key="3" role={role} amount={amount} />
+        {step === 'amount' && (
+          <StepAmount key="amount" balance={cfg.balance} vpa={vpa} presets={cfg.presets}
+            amount={amount} setAmount={setAmount}
+            onNext={() => setStep('confirm')} onBack={() => (linked ? navigate(cfg.backPath) : setStep('name-match'))} />
+        )}
+        {step === 'confirm' && (
+          <StepConfirm key="confirm" balance={cfg.balance} vpa={vpa} amount={amount}
+            onConfirm={() => setShowSpoof(true)} onBack={() => setStep('amount')} />
+        )}
+        {step === 'success' && (
+          <StepSuccess key="success" amount={numeric} vpa={vpa}
+            nextPath={cfg.nextPath} nextLabel={cfg.nextLabel} backPath={cfg.backPath} />
         )}
       </AnimatePresence>
 
-      {showSpoofCheck && (
-        <SpoofingVerificationHold
-          onClose={() => setShowSpoofCheck(false)}
-          onVerified={() => { setShowSpoofCheck(false); setStep(3); }}
+      {showSpoof && (
+        <SpoofingVerificationHold onClose={() => setShowSpoof(false)} onVerified={afterVerify} />
+      )}
+
+      {showFailed && (
+        <PaymentFailed
+          amount={numeric} vpa={vpa}
+          onClose={() => { setShowFailed(false); navigate(cfg.backPath); }}
+          onRetry={() => { setShowFailed(false); setStep('confirm'); }}
         />
       )}
     </>

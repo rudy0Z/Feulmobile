@@ -26,27 +26,27 @@ function EmptyBatchState() {
   return (
     <div className="flex flex-col items-center px-8 py-14 relative" style={{ textAlign: 'center' }}>
       <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ opacity: 0.04 }}>
-        <Waveform color="var(--navy)" opacity={1} height={50} variant="precision" />
+        <Waveform color="var(--surface-studio)" opacity={1} height={50} variant="precision" />
       </div>
       <div className="relative z-10 flex flex-col items-center">
         <div style={{
-          width: 80, height: 80, borderRadius: '50%',
+          width: 80, height: 80, borderRadius: 'var(--r-full)',
           background: 'var(--surface-sunken)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24,
         }}>
           <CheckCircle2 className="w-10 h-10" style={{ color: 'var(--color-success)' }} strokeWidth={1.5} />
         </div>
-        <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
+        <h2 style={{ fontFamily: 'var(--font-ui)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
           You're all caught up
         </h2>
         <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: 272, marginBottom: 24 }}>
           No clips waiting in your assigned languages. Check back soon.
         </p>
-        <p style={{ fontFamily: 'var(--font-mono)', fontSize: 36, fontWeight: 700, color: 'var(--color-success)', marginBottom: 4 }}>94.8%</p>
+        <p style={{ fontFamily: 'var(--font-number)', fontSize: 36, fontWeight: 700, color: 'var(--color-success)', marginBottom: 4 }}>94.8%</p>
         <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 24 }}>Above top-10% of validators</p>
         <button style={{
           background: 'transparent', border: '1.5px solid var(--accent-primary-deep)',
-          color: 'var(--accent-primary-deep)', borderRadius: 999,
+          color: 'var(--accent-primary-deep)', borderRadius: 'var(--r-full)',
           padding: '13px 28px', fontSize: 14, fontWeight: 700,
           display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer',
         }}>
@@ -83,7 +83,7 @@ export function ValidatorHome() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-24" style={{ background: 'var(--background)', fontFamily: 'var(--font-ui)' }}>
 
       {/* Notifications Panel */}
       <NotificationsPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
@@ -91,7 +91,7 @@ export function ValidatorHome() {
       {/* ── WARM GREETING HERO ──────────────────────────────── */}
       <div
         style={{
-          background: 'linear-gradient(175deg, #F0F7F4 0%, #EAF4EF 40%, var(--background) 100%)',
+          background: 'linear-gradient(175deg, var(--t-verdigris-50) 0%, var(--t-verdigris-50) 40%, var(--background) 100%)',
           padding: '64px 24px 24px',
           position: 'relative',
           overflow: 'hidden',
@@ -99,7 +99,7 @@ export function ValidatorHome() {
       >
         {/* Subtle waveform in bg */}
         <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, opacity: 0.04, pointerEvents: 'none' }}>
-          <Waveform color="#2D7A4F" opacity={1} height={60} variant="precision" />
+          <Waveform color="var(--t-verdigris-500)" opacity={1} height={60} variant="precision" />
         </div>
 
         {/* Logo row */}
@@ -117,7 +117,7 @@ export function ValidatorHome() {
               transition={{ duration: 0.4 }}
               style={{ fontSize: 13, fontWeight: 600, color: 'var(--color-success)', marginBottom: 4 }}
             >
-              {greeting} 👋
+              {greeting}
             </motion.p>
 
             <motion.h1
@@ -136,7 +136,7 @@ export function ValidatorHome() {
               style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5 }}
             >
               {accuracy >= 95
-                ? 'Elite accuracy. You\'re in the top tier. 🏆'
+                ? "Elite accuracy. You're in the top tier."
                 : accuracy >= 90
                 ? `${accuracy}% accuracy — keep it sharp.`
                 : 'Focus on quality today to lift your score.'}
@@ -150,13 +150,13 @@ export function ValidatorHome() {
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: 0.4, delay: 0.1, type: 'spring', stiffness: 280, damping: 22 }}
               style={{
-                width: 56, height: 56, borderRadius: '50%',
-                background: 'linear-gradient(135deg, #3D9A6A 0%, #2D7A4F 100%)',
+                width: 56, height: 56, borderRadius: 'var(--r-full)',
+                background: 'linear-gradient(135deg, var(--t-verdigris-500) 0%, var(--t-verdigris-700) 100%)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0px 6px 20px rgba(45,122,79,0.3)',
+                boxShadow: 'var(--e-2)',
               }}
             >
-              <span style={{ fontSize: 22, fontWeight: 800, color: '#FFFFFF', lineHeight: 1 }}>P</span>
+              <span style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-on-studio)', lineHeight: 1 }}>P</span>
             </motion.div>
 
             {/* Role badge */}
@@ -166,13 +166,13 @@ export function ValidatorHome() {
               transition={{ duration: 0.35, delay: 0.2 }}
               style={{
                 display: 'flex', alignItems: 'center', gap: 4,
-                background: '#E8F5EE', borderRadius: 999,
+                background: 'var(--t-verdigris-50)', borderRadius: 'var(--r-full)',
                 padding: '4px 10px',
-                border: '1px solid rgba(45,122,79,0.2)',
+                border: '1px solid var(--t-verdigris-50)',
               }}
             >
-              <ShieldCheck className="w-3 h-3" style={{ color: '#2D7A4F' }} />
-              <span style={{ fontSize: 10, fontWeight: 700, color: '#2D7A4F' }}>Validator</span>
+              <ShieldCheck className="w-3 h-3" style={{ color: 'var(--t-verdigris-500)' }} />
+              <span style={{ fontSize: 10, fontWeight: 700, color: 'var(--t-verdigris-500)' }}>Validator</span>
             </motion.div>
           </div>
         </div>
@@ -185,17 +185,17 @@ export function ValidatorHome() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.28 }}
           style={{
-            background: 'radial-gradient(ellipse at 20% 35%, rgba(45,122,79,0.14) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
-            borderRadius: 24,
+            background: 'radial-gradient(ellipse at 20% 35%, var(--t-verdigris-50) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
+            borderRadius: 'var(--r-lg)',
             padding: '20px 22px',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: '0px 12px 40px rgba(0,0,0,0.22), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
+            boxShadow: '0px 12px 40px rgba(var(--carbon-rgb),0.22), inset 0 0 0 0.5px rgba(255,255,255,0.06)',
           }}
         >
           {/* Waveform bottom-anchored — clears all text content above */}
           <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 24px 24px', opacity: 0.05 }}>
-            <Waveform color="#FFFFFF" opacity={1} height={38} variant="precision" />
+            <Waveform color="var(--text-on-studio)" opacity={1} height={38} variant="precision" />
           </div>
 
           <div className="relative z-10">
@@ -213,8 +213,8 @@ export function ValidatorHome() {
               {/* Big accuracy number */}
               <div>
                 <p style={{
-                  fontFamily: 'var(--font-mono)', fontSize: 52, fontWeight: 700,
-                  color: '#FFFFFF', lineHeight: 1, letterSpacing: '-0.02em',
+                  fontFamily: 'var(--font-number)', fontSize: 52, fontWeight: 700,
+                  color: 'var(--text-on-studio)', lineHeight: 1, letterSpacing: '-0.02em',
                 }}>
                   {accuracy}%
                 </p>
@@ -226,13 +226,13 @@ export function ValidatorHome() {
               {/* Right mini stats */}
               <div className="flex-1 flex flex-col items-end gap-2 pb-1">
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontFamily: 'var(--font-mono)', fontSize: 16, fontWeight: 700, color: 'var(--accent-primary)' }}>+₹{weeklyEarned}</p>
+                  <p style={{ fontFamily: 'var(--font-number)', fontSize: 16, fontWeight: 700, color: 'var(--accent-primary)' }}>+₹{weeklyEarned}</p>
                   <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>this week</p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
                   <div className="flex items-center justify-end gap-1">
                     <Activity className="w-3 h-3" style={{ color: 'rgba(255,255,255,0.3)' }} />
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 16, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>{clipsGraded}</p>
+                    <p style={{ fontFamily: 'var(--font-number)', fontSize: 16, fontWeight: 700, color: 'rgba(255,255,255,0.7)' }}>{clipsGraded}</p>
                   </div>
                   <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>clips graded</p>
                 </div>
@@ -246,7 +246,7 @@ export function ValidatorHome() {
       <div className="px-5 mb-4">
         <div
           className="flex items-center"
-          style={{ background: 'var(--surface)', borderRadius: 16, border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: 'var(--shadow-card)' }}
+          style={{ background: 'var(--surface)', borderRadius: 'var(--r-md)', border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: 'var(--shadow-card)' }}
         >
           {[
             { label: 'Cash Earned', value: '₹568',  mono: true  },
@@ -259,7 +259,7 @@ export function ValidatorHome() {
               style={{ padding: '14px 6px', borderRight: idx < 2 ? '1px solid var(--card-border)' : 'none' }}
             >
               <p style={{
-                fontFamily: stat.mono ? 'var(--font-mono)' : 'var(--font-display)',
+                fontFamily: stat.mono ? 'var(--font-number)' : 'var(--font-ui)',
                 fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, marginBottom: 4,
               }}>
                 {stat.value}
@@ -285,9 +285,9 @@ export function ValidatorHome() {
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/validator/grading/${pendingBatches[0].id}`)}
               style={{
-                width: '100%', height: 62, borderRadius: 999,
+                width: '100%', height: 62, borderRadius: 'var(--r-full)',
                 background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-                color: '#FFFFFF',
+                color: 'var(--text-on-accent)',
                 fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
                 boxShadow: '0px 10px 28px rgba(var(--accent-glow-rgb),0.4), inset 0px 1px 0px rgba(255,255,255,0.18)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
@@ -302,7 +302,7 @@ export function ValidatorHome() {
           <div className="px-5 mb-5">
             <div className="flex items-center justify-between mb-3">
               <div>
-                <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+                <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
                   Pending Batches
                 </h3>
                 <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', marginTop: 1 }}>
@@ -318,7 +318,7 @@ export function ValidatorHome() {
               </button>
             </div>
 
-            <div style={{ background: 'var(--surface)', borderRadius: 20, border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: 'var(--shadow-glass)' }}>
+            <div style={{ background: 'var(--surface)', borderRadius: 'var(--r-md)', border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: 'var(--shadow-glass)' }}>
               {pendingBatches.map((batch, idx) => (
                 <motion.div
                   key={batch.id}
@@ -335,7 +335,7 @@ export function ValidatorHome() {
                 >
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                     <div style={{
-                      width: 4, height: 36, borderRadius: 999,
+                      width: 4, height: 36, borderRadius: 'var(--r-full)',
                       background: batch.priority === 'High' ? 'var(--accent-primary)' : 'var(--card-border)',
                       flexShrink: 0,
                     }} />
@@ -345,21 +345,21 @@ export function ValidatorHome() {
                       </h4>
                       <div className="flex items-center gap-3">
                         <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{batch.clips} clips</span>
-                        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 13, fontWeight: 700, color: 'var(--accent-primary)' }}>
+                        <span style={{ fontFamily: 'var(--font-number)', fontSize: 13, fontWeight: 700, color: 'var(--accent-primary)' }}>
                           ₹{batch.payout}
                         </span>
                       </div>
                     </div>
                   </div>
                   <div style={{
-                    width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
+                    width: 36, height: 36, borderRadius: 'var(--r-full)', flexShrink: 0,
                     background: batch.priority === 'High' ? 'var(--accent-primary)' : 'var(--surface-sunken)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
                     <Play
                       className="w-4 h-4"
-                      style={{ color: batch.priority === 'High' ? '#FFFFFF' : 'var(--text-primary)' }}
-                      fill={batch.priority === 'High' ? '#FFFFFF' : 'var(--text-primary)'}
+                      style={{ color: batch.priority === 'High' ? 'var(--text-on-accent)' : 'var(--text-primary)' }}
+                      fill={batch.priority === 'High' ? 'var(--text-on-accent)' : 'var(--text-primary)'}
                     />
                   </div>
                 </motion.div>
@@ -370,11 +370,11 @@ export function ValidatorHome() {
           {/* ── Recent Activity ── */}
           <div className="px-5">
             <div className="flex items-center justify-between mb-3">
-              <h3 style={{ fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+              <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
                 Recent Activity
               </h3>
             </div>
-            <div style={{ background: 'var(--surface)', borderRadius: 20, border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: 'var(--shadow-glass)' }}>
+            <div style={{ background: 'var(--surface)', borderRadius: 'var(--r-md)', border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: 'var(--shadow-glass)' }}>
               {recentGradings.map((grading, idx) => (
                 <div
                   key={grading.id}
@@ -391,7 +391,7 @@ export function ValidatorHome() {
                     </p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'var(--accent-primary)' }}>
+                    <p style={{ fontFamily: 'var(--font-number)', fontSize: 14, fontWeight: 700, color: 'var(--accent-primary)' }}>
                       +₹{grading.earned}
                     </p>
                     <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-success)', marginTop: 2 }}>

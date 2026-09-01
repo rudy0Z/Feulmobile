@@ -65,9 +65,9 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
         {/* Stats card */}
         <div style={{
           width: '100%', maxWidth: 340,
-          background: '#FFFFFF',
+          background: 'var(--t-bone-0)',
           borderRadius: 16, border: '1px solid var(--card-border)',
-          boxShadow: '0px 4px 16px rgba(28,36,52,0.06)',
+          boxShadow: '0px 4px 16px rgba(var(--carbon-rgb),0.06)',
           padding: '18px 20px', marginBottom: 28,
         }}>
           <div style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: 12 }}>
@@ -78,7 +78,7 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
             { label: 'Clips recorded', value: '24 / 24' },
             { label: 'Earnings today',  value: '+₹216.00', accent: true },
             { label: 'Accuracy rate',   value: '97.2%' },
-            { label: 'Streak',          value: '🔥 6 days' },
+            { label: 'Standing',        value: 'Trusted' },
           ].map(r => (
             <div key={r.label} style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 10 }}>
               <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>{r.label}</span>
@@ -114,7 +114,7 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
             style={{
               width: '100%', height: 52, borderRadius: 999,
               background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
-              color: '#FFFFFF', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
+              color: 'var(--t-bone-0)', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
               boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.28)',
             }}

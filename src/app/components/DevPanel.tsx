@@ -1,9 +1,9 @@
 import { motion, AnimatePresence } from 'motion/react';
-import { X, RefreshCw, ShieldAlert, AlertTriangle, Coins, Mic, Swords, Users, MicOff, CloudOff, CreditCard, Timer, Lock } from 'lucide-react';
+import { X, RefreshCw, ShieldAlert, AlertTriangle, Mic, Swords, Users, MicOff, CloudOff, CreditCard, Timer, Lock, ShieldCheck, MapPin, CalendarX, PhoneOff, UserX, Flame, Scale, BatteryLow } from 'lucide-react';
+import { router } from '../routes';
 import { useDevContext, OverlayId, GradingMethodId } from '../lib/DevContext';
 import { SpoofingVerificationHold } from './SpoofingVerificationHold';
 import { DPDPConsentRevocation } from './DPDPConsentRevocation';
-import { SilverTierReserveDrawer } from './SilverTierReserveDrawer';
 import { AcousticNoisePause } from './AcousticNoisePause';
 import { RoleCollisionLockout } from './RoleCollisionLockout';
 import { MicPermissionDenied } from './MicPermissionDenied';
@@ -100,13 +100,16 @@ function LaunchRow({
   );
 }
 
-/* ── Method Selector ─────────────────────────────────── */
+/* ── Grading Method Selector (DEV-ONLY) ──────────────────
+   The shipping validator surface always renders the segmented instrument;
+   this previews the alternative grading controls without exposing an in-app
+   style switcher. Applied on next grading-session open. */
 const GRADING_METHODS: { id: GradingMethodId; label: string }[] = [
-  { id: 'binary',    label: 'Binary' },
   { id: 'segmented', label: 'Segmented' },
   { id: 'pills',     label: 'Pills' },
   { id: 'arc',       label: 'Arc' },
   { id: 'keyboard',  label: 'Keys' },
+  { id: 'binary',    label: 'Binary' },
 ];
 
 function MethodSelector() {
@@ -134,7 +137,7 @@ function MethodSelector() {
         ))}
       </div>
       <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginTop: 6, fontFamily: 'var(--font-mono)' }}>
-        applied on next grading session open
+        dev-only · applied on next grading session open
       </div>
     </div>
   );
@@ -170,13 +173,6 @@ export function DevOverlayHost() {
           key="dev-dpdp"
           onClose={dev.dismissOverlay}
           onRevoked={dev.dismissOverlay}
-        />
-      )}
-      {dev.activeOverlay === 'reserve' && (
-        <SilverTierReserveDrawer
-          key="dev-reserve"
-          onClose={dev.dismissOverlay}
-          onStartQuests={dev.dismissOverlay}
         />
       )}
       {dev.activeOverlay === 'noise' && (
@@ -236,6 +232,10 @@ export function DevOverlayHost() {
 /* ── Dev Panel Menu (renders outside phone frame) ────── */
 export function DevPanel() {
   const dev = useDevContext();
+
+  // DevPanel is mounted outside the RouterProvider, so useNavigate() isn't
+  // available here — drive the router instance directly instead.
+  const jump = (path: string) => { dev.closePanel(); router.navigate(path); };
 
   return (
     <>
@@ -391,6 +391,71 @@ export function DevPanel() {
                       onChange={v => dev.setToggle('forceNoisePause', v)}
                     />
                   </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 6 }}>
+                    <LaunchRow
+                      icon={ShieldCheck}
+                      label="Room Consent Roll-Call"
+                      sublabel="C-01/C-10 · on-tape consent + minor gate"
+                      accentColor="var(--state-settled)"
+                      onLaunch={() => jump('/contributor/room-consent')}
+                    />
+                    <LaunchRow
+                      icon={Users}
+                      label="Coverage Full → Redirect"
+                      sublabel="C-02 · quota met, redirect to rarity"
+                      accentColor="var(--state-settled)"
+                      onLaunch={() => jump('/contributor/coverage-full')}
+                    />
+                    <LaunchRow
+                      icon={CalendarX}
+                      label="Campaign Closed (honoured)"
+                      sublabel="C-03/C-16 · filled or lab withdrew"
+                      accentColor="var(--state-pending)"
+                      onLaunch={() => jump('/contributor/campaign-closed')}
+                    />
+                    <LaunchRow
+                      icon={MapPin}
+                      label="Dialect Mismatch → base pay"
+                      sublabel="C-07 · rarity bonus removed, honest"
+                      accentColor="var(--state-pending)"
+                      onLaunch={() => jump('/contributor/dialect-mismatch')}
+                    />
+                    <LaunchRow
+                      icon={PhoneOff}
+                      label="Session Interrupted"
+                      sublabel="C-04 · 19-min take saved, resume in 24h"
+                      accentColor="var(--state-settled)"
+                      onLaunch={() => jump('/contributor/session-interrupted')}
+                    />
+                    <LaunchRow
+                      icon={UserX}
+                      label="Silent Room Participant"
+                      sublabel="C-08 · 4-lane review, one voice missing"
+                      accentColor="var(--state-pending)"
+                      onLaunch={() => jump('/contributor/silent-room')}
+                    />
+                    <LaunchRow
+                      icon={Flame}
+                      label="Campaign Oversubscribed"
+                      sublabel="C-21 · slots tick down → Filled"
+                      accentColor="var(--state-pending)"
+                      onLaunch={() => jump('/contributor/campaign-oversubscribed')}
+                    />
+                    <LaunchRow
+                      icon={Scale}
+                      label="Quality Grade Dispute"
+                      sublabel="C-09 · 7-day appeal → 3rd reviewer"
+                      accentColor="var(--state-pending)"
+                      onLaunch={() => jump('/contributor/quality-dispute')}
+                    />
+                    <LaunchRow
+                      icon={BatteryLow}
+                      label="Battery Warning (Brief)"
+                      sublabel="C-15 · low battery before room take"
+                      accentColor="var(--state-pending)"
+                      onLaunch={() => jump('/contributor/battery-warning')}
+                    />
+                  </div>
                 </div>
 
                 {/* ── Validator States ── */}
@@ -418,6 +483,22 @@ export function DevPanel() {
                   </div>
                   <div style={{ marginTop: 8 }}>
                     <MethodSelector />
+                  </div>
+                  <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 6 }}>
+                    <LaunchRow
+                      icon={Users}
+                      label="Disagreement Escalation"
+                      sublabel="C-17 · Grading → two reviewers disagree"
+                      accentColor="var(--state-pending)"
+                      onLaunch={() => jump('/validator/disagreement/dev')}
+                    />
+                    <LaunchRow
+                      icon={ShieldAlert}
+                      label="Accuracy Warning + Throttle"
+                      sublabel="C-18 · agreement drop → queue slowed"
+                      accentColor="var(--state-pending)"
+                      onLaunch={() => jump('/validator/accuracy-warning')}
+                    />
                   </div>
                 </div>
 
@@ -480,13 +561,6 @@ export function DevPanel() {
                       sublabel="Profile → Revoke Consent"
                       accentColor="#E53E3E"
                       onLaunch={() => dev.launchOverlay('dpdp')}
-                    />
-                    <LaunchRow
-                      icon={Coins}
-                      label="Silver Tier Reserve Drawer"
-                      sublabel="Wallet → Withdraw Funds"
-                      accentColor="#B8860B"
-                      onLaunch={() => dev.launchOverlay('reserve')}
                     />
                     <LaunchRow
                       icon={Mic}
