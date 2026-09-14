@@ -1,0 +1,53 @@
+{
+  "artboards": [
+    { "file": "Main.dc.html", "title": "A · Hearth", "x": 0, "y": 0, "w": 360, "h": 1000 },
+    { "file": "OptionB.dc.html", "title": "B · Obsidian", "x": 520, "y": 0, "w": 360, "h": 980 },
+    { "file": "OptionC.dc.html", "title": "C · Press", "x": 1040, "y": 0, "w": 360, "h": 900 },
+    { "file": "OptionD.dc.html", "title": "D · Constellation", "x": 1560, "y": 0, "w": 360, "h": 960 }
+  ],
+  "annotations": [
+    {
+      "id": "reset",
+      "x": 0,
+      "y": -320,
+      "w": 470,
+      "text": "ROUND 2 — WITH LIGHT IN IT\n\nRound 1 was sterile because I designed from the constraints doc, and its own words — restraint, quiet competence, no gradients, light ledger — walked straight back into the G3 trap.\n\nWhat every reference you sent actually shares: a DARK ground and ONE object lit from within. Your own G1 had it too — the luminous navy hero. I stripped out the only thing that made any of them feel alive.\n\nSTOKE is fire. The app should feel lit, not audited.\n\nCorrected rule: cheap flat gradient pills are slop. Atmospheric radial light that builds depth is craft."
+    },
+    {
+      "id": "note-a",
+      "x": 0,
+      "y": 1050,
+      "w": 360,
+      "text": "A · HEARTH — warm room, one ember\n\nCream ground, but the money card is a dark ember lit from inside — orange bloom top-left, live flame glyph, glowing figure. The white card below catches warm light off it.\n\nARGUES: the app is a warm place; money is the fire in the middle of it.\n\nCLOSEST to your G1 instinct, executed with real depth instead of a flat navy slab. Safest of the four and still has a pulse."
+    },
+    {
+      "id": "note-b",
+      "x": 520,
+      "y": 1030,
+      "w": 360,
+      "text": "B · OBSIDIAN — the whole app is the studio\n\nFull dark. 82px money glowing. An 84px breathing record trigger on the home screen. This is your session-paused reference applied to the entire product.\n\nARGUES: recording is not a mode you enter, it is what this app IS.\n\nCOSTS: the two-surface doctrine dies — dark stops meaning recording. Worth it? Genuinely open. It is the most striking of the four."
+    },
+    {
+      "id": "note-c",
+      "x": 1040,
+      "y": 950,
+      "w": 360,
+      "text": "C · PRESS — editorial, printed, warm\n\n104px money. Real paper grain. Devanagari at 30px as a pull-quote. Hairline rules instead of cards. One glowing record button as the single hot spot.\n\nARGUES: the script is the product, so typography carries the whole thing.\n\nCOSTS: least information per screen, and the type does not scale down gracefully to 320px. Most distinctive on a portfolio shot."
+    },
+    {
+      "id": "note-d",
+      "x": 1560,
+      "y": 1010,
+      "w": 360,
+      "text": "D · CONSTELLATION — coverage as lights coming on\n\nThe district grid from round 1, but as embers on a dark map. Lit districts glow amber. Yours pulses. CTA reads 'Light up a district.'\n\nARGUES: you are not grinding tasks, you are lighting up a country. This is the coverage reframe made emotional instead of a spreadsheet.\n\nCOSTS: money is demoted to a header pill. The biggest product bet — and the screenshot nobody else has."
+    },
+    {
+      "id": "next",
+      "x": 2080,
+      "y": 0,
+      "w": 310,
+      "text": "STILL MIXABLE\n\nD's constellation could be the hero inside A's warm room. C's 104px money could sit on B's dark ground.\n\nThe live question is no longer palette — it is HOW MUCH DARK.\n\nA = a lit object in a warm room\nB = dark everywhere\nC = light, one hot spot\nD = dark, many small lights\n\nTell me which one has a pulse and I will push that one further."
+    }
+  ],
+  "launch": { "view": "canvas" }
+}

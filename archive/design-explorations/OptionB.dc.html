@@ -1,0 +1,121 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@300..700&family=Anek+Latin:wght@300..700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Anek Latin', system-ui, sans-serif; }
+    a { color: #F0894B; } a:hover { color: #F5A96F; }
+    * { box-sizing: border-box; }
+    @keyframes breathe { 0%,100% { box-shadow: 0 0 0 1px rgba(240,137,75,.35), 0 0 34px -2px rgba(233,116,62,.55), 0 10px 30px -10px rgba(200,70,30,.6); } 50% { box-shadow: 0 0 0 1px rgba(240,137,75,.5), 0 0 52px 2px rgba(233,116,62,.75), 0 10px 30px -10px rgba(200,70,30,.6); } }
+  </style>
+</helmet>
+
+<div style="width: 360px; padding-bottom: 44px; overflow: hidden;
+    background:
+      radial-gradient(110% 48% at 50% -4%, rgba(240,137,75,0.26) 0%, rgba(226,88,52,0.07) 38%, rgba(0,0,0,0) 68%),
+      radial-gradient(70% 30% at 88% 30%, rgba(63,107,94,0.16) 0%, rgba(0,0,0,0) 60%),
+      linear-gradient(180deg, #1D1510 0%, #130D09 62%, #0F0A07 100%);">
+
+  <div style="padding: 22px 22px 0;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 34px;">
+      <span style="font-size: 15px; font-weight: 700; letter-spacing: 0.24em; color: #FFE9D6;">STOKE</span>
+      <div style="width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; margin-right: -8px; color: rgba(255,222,196,0.55);">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><path d="M10 2a5 5 0 0 0-5 5v3l-1.5 3h13L15 10V7a5 5 0 0 0-5-5Z"/><path d="M8 16a2 2 0 0 0 4 0"/></svg>
+      </div>
+    </div>
+
+    <p style="font-size: 11px; font-weight: 700; letter-spacing: 0.16em; text-transform: uppercase; color: rgba(245,170,125,0.7); margin: 0 0 14px;">Earned today</p>
+    <div style="display: flex; align-items: baseline; gap: 5px; margin-bottom: 8px;">
+      <span style="font-size: 34px; font-weight: 300; color: #E9A97F;">₹</span>
+      <span style="font-size: 82px; font-weight: 500; color: #FFF6EC; letter-spacing: -0.04em; line-height: 0.86; font-variant-numeric: tabular-nums; text-shadow: 0 0 40px rgba(245,155,90,0.45);">185</span>
+    </div>
+    <p style="font-size: 14px; font-weight: 500; color: rgba(240,214,196,0.55); margin: 0 0 26px;">
+      <span style="color: #7FC8A9; font-weight: 600;">₹1,250 settled</span> · <span style="color: #F0B45C; font-weight: 600;">₹60 in review</span>
+    </p>
+  </div>
+
+  <!-- The glowing act -->
+  <div style="padding: 0 22px 30px; display: flex; align-items: center; gap: 18px;">
+    <button style="width: 84px; height: 84px; flex-shrink: 0; border: none; border-radius: 999px; cursor: pointer;
+        background: radial-gradient(75% 75% at 34% 24%, #F8A863 0%, #E9743E 46%, #C9481F 100%);
+        animation: breathe 4s ease-in-out infinite;
+        display: flex; align-items: center; justify-content: center; color: #FFF6EC;">
+      <svg width="32" height="32" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"><rect x="7.5" y="2" width="5" height="9" rx="2.5"/><path d="M4.5 9a5.5 5.5 0 0 0 11 0M10 14.5V18"/></svg>
+    </button>
+    <div>
+      <p style="font-size: 17px; font-weight: 600; color: #FFF3E6; margin: 0 0 3px;">Record a Marathi scenario</p>
+      <p style="font-size: 13px; font-weight: 500; color: rgba(240,214,196,0.5); margin: 0;">6 turns · ~7 min · <span style="color: #F0894B; font-weight: 600;">₹72</span></p>
+    </div>
+  </div>
+
+  <!-- Script card, elevated dark -->
+  <div style="padding: 0 22px;">
+    <div style="border-radius: 22px; padding: 20px;
+        background: linear-gradient(165deg, rgba(255,222,190,0.075) 0%, rgba(255,222,190,0.028) 100%);
+        box-shadow: inset 0 1px 0 rgba(255,225,195,0.14), 0 14px 30px -18px rgba(0,0,0,0.8);">
+      <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 14px;">
+        <span style="font-size: 10px; font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase; color: rgba(245,180,140,0.62);">AI4Bharat</span>
+        <span style="margin-left: auto; font-size: 10px; font-weight: 700; padding: 4px 10px; border-radius: 999px; background: rgba(127,200,169,0.14); color: #7FC8A9;">1.6× rare dialect</span>
+      </div>
+      <p style="font-family: 'Anek Devanagari', system-ui, sans-serif; font-size: 21px; font-weight: 400; line-height: 1.68; color: #FFF3E6; margin: 0;">"अहो, हे किती रुपयांना दिलं?"</p>
+    </div>
+  </div>
+
+  <!-- Coverage, as a lit meter -->
+  <div style="padding: 26px 22px 0;">
+    <div style="display: flex; align-items: baseline; justify-content: space-between; margin-bottom: 12px;">
+      <span style="font-size: 12px; font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase; color: rgba(245,180,140,0.6);">Sarvam · Marathi corpus</span>
+      <span style="font-size: 13px; font-weight: 600; color: #FFF3E6;">62%</span>
+    </div>
+    <div style="display: flex; gap: 3px; margin-bottom: 10px;">
+      <sc-for list="{{segs}}" as="s" hint-placeholder-count="22">
+        <div style="flex: 1; height: 9px; border-radius: 2px; background: {{s.bg}}; box-shadow: {{s.glow}};"></div>
+      </sc-for>
+    </div>
+    <p style="font-size: 12px; font-weight: 500; color: rgba(240,214,196,0.45); margin: 0;">400 Tamil clips still needed · closes Friday</p>
+  </div>
+
+  <!-- Standing -->
+  <div style="padding: 26px 22px 0;">
+    <div style="display: flex; align-items: center; gap: 12px; padding: 16px 18px; border-radius: 18px;
+        background: rgba(255,222,190,0.045); box-shadow: inset 0 1px 0 rgba(255,225,195,0.10);">
+      <div style="width: 38px; height: 38px; border-radius: 999px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+          background: rgba(127,200,169,0.14); color: #7FC8A9;">
+        <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><path d="M10 2.5 16.5 5v5c0 4-3 6.6-6.5 7.5C6.5 16.6 3.5 14 3.5 10V5L10 2.5Z"/><path d="M7.5 10l1.8 1.8L13 8"/></svg>
+      </div>
+      <div style="flex: 1;">
+        <p style="font-size: 14px; font-weight: 600; color: #FFF3E6; margin: 0 0 5px;">12 clips to Room takes</p>
+        <div style="height: 5px; border-radius: 999px; background: rgba(255,222,190,0.12); overflow: hidden;">
+          <div style="width: 76%; height: 100%; border-radius: 999px; background: linear-gradient(90deg, #E9743E, #F5A96F); box-shadow: 0 0 10px rgba(233,116,62,0.7);"></div>
+        </div>
+      </div>
+      <span style="font-size: 15px; font-weight: 600; color: rgba(240,214,196,0.55); font-variant-numeric: tabular-nums;">₹220</span>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":360,"height":980}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const segs = [];
+    for (let i = 0; i < 22; i++) {
+      const on = i < 14;
+      segs.push({
+        bg: on ? 'linear-gradient(180deg,#F5A96F,#E9743E)' : 'rgba(255,222,190,0.12)',
+        glow: on ? '0 0 8px rgba(233,116,62,0.55)' : 'none'
+      });
+    }
+    return { segs };
+  }
+}
+</script>
+</body>
+</html>

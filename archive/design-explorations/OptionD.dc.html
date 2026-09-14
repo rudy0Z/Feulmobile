@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Anek+Devanagari:wght@300..700&family=Anek+Latin:wght@300..700&display=swap">
+  <style>
+    body { margin: 0; font-family: 'Anek Latin', system-ui, sans-serif; }
+    a { color: #F0894B; } a:hover { color: #F5A96F; }
+    * { box-sizing: border-box; }
+    @keyframes youpulse { 0%,100% { transform: scale(1); opacity: .9; } 50% { transform: scale(1.5); opacity: .25; } }
+  </style>
+</helmet>
+
+<div style="width: 360px; padding-bottom: 44px; overflow: hidden;
+    background:
+      radial-gradient(90% 42% at 50% 22%, rgba(240,137,75,0.16) 0%, rgba(0,0,0,0) 62%),
+      linear-gradient(180deg, #171009 0%, #120C08 100%);">
+
+  <div style="padding: 22px 22px 0;">
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 30px;">
+      <span style="font-size: 15px; font-weight: 700; letter-spacing: 0.24em; color: #FFE9D6;">STOKE</span>
+      <div style="display: flex; align-items: center; gap: 9px; padding: 7px 13px; border-radius: 999px; background: rgba(255,222,190,0.07); box-shadow: inset 0 1px 0 rgba(255,225,195,0.1);">
+        <span style="font-size: 12px; font-weight: 600; color: #FFF3E6; font-variant-numeric: tabular-nums;">₹1,250</span>
+        <span style="width: 1px; height: 11px; background: rgba(255,222,190,0.2);"></span>
+        <span style="font-size: 12px; font-weight: 600; color: #7FC8A9;">Verified</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- THE CONSTELLATION — coverage as lights coming on -->
+  <div style="padding: 0 22px;">
+    <p style="font-size: 11px; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase; color: rgba(245,180,140,0.62); margin: 0 0 6px;">Marathi coverage · 189 districts</p>
+    <div style="display: flex; align-items: baseline; gap: 8px; margin-bottom: 18px;">
+      <span style="font-size: 52px; font-weight: 500; color: #FFF6EC; letter-spacing: -0.035em; line-height: 1; font-variant-numeric: tabular-nums; text-shadow: 0 0 32px rgba(245,155,90,0.35);">62</span>
+      <span style="font-size: 22px; font-weight: 400; color: rgba(240,214,196,0.5);">%</span>
+    </div>
+
+    <div style="position: relative; width: 316px; height: 196px; margin-bottom: 18px;">
+      <sc-for list="{{dots}}" as="d" hint-placeholder-count="88">
+        <div style="position: absolute; left: {{d.x}}; top: {{d.y}}; width: {{d.s}}; height: {{d.s}}; border-radius: 999px; background: {{d.bg}}; box-shadow: {{d.glow}};"></div>
+      </sc-for>
+      <div style="position: absolute; left: 148px; top: 96px; width: 30px; height: 30px; border-radius: 999px; background: rgba(233,116,62,0.28); animation: youpulse 3s ease-in-out infinite;"></div>
+      <div style="position: absolute; left: 157px; top: 105px; width: 12px; height: 12px; border-radius: 999px;
+          background: radial-gradient(60% 60% at 36% 30%, #FFDCA8, #E9743E);
+          box-shadow: 0 0 18px 3px rgba(233,116,62,0.85);"></div>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 16px; padding-bottom: 22px; border-bottom: 1px solid rgba(255,222,190,0.1);">
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="width: 7px; height: 7px; border-radius: 999px; background: #F0A85C; box-shadow: 0 0 7px rgba(240,168,92,0.8);"></span>
+        <span style="font-size: 11px; font-weight: 500; color: rgba(240,214,196,0.55);">Collected</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px;">
+        <span style="width: 7px; height: 7px; border-radius: 999px; background: rgba(255,222,190,0.16);"></span>
+        <span style="font-size: 11px; font-weight: 500; color: rgba(240,214,196,0.55);">Dark</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 6px; margin-left: auto;">
+        <span style="width: 7px; height: 7px; border-radius: 999px; background: #E9743E; box-shadow: 0 0 9px rgba(233,116,62,0.9);"></span>
+        <span style="font-size: 11px; font-weight: 600; color: #FFF3E6;">You</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="padding: 20px 22px 0;">
+    <p style="font-size: 19px; font-weight: 400; line-height: 1.5; color: #FFF3E6; margin: 0 0 6px; letter-spacing: -0.01em;">You are 1 of <strong style="font-weight: 600;">12</strong> voices in Chandrapur.</p>
+    <p style="font-size: 14px; font-weight: 500; color: #7FC8A9; margin: 0;">Vidarbha Marathi is 6% covered — your clips pay 1.6×</p>
+  </div>
+
+  <!-- Act -->
+  <div style="padding: 26px 22px 0; display: flex; align-items: center; gap: 16px;">
+    <button style="flex: 1; height: 60px; border: none; border-radius: 999px; cursor: pointer;
+        font-family: inherit; font-size: 16px; font-weight: 600; color: #FFF6EC;
+        background: linear-gradient(160deg, #F0894B 0%, #D2531F 100%);
+        box-shadow: 0 0 0 1px rgba(240,137,75,0.3), 0 14px 30px -12px rgba(210,83,31,0.75), inset 0 1px 0 rgba(255,215,180,0.3);
+        display: flex; align-items: center; justify-content: center; gap: 10px;">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"><rect x="7.5" y="2" width="5" height="9" rx="2.5"/><path d="M4.5 9a5.5 5.5 0 0 0 11 0M10 14.5V18"/></svg>
+      Light up a district
+    </button>
+    <div style="text-align: right;">
+      <p style="font-size: 22px; font-weight: 600; color: #FFF3E6; margin: 0; line-height: 1; font-variant-numeric: tabular-nums;">₹72</p>
+      <p style="font-size: 11px; font-weight: 500; color: rgba(240,214,196,0.45); margin: 4px 0 0;">~7 min</p>
+    </div>
+  </div>
+
+  <!-- Script preview -->
+  <div style="padding: 22px 22px 0;">
+    <div style="border-radius: 20px; padding: 18px 20px;
+        background: rgba(255,222,190,0.05); box-shadow: inset 0 1px 0 rgba(255,225,195,0.1);">
+      <p style="font-size: 10px; font-weight: 700; letter-spacing: 0.11em; text-transform: uppercase; color: rgba(245,180,140,0.6); margin: 0 0 10px;">AI4Bharat · scenario</p>
+      <p style="font-family: 'Anek Devanagari', system-ui, sans-serif; font-size: 19px; font-weight: 400; line-height: 1.68; color: #FFF3E6; margin: 0;">"अहो, हे किती रुपयांना दिलं?"</p>
+    </div>
+  </div>
+
+</div>
+</x-dc>
+
+<script data-dc-script data-props='{"$preview":{"width":360,"height":960}}'>
+class Component extends DCLogic {
+  renderVals() {
+    const rnd = (i, s) => { const x = Math.sin(i * 127.1 + s * 311.7) * 43758.5453; return x - Math.floor(x); };
+    const dots = [];
+    const cols = 11, rows = 8;
+    for (let r = 0; r < rows; r++) {
+      for (let c = 0; c < cols; c++) {
+        const i = r * cols + c;
+        const jx = (rnd(i, 1) - 0.5) * 15;
+        const jy = (rnd(i, 2) - 0.5) * 13;
+        const x = 8 + c * 28 + jx;
+        const y = 10 + r * 24 + jy;
+        if (i === 41) continue;
+        const lit = rnd(i, 3) < 0.6;
+        const bright = lit && rnd(i, 4) < 0.35;
+        const size = lit ? (bright ? 7 : 5) : 4;
+        dots.push({
+          x: Math.round(x) + 'px',
+          y: Math.round(y) + 'px',
+          s: size + 'px',
+          bg: lit ? (bright ? '#FFC98A' : '#F0A85C') : 'rgba(255,222,190,0.15)',
+          glow: lit ? (bright ? '0 0 12px 1px rgba(255,190,120,0.75)' : '0 0 8px rgba(240,168,92,0.5)') : 'none'
+        });
+      }
+    }
+    return { dots };
+  }
+}
+</script>
+</body>
+</html>
