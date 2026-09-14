@@ -328,7 +328,7 @@ function StepCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
             <div className="flex items-center justify-center gap-2 mb-3">
               <div style={{
                 width: 30, height: 30, borderRadius: 'var(--r-full)',
-                background: state === 'listening' ? 'rgba(var(--accent-glow-rgb),0.22)' : 'rgba(245,238,229,0.06)',
+                background: state === 'listening' ? 'rgba(224, 108, 58,0.22)' : 'rgba(245,238,229,0.06)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 {state === 'listening'
@@ -585,7 +585,7 @@ function StudioShell({ children, sticky, done, total, onBack, recording }: {
             <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
           </button>
           {recording && (
-            <span style={{ width: 8, height: 8, borderRadius: 'var(--r-full)', background: 'var(--t-terracotta-500)', boxShadow: '0 0 0 4px rgba(var(--accent-glow-rgb),0.22)' }} />
+            <span style={{ width: 8, height: 8, borderRadius: 'var(--r-full)', background: 'var(--t-terracotta-500)', boxShadow: '0 0 0 4px rgba(224, 108, 58,0.22)' }} />
           )}
           <span style={{ fontSize: 13, fontWeight: 600, color: DIM }}>{sticky}</span>
         </div>

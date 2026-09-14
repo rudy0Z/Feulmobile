@@ -10,9 +10,9 @@ interface Props {
 
 export function RoleCollisionLockout({ onVerify, onHome }: Props) {
   const fingerprintDetails = [
-    { color: 'var(--status-error-text)', label: 'Device fingerprint: matched' },
-    { color: 'var(--status-error-text)', label: 'IP network: same session' },
-    { color: 'var(--warning-700)', label: 'Account overlap: under review' },
+    { color: 'var(--state-failed)', label: 'Device fingerprint: matched' },
+    { color: 'var(--state-failed)', label: 'IP network: same session' },
+    { color: 'var(--money-pending)', label: 'Account overlap: under review' },
   ];
 
   return (
@@ -51,7 +51,7 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
             margin: '0 auto',
           }}
         >
-          <ShieldAlert size={64} style={{ color: 'var(--status-error-text)' }} />
+          <ShieldAlert size={64} style={{ color: 'var(--state-failed)' }} />
         </div>
 
         {/* Policy violation badge */}
@@ -67,7 +67,7 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
             fontSize: 9,
             fontWeight: 800,
             letterSpacing: '0.12em',
-            color: 'var(--status-error-text)',
+            color: 'var(--state-failed)',
             textTransform: 'uppercase',
             marginTop: 16,
           }}
@@ -78,7 +78,7 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
         {/* H1 */}
         <h1
           style={{
-            fontFamily: 'var(--font-display)',
+            fontFamily: 'var(--font-ui)',
             fontSize: 24,
             fontWeight: 800,
             color: 'var(--t-bone-0)',
@@ -95,7 +95,7 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
           style={{
             fontSize: 13,
             fontWeight: 600,
-            color: 'var(--status-error-text)',
+            color: 'var(--state-failed)',
             marginTop: 4,
           }}
         >
@@ -184,7 +184,7 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
               width: '100%',
               height: 58,
               borderRadius: 999,
-              background: 'var(--status-error-text)',
+              background: 'var(--state-failed)',
               color: 'var(--t-bone-0)',
               fontSize: 16,
               fontWeight: 700,
@@ -220,7 +220,7 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
             fontSize: 10,
             color: 'rgba(255,255,255,0.2)',
             marginTop: 20,
-            fontFamily: 'var(--font-mono)',
+            fontFamily: 'var(--font-number)',
           }}
         >
           Session ID: FSN-2847-VIOLATION · Case logged

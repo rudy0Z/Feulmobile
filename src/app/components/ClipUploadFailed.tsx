@@ -48,10 +48,10 @@ export function ClipUploadFailed({ onClose, onRetry, onSaveDraft }: Props) {
             <CloudOff style={{ width: 24, height: 24, color: 'var(--state-failed)' }} />
           </div>
           <div>
-            <h3 style={{ fontSize: 18, fontWeight: 800, color: 'var(--t-bone-0)', margin: 0, fontFamily: 'var(--font-display)' }}>
+            <h3 style={{ fontSize: 18, fontWeight: 800, color: 'var(--t-bone-0)', margin: 0, fontFamily: 'var(--font-ui)' }}>
               Upload Failed
             </h3>
-            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', margin: '3px 0 0', fontFamily: 'var(--font-mono)' }}>
+            <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.4)', margin: '3px 0 0', fontFamily: 'var(--font-number)' }}>
               ERR_NETWORK_TIMEOUT · clip_8af3c2.wav
             </p>
           </div>
@@ -77,15 +77,15 @@ export function ClipUploadFailed({ onClose, onRetry, onSaveDraft }: Props) {
           ].map(s => (
             <div key={s.label} style={{
               flex: 1, padding: '10px 8px', borderRadius: 12, textAlign: 'center',
-              background: s.ok ? 'var(--status-success-bg)' : 'var(--status-error-bg)',
+              background: s.ok ? 'var(--t-verdigris-50)' : 'var(--t-crimson-50)',
               border: `1px solid ${s.ok ? 'var(--t-verdigris-300)' : 'var(--t-crimson-500)'}`,
             }}>
               <div className="flex items-center justify-center" style={{ marginBottom: 3, height: 18 }}>
                 {s.ok
-                  ? <Check className="w-4 h-4" strokeWidth={2.75} style={{ color: 'var(--status-success-text)' }} />
-                  : <X className="w-4 h-4" strokeWidth={2.75} style={{ color: 'var(--status-error-text)' }} />}
+                  ? <Check className="w-4 h-4" strokeWidth={2.75} style={{ color: 'var(--money-positive)' }} />
+                  : <X className="w-4 h-4" strokeWidth={2.75} style={{ color: 'var(--state-failed)' }} />}
               </div>
-              <div style={{ fontSize: 10, fontWeight: 700, color: s.ok ? 'var(--status-success-text)' : 'var(--status-error-text)', fontFamily: 'var(--font-mono)' }}>
+              <div style={{ fontSize: 10, fontWeight: 700, color: s.ok ? 'var(--money-positive)' : 'var(--state-failed)', fontFamily: 'var(--font-number)' }}>
                 {s.label}
               </div>
             </div>
@@ -99,7 +99,7 @@ export function ClipUploadFailed({ onClose, onRetry, onSaveDraft }: Props) {
             disabled={retrying}
             style={{
               width: '100%', height: 52, borderRadius: 999,
-              background: retrying ? 'rgba(255,255,255,0.06)' : 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
+              background: retrying ? 'rgba(255,255,255,0.06)' : 'linear-gradient(160deg, var(--t-terracotta-500) 0%, var(--action-primary-pressed) 100%)',
               color: retrying ? 'rgba(255,255,255,0.4)' : 'var(--t-bone-0)',
               fontSize: 15, fontWeight: 700, border: 'none', cursor: retrying ? 'not-allowed' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,

@@ -45,8 +45,8 @@ function EmptyBatchState() {
         <p style={{ fontFamily: 'var(--font-number)', fontSize: 36, fontWeight: 700, color: 'var(--color-success)', marginBottom: 4 }}>94.8%</p>
         <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 24 }}>Above top-10% of validators</p>
         <button style={{
-          background: 'transparent', border: '1.5px solid var(--accent-primary-deep)',
-          color: 'var(--accent-primary-deep)', borderRadius: 'var(--r-full)',
+          background: 'transparent', border: '1.5px solid var(--action-primary-pressed)',
+          color: 'var(--action-primary-pressed)', borderRadius: 'var(--r-full)',
           padding: '13px 28px', fontSize: 14, fontWeight: 700,
           display: 'flex', alignItems: 'center', gap: 8, cursor: 'pointer',
         }}>
@@ -83,7 +83,7 @@ export function ValidatorHome() {
   }, []);
 
   return (
-    <div className="min-h-screen pb-24" style={{ background: 'var(--background)', fontFamily: 'var(--font-ui)' }}>
+    <div className="min-h-screen pb-24" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       {/* Notifications Panel */}
       <NotificationsPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
@@ -91,7 +91,7 @@ export function ValidatorHome() {
       {/* ── WARM GREETING HERO ──────────────────────────────── */}
       <div
         style={{
-          background: 'linear-gradient(175deg, var(--t-verdigris-50) 0%, var(--t-verdigris-50) 40%, var(--background) 100%)',
+          background: 'linear-gradient(175deg, var(--t-verdigris-50) 0%, var(--t-verdigris-50) 40%, var(--surface-ground) 100%)',
           padding: '64px 24px 24px',
           position: 'relative',
           overflow: 'hidden',
@@ -185,7 +185,7 @@ export function ValidatorHome() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, delay: 0.28 }}
           style={{
-            background: 'radial-gradient(ellipse at 20% 35%, var(--t-verdigris-50) 0%, transparent 55%), linear-gradient(150deg, var(--surface-hero) 0%, var(--surface-hero-elevated) 100%)',
+            background: 'radial-gradient(ellipse at 20% 35%, var(--t-verdigris-50) 0%, transparent 55%), linear-gradient(150deg, var(--surface-studio) 0%, var(--surface-raised) 100%)',
             borderRadius: 'var(--r-lg)',
             padding: '20px 22px',
             position: 'relative',
@@ -204,8 +204,8 @@ export function ValidatorHome() {
                 Accuracy Score
               </p>
               <div className="flex items-center gap-1">
-                <ArrowUpRight className="w-3.5 h-3.5" style={{ color: 'var(--success-500)' }} />
-                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--success-500)' }}>Top 10% of validators</span>
+                <ArrowUpRight className="w-3.5 h-3.5" style={{ color: 'var(--state-settled)' }} />
+                <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--state-settled)' }}>Top 10% of validators</span>
               </div>
             </div>
 
@@ -226,7 +226,7 @@ export function ValidatorHome() {
               {/* Right mini stats */}
               <div className="flex-1 flex flex-col items-end gap-2 pb-1">
                 <div style={{ textAlign: 'right' }}>
-                  <p style={{ fontFamily: 'var(--font-number)', fontSize: 16, fontWeight: 700, color: 'var(--accent-primary)' }}>+₹{weeklyEarned}</p>
+                  <p style={{ fontFamily: 'var(--font-number)', fontSize: 16, fontWeight: 700, color: 'var(--action-primary)' }}>+₹{weeklyEarned}</p>
                   <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.3)' }}>this week</p>
                 </div>
                 <div style={{ textAlign: 'right' }}>
@@ -246,7 +246,7 @@ export function ValidatorHome() {
       <div className="px-5 mb-4">
         <div
           className="flex items-center"
-          style={{ background: 'var(--surface)', borderRadius: 'var(--r-md)', border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: 'var(--shadow-card)' }}
+          style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)', overflow: 'hidden', boxShadow: 'var(--e-1)' }}
         >
           {[
             { label: 'Cash Earned', value: '₹568',  mono: true  },
@@ -256,7 +256,7 @@ export function ValidatorHome() {
             <div
               key={stat.label}
               className="flex-1 text-center"
-              style={{ padding: '14px 6px', borderRight: idx < 2 ? '1px solid var(--card-border)' : 'none' }}
+              style={{ padding: '14px 6px', borderRight: idx < 2 ? '1px solid var(--border-subtle)' : 'none' }}
             >
               <p style={{
                 fontFamily: stat.mono ? 'var(--font-number)' : 'var(--font-ui)',
@@ -286,10 +286,10 @@ export function ValidatorHome() {
               onClick={() => navigate(`/validator/grading/${pendingBatches[0].id}`)}
               style={{
                 width: '100%', height: 62, borderRadius: 'var(--r-full)',
-                background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
+                background: 'linear-gradient(160deg, var(--t-terracotta-500) 0%, var(--action-primary-pressed) 100%)',
                 color: 'var(--text-on-accent)',
                 fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
-                boxShadow: '0px 10px 28px rgba(var(--accent-glow-rgb),0.4), inset 0px 1px 0px rgba(255,255,255,0.18)',
+                boxShadow: '0px 10px 28px rgba(224, 108, 58,0.4), inset 0px 1px 0px rgba(255,255,255,0.18)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
               }}
             >
@@ -318,7 +318,7 @@ export function ValidatorHome() {
               </button>
             </div>
 
-            <div style={{ background: 'var(--surface)', borderRadius: 'var(--r-md)', border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: 'var(--shadow-glass)' }}>
+            <div style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)', overflow: 'hidden', boxShadow: 'var(--e-3)' }}>
               {pendingBatches.map((batch, idx) => (
                 <motion.div
                   key={batch.id}
@@ -336,7 +336,7 @@ export function ValidatorHome() {
                   <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
                     <div style={{
                       width: 4, height: 36, borderRadius: 'var(--r-full)',
-                      background: batch.priority === 'High' ? 'var(--accent-primary)' : 'var(--card-border)',
+                      background: batch.priority === 'High' ? 'var(--action-primary)' : 'var(--border-subtle)',
                       flexShrink: 0,
                     }} />
                     <div>
@@ -345,7 +345,7 @@ export function ValidatorHome() {
                       </h4>
                       <div className="flex items-center gap-3">
                         <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{batch.clips} clips</span>
-                        <span style={{ fontFamily: 'var(--font-number)', fontSize: 13, fontWeight: 700, color: 'var(--accent-primary)' }}>
+                        <span style={{ fontFamily: 'var(--font-number)', fontSize: 13, fontWeight: 700, color: 'var(--action-primary)' }}>
                           ₹{batch.payout}
                         </span>
                       </div>
@@ -353,7 +353,7 @@ export function ValidatorHome() {
                   </div>
                   <div style={{
                     width: 36, height: 36, borderRadius: 'var(--r-full)', flexShrink: 0,
-                    background: batch.priority === 'High' ? 'var(--accent-primary)' : 'var(--surface-sunken)',
+                    background: batch.priority === 'High' ? 'var(--action-primary)' : 'var(--surface-sunken)',
                     display: 'flex', alignItems: 'center', justifyContent: 'center',
                   }}>
                     <Play
@@ -374,7 +374,7 @@ export function ValidatorHome() {
                 Recent Activity
               </h3>
             </div>
-            <div style={{ background: 'var(--surface)', borderRadius: 'var(--r-md)', border: '1px solid var(--card-border)', overflow: 'hidden', boxShadow: 'var(--shadow-glass)' }}>
+            <div style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)', overflow: 'hidden', boxShadow: 'var(--e-3)' }}>
               {recentGradings.map((grading, idx) => (
                 <div
                   key={grading.id}
@@ -391,7 +391,7 @@ export function ValidatorHome() {
                     </p>
                   </div>
                   <div style={{ textAlign: 'right' }}>
-                    <p style={{ fontFamily: 'var(--font-number)', fontSize: 14, fontWeight: 700, color: 'var(--accent-primary)' }}>
+                    <p style={{ fontFamily: 'var(--font-number)', fontSize: 14, fontWeight: 700, color: 'var(--action-primary)' }}>
                       +₹{grading.earned}
                     </p>
                     <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--color-success)', marginTop: 2 }}>

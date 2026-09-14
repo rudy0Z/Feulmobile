@@ -111,7 +111,7 @@ export function RejectedTask() {
                   style={{
                     aspectRatio: '1 / 1',
                     borderRadius: 'var(--r-sm)',
-                    background: flagged ? 'var(--status-error-bg)' : 'var(--status-success-bg)',
+                    background: flagged ? 'var(--t-crimson-50)' : 'var(--t-verdigris-50)',
                     border: flagged ? '1.5px solid var(--state-failed)' : '1px solid var(--state-settled)',
                     display: 'flex',
                     flexDirection: 'column',
@@ -145,7 +145,7 @@ export function RejectedTask() {
         {/* Flagged prompt detail — shared taxonomy: sentence + why + fix */}
         <div
           style={{
-            background: 'var(--status-error-bg)',
+            background: 'var(--t-crimson-50)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--state-failed)',
             borderLeft: '3px solid var(--state-failed)',
@@ -201,7 +201,7 @@ export function RejectedTask() {
           <div className="flex items-start gap-2">
             <div style={{
               width: 28, height: 28, borderRadius: 'var(--r-sm)', flexShrink: 0,
-              background: 'var(--status-accent-bg)',
+              background: 'var(--t-terracotta-50)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               <Lightbulb className="w-3.5 h-3.5" style={{ color: 'var(--action-primary)' }} />

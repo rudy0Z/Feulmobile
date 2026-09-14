@@ -8,9 +8,9 @@ interface SegmentedControlProps {
 
 export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: SegmentedControlProps) {
   function getSegmentColor(id: number, selected: number | null): string {
-    if (selected !== id) return 'var(--neutral-100)';
-    if (id <= 2) return 'var(--status-error-text)';
-    if (id === 3) return 'var(--warning-700)';
+    if (selected !== id) return 'var(--t-bone-100)';
+    if (id <= 2) return 'var(--state-failed)';
+    if (id === 3) return 'var(--money-pending)';
     return 'var(--color-success)';
   }
 

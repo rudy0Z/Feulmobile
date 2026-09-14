@@ -50,7 +50,7 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
         </motion.div>
 
         <h2 style={{
-          fontFamily: 'var(--font-display)', fontSize: 26, fontWeight: 800,
+          fontFamily: 'var(--font-ui)', fontSize: 26, fontWeight: 800,
           color: 'var(--text-primary)', textAlign: 'center', marginBottom: 12, lineHeight: 1.2,
         }}>
           Daily Limit Reached
@@ -66,7 +66,7 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
         <div style={{
           width: '100%', maxWidth: 340,
           background: 'var(--t-bone-0)',
-          borderRadius: 16, border: '1px solid var(--card-border)',
+          borderRadius: 16, border: '1px solid var(--border-subtle)',
           boxShadow: '0px 4px 16px rgba(var(--carbon-rgb),0.06)',
           padding: '18px 20px', marginBottom: 28,
         }}>
@@ -85,21 +85,21 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
               <span style={{
                 fontSize: 13, fontWeight: 700,
                 color: r.accent ? 'var(--color-success)' : 'var(--text-primary)',
-                fontFamily: r.accent ? 'var(--font-mono)' : undefined,
+                fontFamily: r.accent ? 'var(--font-number)' : undefined,
               }}>
                 {r.value}
               </span>
             </div>
           ))}
 
-          <div style={{ height: 1, background: 'var(--card-border)', margin: '12px 0' }} />
+          <div style={{ height: 1, background: 'var(--border-subtle)', margin: '12px 0' }} />
 
           {/* Reset countdown */}
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <span style={{ fontSize: 12, color: 'var(--text-muted)', fontWeight: 500 }}>Resets at</span>
             <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <span style={{
-                fontFamily: 'var(--font-mono)', fontSize: 12, fontWeight: 700,
+                fontFamily: 'var(--font-number)', fontSize: 12, fontWeight: 700,
                 color: 'var(--text-muted)',
               }}>
                 {nextDate} · {resetHour}
@@ -113,10 +113,10 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
             onClick={onViewEarnings}
             style={{
               width: '100%', height: 52, borderRadius: 999,
-              background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
+              background: 'linear-gradient(160deg, var(--t-terracotta-500) 0%, var(--action-primary-pressed) 100%)',
               color: 'var(--t-bone-0)', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.28)',
+              boxShadow: '0px 8px 24px rgba(196, 98, 45,0.28)',
             }}
           >
             <TrendingUp style={{ width: 16, height: 16 }} />
@@ -126,7 +126,7 @@ export function DailyLimitReached({ onClose, onViewEarnings }: Props) {
             onClick={onClose}
             style={{
               width: '100%', height: 48, borderRadius: 999,
-              background: 'transparent', border: '1.5px solid var(--card-border)',
+              background: 'transparent', border: '1.5px solid var(--border-subtle)',
               color: 'var(--text-muted)', fontSize: 14, fontWeight: 600, cursor: 'pointer',
             }}
           >

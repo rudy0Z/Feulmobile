@@ -32,7 +32,7 @@ export function ValidatorApplication() {
 
   if (step === 'submitted') {
     return (
-      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+      <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
         <motion.div
           initial={{ scale: 0.5, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
@@ -41,12 +41,12 @@ export function ValidatorApplication() {
         >
           <div style={{
             width: 88, height: 88, borderRadius: '50%',
-            background: 'var(--status-success-bg)',
+            background: 'var(--t-verdigris-50)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 24,
           }}>
             <CheckCircle2 className="w-11 h-11" style={{ color: 'var(--color-success)' }} strokeWidth={1.5} />
           </div>
-          <h1 style={{ fontFamily: 'var(--font-display)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
+          <h1 style={{ fontFamily: 'var(--font-ui)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
             Application Submitted
           </h1>
           <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: 300, marginBottom: 8 }}>
@@ -59,9 +59,9 @@ export function ValidatorApplication() {
             onClick={() => navigate('/contributor')}
             style={{
               height: 56, borderRadius: 999, padding: '0 40px',
-              background: 'var(--accent-primary-deep)', color: 'var(--t-bone-0)',
+              background: 'var(--action-primary-pressed)', color: 'var(--t-bone-0)',
               fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-              boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.28)',
+              boxShadow: '0px 4px 16px rgba(196, 98, 45,0.28)',
             }}
           >
             Back to Earning
@@ -72,11 +72,11 @@ export function ValidatorApplication() {
   }
 
   return (
-    <div className="min-h-screen pb-8" style={{ background: 'var(--background)', fontFamily: 'var(--font-sans)' }}>
+    <div className="min-h-screen pb-8" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       {/* Header */}
       <div className="px-6 pt-14 pb-2">
-        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 6 }}>
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 }}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
         <p style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-primary)' }}>Apply to Validate</p>
@@ -85,7 +85,7 @@ export function ValidatorApplication() {
       {/* Hero */}
       <div className="px-6 mb-6">
         <div style={{
-          background: 'var(--navy)', borderRadius: 24,
+          background: 'var(--surface-studio)', borderRadius: 24,
           padding: '24px', position: 'relative', overflow: 'hidden',
         }}>
           <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 22px 22px', opacity: 0.10 }}>
@@ -93,16 +93,16 @@ export function ValidatorApplication() {
           </div>
           <div className="relative z-10">
             <div className="flex items-center gap-2 mb-3">
-              <ShieldCheck className="w-5 h-5" style={{ color: 'var(--success-700)' }} />
-              <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--success-700)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+              <ShieldCheck className="w-5 h-5" style={{ color: 'var(--money-positive)' }} />
+              <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--money-positive)', letterSpacing: '0.06em', textTransform: 'uppercase' }}>
                 Validator Program
               </span>
             </div>
-            <h2 style={{ fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800, color: 'var(--t-bone-0)', marginBottom: 8, lineHeight: 1.2 }}>
+            <h2 style={{ fontFamily: 'var(--font-ui)', fontSize: 24, fontWeight: 800, color: 'var(--t-bone-0)', marginBottom: 8, lineHeight: 1.2 }}>
               Earn more by reviewing audio quality
             </h2>
             <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6 }}>
-              Validators earn <span style={{ color: 'var(--accent-primary-deep)', fontWeight: 700 }}>₹2 per clip reviewed</span>. Grade submissions from contributors and help maintain dataset quality.
+              Validators earn <span style={{ color: 'var(--action-primary-pressed)', fontWeight: 700 }}>₹2 per clip reviewed</span>. Grade submissions from contributors and help maintain dataset quality.
             </p>
           </div>
         </div>
@@ -152,7 +152,7 @@ export function ValidatorApplication() {
                   fontSize: 13, fontWeight: 600,
                   border: '1.5px solid',
                   background: selectedLanguages.includes(lang) ? 'var(--text-primary)' : 'var(--t-bone-0)',
-                  borderColor: selectedLanguages.includes(lang) ? 'var(--text-primary)' : 'var(--card-border)',
+                  borderColor: selectedLanguages.includes(lang) ? 'var(--text-primary)' : 'var(--border-subtle)',
                   color: selectedLanguages.includes(lang) ? 'var(--t-bone-0)' : 'var(--text-secondary)',
                   cursor: 'pointer', transition: 'all 0.15s',
                 }}
@@ -178,7 +178,7 @@ export function ValidatorApplication() {
                   fontSize: 12, fontWeight: 600, textAlign: 'center',
                   border: '1.5px solid',
                   background: hoursPerWeek === opt ? 'var(--text-primary)' : 'var(--t-bone-0)',
-                  borderColor: hoursPerWeek === opt ? 'var(--text-primary)' : 'var(--card-border)',
+                  borderColor: hoursPerWeek === opt ? 'var(--text-primary)' : 'var(--border-subtle)',
                   color: hoursPerWeek === opt ? 'var(--t-bone-0)' : 'var(--text-secondary)',
                   cursor: 'pointer', transition: 'all 0.15s',
                 }}
@@ -204,7 +204,7 @@ export function ValidatorApplication() {
               border: '1.5px solid var(--border-subtle)', padding: '14px 16px',
               fontSize: 14, fontWeight: 500, color: 'var(--text-primary)',
               resize: 'none', outline: 'none',
-              fontFamily: 'var(--font-sans)',
+              fontFamily: 'var(--font-ui)',
             }}
           />
         </div>
@@ -216,11 +216,11 @@ export function ValidatorApplication() {
           onClick={() => canSubmit && setStep('submitted')}
           style={{
             width: '100%', height: 56, borderRadius: 999,
-            background: canSubmit ? 'var(--accent-primary-deep)' : 'var(--card-border)',
+            background: canSubmit ? 'var(--action-primary-pressed)' : 'var(--border-subtle)',
             color: canSubmit ? 'var(--t-bone-0)' : 'var(--text-muted)',
             fontSize: 16, fontWeight: 700, border: 'none',
             cursor: canSubmit ? 'pointer' : 'not-allowed',
-            boxShadow: canSubmit ? '0px 4px 16px rgba(var(--accent-deep-rgb),0.28)' : 'none',
+            boxShadow: canSubmit ? '0px 4px 16px rgba(196, 98, 45,0.28)' : 'none',
             transition: 'all 0.2s',
           }}
         >

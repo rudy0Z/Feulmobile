@@ -56,16 +56,16 @@ export function ValidatorApp() {
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       style={{
                         position: 'absolute', inset: 0,
-                        background: 'color-mix(in oklch, var(--accent-primary) 14%, transparent)',
+                        background: 'color-mix(in oklch, var(--action-primary) 14%, transparent)',
                         borderRadius: 999,
                       }}
                     />
                   )}
                   <Icon
-                    style={{ color: active ? 'var(--accent-primary)' : 'var(--text-muted)', position: 'relative', zIndex: 1 }}
+                    style={{ color: active ? 'var(--action-primary)' : 'var(--text-muted)', position: 'relative', zIndex: 1 }}
                     className="w-[22px] h-[22px]"
                     strokeWidth={active ? 2.4 : 1.75}
-                    fill={active ? 'color-mix(in oklch, var(--accent-primary) 18%, transparent)' : 'none'}
+                    fill={active ? 'color-mix(in oklch, var(--action-primary) 18%, transparent)' : 'none'}
                   />
                 </div>
                 {active && (
@@ -73,7 +73,7 @@ export function ValidatorApp() {
                     initial={{ opacity: 0, y: 2 }}
                     animate={{ opacity: 1, y: 0 }}
                     className="text-[10px]"
-                    style={{ color: 'var(--accent-primary)', fontWeight: 700 }}
+                    style={{ color: 'var(--action-primary)', fontWeight: 700 }}
                   >
                     {item.label}
                   </motion.span>

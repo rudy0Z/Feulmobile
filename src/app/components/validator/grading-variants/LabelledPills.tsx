@@ -22,7 +22,7 @@ export function LabelledPills({ selectedGrade, onGrade, gradeOptions }: Props) {
               width: '100%', display: 'flex', alignItems: 'center', gap: 14,
               padding: '14px 16px', borderRadius: 'var(--r-md)', cursor: 'pointer',
               textAlign: 'left', transition: 'background 0.15s, border-color 0.15s',
-              background: isSelected ? 'var(--surface-raised)' : 'var(--neutral-100)',
+              background: isSelected ? 'var(--surface-raised)' : 'var(--t-bone-100)',
               border: isSelected ? `1.5px solid ${opt.color}` : '1.5px solid transparent',
               boxShadow: isSelected ? 'var(--e-2)' : 'none',
             }}

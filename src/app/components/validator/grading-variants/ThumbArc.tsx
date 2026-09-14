@@ -35,7 +35,7 @@ export function ThumbArc({ selectedGrade, onGrade, gradeOptions }: Props) {
                 fontFamily: 'var(--font-number)',
                 fontSize: isSelected ? 22 : 18, fontWeight: 800,
                 cursor: 'pointer', border: 'none',
-                background: isSelected ? opt.color : 'var(--neutral-100)',
+                background: isSelected ? opt.color : 'var(--t-bone-100)',
                 color: isSelected ? 'var(--text-on-studio)' : 'var(--text-secondary)',
                 boxShadow: isSelected ? 'var(--e-3)' : 'var(--e-1)',
                 transition: 'background 0.15s, color 0.15s, font-size 0.12s',

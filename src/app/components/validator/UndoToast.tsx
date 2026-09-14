@@ -50,7 +50,7 @@ export function UndoToast({ gradeLabel, onUndo, onDismiss, visible }: UndoToastP
               style={{
                 background: 'none',
                 border: 'none',
-                color: 'var(--accent-primary)',
+                color: 'var(--action-primary)',
                 fontSize: 13,
                 fontWeight: 800,
                 cursor: 'pointer',

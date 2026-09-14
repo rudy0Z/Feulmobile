@@ -70,13 +70,13 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
       {/* Card */}
       <div
         style={{
-          background: 'var(--navy)',
+          background: 'var(--surface-studio)',
           borderRadius: 24,
           padding: 28,
           maxWidth: 340,
           width: '100%',
           margin: '0 auto',
-          boxShadow: 'var(--shadow-floating)',
+          boxShadow: 'var(--e-2)',
           position: 'relative',
         }}
       >
@@ -153,7 +153,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
                 cy={cy}
                 r={r}
                 fill="none"
-                stroke="var(--accent-primary)"
+                stroke="var(--action-primary)"
                 strokeWidth={2.5}
                 strokeDasharray={`${arcLength} ${circumference - arcLength}`}
                 strokeDashoffset={0}
@@ -217,7 +217,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
               key={i}
               style={{
                 width: 3,
-                background: 'var(--accent-primary)',
+                background: 'var(--action-primary)',
                 borderRadius: 999,
                 originY: 1,
               }}
@@ -236,8 +236,8 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
         {/* Prompt card */}
         <div
           style={{
-            background: 'var(--warning-50)',
-            border: '1px solid var(--warning-200)',
+            background: 'var(--t-ochre-50)',
+            border: '1px solid var(--t-ochre-50)',
             borderRadius: 16,
             padding: '14px 16px',
             marginBottom: 20,
@@ -249,7 +249,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
               fontWeight: 700,
               letterSpacing: '0.1em',
               textTransform: 'uppercase',
-              color: 'var(--warning-700)',
+              color: 'var(--money-pending)',
               marginBottom: 6,
             }}
           >
@@ -257,7 +257,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
           </div>
           <div
             style={{
-              fontFamily: 'var(--font-mono)',
+              fontFamily: 'var(--font-number)',
               fontSize: 15,
               fontWeight: 600,
               color: 'var(--text-primary)',
@@ -280,7 +280,7 @@ export function SpoofingVerificationHold({ onClose, onVerified }: Props) {
               height: 58,
               borderRadius: 999,
               background:
-                'linear-gradient(160deg, var(--accent-primary-light), var(--accent-primary-deep))',
+                'linear-gradient(160deg, var(--t-terracotta-500), var(--action-primary-pressed))',
               border: 'none',
               cursor: 'pointer',
               display: 'flex',

@@ -35,15 +35,15 @@ export function useCountUp(target: number, ms = 650): number {
 type CardElevation = 'flat' | 'card' | 'glass' | 'floating';
 const elevationShadow: Record<CardElevation, string> = {
   flat:     'none',
-  card:     'var(--shadow-card)',
-  glass:    'var(--shadow-glass)',
-  floating: 'var(--shadow-floating)',
+  card:     'var(--e-1)',
+  glass:    'var(--e-3)',
+  floating: 'var(--e-2)',
 };
 
 export function Card({
-  children, padding = 'var(--space-5)', radius = 'var(--radius-lg)',
-  elevation = 'card', borderColor = 'var(--card-border)', borderLeft,
-  background = 'var(--surface)', onClick, style,
+  children, padding = 'var(--space-5)', radius = 'var(--r-lg)',
+  elevation = 'card', borderColor = 'var(--border-subtle)', borderLeft,
+  background = 'var(--surface-raised)', onClick, style,
 }: {
   children: ReactNode;
   padding?: string | number;
@@ -86,7 +86,7 @@ export function StatBlock({
   return (
     <div style={{ textAlign: align }}>
       <p style={{
-        fontFamily: 'var(--font-mono)', fontSize: valueSize, fontWeight: 700,
+        fontFamily: 'var(--font-number)', fontSize: valueSize, fontWeight: 700,
         color, lineHeight: 1, letterSpacing: '-0.01em',
       }}>
         {value}
@@ -104,7 +104,7 @@ export function StatBlock({
 /* ─── EarningFigure — currency + caption ─────────────────── */
 
 export function EarningFigure({
-  amount, caption, size = 'md', color = 'var(--accent-primary)', align = 'right',
+  amount, caption, size = 'md', color = 'var(--action-primary)', align = 'right',
 }: {
   amount: number | string;
   caption?: string;
@@ -116,7 +116,7 @@ export function EarningFigure({
   return (
     <div style={{ textAlign: align }}>
       <p style={{
-        fontFamily: 'var(--font-mono)', fontSize: figureSize, fontWeight: 700,
+        fontFamily: 'var(--font-number)', fontSize: figureSize, fontWeight: 700,
         color, lineHeight: 1,
       }}>
         ₹{amount}
@@ -137,14 +137,14 @@ export function TagPill({ children, tone = 'neutral' }: {
   tone?: 'neutral' | 'accent' | 'inverted';
 }) {
   const tones = {
-    neutral:  { bg: 'var(--neutral-100)', text: 'var(--text-secondary)' },
-    accent:   { bg: 'var(--accent-100)',  text: 'var(--accent-900)' },
-    inverted: { bg: 'var(--navy)',        text: 'var(--neutral-100)' },
+    neutral:  { bg: 'var(--t-bone-100)', text: 'var(--text-secondary)' },
+    accent:   { bg: 'var(--t-terracotta-100)',  text: 'var(--t-terracotta-800)' },
+    inverted: { bg: 'var(--surface-studio)',        text: 'var(--t-bone-100)' },
   } as const;
   const t = tones[tone];
   return (
     <span style={{
-      fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 'var(--radius-full)',
+      fontSize: 11, fontWeight: 700, padding: '3px 10px', borderRadius: 'var(--r-full)',
       background: t.bg, color: t.text, letterSpacing: '0.02em',
       display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap',
     }}>
@@ -164,7 +164,7 @@ export function StatusPill({ children, tone, icon }: {
 }) {
   return (
     <span style={{
-      fontSize: 10.5, fontWeight: 700, padding: '4px 10px', borderRadius: 'var(--radius-full)',
+      fontSize: 10.5, fontWeight: 700, padding: '4px 10px', borderRadius: 'var(--r-full)',
       background: `var(--status-${tone}-bg)`, color: `var(--status-${tone}-text)`,
       display: 'inline-flex', alignItems: 'center', gap: 4, whiteSpace: 'nowrap',
     }}>
@@ -186,15 +186,15 @@ export function SectionHeading({
 }) {
   const styles: Record<typeof variant, CSSProperties> = {
     display: {
-      fontFamily: 'var(--font-display)', fontSize: 22, fontWeight: 800,
+      fontFamily: 'var(--font-ui)', fontSize: 22, fontWeight: 800,
       color: 'var(--text-primary)', letterSpacing: '-0.02em',
     },
     body: {
-      fontFamily: 'var(--font-display)', fontSize: 17, fontWeight: 700,
+      fontFamily: 'var(--font-ui)', fontSize: 17, fontWeight: 700,
       color: 'var(--text-primary)',
     },
     eyebrow: {
-      fontFamily: 'var(--font-sans)', fontSize: 12, fontWeight: 700,
+      fontFamily: 'var(--font-ui)', fontSize: 12, fontWeight: 700,
       color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase',
     },
   };
@@ -670,9 +670,9 @@ export function RecordTrigger({
       whileTap={{ scale: 0.97 }}
       transition={{ type: 'spring', stiffness: 500, damping: 40 }}
       animate={recording && !reducedMotion ? { boxShadow: [
-        '0 0 0 1px rgba(var(--accent-glow-rgb),.12), 0 8px 32px rgba(var(--accent-glow-rgb),.28)',
-        '0 0 0 1px rgba(var(--accent-glow-rgb),.20), 0 8px 40px rgba(var(--accent-glow-rgb),.42)',
-        '0 0 0 1px rgba(var(--accent-glow-rgb),.12), 0 8px 32px rgba(var(--accent-glow-rgb),.28)',
+        '0 0 0 1px rgba(224, 108, 58,.12), 0 8px 32px rgba(224, 108, 58,.28)',
+        '0 0 0 1px rgba(224, 108, 58,.20), 0 8px 40px rgba(224, 108, 58,.42)',
+        '0 0 0 1px rgba(224, 108, 58,.12), 0 8px 32px rgba(224, 108, 58,.28)',
       ] } : { boxShadow: 'var(--e-glow)' }}
       style={{
         width: 84, height: 84, borderRadius: 'var(--r-full)', border: 'none',

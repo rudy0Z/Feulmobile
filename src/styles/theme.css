@@ -1,4 +1,4 @@
-@custom-variant dark (&:is(.dark *));
+﻿@custom-variant dark (&:is(.dark *));
 
 :root {
   --font-size: 16px;
@@ -44,6 +44,8 @@
   --t-crimson-50:  #F7E4E4;
   --t-crimson-500: #8E2434;
   --t-crimson-700: #6E1926;
+  --t-terracotta-900: #7A3A1A;  /* pressed-dark, CTA text 8.0:1 */
+  --t-ochre-800:      #6B4C15;  /* pending text, 7.9:1 on white */
 
   /* ═══════════════════════════════════════════════════════════
      LAYER 2 — SEMANTIC TOKENS  (what components reference)
@@ -65,8 +67,8 @@
   --text-on-studio:   #FBEFE4;
 
   /* Action */
-  --action-primary:         var(--t-terracotta-600);
-  --action-primary-pressed: var(--t-terracotta-800);
+  --action-primary:         var(--t-terracotta-800);  /* P0-2: 6.51:1 with --text-on-accent */
+  --action-primary-pressed: var(--t-terracotta-900);
   --action-disabled:        var(--t-carbon-200);
 
   /* State — always paired with icon + label, never color alone */
@@ -77,7 +79,7 @@
   /* Money — figure is ink, not orange */
   --money-figure:   var(--t-carbon-900);
   --money-positive: var(--t-verdigris-700);
-  --money-pending:  var(--t-ochre-700);
+  --money-pending:  var(--t-ochre-800);  /* P0-2: pending text 7.9:1 on white */
 
   /* Structure */
   --border-subtle:  var(--t-carbon-200);
@@ -93,72 +95,21 @@
      ═══════════════════════════════════════════════════════════ */
 
   /* Accent → Terracotta */
-  --accent-50:   var(--t-terracotta-50);
-  --accent-100:  var(--t-terracotta-100);
-  --accent-200:  var(--t-terracotta-300);
-  --accent-300:  var(--t-terracotta-300);
-  --accent-400:  var(--t-terracotta-500);
-  --accent-500:  var(--t-terracotta-500);
-  --accent-600:  var(--t-terracotta-600);
-  --accent-700:  var(--t-terracotta-800);
-  --accent-800:  var(--t-terracotta-800);
-  --accent-900:  #6E3418;
-  --accent-950:  #4A2310;
 
   /* Neutral → Bone / Carbon */
-  --neutral-0:   var(--t-bone-0);
-  --neutral-50:  var(--t-bone-50);
-  --neutral-100: var(--t-bone-100);
-  --neutral-200: var(--t-carbon-200);
-  --neutral-300: var(--t-carbon-300);
-  --neutral-400: var(--t-carbon-300);
-  --neutral-500: var(--t-carbon-500);
-  --neutral-600: var(--t-carbon-700);
-  --neutral-700: var(--t-carbon-700);
-  --neutral-800: var(--t-carbon-900);
-  --neutral-900: var(--t-carbon-900);
-  --neutral-950: var(--t-carbon-900);
 
   /* Success → Verdigris */
-  --success-50:  var(--t-verdigris-50);
-  --success-100: var(--t-verdigris-50);
-  --success-200: #CADED5;
-  --success-500: var(--t-verdigris-500);
-  --success-700: var(--t-verdigris-700);
-  --success-900: #1E362D;
 
   /* Warning → Ochre */
-  --warning-50:  var(--t-ochre-50);
-  --warning-100: var(--t-ochre-50);
-  --warning-200: #EAD9A6;
-  --warning-500: var(--t-ochre-500);
-  --warning-700: var(--t-ochre-700);
-  --warning-900: #6B4C15;
 
   /* Error → Crimson */
-  --error-50:    var(--t-crimson-50);
-  --error-100:   var(--t-crimson-50);
-  --error-200:   #E9C0C4;
-  --error-500:   var(--t-crimson-500);
-  --error-700:   var(--t-crimson-700);
-  --error-900:   #4E121B;
 
   /* ─── Semantic aliases (legacy names → new semantics) ─── */
-  --background:        var(--surface-ground);
-  --surface:           var(--surface-raised);
-  --card-border:       var(--border-subtle);
 
-  --navy:              var(--t-carbon-900);
-  --cream:             var(--t-bone-50);
 
   /* Studio / hero dark surface — now carbon, not navy-blue. */
-  --surface-hero:             var(--t-carbon-900);
-  --surface-hero-elevated:    #17100C;
-  --surface-hero-accent-glow: rgba(var(--accent-glow-rgb),0.28);
 
   /* Brand-terracotta RGB channels — compose any alpha via rgba(var(--…),a). */
-  --accent-deep-rgb: 196, 98, 45;   /* == terracotta-600 */
-  --accent-glow-rgb: 224, 108, 58;  /* == terracotta-500 */
   --carbon-rgb:      32, 22, 17;    /* == carbon-900, for elevation tints */
 
   /* State-colour channels — compose tinted fills/scrims via rgba(var(--…),a).
@@ -170,25 +121,9 @@
 
   --text-on-navy:      var(--text-on-studio);
 
-  --accent-primary:        var(--action-primary);
-  --accent-primary-light:  var(--t-terracotta-500);
-  --accent-primary-deep:   var(--action-primary-pressed);
-  --accent-soft-bg:        var(--t-terracotta-50);
-  --accent-soft-border:    var(--t-terracotta-100);
-  --accent-xp:             var(--t-ochre-700);
 
   /* Status surface pairs (bg + text) */
-  --status-success-bg:   var(--t-verdigris-50);
-  --status-success-text: var(--t-verdigris-700);
-  --status-warning-bg:   var(--t-ochre-50);
-  --status-warning-text: var(--t-ochre-700);
-  --status-error-bg:     var(--t-crimson-50);
-  --status-error-text:   var(--t-crimson-700);
   /* "In review / processing" — neutral, not a second accent */
-  --status-info-bg:      var(--t-bone-100);
-  --status-info-text:    var(--text-secondary);
-  --status-accent-bg:    var(--t-terracotta-50);
-  --status-accent-text:  var(--t-terracotta-800);
 
   --color-success:     var(--state-settled);
   --color-warning:     var(--state-pending);
@@ -218,17 +153,7 @@
   --r-full: 999px;  /* pills, avatars, record trigger */
 
   /* Legacy radius aliases → new scale (12/16/20 collapse to 14). */
-  --radius-sm:    var(--r-sm);
-  --radius-md:    var(--r-md);
-  --radius-lg:    var(--r-md);
-  --radius-xl:    var(--r-md);
-  --radius-2xl:   var(--r-lg);
-  --radius-full:  var(--r-full);
 
-  --radius-card:    var(--r-md);
-  --radius-button:  var(--r-full);
-  --radius-tag:     var(--r-full);
-  --radius-input:   var(--r-md);
 
   /* ═══════════════════════════════════════════════════════════
      ELEVATION — carbon-tinted, two-layer. 01-DESIGN-SYSTEM §3.3
@@ -240,11 +165,6 @@
   --e-glow: 0 0 0 1px rgba(224,108,58,.12), 0 8px 32px rgba(224,108,58,.28);
 
   /* Legacy shadow aliases → new elevation. */
-  --shadow-card:        var(--e-0);
-  --shadow-card-hover:  var(--e-2);
-  --shadow-glass:       var(--e-1);
-  --shadow-floating:    var(--e-3);
-  --shadow-accent-glow: var(--e-glow);
 
   /* ═══════════════════════════════════════════════════════════
      MOTION — 01-DESIGN-SYSTEM §4
@@ -261,8 +181,6 @@
 
   /* ─── Tailwind / shadcn compatibility (retargeted, do not remove) ─── */
   --foreground:            var(--text-primary);
-  --card:                  var(--surface-raised);
-  --card-foreground:       var(--text-primary);
   --popover:               var(--surface-raised);
   --popover-foreground:    var(--text-primary);
   --primary:               var(--action-primary);
@@ -271,8 +189,6 @@
   --secondary-foreground:  #FFFFFF;
   --muted:                 var(--t-bone-100);
   --muted-foreground:      var(--text-secondary);
-  --accent:                var(--action-primary);
-  --accent-foreground:     var(--text-on-accent);
   --destructive:           var(--state-failed);
   --destructive-foreground: #FFFFFF;
   --border:                var(--border-subtle);
@@ -282,7 +198,6 @@
   --font-weight-medium:    500;
   --font-weight-normal:    400;
   --ring:                  var(--focus-ring);
-  --radius:                0.875rem;   /* 14px == --r-md */
 
   /* Chart colours — warm palette */
   --chart-1: var(--t-terracotta-500);
@@ -307,9 +222,6 @@
   --font-number:  'Anek Latin', system-ui, sans-serif;
 
   /* Legacy font aliases → Anek. */
-  --font-sans:    var(--font-ui);
-  --font-display: var(--font-ui);
-  --font-mono:    var(--font-number);
 
   /* Per-script line-heights. 01-DESIGN-SYSTEM §2.3 */
   --lh-latin: 1.5;
@@ -326,36 +238,22 @@
    state colours (grades stay red/ochre/green, money stays ink).
    ═══════════════════════════════════════════════════════════ */
 .theme-verdigris {
-  --accent-primary:        var(--t-verdigris-500);
-  --accent-primary-light:  var(--t-verdigris-300);
-  --accent-primary-deep:   var(--t-verdigris-700);
-  --accent-soft-bg:        var(--t-verdigris-50);
-  --accent-soft-border:    #CADED5;
 
-  --action-primary:         var(--t-verdigris-500);
-  --action-primary-pressed: var(--t-verdigris-700);
+  --action-primary:         var(--t-terracotta-800);  /* P0-2: 6.51:1 with --text-on-accent */
+  --action-primary-pressed: var(--t-terracotta-900);
 
-  --accent-50:  var(--t-verdigris-50);
-  --accent-500: var(--t-verdigris-500);
-  --accent-600: var(--t-verdigris-500);
-  --accent-700: var(--t-verdigris-700);
 
   --focus-ring: var(--t-verdigris-500);
   --ring:       var(--t-verdigris-500);
   --primary:    var(--t-verdigris-500);
 
   /* Accent channels for rgba() glows → verdigris. */
-  --accent-glow-rgb: 61, 107, 94;   /* == verdigris-500 */
-  --accent-deep-rgb: 46, 82, 69;    /* == verdigris-700 */
 }
 
 .dark {
   /* Unused app-wide dark theme — kept only for shadcn primitive compat.
      Studio darkness uses --surface-studio explicitly, NOT this class. */
-  --background:         var(--t-carbon-900);
   --foreground:         var(--t-bone-50);
-  --card:               var(--t-carbon-900);
-  --card-foreground:    var(--t-bone-50);
   --popover:            var(--t-carbon-900);
   --popover-foreground: var(--t-bone-50);
   --primary:            var(--t-terracotta-500);
@@ -364,8 +262,6 @@
   --secondary-foreground: var(--t-bone-50);
   --muted:              var(--t-carbon-700);
   --muted-foreground:   var(--t-carbon-300);
-  --accent:             var(--t-terracotta-500);
-  --accent-foreground:  var(--t-carbon-900);
   --destructive:        var(--t-crimson-500);
   --destructive-foreground: #FFFFFF;
   --border:             var(--t-carbon-700);
@@ -375,48 +271,48 @@
 
 @theme inline {
   /* Tonal ramps exposed as Tailwind utilities (retargeted values) */
-  --color-accent-50:   var(--accent-50);
-  --color-accent-100:  var(--accent-100);
-  --color-accent-200:  var(--accent-200);
-  --color-accent-300:  var(--accent-300);
-  --color-accent-400:  var(--accent-400);
-  --color-accent-500:  var(--accent-500);
-  --color-accent-600:  var(--accent-600);
-  --color-accent-700:  var(--accent-700);
-  --color-accent-800:  var(--accent-800);
-  --color-accent-900:  var(--accent-900);
-  --color-accent-950:  var(--accent-950);
+  --color-accent-50:   var(--t-terracotta-50);
+  --color-accent-100:  var(--t-terracotta-100);
+  --color-accent-200:  var(--t-terracotta-100);
+  --color-accent-300:  var(--t-terracotta-300);
+  --color-accent-400:  var(--t-terracotta-500);
+  --color-accent-500:  var(--t-terracotta-500);
+  --color-accent-600:  var(--t-terracotta-600);
+  --color-accent-700:  var(--t-terracotta-800);
+  --color-accent-800:  var(--t-terracotta-800);
+  --color-accent-900:  var(--t-terracotta-800);
+  --color-accent-950:  var(--t-terracotta-800);
 
-  --color-neutral-0:   var(--neutral-0);
-  --color-neutral-50:  var(--neutral-50);
-  --color-neutral-100: var(--neutral-100);
-  --color-neutral-200: var(--neutral-200);
-  --color-neutral-300: var(--neutral-300);
-  --color-neutral-400: var(--neutral-400);
-  --color-neutral-500: var(--neutral-500);
-  --color-neutral-600: var(--neutral-600);
-  --color-neutral-700: var(--neutral-700);
-  --color-neutral-800: var(--neutral-800);
-  --color-neutral-900: var(--neutral-900);
-  --color-neutral-950: var(--neutral-950);
+  --color-neutral-0:   var(--t-bone-0);
+  --color-neutral-50:  var(--t-bone-50);
+  --color-neutral-100: var(--t-bone-100);
+  --color-neutral-200: var(--t-carbon-200);
+  --color-neutral-300: var(--t-carbon-300);
+  --color-neutral-400: var(--t-carbon-300);
+  --color-neutral-500: var(--t-carbon-500);
+  --color-neutral-600: var(--t-carbon-700);
+  --color-neutral-700: var(--t-carbon-700);
+  --color-neutral-800: var(--t-carbon-900);
+  --color-neutral-900: var(--t-carbon-900);
+  --color-neutral-950: var(--t-carbon-900);
 
-  --color-success-50:  var(--success-50);
-  --color-success-100: var(--success-100);
-  --color-success-500: var(--success-500);
-  --color-success-700: var(--success-700);
-  --color-success-900: var(--success-900);
+  --color-success-50:  var(--t-verdigris-50);
+  --color-success-100: var(--t-verdigris-50);
+  --color-success-500: var(--t-verdigris-500);
+  --color-success-700: var(--t-verdigris-700);
+  --color-success-900: var(--t-verdigris-700);
 
-  --color-warning-50:  var(--warning-50);
-  --color-warning-100: var(--warning-100);
-  --color-warning-500: var(--warning-500);
-  --color-warning-700: var(--warning-700);
-  --color-warning-900: var(--warning-900);
+  --color-warning-50:  var(--t-ochre-50);
+  --color-warning-100: var(--t-ochre-50);
+  --color-warning-500: var(--t-ochre-500);
+  --color-warning-700: var(--t-ochre-800);
+  --color-warning-900: var(--t-ochre-700);
 
-  --color-error-50:    var(--error-50);
-  --color-error-100:   var(--error-100);
-  --color-error-500:   var(--error-500);
-  --color-error-700:   var(--error-700);
-  --color-error-900:   var(--error-900);
+  --color-error-50:    var(--t-crimson-50);
+  --color-error-100:   var(--t-crimson-50);
+  --color-error-500:   var(--t-crimson-500);
+  --color-error-700:   var(--t-crimson-700);
+  --color-error-900:   var(--t-crimson-700);
 
   /* Warm primitives exposed as Tailwind utilities (new-screen use) */
   --color-terracotta-50:  var(--t-terracotta-50);
@@ -467,13 +363,13 @@
   --color-divider:         var(--divider);
 
   /* Semantic (legacy names kept) */
-  --color-surface:        var(--surface);
-  --color-navy:           var(--navy);
+  --color-surface:        var(--surface-raised);
+  --color-navy:           var(--surface-studio);
 
-  --color-background:            var(--background);
+  --color-background:            var(--surface-ground);
   --color-foreground:            var(--foreground);
-  --color-card:                  var(--card);
-  --color-card-foreground:       var(--card-foreground);
+  --color-card:                  var(--surface-raised);
+  --color-card-foreground:       var(--text-primary);
   --color-popover:               var(--popover);
   --color-popover-foreground:    var(--popover-foreground);
   --color-primary:               var(--primary);
@@ -482,8 +378,8 @@
   --color-secondary-foreground:  var(--secondary-foreground);
   --color-muted:                 var(--muted);
   --color-muted-foreground:      var(--muted-foreground);
-  --color-accent:                var(--accent);
-  --color-accent-foreground:     var(--accent-foreground);
+  --color-accent:                var(--action-primary);
+  --color-accent-foreground:     var(--text-on-accent);
   --color-destructive:           var(--destructive);
   --color-destructive-foreground: var(--destructive-foreground);
   --color-border:                var(--border);
@@ -498,12 +394,6 @@
   --color-chart-5:               var(--chart-5);
 
   /* Radius exposed to Tailwind — new scale (8/14/24/999). */
-  --radius-sm:   8px;
-  --radius-md:   14px;
-  --radius-lg:   24px;
-  --radius-xl:   14px;
-  --radius-2xl:  24px;
-  --radius-full: 999px;
 
   --color-sidebar:                    var(--sidebar);
   --color-sidebar-foreground:         var(--sidebar-foreground);
@@ -588,7 +478,7 @@
     font-size: 16px;
     font-weight: 400;
     line-height: 1.5;
-    border-radius: var(--radius-input);
+    border-radius: var(--r-md);
   }
 
   p {

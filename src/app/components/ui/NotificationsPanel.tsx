@@ -87,13 +87,13 @@ const notifConfig: Record<NotifType, {
   iconBg: string;
   dot: string;
 }> = {
-  rejected:           { icon: AlertCircle,      iconColor: 'var(--color-error)', iconBg: 'var(--status-error-bg)', dot: 'var(--color-error)' },
-  approved:           { icon: CheckCircle2,     iconColor: 'var(--color-success)', iconBg: 'var(--status-success-bg)', dot: 'var(--color-success)' },
-  xp_level:          { icon: Zap,              iconColor: 'var(--warning-700)', iconBg: 'var(--t-ochre-50)', dot: 'var(--t-ochre-500)' },
-  payout:             { icon: Wallet,           iconColor: 'var(--status-info-text)', iconBg: 'var(--status-info-bg)', dot: 'var(--t-carbon-500)' },
-  validator_approved: { icon: ShieldCheck,      iconColor: 'var(--color-success)', iconBg: 'var(--status-success-bg)', dot: 'var(--color-success)' },
-  quest_new:          { icon: Mic,              iconColor: 'var(--accent-primary)', iconBg: 'var(--status-accent-bg)', dot: 'var(--accent-primary)' },
-  campaign_alert:     { icon: AlertCircle,      iconColor: 'var(--warning-700)', iconBg: 'var(--t-ochre-50)', dot: 'var(--t-ochre-500)' },
+  rejected:           { icon: AlertCircle,      iconColor: 'var(--color-error)', iconBg: 'var(--t-crimson-50)', dot: 'var(--color-error)' },
+  approved:           { icon: CheckCircle2,     iconColor: 'var(--color-success)', iconBg: 'var(--t-verdigris-50)', dot: 'var(--color-success)' },
+  xp_level:          { icon: Zap,              iconColor: 'var(--money-pending)', iconBg: 'var(--t-ochre-50)', dot: 'var(--t-ochre-500)' },
+  payout:             { icon: Wallet,           iconColor: 'var(--text-secondary)', iconBg: 'var(--surface-sunken)', dot: 'var(--t-carbon-500)' },
+  validator_approved: { icon: ShieldCheck,      iconColor: 'var(--color-success)', iconBg: 'var(--t-verdigris-50)', dot: 'var(--color-success)' },
+  quest_new:          { icon: Mic,              iconColor: 'var(--action-primary)', iconBg: 'var(--t-terracotta-50)', dot: 'var(--action-primary)' },
+  campaign_alert:     { icon: AlertCircle,      iconColor: 'var(--money-pending)', iconBg: 'var(--t-ochre-50)', dot: 'var(--t-ochre-500)' },
 };
 
 const groupLabels: Record<string, string> = {
@@ -152,7 +152,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
               position: 'fixed', bottom: 0, left: 0, right: 0,
               zIndex: 101,
               height: '88%',
-              background: 'var(--background)',
+              background: 'var(--surface-ground)',
               borderRadius: '28px 28px 0 0',
               display: 'flex', flexDirection: 'column',
               boxShadow: '0px -8px 40px rgba(0,0,0,0.2)',
@@ -162,7 +162,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
             {/* Drag handle */}
             <div style={{
               width: 36, height: 4, borderRadius: 999,
-              background: 'var(--neutral-200)', margin: '12px auto 0', flexShrink: 0,
+              background: 'var(--t-carbon-200)', margin: '12px auto 0', flexShrink: 0,
             }} />
 
             {/* Header */}
@@ -182,7 +182,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                       <span style={{
                         position: 'absolute', top: -5, right: -6,
                         width: 16, height: 16, borderRadius: '50%',
-                        background: 'var(--accent-primary)', border: '2px solid var(--t-bone-0)',
+                        background: 'var(--action-primary)', border: '2px solid var(--t-bone-0)',
                         display: 'flex', alignItems: 'center', justifyContent: 'center',
                         fontSize: 9, fontWeight: 800, color: 'var(--t-bone-0)',
                       }}>
@@ -199,7 +199,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                   {unreadCount > 0 && (
                     <button
                       onClick={markAllRead}
-                      style={{ fontSize: 12, fontWeight: 700, color: 'var(--accent-primary)', background: 'none', border: 'none', cursor: 'pointer' }}
+                      style={{ fontSize: 12, fontWeight: 700, color: 'var(--action-primary)', background: 'none', border: 'none', cursor: 'pointer' }}
                     >
                       Mark all read
                     </button>
@@ -208,7 +208,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                     onClick={onClose}
                     style={{
                       width: 30, height: 30, borderRadius: '50%',
-                      background: 'var(--neutral-100)', border: 'none', cursor: 'pointer',
+                      background: 'var(--t-bone-100)', border: 'none', cursor: 'pointer',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}
                   >
@@ -295,7 +295,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                                         background: cfg.dot, flexShrink: 0,
                                       }} />
                                     )}
-                                    <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--neutral-400)', whiteSpace: 'nowrap' }}>
+                                    <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--t-carbon-300)', whiteSpace: 'nowrap' }}>
                                       {notif.time}
                                     </p>
                                   </div>
@@ -313,7 +313,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
                                     style={{
                                       marginTop: 8,
                                       display: 'inline-flex', alignItems: 'center', gap: 4,
-                                      fontSize: 12, fontWeight: 700, color: 'var(--accent-primary)',
+                                      fontSize: 12, fontWeight: 700, color: 'var(--action-primary)',
                                       background: 'none', border: 'none', cursor: 'pointer',
                                       padding: 0,
                                     }}
@@ -335,7 +335,7 @@ export function NotificationsPanel({ isOpen, onClose }: Props) {
               {/* Empty state */}
               {notifs.length === 0 && (
                 <div className="flex flex-col items-center justify-center" style={{ paddingTop: 80 }}>
-                  <Bell className="w-12 h-12" style={{ color: 'var(--neutral-200)', marginBottom: 16 }} />
+                  <Bell className="w-12 h-12" style={{ color: 'var(--t-carbon-200)', marginBottom: 16 }} />
                   <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 6 }}>All caught up</p>
                   <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>No new notifications</p>
                 </div>
@@ -372,7 +372,7 @@ export function BellButton({ unreadCount, onClick }: BellButtonProps) {
         <span style={{
           position: 'absolute', top: -2, right: -2,
           minWidth: 16, height: 16, borderRadius: 999,
-          background: 'var(--accent-primary)', border: '2px solid var(--background)',
+          background: 'var(--action-primary)', border: '2px solid var(--surface-ground)',
           display: 'flex', alignItems: 'center', justifyContent: 'center',
           fontSize: 9, fontWeight: 800, color: 'var(--t-bone-0)', padding: '0 3px',
         }}>

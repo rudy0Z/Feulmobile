@@ -17,9 +17,9 @@ const tasks = [
 const categories = ['All Tasks', 'High Priority', 'English', 'Dialogue'];
 
 const priorityConfig: Record<string, { bg: string; text: string; bar: string }> = {
-  High:   { bg: 'var(--accent-50)', text: 'var(--accent-primary-deep)', bar: 'var(--accent-primary)' },
-  Medium: { bg: 'var(--neutral-100)', text: 'var(--text-secondary)', bar: 'var(--text-muted)' },
-  Low:    { bg: 'var(--neutral-100)', text: 'var(--text-muted)', bar: 'var(--border-strong)' },
+  High:   { bg: 'var(--t-terracotta-50)', text: 'var(--action-primary-pressed)', bar: 'var(--action-primary)' },
+  Medium: { bg: 'var(--t-bone-100)', text: 'var(--text-secondary)', bar: 'var(--text-muted)' },
+  Low:    { bg: 'var(--t-bone-100)', text: 'var(--text-muted)', bar: 'var(--border-strong)' },
 };
 
 export function ValidatorTasks() {
@@ -61,10 +61,10 @@ export function ValidatorTasks() {
               padding: '7px 18px', borderRadius: 'var(--r-full)',
               fontSize: 13, fontWeight: 600, whiteSpace: 'nowrap',
               border: '1.5px solid',
-              background: activeCategory === cat ? 'var(--accent-primary)' : 'var(--surface-raised)',
-              borderColor: activeCategory === cat ? 'var(--accent-primary)' : 'var(--card-border)',
+              background: activeCategory === cat ? 'var(--action-primary)' : 'var(--surface-raised)',
+              borderColor: activeCategory === cat ? 'var(--action-primary)' : 'var(--border-subtle)',
               color: activeCategory === cat ? 'var(--text-on-accent)' : 'var(--text-secondary)',
-              boxShadow: activeCategory === cat ? '0px 6px 14px rgba(var(--accent-glow-rgb),0.22)' : 'none',
+              boxShadow: activeCategory === cat ? '0px 6px 14px rgba(224, 108, 58,0.22)' : 'none',
               transition: 'all 0.15s',
             }}
           >
@@ -102,22 +102,22 @@ export function ValidatorTasks() {
                       <Languages className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
                       <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{task.language}</span>
                     </div>
-                    <span style={{ fontFamily: 'var(--font-number)', fontSize: 13, fontWeight: 700, color: 'var(--accent-primary-deep)' }}>₹{task.payout}</span>
+                    <span style={{ fontFamily: 'var(--font-number)', fontSize: 13, fontWeight: 700, color: 'var(--action-primary-pressed)' }}>₹{task.payout}</span>
                   </div>
                   <div className="flex items-center gap-2 flex-wrap">
                     <span style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 'var(--r-full)', background: pCfg.bg, color: pCfg.text }}>
                       {task.priority} Priority
                     </span>
-                    <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 'var(--r-full)', background: 'var(--neutral-100)', color: 'var(--text-secondary)' }}>
+                    <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 'var(--r-full)', background: 'var(--t-bone-100)', color: 'var(--text-secondary)' }}>
                       {task.category}
                     </span>
                   </div>
                 </div>
                 <div style={{
                   width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
-                  background: task.priority === 'High' ? 'var(--accent-primary-deep)' : 'var(--neutral-100)',
+                  background: task.priority === 'High' ? 'var(--action-primary-pressed)' : 'var(--t-bone-100)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: task.priority === 'High' ? '0px 4px 12px rgba(var(--accent-deep-rgb),0.25)' : 'none',
+                  boxShadow: task.priority === 'High' ? '0px 4px 12px rgba(196, 98, 45,0.25)' : 'none',
                 }}>
                   <Play className="w-5 h-5" style={{ color: task.priority === 'High' ? 'var(--text-on-accent)' : 'var(--text-primary)' }} fill={task.priority === 'High' ? 'var(--text-on-accent)' : 'var(--text-primary)'} />
                 </div>

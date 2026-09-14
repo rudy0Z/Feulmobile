@@ -18,7 +18,7 @@ import { UndoToast } from './UndoToast';
 // Grade definitions
 const gradeOptions = [
   { id: 1, label: 'Not Usable', description: 'Unusable for training',                   color: 'var(--state-failed)' },
-  { id: 2, label: 'Poor',       description: 'Multiple quality issues',                  color: 'var(--accent-primary-deep)' },
+  { id: 2, label: 'Poor',       description: 'Multiple quality issues',                  color: 'var(--action-primary-pressed)' },
   { id: 3, label: 'Neutral',    description: 'Acceptable with some issues',              color: 'var(--t-ochre-700)' },
   { id: 4, label: 'Good',       description: 'Good quality, minor issues acceptable',    color: 'var(--color-success)' },
   { id: 5, label: 'Perfect',    description: 'Clear, accurate, no issues',               color: 'var(--t-verdigris-700)' },
@@ -188,7 +188,7 @@ export function GradingTask() {
           padding: '64px 24px 16px',
         }}
       >
-        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 10 }}>
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 10 }}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
         <div className="flex items-center justify-between mb-4">
@@ -212,7 +212,7 @@ export function GradingTask() {
             {gradedClips.length} / {sampleClips.length} graded
           </span>
         </div>
-        <div style={{ background: 'var(--neutral-100)', borderRadius: 'var(--r-full)', height: 6 }}>
+        <div style={{ background: 'var(--t-bone-100)', borderRadius: 'var(--r-full)', height: 6 }}>
           <div
             style={{
               background: 'linear-gradient(90deg, var(--t-verdigris-700), var(--t-verdigris-500))',
@@ -286,9 +286,9 @@ export function GradingTask() {
               onClick={() => setIsPlaying(!isPlaying)}
               style={{
                 width: 56, height: 56, borderRadius: '50%',
-                background: 'var(--accent-primary-deep)',
+                background: 'var(--action-primary-pressed)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.30)',
+                boxShadow: '0px 4px 16px rgba(196, 98, 45,0.30)',
                 border: 'none', cursor: 'pointer',
               }}
             >
@@ -303,7 +303,7 @@ export function GradingTask() {
           <div className="flex items-center gap-3">
             <Volume2 className="w-4 h-4" style={{ color: 'var(--text-on-studio)' }} />
             <div style={{ flex: 1, background: 'rgba(255,255,255,0.08)', borderRadius: 'var(--r-full)', height: 4 }}>
-              <div style={{ background: 'var(--accent-primary-deep)', borderRadius: 'var(--r-full)', height: 4, width: '72%' }} />
+              <div style={{ background: 'var(--action-primary-pressed)', borderRadius: 'var(--r-full)', height: 4, width: '72%' }} />
             </div>
           </div>
         </div>
@@ -318,7 +318,7 @@ export function GradingTask() {
           {showKeyboardTip && !tipDismissed && (
             <div
               className="flex items-center justify-between px-3 py-2 rounded-xl mb-4"
-              style={{ background: 'var(--neutral-100)', border: '1px solid var(--border-subtle)' }}
+              style={{ background: 'var(--t-bone-100)', border: '1px solid var(--border-subtle)' }}
             >
               <span className="flex items-center gap-2" style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)' }}>
                 <Keyboard className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
@@ -343,8 +343,8 @@ export function GradingTask() {
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
                 padding: '12px', borderRadius: 'var(--r-full)',
                 border: flaggedFraud ? '2px solid var(--state-failed)' : '1.5px dashed var(--border-strong)',
-                background: flaggedFraud ? 'var(--status-error-bg)' : 'transparent',
-                color: flaggedFraud ? 'var(--status-error-text)' : 'var(--text-muted)',
+                background: flaggedFraud ? 'var(--t-crimson-50)' : 'transparent',
+                color: flaggedFraud ? 'var(--state-failed)' : 'var(--text-muted)',
                 fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
               }}
             >
@@ -412,14 +412,14 @@ export function GradingTask() {
                 style={{
                   position: 'absolute', top: 24, right: 24,
                   width: 32, height: 32, borderRadius: '50%',
-                  background: 'var(--neutral-100)', border: 'none',
+                  background: 'var(--t-bone-100)', border: 'none',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
                 }}
               >
                 <X className="w-4 h-4" style={{ color: 'var(--text-secondary)' }} />
               </button>
 
-              <div style={{ width: 52, height: 52, borderRadius: 'var(--r-md)', background: 'var(--warning-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+              <div style={{ width: 52, height: 52, borderRadius: 'var(--r-md)', background: 'var(--t-ochre-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
                 <AlertTriangle className="w-6 h-6" style={{ color: 'var(--t-ochre-700)' }} />
               </div>
 
@@ -437,7 +437,7 @@ export function GradingTask() {
               {/* Mini audio player */}
               <div
                 style={{
-                  background: 'var(--background)', borderRadius: 'var(--r-md)',
+                  background: 'var(--surface-ground)', borderRadius: 'var(--r-md)',
                   border: '1px solid var(--border-subtle)',
                   padding: '14px 18px',
                   display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20,
@@ -447,10 +447,10 @@ export function GradingTask() {
                   onClick={() => setIsPlaying(!isPlaying)}
                   style={{
                     width: 40, height: 40, borderRadius: '50%',
-                    background: 'var(--accent-primary)',
+                    background: 'var(--action-primary)',
                     border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
                     cursor: 'pointer', flexShrink: 0,
-                    boxShadow: '0px 4px 12px rgba(var(--accent-glow-rgb),0.3)',
+                    boxShadow: '0px 4px 12px rgba(224, 108, 58,0.3)',
                   }}
                 >
                   {isPlaying
@@ -462,7 +462,7 @@ export function GradingTask() {
                   {[...Array(24)].map((_, i) => (
                     <motion.div
                       key={i}
-                      style={{ flex: 1, background: isPlaying ? 'var(--accent-primary)' : 'var(--border-subtle)', borderRadius: 2 }}
+                      style={{ flex: 1, background: isPlaying ? 'var(--action-primary)' : 'var(--border-subtle)', borderRadius: 2 }}
                       animate={{ height: isPlaying ? [Math.random() * 28 + 8, Math.random() * 28 + 8] : 12 }}
                       transition={{ duration: 0.3, repeat: isPlaying ? Infinity : 0, repeatType: 'reverse' }}
                     />
@@ -482,7 +482,7 @@ export function GradingTask() {
                   }}
                   style={{
                     flex: 1, padding: '14px', borderRadius: 'var(--r-full)',
-                    background: 'var(--neutral-100)', border: '1.5px solid var(--border-subtle)',
+                    background: 'var(--t-bone-100)', border: '1.5px solid var(--border-subtle)',
                     color: 'var(--text-secondary)', fontSize: 14, fontWeight: 700, cursor: 'pointer',
                   }}
                 >
@@ -492,9 +492,9 @@ export function GradingTask() {
                   onClick={() => { setShowConsensusMismatch(false); setSelectedGrade(null); dev.dismissOverlay(); }}
                   style={{
                     flex: 1, padding: '14px', borderRadius: 'var(--r-full)',
-                    background: 'var(--accent-primary)', border: 'none',
+                    background: 'var(--action-primary)', border: 'none',
                     color: 'var(--text-on-accent)', fontSize: 14, fontWeight: 700, cursor: 'pointer',
-                    boxShadow: '0px 4px 12px rgba(var(--accent-glow-rgb),0.3)',
+                    boxShadow: '0px 4px 12px rgba(224, 108, 58,0.3)',
                   }}
                 >
                   Change Grade

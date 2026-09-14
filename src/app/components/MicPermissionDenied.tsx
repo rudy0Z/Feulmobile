@@ -12,7 +12,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
       <motion.div
         key="mic-backdrop"
         initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-        style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'var(--navy)' }}
+        style={{ position: 'fixed', inset: 0, zIndex: 200, background: 'var(--surface-studio)' }}
       />
       <motion.div
         key="mic-content"
@@ -41,7 +41,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
         </motion.div>
 
         <h2 style={{
-          fontFamily: 'var(--font-display)', fontSize: 24, fontWeight: 800,
+          fontFamily: 'var(--font-ui)', fontSize: 24, fontWeight: 800,
           color: 'var(--t-bone-0)', textAlign: 'center', marginBottom: 12, lineHeight: 1.2,
         }}>
           Microphone Access Blocked
@@ -73,9 +73,9 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: i < 3 ? 12 : 0 }}>
               <div style={{
                 width: 22, height: 22, borderRadius: '50%', flexShrink: 0,
-                background: 'rgba(var(--accent-glow-rgb),0.15)', border: '1px solid rgba(var(--accent-glow-rgb),0.3)',
+                background: 'rgba(224, 108, 58,0.15)', border: '1px solid rgba(224, 108, 58,0.3)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                fontSize: 11, fontWeight: 800, color: 'var(--accent-primary)',
+                fontSize: 11, fontWeight: 800, color: 'var(--action-primary)',
               }}>
                 {i + 1}
               </div>
@@ -92,10 +92,10 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
             onClick={onRetry}
             style={{
               width: '100%', height: 52, borderRadius: 999,
-              background: 'linear-gradient(160deg, var(--accent-primary-light) 0%, var(--accent-primary-deep) 100%)',
+              background: 'linear-gradient(160deg, var(--t-terracotta-500) 0%, var(--action-primary-pressed) 100%)',
               color: 'var(--t-bone-0)', fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-              boxShadow: '0px 8px 24px rgba(var(--accent-deep-rgb),0.35)',
+              boxShadow: '0px 8px 24px rgba(196, 98, 45,0.35)',
             }}
           >
             <RefreshCw style={{ width: 16, height: 16 }} />
@@ -116,7 +116,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
         {/* OS hint */}
         <div style={{ marginTop: 20, display: 'flex', alignItems: 'center', gap: 6 }}>
           <ExternalLink style={{ width: 12, height: 12, color: 'rgba(255,255,255,0.2)' }} />
-          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', fontFamily: 'var(--font-mono)' }}>
+          <span style={{ fontSize: 11, color: 'rgba(255,255,255,0.25)', fontFamily: 'var(--font-number)' }}>
             browser.settings → site-permissions → microphone
           </span>
         </div>

@@ -45,7 +45,7 @@ export function ValidatorProfile() {
           className="flex items-center justify-center flex-shrink-0"
           style={{
             width: 68, height: 68, borderRadius: '50%',
-            background: 'var(--neutral-100)', border: '2.5px solid var(--border-subtle)',
+            background: 'var(--t-bone-100)', border: '2.5px solid var(--border-subtle)',
           }}
         >
           <span style={{ fontFamily: 'var(--font-ui)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)' }}>JD</span>
@@ -55,7 +55,7 @@ export function ValidatorProfile() {
             Jordan Davis
           </h1>
           <div className="flex items-center gap-2">
-            <ShieldCheck className="w-3.5 h-3.5" style={{ color: 'var(--success-700)' }} strokeWidth={2} />
+            <ShieldCheck className="w-3.5 h-3.5" style={{ color: 'var(--money-positive)' }} strokeWidth={2} />
             <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>Validator since Jan 2025</p>
           </div>
         </div>
@@ -100,7 +100,7 @@ export function ValidatorProfile() {
           onClick={() => setRoleSwitcherOpen(true)}
           style={{
             width: '100%',
-            background: 'linear-gradient(135deg, var(--surface-studio) 0%, var(--surface-hero-elevated) 100%)',
+            background: 'linear-gradient(135deg, var(--surface-studio) 0%, var(--surface-raised) 100%)',
             borderRadius: 'var(--r-md)',
             padding: '14px 20px',
             display: 'flex',
@@ -117,7 +117,7 @@ export function ValidatorProfile() {
               background: 'rgba(255,255,255,0.1)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
-              <Repeat2 className="w-4 h-4" style={{ color: 'var(--accent-primary)' }} />
+              <Repeat2 className="w-4 h-4" style={{ color: 'var(--action-primary)' }} />
             </div>
             <div className="text-left">
               <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-on-studio)' }}>Switch App Role</p>
@@ -182,7 +182,7 @@ export function ValidatorProfile() {
           <div className="flex items-center gap-3">
             <div style={{
               width: 40, height: 40, borderRadius: 'var(--r-md)',
-              background: 'var(--neutral-100)',
+              background: 'var(--t-bone-100)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               <TrendingUp className="w-5 h-5" style={{ color: 'var(--text-primary)' }} strokeWidth={1.75} />
@@ -211,12 +211,12 @@ export function ValidatorProfile() {
                 borderRadius: 'var(--r-md)', padding: '18px 14px', textAlign: 'center',
                 ...(badge.unlocked
                   ? { background: 'var(--surface-studio)', boxShadow: 'var(--e-2)' }
-                  : { background: 'var(--neutral-100)' }),
+                  : { background: 'var(--t-bone-100)' }),
               }}
             >
               <div style={{
                 width: 48, height: 48, borderRadius: 'var(--r-md)',
-                background: badge.unlocked ? 'rgba(255,255,255,0.08)' : 'var(--card-border)',
+                background: badge.unlocked ? 'rgba(255,255,255,0.08)' : 'var(--border-subtle)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
                 margin: '0 auto 10px',
               }}>

@@ -30,9 +30,9 @@ function DevButton() {
         transition: 'background 0.15s, color 0.15s',
       }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLButtonElement).style.background = 'rgba(var(--accent-glow-rgb),0.18)';
-        (e.currentTarget as HTMLButtonElement).style.color = 'rgba(var(--accent-glow-rgb),0.9)';
-        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(var(--accent-glow-rgb),0.3)';
+        (e.currentTarget as HTMLButtonElement).style.background = 'rgba(224, 108, 58,0.18)';
+        (e.currentTarget as HTMLButtonElement).style.color = 'rgba(224, 108, 58,0.9)';
+        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(224, 108, 58,0.3)';
       }}
       onMouseLeave={e => {
         (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)';
@@ -218,7 +218,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
       style={{
         minHeight: '100vh',
         minWidth: '100vw',
-        background: 'var(--surface-hero-elevated)',
+        background: 'var(--surface-raised)',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',

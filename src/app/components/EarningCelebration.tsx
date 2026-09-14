@@ -10,7 +10,7 @@ export function EarningCelebration() {
   return (
     <div
       className="min-h-screen flex flex-col relative overflow-hidden"
-      style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--surface-studio)', fontFamily: 'var(--font-ui)' }}
     >
       {/* Background waveform */}
       <div className="absolute inset-0 flex items-center pointer-events-none" style={{ opacity: 0.06 }}>
@@ -25,7 +25,7 @@ export function EarningCelebration() {
           transition={{ type: 'spring', stiffness: 200, damping: 15, delay: 0.1 }}
           style={{
             width: 120, height: 120, borderRadius: '50%',
-            background: 'rgba(var(--accent-deep-rgb),0.12)',
+            background: 'rgba(196, 98, 45,0.12)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
             marginBottom: 40,
           }}
@@ -36,7 +36,7 @@ export function EarningCelebration() {
             transition={{ type: 'spring', stiffness: 200, damping: 12, delay: 0.3 }}
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            <CheckCircle2 style={{ width: 56, height: 56, color: 'var(--accent-primary-deep)' }} strokeWidth={1.75} />
+            <CheckCircle2 style={{ width: 56, height: 56, color: 'var(--action-primary-pressed)' }} strokeWidth={1.75} />
           </motion.div>
         </motion.div>
 
@@ -47,7 +47,7 @@ export function EarningCelebration() {
           transition={{ delay: 0.5, duration: 0.5 }}
           className="text-center"
         >
-          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--accent-primary-deep)', marginBottom: 12, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
+          <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--action-primary-pressed)', marginBottom: 12, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
             Credited to your wallet
           </p>
           <motion.p
@@ -55,7 +55,7 @@ export function EarningCelebration() {
             animate={{ scale: 1 }}
             transition={{ type: 'spring', stiffness: 150, damping: 10, delay: 0.7 }}
             style={{
-              fontFamily: 'var(--font-mono)',
+              fontFamily: 'var(--font-number)',
               fontSize: 72,
               fontWeight: 700,
               color: 'var(--t-bone-0)',
@@ -114,7 +114,7 @@ export function EarningCelebration() {
                 padding: '10px 14px',
                 textAlign: 'center',
               }}>
-                <p style={{ fontFamily: 'var(--font-mono)', fontSize: 14, fontWeight: 700, color: 'var(--accent-primary-deep)', marginBottom: 2 }}>
+                <p style={{ fontFamily: 'var(--font-number)', fontSize: 14, fontWeight: 700, color: 'var(--action-primary-pressed)', marginBottom: 2 }}>
                   {item.amount}
                 </p>
                 <p style={{ fontSize: 10, fontWeight: 500, color: 'rgba(255,255,255,0.35)' }}>{item.label}</p>
@@ -135,9 +135,9 @@ export function EarningCelebration() {
           onClick={() => navigate('/profile-setup')}
           style={{
             width: '100%', height: 58, borderRadius: 999,
-            background: 'var(--accent-primary-deep)', color: 'var(--t-bone-0)',
+            background: 'var(--action-primary-pressed)', color: 'var(--t-bone-0)',
             fontSize: 17, fontWeight: 700, border: 'none', cursor: 'pointer',
-            boxShadow: '0px 6px 28px rgba(var(--accent-deep-rgb),0.4)',
+            boxShadow: '0px 6px 28px rgba(196, 98, 45,0.4)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 10,
           }}
         >

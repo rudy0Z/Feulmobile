@@ -45,7 +45,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
     >
       <div
         style={{
-          background: 'var(--navy)',
+          background: 'var(--surface-studio)',
           borderRadius: 24,
           padding: 24,
           margin: 24,
@@ -56,10 +56,10 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
       >
         {/* Top: icon + title */}
         <div style={{ textAlign: 'center' }}>
-          <Volume2 size={28} style={{ color: 'var(--warning-700)' }} />
+          <Volume2 size={28} style={{ color: 'var(--money-pending)' }} />
           <h2
             style={{
-              fontFamily: 'var(--font-display)',
+              fontFamily: 'var(--font-ui)',
               fontSize: 22,
               fontWeight: 800,
               color: 'var(--t-bone-0)',
@@ -72,7 +72,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             style={{
               fontSize: 13,
               fontWeight: 600,
-              color: 'var(--warning-700)',
+              color: 'var(--money-pending)',
               marginTop: 4,
             }}
           >
@@ -100,7 +100,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
                 style={{
                   width: 3,
                   height: 24,
-                  background: 'var(--warning-700)',
+                  background: 'var(--money-pending)',
                   borderRadius: 999,
                   originY: 1,
                 }}
@@ -142,16 +142,16 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             </div>
             <div
               style={{
-                fontFamily: 'var(--font-mono)',
+                fontFamily: 'var(--font-number)',
                 fontSize: 28,
                 fontWeight: 700,
-                color: 'var(--warning-700)',
+                color: 'var(--money-pending)',
                 marginTop: 4,
               }}
             >
               42 dB
             </div>
-            <div style={{ fontSize: 10, color: 'var(--warning-700)', marginTop: 2 }}>
+            <div style={{ fontSize: 10, color: 'var(--money-pending)', marginTop: 2 }}>
               Too Loud
             </div>
           </div>
@@ -179,16 +179,16 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             </div>
             <div
               style={{
-                fontFamily: 'var(--font-mono)',
+                fontFamily: 'var(--font-number)',
                 fontSize: 28,
                 fontWeight: 700,
-                color: 'var(--success-500)',
+                color: 'var(--state-settled)',
                 marginTop: 4,
               }}
             >
               &lt; 12 dB
             </div>
-            <div style={{ fontSize: 10, color: 'var(--success-500)', marginTop: 2 }}>
+            <div style={{ fontSize: 10, color: 'var(--state-settled)', marginTop: 2 }}>
               Quiet Zone
             </div>
           </div>
@@ -208,7 +208,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             }}
           >
             <span>Gain Adjustment</span>
-            <span style={{ fontFamily: 'var(--font-mono)' }}>{gainValue} dB</span>
+            <span style={{ fontFamily: 'var(--font-number)' }}>{gainValue} dB</span>
           </div>
           <input
             type="range"
@@ -221,7 +221,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
               appearance: 'none',
               height: 6,
               borderRadius: 999,
-              background: `linear-gradient(to right, var(--accent-primary) ${sliderFillPct}%, rgba(255,255,255,0.1) ${sliderFillPct}%)`,
+              background: `linear-gradient(to right, var(--action-primary) ${sliderFillPct}%, rgba(255,255,255,0.1) ${sliderFillPct}%)`,
               outline: 'none',
               cursor: 'pointer',
             }}
@@ -285,7 +285,7 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             height: 58,
             borderRadius: 999,
             background:
-              'linear-gradient(160deg, var(--accent-primary-light), var(--accent-primary-deep))',
+              'linear-gradient(160deg, var(--t-terracotta-500), var(--action-primary-pressed))',
             color: 'var(--t-bone-0)',
             fontSize: 16,
             fontWeight: 700,

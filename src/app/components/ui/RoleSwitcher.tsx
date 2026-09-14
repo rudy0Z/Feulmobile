@@ -22,9 +22,9 @@ const roles: RoleConfig[] = [
     label: 'Contributor',
     descriptor: 'Earn by recording your voice for AI',
     icon: Mic,
-    color: 'var(--accent-primary)',
+    color: 'var(--action-primary)',
     bg: 'linear-gradient(135deg, var(--t-terracotta-50) 0%, var(--t-terracotta-100) 100%)',
-    borderColor: 'rgba(var(--accent-glow-rgb),0.2)',
+    borderColor: 'rgba(224, 108, 58,0.2)',
     path: '/contributor',
     unlocked: true,
   },
@@ -94,7 +94,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
             {/* Drag handle */}
             <div style={{
               width: 36, height: 4, borderRadius: 999,
-              background: 'var(--neutral-200)', margin: '0 auto 20px',
+              background: 'var(--t-carbon-200)', margin: '0 auto 20px',
             }} />
 
             {/* Header */}
@@ -124,8 +124,8 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                     disabled={isActive || isLocked}
                     style={{
                       width: '100%',
-                      background: isActive ? role.bg : 'var(--background)',
-                      border: `1.5px solid ${isActive ? role.borderColor : 'var(--card-border)'}`,
+                      background: isActive ? role.bg : 'var(--surface-ground)',
+                      border: `1.5px solid ${isActive ? role.borderColor : 'var(--border-subtle)'}`,
                       borderRadius: 20,
                       padding: '16px 18px',
                       display: 'flex', alignItems: 'center', gap: 14,
@@ -151,11 +151,11 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                       width: 48, height: 48, borderRadius: 16, flexShrink: 0,
                       background: isActive
                         ? `${role.color}18`
-                        : isLocked ? 'var(--neutral-100)' : 'var(--border-subtle)',
+                        : isLocked ? 'var(--t-bone-100)' : 'var(--border-subtle)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
                       {isLocked
-                        ? <Lock className="w-5 h-5" style={{ color: 'var(--neutral-400)' }} />
+                        ? <Lock className="w-5 h-5" style={{ color: 'var(--t-carbon-300)' }} />
                         : <Icon className="w-5 h-5" style={{ color: isActive ? role.color : 'var(--text-muted)' }} strokeWidth={isActive ? 2.2 : 1.75} />
                       }
                     </div>
@@ -165,7 +165,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                       <div className="flex items-center gap-2">
                         <p style={{
                           fontSize: 15, fontWeight: 700,
-                          color: isLocked ? 'var(--neutral-400)' : 'var(--text-primary)',
+                          color: isLocked ? 'var(--t-carbon-300)' : 'var(--text-primary)',
                         }}>
                           {role.label}
                         </p>
@@ -181,7 +181,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                         {isLocked && (
                           <span style={{
                             fontSize: 10, fontWeight: 700,
-                            background: 'var(--neutral-100)', color: 'var(--text-muted)',
+                            background: 'var(--t-bone-100)', color: 'var(--text-muted)',
                             padding: '2px 8px', borderRadius: 999,
                           }}>
                             Locked
@@ -190,7 +190,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                       </div>
                       <p style={{
                         fontSize: 12, fontWeight: 500,
-                        color: isLocked ? 'var(--neutral-300)' : 'var(--text-muted)',
+                        color: isLocked ? 'var(--t-carbon-300)' : 'var(--text-muted)',
                         marginTop: 2, lineHeight: 1.4,
                       }}>
                         {isLocked ? 'Apply from your Contributor profile' : role.descriptor}
@@ -199,7 +199,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
 
                     {/* Right chevron */}
                     {!isActive && !isLocked && (
-                      <ArrowRight className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--neutral-300)' }} />
+                      <ArrowRight className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--t-carbon-300)' }} />
                     )}
                     {isActive && (
                       <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: role.color }} />
@@ -214,7 +214,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
               onClick={onClose}
               style={{
                 marginTop: 16, width: '100%', height: 52, borderRadius: 999,
-                background: 'var(--neutral-100)', border: 'none', cursor: 'pointer',
+                background: 'var(--t-bone-100)', border: 'none', cursor: 'pointer',
                 fontSize: 15, fontWeight: 700, color: 'var(--text-secondary)',
               }}
             >

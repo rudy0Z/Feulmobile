@@ -24,8 +24,8 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
           onClick={() => onGrade(1)} // Mapping Reject to 1
           style={{
             flex: 1, borderRadius: 24,
-            background: selectedGrade === 1 ? 'var(--status-error-text)' : 'var(--status-error-bg)',
-            color: selectedGrade === 1 ? 'var(--surface)' : 'var(--status-error-text)',
+            background: selectedGrade === 1 ? 'var(--state-failed)' : 'var(--t-crimson-50)',
+            color: selectedGrade === 1 ? 'var(--surface-raised)' : 'var(--state-failed)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             border: 'none', cursor: 'pointer',
             transition: 'all 0.2s',
@@ -40,8 +40,8 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
           onClick={() => onGrade(5)} // Mapping Accept to 5
           style={{
             flex: 1, borderRadius: 24,
-            background: selectedGrade === 5 ? 'var(--color-success)' : 'var(--status-success-bg)',
-            color: selectedGrade === 5 ? 'var(--surface)' : 'var(--color-success)',
+            background: selectedGrade === 5 ? 'var(--color-success)' : 'var(--t-verdigris-50)',
+            color: selectedGrade === 5 ? 'var(--surface-raised)' : 'var(--color-success)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             border: 'none', cursor: 'pointer',
             transition: 'all 0.2s',

@@ -44,7 +44,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
           left: 0,
           right: 0,
           zIndex: 51,
-          background: 'var(--background)',
+          background: 'var(--surface-ground)',
           borderRadius: '24px 24px 0 0',
           padding: '28px 24px 40px',
           maxHeight: '85vh',
@@ -58,7 +58,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
             width: 36,
             height: 4,
             borderRadius: 999,
-            background: 'var(--neutral-100)',
+            background: 'var(--t-bone-100)',
             margin: '0 auto 20px',
           }}
         />
@@ -67,12 +67,12 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
         <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8 }}>
           <AlertTriangle
             size={20}
-            style={{ color: 'var(--status-error-text)', flexShrink: 0, marginTop: 2 }}
+            style={{ color: 'var(--state-failed)', flexShrink: 0, marginTop: 2 }}
           />
           <div>
             <h2
               style={{
-                fontFamily: 'var(--font-display)',
+                fontFamily: 'var(--font-ui)',
                 fontSize: 20,
                 fontWeight: 800,
                 color: 'var(--text-primary)',
@@ -96,7 +96,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
         {/* Red caution card */}
         <div
           style={{
-            background: 'var(--status-error-bg)',
+            background: 'var(--t-crimson-50)',
             border: '1px solid rgba(var(--crimson-rgb),0.2)',
             borderRadius: 16,
             padding: 16,
@@ -111,12 +111,12 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
               marginBottom: 8,
             }}
           >
-            <Shield size={14} style={{ color: 'var(--status-error-text)' }} />
+            <Shield size={14} style={{ color: 'var(--state-failed)' }} />
             <span
               style={{
                 fontSize: 12,
                 fontWeight: 700,
-                color: 'var(--status-error-text)',
+                color: 'var(--state-failed)',
               }}
             >
               Data Deletion Warning
@@ -126,7 +126,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
             style={{
               fontSize: 13,
               lineHeight: 1.6,
-              color: 'var(--status-error-text)',
+              color: 'var(--state-failed)',
               margin: 0,
             }}
           >
@@ -138,20 +138,20 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
         {/* Financial deduction row */}
         <div
           style={{
-            background: 'var(--surface)',
+            background: 'var(--surface-raised)',
             borderRadius: 12,
             padding: '12px 16px',
-            border: '1px solid var(--card-border)',
+            border: '1px solid var(--border-subtle)',
             marginBottom: 20,
           }}
         >
           <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Clips still in review</div>
           <div
             style={{
-              fontFamily: 'var(--font-mono)',
+              fontFamily: 'var(--font-number)',
               fontSize: 22,
               fontWeight: 700,
-              color: 'var(--status-error-text)',
+              color: 'var(--state-failed)',
               marginTop: 2,
             }}
           >
@@ -186,11 +186,11 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
               width: '100%',
               padding: '12px 16px',
               borderRadius: 12,
-              border: `2px solid ${isConfirmed ? 'var(--status-error-text)' : 'var(--card-border)'}`,
-              fontFamily: 'var(--font-mono)',
+              border: `2px solid ${isConfirmed ? 'var(--state-failed)' : 'var(--border-subtle)'}`,
+              fontFamily: 'var(--font-number)',
               fontSize: 16,
               fontWeight: 700,
-              background: 'var(--surface)',
+              background: 'var(--surface-raised)',
               color: 'var(--text-primary)',
               outline: 'none',
               boxSizing: 'border-box',
@@ -206,7 +206,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
             width: '100%',
             height: 52,
             borderRadius: 999,
-            background: isConfirmed ? 'var(--status-error-text)' : 'var(--neutral-100)',
+            background: isConfirmed ? 'var(--state-failed)' : 'var(--t-bone-100)',
             color: isConfirmed ? 'var(--t-bone-0)' : 'var(--text-muted)',
             border: 'none',
             fontSize: 15,
@@ -225,7 +225,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
             width: '100%',
             background: 'none',
             border: 'none',
-            color: 'var(--navy)',
+            color: 'var(--surface-studio)',
             fontWeight: 700,
             fontSize: 14,
             marginTop: 12,

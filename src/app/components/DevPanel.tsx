@@ -24,16 +24,16 @@ function ToggleRow({
       style={{
         width: '100%', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         padding: '11px 16px', borderRadius: 12, border: 'none', cursor: 'pointer',
-        background: value ? 'rgba(var(--accent-glow-rgb),0.10)' : 'rgba(255,255,255,0.04)',
+        background: value ? 'rgba(224, 108, 58,0.10)' : 'rgba(255,255,255,0.04)',
         textAlign: 'left', transition: 'background 0.15s',
       }}
     >
       <div>
-        <div style={{ fontSize: 13, fontWeight: 600, color: value ? 'var(--accent-primary)' : 'rgba(255,255,255,0.75)' }}>
+        <div style={{ fontSize: 13, fontWeight: 600, color: value ? 'var(--action-primary)' : 'rgba(255,255,255,0.75)' }}>
           {label}
         </div>
         {sublabel && (
-          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 1, fontFamily: 'var(--font-mono)' }}>
+          <div style={{ fontSize: 11, color: 'rgba(255,255,255,0.35)', marginTop: 1, fontFamily: 'var(--font-number)' }}>
             {sublabel}
           </div>
         )}
@@ -42,7 +42,7 @@ function ToggleRow({
       <div
         style={{
           width: 40, height: 22, borderRadius: 999, flexShrink: 0,
-          background: value ? 'var(--accent-primary)' : 'rgba(255,255,255,0.12)',
+          background: value ? 'var(--action-primary)' : 'rgba(255,255,255,0.12)',
           position: 'relative', transition: 'background 0.2s',
         }}
       >
@@ -83,7 +83,7 @@ function LaunchRow({
       </div>
       <div style={{ flex: 1, minWidth: 0 }}>
         <div style={{ fontSize: 12, fontWeight: 600, color: 'rgba(255,255,255,0.75)', lineHeight: 1.3 }}>{label}</div>
-        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.30)', fontFamily: 'var(--font-mono)', marginTop: 1 }}>{sublabel}</div>
+        <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.30)', fontFamily: 'var(--font-number)', marginTop: 1 }}>{sublabel}</div>
       </div>
       <button
         onClick={onLaunch}
@@ -91,7 +91,7 @@ function LaunchRow({
           padding: '5px 12px', borderRadius: 999, flexShrink: 0,
           background: `${accentColor}20`, border: `1px solid ${accentColor}40`,
           color: accentColor, fontSize: 11, fontWeight: 700,
-          fontFamily: 'var(--font-mono)', cursor: 'pointer', letterSpacing: '0.04em',
+          fontFamily: 'var(--font-number)', cursor: 'pointer', letterSpacing: '0.04em',
         }}
       >
         LAUNCH
@@ -126,9 +126,9 @@ function MethodSelector() {
             onClick={() => dev.setGradingMethod(m.id)}
             style={{
               padding: '5px 10px', borderRadius: 8, fontSize: 11, fontWeight: 700,
-              border: `1px solid ${dev.gradingMethod === m.id ? 'rgba(var(--accent-glow-rgb),0.5)' : 'rgba(255,255,255,0.08)'}`,
-              background: dev.gradingMethod === m.id ? 'rgba(var(--accent-glow-rgb),0.18)' : 'transparent',
-              color: dev.gradingMethod === m.id ? 'var(--accent-primary)' : 'rgba(255,255,255,0.4)',
+              border: `1px solid ${dev.gradingMethod === m.id ? 'rgba(224, 108, 58,0.5)' : 'rgba(255,255,255,0.08)'}`,
+              background: dev.gradingMethod === m.id ? 'rgba(224, 108, 58,0.18)' : 'transparent',
+              color: dev.gradingMethod === m.id ? 'var(--action-primary)' : 'rgba(255,255,255,0.4)',
               cursor: 'pointer', transition: 'all 0.15s',
             }}
           >
@@ -136,7 +136,7 @@ function MethodSelector() {
           </button>
         ))}
       </div>
-      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginTop: 6, fontFamily: 'var(--font-mono)' }}>
+      <div style={{ fontSize: 10, color: 'rgba(255,255,255,0.25)', marginTop: 6, fontFamily: 'var(--font-number)' }}>
         dev-only · applied on next grading session open
       </div>
     </div>
@@ -149,7 +149,7 @@ function SectionHeader({ label }: { label: string }) {
     <div style={{
       fontSize: 10, fontWeight: 800, color: 'rgba(255,255,255,0.25)',
       letterSpacing: '0.12em', textTransform: 'uppercase',
-      fontFamily: 'var(--font-mono)', marginBottom: 6, paddingLeft: 4,
+      fontFamily: 'var(--font-number)', marginBottom: 6, paddingLeft: 4,
     }}>
       {label}
     </div>
@@ -275,14 +275,14 @@ export function DevPanel() {
                     <div style={{
                       display: 'inline-flex', alignItems: 'center', gap: 6,
                       padding: '3px 8px', borderRadius: 6,
-                      background: 'rgba(var(--accent-glow-rgb),0.15)', border: '1px solid rgba(var(--accent-glow-rgb),0.25)',
+                      background: 'rgba(224, 108, 58,0.15)', border: '1px solid rgba(224, 108, 58,0.25)',
                       marginBottom: 4,
                     }}>
-                      <span style={{ fontFamily: 'var(--font-mono)', fontSize: 9, fontWeight: 800, color: 'var(--accent-primary)', letterSpacing: '0.1em' }}>
+                      <span style={{ fontFamily: 'var(--font-number)', fontSize: 9, fontWeight: 800, color: 'var(--action-primary)', letterSpacing: '0.1em' }}>
                         DEV MODE
                       </span>
                     </div>
-                    <div style={{ fontSize: 16, fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-display)' }}>
+                    <div style={{ fontSize: 16, fontWeight: 800, color: '#FFFFFF', fontFamily: 'var(--font-ui)' }}>
                       State Controls
                     </div>
                   </div>
@@ -355,8 +355,8 @@ export function DevPanel() {
                                 flex: 1, padding: '7px 4px', borderRadius: 999,
                                 fontSize: 11, fontWeight: 700, cursor: 'pointer',
                                 border: '1px solid',
-                                background: active ? 'var(--accent-primary-deep)' : 'transparent',
-                                borderColor: active ? 'var(--accent-primary-deep)' : 'rgba(255,255,255,0.16)',
+                                background: active ? 'var(--action-primary-pressed)' : 'transparent',
+                                borderColor: active ? 'var(--action-primary-pressed)' : 'rgba(255,255,255,0.16)',
                                 color: active ? '#FFFFFF' : 'rgba(255,255,255,0.6)',
                               }}
                             >
@@ -552,7 +552,7 @@ export function DevPanel() {
                       icon={ShieldAlert}
                       label="Spoofing Verification Hold"
                       sublabel="Payout → Step 2 biometric check"
-                      accentColor="rgba(var(--accent-glow-rgb),1)"
+                      accentColor="rgba(224, 108, 58,1)"
                       onLaunch={() => dev.launchOverlay('spoofing')}
                     />
                     <LaunchRow
@@ -599,9 +599,9 @@ function ActiveBadge({ label }: { label: string }) {
   return (
     <div style={{
       padding: '3px 8px', borderRadius: 6,
-      background: 'rgba(var(--accent-glow-rgb),0.15)', border: '1px solid rgba(var(--accent-glow-rgb),0.3)',
-      fontSize: 10, fontWeight: 700, color: 'var(--accent-primary)',
-      fontFamily: 'var(--font-mono)',
+      background: 'rgba(224, 108, 58,0.15)', border: '1px solid rgba(224, 108, 58,0.3)',
+      fontSize: 10, fontWeight: 700, color: 'var(--action-primary)',
+      fontFamily: 'var(--font-number)',
     }}>
       {label}
     </div>

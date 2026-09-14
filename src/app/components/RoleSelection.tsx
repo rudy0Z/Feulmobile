@@ -10,7 +10,7 @@ const roles = [
     tagline: 'Record & Earn Cash',
     description: 'Share your voice to train AI models. Get paid per clip in INR.',
     path: '/contributor',
-    borderColor: 'var(--accent-primary)',
+    borderColor: 'var(--action-primary)',
   },
   {
     id: 'validator',
@@ -28,7 +28,7 @@ export function RoleSelection() {
   return (
     <div
       className="min-h-screen flex flex-col relative overflow-hidden"
-      style={{ background: 'var(--navy)', fontFamily: 'var(--font-sans)' }}
+      style={{ background: 'var(--surface-studio)', fontFamily: 'var(--font-ui)' }}
     >
       {/* Waveform background texture */}
       <div className="absolute top-24 left-0 right-0 pointer-events-none">
@@ -119,7 +119,7 @@ export function RoleSelection() {
           Already have an account?{' '}
           <button
             style={{
-              color: 'var(--accent-primary)',
+              color: 'var(--action-primary)',
               fontWeight: 700,
               background: 'none',
               border: 'none',
