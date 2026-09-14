@@ -50,7 +50,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
           fontSize: 14, fontWeight: 500, color: 'rgba(255,255,255,0.5)',
           textAlign: 'center', lineHeight: 1.65, maxWidth: 300, marginBottom: 32,
         }}>
-          Feul needs microphone access to record your voice clips. Your browser has blocked this permission.
+          This app needs microphone access to record your voice clips. Your browser has blocked this permission.
         </p>
 
         {/* Steps card */}
@@ -67,7 +67,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
           {[
             'Open your browser Settings',
             'Go to Site Settings → Microphone',
-            'Find Feul and set to Allow',
+            'Find this site and set microphone to Allow',
             'Return here and tap Retry',
           ].map((step, i) => (
             <div key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: 12, marginBottom: i < 3 ? 12 : 0 }}>

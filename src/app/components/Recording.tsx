@@ -86,7 +86,7 @@ function MicPermissionPrime({ quest, onAllow, onBack }: { quest: Quest; onAllow:
           <Volume2 style={{ width: 36, height: 36, color: 'var(--action-primary)' }} strokeWidth={2} />
         </div>
         <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 10px', letterSpacing: '-0.015em' }}>
-          Let Feul use your mic
+          Allow microphone access
         </h1>
         <p style={{ fontSize: 16, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6, maxWidth: 300, margin: '0 0 6px' }}>
           "{quest.title}" needs your microphone to record. It's only on while you're actively recording, and you can stop any time.

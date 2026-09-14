@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, useReducedMotion } from 'motion/react';
 import { Mic, ArrowRight, ChevronRight, TrendingUp } from 'lucide-react';
-import { FeulLogo } from './ui/FeulLogo';
+import { BrandSlot } from './ui/BrandSlot';
 import { NotificationsPanel, BellButton } from './ui/NotificationsPanel';
 import {
   Amount, BalanceBlock, QuestRow, LedgerRow, StatTile, Button,
@@ -72,7 +72,7 @@ export function Home() {
       <div style={{ padding: '56px 20px 20px' }}>
         <div className="flex items-center justify-between" style={{ marginBottom: 20 }}>
           <div className="flex items-center gap-2.5">
-            <FeulLogo />
+            <BrandSlot size={36} />
             <span style={{ fontSize: 15, fontWeight: 600, color: 'var(--text-secondary)' }}>Hi, {firstName}</span>
           </div>
           <BellButton unreadCount={unread} onClick={() => setNotifOpen(true)} />

@@ -2,7 +2,7 @@ import { useRef, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { Mail, Phone, ChevronLeft, Check } from 'lucide-react';
-import { FeulLogo } from './ui/FeulLogo';
+import { BrandSlot } from './ui/BrandSlot';
 import { Button, Amount } from './ui/Primitives';
 import { signIn, setProfile } from '../lib/session';
 
@@ -75,7 +75,7 @@ function Market({ onAuth }: { onAuth: (m: 'google' | 'email' | 'phone') => void 
     <>
       <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
         <div className="w-full flex flex-col items-center" style={{ maxWidth: 360 }}>
-          <div className="mb-10 flex justify-center"><FeulLogo /></div>
+          <div className="mb-10 flex justify-center"><BrandSlot size={36} /></div>
           <h1 style={{ fontSize: 38, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.1, letterSpacing: '-0.025em', margin: '0 0 16px' }}>
             Record your voice.<br />Get paid in rupees.
           </h1>

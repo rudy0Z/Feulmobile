@@ -313,10 +313,10 @@ export function Profile() {
         </div>
       </div>
 
-      {/* ── Grow with Feul — Pro Roles ── */}
+      {/* ── Pro Roles ── */}
       <div className="px-6 mb-8">
         <h3 style={{ fontSize: 19, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3, letterSpacing: '-0.01em' }}>
-          Grow with Feul
+          Pro Roles
         </h3>
         <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 16 }}>
           Take on new roles as your standing grows.

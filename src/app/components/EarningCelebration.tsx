@@ -66,7 +66,7 @@ export function EarningCelebration() {
             +₹50
           </motion.p>
           <p style={{ fontSize: 15, fontWeight: 500, color: 'rgba(255,255,255,0.45)', marginTop: 12 }}>
-            Your first earning on Feul
+            Your first earning
           </p>
         </motion.div>
 

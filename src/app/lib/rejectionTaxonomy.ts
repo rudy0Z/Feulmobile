@@ -97,7 +97,7 @@ export const REJECTION_REASONS: Record<RejectionReasonId, RejectionReason> = {
     id: 'synthetic',
     label: 'Synthetic voice',
     sentence: 'The audio carried signatures of text-to-speech rather than a live voice.',
-    why: 'Feul only collects real human speech — synthetic audio poisons the dataset.',
+    why: 'We only collect real human speech — synthetic audio poisons the dataset.',
     fix: 'This one needs a genuine recording. If this is a mistake, you can appeal the flag.',
     icon: Bot,
     recoverable: false,

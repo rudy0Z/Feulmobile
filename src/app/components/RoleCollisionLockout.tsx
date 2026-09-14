@@ -143,7 +143,7 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
             }}
           >
             Concurrent Contributor + Validator roles on the same device and IP network fingerprint
-            violate Feul's marketplace integrity rules.
+            violate the marketplace integrity rules.
           </p>
 
           {/* Fingerprint detail rows */}

@@ -29,7 +29,7 @@ const COPY: Record<string, Copy> = {
     swipe: 'Swipe to consent & record', done: 'Consent recorded',
     revoke: 'Revoke anytime in Profile → Data Vault',
     beforeMic: 'Nothing is recorded until you agree',
-    dpdp: 'Feul complies with the', dpdpAct: 'Digital Personal Data Protection Act, 2023. Audio is processed under explicit consent.',
+    dpdp: 'This platform complies with the', dpdpAct: 'Digital Personal Data Protection Act, 2023. Audio is processed under explicit consent.',
   },
   hi: {
     title: 'आपकी आवाज़, आपके अधिकार',
@@ -38,7 +38,7 @@ const COPY: Record<string, Copy> = {
     swipe: 'सहमति दें और रिकॉर्ड करें', done: 'सहमति दर्ज हुई',
     revoke: 'प्रोफ़ाइल → डेटा वॉल्ट से कभी भी वापस लें',
     beforeMic: 'सहमति से पहले कुछ भी रिकॉर्ड नहीं होता',
-    dpdp: 'Feul,', dpdpAct: 'डिजिटल व्यक्तिगत डेटा संरक्षण अधिनियम, 2023 का पालन करता है। ऑडियो केवल स्पष्ट सहमति से संसाधित होता है।',
+    dpdp: '', dpdpAct: 'डिजिटल व्यक्तिगत डेटा संरक्षण अधिनियम, 2023 का पालन करता है। ऑडियो केवल स्पष्ट सहमति से संसाधित होता है।',
   },
   mr: {
     title: 'तुमचा आवाज, तुमचे हक्क',
@@ -47,7 +47,7 @@ const COPY: Record<string, Copy> = {
     swipe: 'संमती द्या आणि रेकॉर्ड करा', done: 'संमती नोंदवली',
     revoke: 'प्रोफाइल → डेटा व्हॉल्टमधून केव्हाही मागे घ्या',
     beforeMic: 'संमतीशिवाय काहीही रेकॉर्ड होत नाही',
-    dpdp: 'Feul,', dpdpAct: 'डिजिटल वैयक्तिक डेटा संरक्षण कायदा, 2023 चे पालन करते. ऑडिओ केवळ स्पष्ट संमतीने प्रक्रिया केला जातो.',
+    dpdp: '', dpdpAct: 'डिजिटल वैयक्तिक डेटा संरक्षण कायदा, 2023 चे पालन करते. ऑडिओ केवळ स्पष्ट संमतीने प्रक्रिया केला जातो.',
   },
   ta: {
     title: 'உங்கள் குரல், உங்கள் உரிமைகள்',
@@ -56,7 +56,7 @@ const COPY: Record<string, Copy> = {
     swipe: 'ஒப்புதல் அளித்து பதிவு செய்யவும்', done: 'ஒப்புதல் பதிவானது',
     revoke: 'சுயவிவரம் → டேட்டா வால்ட்டில் எப்போது வேண்டுமானாலும் திரும்பப் பெறலாம்',
     beforeMic: 'ஒப்புதலுக்கு முன் எதுவும் பதிவு செய்யப்படாது',
-    dpdp: 'Feul,', dpdpAct: 'டிஜிட்டல் தனிநபர் தரவு பாதுகாப்புச் சட்டம், 2023-ஐ பின்பற்றுகிறது. ஒலி வெளிப்படையான ஒப்புதலின் கீழ் மட்டுமே செயலாக்கப்படுகிறது.',
+    dpdp: '', dpdpAct: 'டிஜிட்டல் தனிநபர் தரவு பாதுகாப்புச் சட்டம், 2023-ஐ பின்பற்றுகிறது. ஒலி வெளிப்படையான ஒப்புதலின் கீழ் மட்டுமே செயலாக்கப்படுகிறது.',
   },
 };
 

@@ -1,6 +1,6 @@
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
-import { FeulLogo } from './ui/FeulLogo';
+import { BrandSlot } from './ui/BrandSlot';
 import { Waveform } from './ui/Waveform';
 
 const roles = [
@@ -37,7 +37,7 @@ export function RoleSelection() {
 
       {/* Logo placeholder */}
       <div className="px-6 pt-16 mb-10">
-        <FeulLogo variant="light" />
+        <BrandSlot size={36} />
       </div>
 
       {/* Headline */}
