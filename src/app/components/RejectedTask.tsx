@@ -55,26 +55,27 @@ export function RejectedTask() {
         {/* Hero — preserved-effort framing */}
         <div
           style={{
-            background: 'var(--surface-studio)',
+            background: 'var(--surface-raised)',
             borderRadius: 'var(--r-lg)',
             padding: '24px',
             position: 'relative',
             overflow: 'hidden',
-            boxShadow: 'var(--e-3)',
+            boxShadow: 'var(--e-2)',
+            border: '1px solid var(--border-subtle)',
           }}
         >
           <div className="relative z-10">
             <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--action-primary)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 8 }}>
               Almost there
             </p>
-            <h2 style={{ fontFamily: 'var(--font-ui)', fontSize: 24, fontWeight: 800, color: 'var(--text-on-studio)', lineHeight: 1.2, marginBottom: 10, letterSpacing: '-0.02em' }}>
+            <h2 style={{ fontFamily: 'var(--font-ui)', fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.2, marginBottom: 10, letterSpacing: '-0.02em' }}>
               {validCount} of {TOTAL_PROMPTS} clips passed.<br />Just fix 1 to unlock{' '}
-              <span style={{ fontFamily: 'var(--font-number)', color: 'var(--action-primary)' }}>
+              <span style={{ fontFamily: 'var(--font-number)', color: 'var(--money-figure)' }}>
                 ₹{rejectedSubmission.pendingPayout.toFixed(2)}
               </span>
             </h2>
-            <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(var(--carbon-rgb),0.0)', lineHeight: 1.55 }}>
-              <span style={{ color: 'var(--text-on-studio)', opacity: 0.6 }}>
+            <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
+              <span style={{ color: 'var(--text-secondary)' }}>
                 Your other recordings are safe. Re-record only the flagged prompt to release the full payout.
               </span>
             </p>
@@ -148,7 +149,7 @@ export function RejectedTask() {
             background: 'var(--t-crimson-50)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--state-failed)',
-            borderLeft: '3px solid var(--state-failed)',
+            border: '1px solid var(--state-failed)',
             padding: '18px',
           }}
         >
@@ -231,7 +232,7 @@ export function RejectedTask() {
               background: 'var(--action-primary)',
               color: 'var(--text-on-accent)',
               fontSize: 15, fontWeight: 700, border: 'none', cursor: 'pointer',
-              boxShadow: 'var(--e-glow)',
+              boxShadow: 'none',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
             }}
           >
