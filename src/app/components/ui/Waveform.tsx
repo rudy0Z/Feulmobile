@@ -1,5 +1,5 @@
-/**
- * Feul Signature Waveform — decorative audio waveform element.
+﻿/**
+ * Signature Waveform - acoustic instrument element (brand-neutral).
  * Used as background texture on hero sections throughout the app.
  *
  * variant:
