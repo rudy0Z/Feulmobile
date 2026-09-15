@@ -1,4 +1,4 @@
-import { ReactNode, useEffect, useState } from 'react';
+﻿import { ReactNode, useEffect, useState } from 'react';
 import { useDevContext } from '../lib/DevContext';
 
 /* ─── Dev Button ─────────────────────────────────────── */
@@ -176,6 +176,8 @@ function HomeIndicator() {
 }
 
 /* ─── Phone Frame Component ──────────────────────────── */
+const DEV = import.meta.env.DEV;
+
 export function PhoneFrame({ children }: { children: ReactNode }) {
   const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 520);
 
@@ -228,7 +230,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
         overflow: 'hidden',
       }}
     >
-      <DevButton />
+      {DEV && <DevButton />}
       {/* Outer phone body — flat, no halo, no caption */}
       <div
         style={{
