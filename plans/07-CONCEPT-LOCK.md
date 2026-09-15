@@ -1,8 +1,8 @@
-﻿# 07 - Concept Lock - [PRODUCT] (2026-09-14)
+# 07 - Concept Lock - [PRODUCT] (2026-09-14)
 
-> **Status:** Product-language authority, locked by the owner 2026-09-14. The owner has reserved the right to revisit the concept; if it changes, this file is updated the same session.
+> **Status:** Product-language authority, locked by the owner 2026-09-14. The owner reserved the right to revisit; update this file in the same session when that happens.
 > **Authority order:** MASTER-BLUEPRINT.md (build) -> HANDOFF-NEW-SESSION.md (session entry) -> PORTFOLIO-DIRECTION.md (portfolio scope) -> THIS FILE (product language + lifecycle). plans/archive is history, never build input.
-> **Naming:** product name remains unset. The brand slot stays an empty placeholder; the strings Feul / Grain never render in UI.
+> **Naming:** product name remains unset. Brand slot stays an empty placeholder (BrandSlot component); the strings Feul / Grain never render in UI.
 
 ---
 
@@ -25,32 +25,37 @@ A gig-job marketplace where Indians earn rupees by performing real situations AI
 - Rs 100 withdrawal floor reachable in session one (calibration + first job).
 - Consent: native-language DPDP consent, verbatim delete-without-clawback line, strictly before any mic access (including calibration).
 - Trust surfaces: in-flight honoured if campaign closes; exact-gap withdraw; relative-date expectation; UTR receipts; revocation ledger; auto-check (silence/clipping) + validator review with taxonomy tags.
-- Recording formats: solo LINES (read speech), guided scenario, interview against pre-recorded track, ROOM one-take.
+- Recording formats: solo LINES (read speech), guided scenario, interview against pre-recorded track, ROOM one-take. The word "interview" as a RECORDING FORMAT stays; the concept's "no interviews" means no job-application interviews - never conflate in copy.
 - Visual doctrine: Bone/Carbon grounds, semantic tokens, one hero per viewport, acoustic instruments, quiet competence.
 
 ## 2. Language decisions (user-facing copy)
 
 | Old (user-facing) | New (user-facing) |
 |---|---|
-| quest / quests / QuestFeed | job / jobs / job feed |
+| quest / quests / Quest tab | job / jobs / Jobs tab |
 | Apply/start quest | Apply for job (one tap) |
-| Quest states (open/locked etc.) | Job lifecycle: Available -> In-progress -> In-review -> Settled |
+| Quest states | Job lifecycle: Available -> In-progress -> In-review -> Settled |
 
 Rules:
-- INTERNAL identifiers (route paths /recording/:id, file names QuestFeed.tsx, ids q-lines-1, function names) MAY stay as-is short-term for build stability; rename in a dedicated refactor commit, never mixed with copy changes. Any user-visible string must follow the new language immediately.
-- The word interview as a RECORDING FORMAT stays (it names a format: performing an interview against a pre-recorded track). The concept's no interviews means no job-application interviews - never conflate the two in copy.
+- INTERNAL identifiers (route paths `/recording/:id`, file names `QuestFeed.tsx`, ids `q-lines-1`, lib exports) MAY stay as-is for build stability; rename in a dedicated refactor commit, never mixed with copy changes. Any user-visible string follows the new language immediately.
+- Done so far (verified): tab bar, Home copy, QuestFeed search/empty/filter, NotificationsPanel, EarningCelebration, PayoutFlow next-step label.
 
 ## 3. Lifecycle (governs Home/JobFeed/Wallet states)
 
 Job states: Available -> In-progress -> In-review -> Settled.
-- In-progress must support 24h resume (session-interrupted path already specced - extend to all jobs, not just interruptions).
-- One-tap apply gate: language (already set) + standing check (pass) + mic check (real, silent) - then straight into Brief. No proposal/interview/hourly-log steps may appear in the apply flow.
-- In-review maps to the existing pending-review surfaces. Settled maps to credited/settled money states.
+- In-progress supports 24h resume (session-interrupted path - extend to all jobs).
+- One-tap apply gate: language (set) + standing (pass) + mic check (real, silent) -> straight into Brief. No proposal/interview/hourly-log steps in the apply flow.
+- In-review maps to existing pending-review surfaces; Settled maps to credited/settled money states.
 
 ## 4. Creator note (scope marker, not Tier 1)
 
-The concept reintroduces creators as the lab-side authors (situation + targeting + acceptance criteria: duration, SNR, transcript match) with AI generating stems/turns/questions. This is OUT of Tier 1 scope (matches the retired Quest Creator -> redirect decision) but is now an explicit future direction, not a deleted mechanic. Do not build creator surfaces in Tier 1; do not contradict the model in copy (campaigns may reference who set the situation without implying an in-app creator tool).
+Creators as lab-side authors (situation + targeting + acceptance criteria: duration, SNR, transcript match) with AI generating stems/turns/questions are OUT of Tier 1 scope (matches the retired Quest Creator -> redirect decision) but are now an explicit future direction, not a deleted mechanic. Do not build creator surfaces in Tier 1; do not contradict the model in copy.
 
-## 5. Drift risk acknowledged
+## 5. Build-session deltas applied (2026-09-15)
 
-Owner will revisit this concept. When they do: update this file in the same session, run scripts/design-metrics.mjs, and check copy surfaces against the new language before any screen work.
+- P0-1 real mic levels (AnalyserNode), P0-2 contrast (action 6.5:1, pending text 7.9:1), P0-3 repair hero on Bone, P0-6 DevPanel gated, P0-7 brand placeholder everywhere, P0-8 relative dates + session personas.
+- `scripts/design-metrics.mjs` + `pnpm metrics` = mechanical discipline check; `CLAUDE.md` = AI entry doc. Baseline recorded in `plans/design-metrics-baseline.md`.
+
+## 6. Drift risk acknowledged
+
+Owner will revisit this concept. When they do: update this file in the same session, run `pnpm metrics`, and re-check copy surfaces against the new language before any screen work.
