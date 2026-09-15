@@ -149,7 +149,6 @@ export function RejectedTask() {
             background: 'var(--t-crimson-50)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--state-failed)',
-            border: '1px solid var(--state-failed)',
             padding: '18px',
           }}
         >
