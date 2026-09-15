@@ -104,7 +104,7 @@ export function EarningCelebration() {
           </div>
           <div className="flex items-center gap-4 justify-center">
             {[
-              { label: 'Hindi Quests', amount: '₹15–50' },
+              { label: 'Hindi jobs', amount: '₹15–50' },
               { label: 'Quick Phrases', amount: '₹10' },
               { label: 'High Demand', amount: '₹35+' },
             ].map((item) => (
@@ -145,7 +145,7 @@ export function EarningCelebration() {
           <ArrowRight className="w-5 h-5" />
         </button>
         <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.25)', textAlign: 'center', marginTop: 14 }}>
-          High-paying quests available right now
+          High-paying jobs available right now
         </p>
       </motion.div>
     </div>

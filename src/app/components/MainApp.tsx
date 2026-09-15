@@ -4,7 +4,7 @@ import { motion } from 'motion/react';
 
 const navItems = [
   { path: '/contributor',         label: 'Home',    icon: HomeIcon },
-  { path: '/contributor/quests',  label: 'Quests',  icon: Compass  },
+  { path: '/contributor/quests',  label: 'Jobs',  icon: Compass  },
   { path: '/contributor/wallet',  label: 'Wallet',  icon: Wallet   },
   { path: '/contributor/profile', label: 'Profile', icon: User     },
 ];

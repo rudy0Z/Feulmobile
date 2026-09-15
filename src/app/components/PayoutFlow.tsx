@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+﻿import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import { ChevronLeft, CheckCircle2, Clock, Copy, ShieldCheck, Loader2 } from 'lucide-react';
@@ -22,7 +22,7 @@ function getRole(pathname: string): 'contributor' | 'validator' {
 }
 
 const roleConfig = {
-  contributor: { balance: 127.5, backPath: '/contributor/wallet', nextPath: '/contributor/quests', nextLabel: 'Find more quests', presets: [100, 200] },
+  contributor: { balance: 127.5, backPath: '/contributor/wallet', nextPath: '/contributor/quests', nextLabel: 'Find more jobs', presets: [100, 200] },
   validator:   { balance: 568.0, backPath: '/validator/wallet',    nextPath: '/validator/tasks',    nextLabel: 'Keep grading',      presets: [100, 200, 500] },
 };
 

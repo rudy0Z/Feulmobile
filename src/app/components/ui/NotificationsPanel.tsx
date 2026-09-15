@@ -49,7 +49,7 @@ const allNotifications: Notification[] = [
   },
   {
     id: 'n4', type: 'quest_new', group: 'today', unread: false,
-    title: 'New Quest: Marathi Reviews',
+    title: 'New job: Marathi Reviews',
     body: '₹25 · 10 clips · Only 5 slots left. Expiring soon.',
     time: '7:15 AM',
     actionLabel: 'Start now',
@@ -75,8 +75,8 @@ const allNotifications: Notification[] = [
   },
   {
     id: 'n8', type: 'quest_new', group: 'earlier', unread: false,
-    title: 'Bonus Active: +20% on all quests',
-    body: 'Limited-time earnings boost. Complete quests before it expires.',
+    title: 'Bonus Active: +20% on all jobs',
+    body: 'Limited-time earnings boost. Complete jobs before it expires.',
     time: 'Sat',
   },
 ];

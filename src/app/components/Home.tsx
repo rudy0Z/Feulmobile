@@ -100,7 +100,7 @@ export function Home() {
               Earn your first ₹ today
             </p>
             <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', margin: 0, lineHeight: 1.5 }}>
-              Quests pay <span className="tabular" style={{ fontWeight: 700, color: 'var(--action-primary)' }}>₹12–220</span> each. Your first one takes about three minutes.
+              Jobs pay <span className="tabular" style={{ fontWeight: 700, color: 'var(--action-primary)' }}>₹12–220</span> each. Your first one takes about three minutes.
             </p>
           </div>
         </div>
@@ -135,7 +135,7 @@ export function Home() {
           <Mic size={18} />
           {state === 'empty' ? 'Record Hindi phrases · ₹12'
             : state === 'pending' ? 'Record another while you wait'
-            : 'Start a quest'}
+            : 'Start a job'}
         </Button>
       </div>
 
@@ -154,7 +154,7 @@ export function Home() {
       <div className="px-5 mb-7">
         <SectionHead
           title="Picked for you"
-          sub="Real quests you can record right now"
+          sub="Real jobs you can record right now"
           onSeeAll={() => navigate('/contributor/quests')}
         />
         <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>

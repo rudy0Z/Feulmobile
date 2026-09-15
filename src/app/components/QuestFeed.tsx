@@ -108,7 +108,7 @@ export function QuestFeed() {
           <input
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Search quests, clients, languages"
+            placeholder="Search jobs, clients, languages"
             style={{
               flex: 1, border: 'none', outline: 'none', background: 'transparent',
               fontSize: 15, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)',
@@ -162,7 +162,7 @@ export function QuestFeed() {
       ) : filtered.length === 0 ? (
         <EmptyState
           title="Nothing matches that"
-          body={query ? `No open quests match "${query}". Try a different language or clear the search.` : 'No quests in this filter yet.'}
+          body={query ? `No open jobs match "${query}". Try a different language or clear the search.` : 'No jobs in this filter yet.'}
           cta={query ? 'Clear search' : 'Show all'}
           onCta={() => { setQuery(''); setFilter('all'); }}
         />
@@ -212,7 +212,7 @@ export function QuestFeed() {
       )}
 
       {/* Filter sheet — same options, deliberate surface */}
-      <Sheet open={filterOpen} onClose={() => setFilterOpen(false)} title="Filter quests">
+      <Sheet open={filterOpen} onClose={() => setFilterOpen(false)} title="Filter jobs">
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
           {filters.map((f) => {
             const active = filter === f.id;
