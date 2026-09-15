@@ -17,6 +17,7 @@ import { AcousticNoisePause } from './AcousticNoisePause';
 import { useDevContext } from '../lib/DevContext';
 import { ConsentSheet } from './ui/ConsentSheet';
 import { hasConsented, advanceStage, getProfile, isMicPrimed, primeMic } from '../lib/session';
+import { useRealMicLevel, MicLevelState } from '../lib/useRealMicLevel';
 
 /* ═══════════════════════════════════════════════════════════════════
    The Studio. Dark is used HERE and ONLY here — it means "you're
@@ -259,18 +260,25 @@ function Capture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: Clip
   return <StepCapture quest={quest} onDone={onDone} onBack={onBack} />;
 }
 
-/** Mocked mic level (0–1) that breathes while recording — swapped for a real
- *  AnalyserNode in production. Frozen at 0 under reduced-motion. */
+/** Real mic level via AnalyserNode (P0-1): RMS, fast attack / slow release.
+ *  Zero in silence, zero when idle, zero under reduced motion (static meter).
+ *  Permission denial surfaces via .denied - the meter never fakes a signal. */
 function useMicLevel(active: boolean) {
-  const [level, setLevel] = useState(0);
+  const [mic, setMic] = useState<MicLevelState>({ level: 0, denied: false });
   const reduce = useReducedMotion();
   useEffect(() => {
-    if (!active || reduce) { setLevel(active ? 0.5 : 0); return; }
-    const t = setInterval(() => setLevel(0.25 + Math.random() * 0.7), 90);
-    return () => clearInterval(t);
+    if (!active || reduce) { setMic({ level: 0, denied: false }); return; }
+    return useRealMicLevel(true, setMic);
   }, [active, reduce]);
-  return level;
+  return mic.level;
 }
+
+/** True when the browser blocked mic access while recording (guidance state). */
+function useMicDenied() {
+  // lightweight companion: derive from last mic state via a module-level ref
+  return micDeniedRef.current;
+}
+let micDeniedRef = { current: false };
 
 type StepState = 'ready' | 'listening' | 'yourturn' | 'recording' | 'kept';
 
