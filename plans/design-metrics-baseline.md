@@ -1,12 +1,12 @@
 # Design metrics baseline
 
-Generated: 2026-09-15T13:53:40.863Z
+Generated: 2026-09-15T14:03:15.934Z
 
 | Metric | Count | Target (issue map) |
 |---|---|---|
 | Distinct font sizes | 25 | 11 (approved scale) |
 | Text instances <= 12px | 241 | ~60 (captions only) |
-| 1px solid borders | 188 | < 15 |
+| 1px solid borders | 187 | < 15 |
 | box-shadow usages | 116 | < 10 |
 | gradients | 26 | 2 |
 | raw hex in components | 17 | 0 |
