@@ -198,7 +198,7 @@ function StepConfirm({ balance, vpa, amount, onConfirm, onBack }: {
   balance: number; vpa: string; amount: string; onConfirm: () => void; onBack: () => void;
 }) {
   const numeric = parseFloat(amount) || 0;
-  const today = new Date(2026, 2, 31);
+  const today = new Date(); // relative - never a frozen demo date
   const daysToMonday = (7 - today.getDay() + 1) % 7 || 7;
   const nextMonday = new Date(today); nextMonday.setDate(today.getDate() + daysToMonday);
   const arrival = nextMonday.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -257,7 +257,7 @@ function StepSuccess({ amount, vpa, nextPath, nextLabel, backPath }: {
   const reduce = useReducedMotion();
   const refNum = useRef(`FUL-${Math.random().toString(36).slice(2, 10).toUpperCase()}`).current;
   const [copied, setCopied] = useState(false);
-  const today = new Date(2026, 2, 31);
+  const today = new Date(); // relative - never a frozen demo date
   const daysToMonday = (7 - today.getDay() + 1) % 7 || 7;
   const nextMonday = new Date(today); nextMonday.setDate(today.getDate() + daysToMonday);
   const arrival = nextMonday.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
@@ -313,9 +313,9 @@ export function PayoutFlow() {
   const profile = getProfile();
   const isContributor = role === 'contributor';
   const linked = isContributor ? (profile?.upiLinked ?? false) : true;
-  const name = profile?.name ?? 'Alex Johnson';
+  const name = profile?.name ?? '';
 
-  const [vpa, setVpa] = useState(isContributor ? (profile?.upiId || '') : 'alex@okaxis');
+  const [vpa, setVpa] = useState(isContributor ? (profile?.upiId || '') : '');
   const [step, setStep] = useState<Step>(linked ? 'amount' : 'add-upi');
   const [amount, setAmount] = useState('');
   const [showSpoof, setShowSpoof] = useState(false);

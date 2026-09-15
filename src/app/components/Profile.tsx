@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { DPDPConsentRevocation } from './DPDPConsentRevocation';
 import { Award, Settings, LogOut, ChevronRight, Shield, Trash2, ShieldCheck, Repeat2, BarChart3 } from 'lucide-react';
@@ -46,7 +46,7 @@ export function Profile() {
           }}
         >
           <span style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-on-accent)', letterSpacing: '-0.02em' }}>
-            {profile?.initials ?? 'AJ'}
+            {profile?.initials || '·'}
           </span>
           <div style={{
             position: 'absolute', bottom: -2, right: -2,
@@ -60,9 +60,9 @@ export function Profile() {
         </div>
         <div>
           <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
-            {profile?.name ?? 'Alex Johnson'}
+            {profile?.name || 'Your profile'}
           </h1>
-          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>alex.johnson@email.com</p>
+          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>{profile?.email ?? ''}</p>
         </div>
       </div>
 

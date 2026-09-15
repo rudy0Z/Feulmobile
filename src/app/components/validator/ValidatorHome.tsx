@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+﻿import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router';
 import { useDevContext } from '../../lib/DevContext';
 import { motion } from 'motion/react';
@@ -126,7 +126,7 @@ export function ValidatorHome() {
               transition={{ duration: 0.4, delay: 0.07 }}
               style={{ fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1.1, marginBottom: 8, letterSpacing: '-0.4px' }}
             >
-              Priya Sharma
+              {profile?.name ?? 'Validator'}
             </motion.h1>
 
             <motion.p

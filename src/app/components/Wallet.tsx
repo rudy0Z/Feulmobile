@@ -42,7 +42,7 @@ const LEDGER: Entry[] = [
     note: 'Top-quartile clarity on 5 clips', bonus: { label: 'Clarity bonus', amount: 8 } },
   { id: 4, kind: 'earning', title: 'Conversational dialogue', quest: 'q-scen-1', date: 'Yesterday · 3:00 PM', amount: 35, status: 'settled',
     breakdown: { basePay: 22, coverageMult: 1.4, bonus: 4 } },
-  { id: 5, kind: 'withdrawal', title: 'Withdrawal to alex@okaxis', date: 'Mon · Feb 24', amount: 120, status: 'settled' },
+  { id: 5, kind: 'withdrawal', title: 'Withdrawal to your UPI', date: 'Mon · Feb 24', amount: 120, status: 'settled' },
   { id: 6, kind: 'earning', title: 'Quick phrases', quest: 'q-lines-3', date: 'Mon · Feb 24', amount: 0, status: 'failed',
     note: 'Background noise on all clips — re-record to earn ₹10' },
 ];
@@ -96,7 +96,7 @@ export function Wallet() {
           <div style={{ minWidth: 0 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
               <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>
-                {profile?.upiId || 'alex@okaxis'}
+                {profile?.upiId || 'yourname@bank'}
               </span>
               {(profile?.upiNameMatched ?? true) && (
                 <span style={{ display: 'inline-flex', alignItems: 'center', gap: 3, fontSize: 11, fontWeight: 700, color: 'var(--t-verdigris-700)' }}>
@@ -200,7 +200,7 @@ export function Wallet() {
 
             {detail.kind === 'withdrawal' ? (
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', padding: '10px 0', borderTop: '1px solid var(--divider)' }}>
-                <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)' }}>Sent to {profile?.upiId || 'alex@okaxis'}</span>
+                <span style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)' }}>Sent to {profile?.upiId || 'yourname@bank'}</span>
                 <Amount value={detail.amount} size={22} />
               </div>
             ) : detail.breakdown ? (

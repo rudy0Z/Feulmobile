@@ -39,7 +39,7 @@ export function RoomConsentRollCall() {
   const navigate = useNavigate();
 
   const [participants, setParticipants] = useState<Participant[]>([
-    { id: 'you', name: 'You (Ramesh)', isYou: true, status: 'consented' },
+    { id: 'you', name: 'You', isYou: true, status: 'consented' },
     { id: 'priya', name: 'Priya', status: 'consented' },
     { id: 'anil', name: 'Anil', status: 'pending' },
     { id: 'guest', name: 'Guest', status: 'pending' },
