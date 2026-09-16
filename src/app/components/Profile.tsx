@@ -26,7 +26,7 @@ export function Profile() {
   const reliability   = profile?.standing?.reliability ?? 0;
 
   return (
-    <div className="min-h-screen pb-6" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
+    <div className="min-h-screen pb-28" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       <RoleSwitcher
         isOpen={roleSwitcherOpen}
@@ -92,7 +92,7 @@ export function Profile() {
           </div>
           <div style={{ width: 1, height: 36, background: 'var(--divider)' }} />
           <div className="text-center flex-1">
-            <p style={{ fontSize: 'var(--fs-subhead)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, paddingTop: 'var(--space-2)' }}>{tierName(standingLevel)}</p>
+            <p style={{ fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, fontFamily: 'var(--font-number)' }}>{tierName(standingLevel).split(' ')[0]}</p>
             <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 'var(--space-3)'}}>Standing</p>
           </div>
         </div>

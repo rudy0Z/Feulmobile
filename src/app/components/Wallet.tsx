@@ -86,7 +86,7 @@ export function Wallet() {
   const entries = LEDGER.filter((e) => (tab === 'all' || e.kind === tab) && (!weekDay || e.dayKey === weekDay));
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
+    <div className="min-h-screen" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)', paddingBottom: 200 }}>
       <div className="px-6 pt-16 pb-3">
         <h1 style={{ fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', margin: '0'}}>
           Wallet

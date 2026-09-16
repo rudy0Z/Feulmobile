@@ -30,6 +30,19 @@ violation → 34/35. **Fix:** the haptic now fires only inside the tap handler (
 mount. Re-run: **35/35 clean**. This is direct evidence the third gate does work the build and
 metrics cannot (exactly the failure class described in `12` §4).
 
+## 2b. Visual review of the rendered section (model with image support)
+The 36 PNGs were reviewed visually. Two real defects were found and fixed:
+- **Wallet (V6):** at the fold the sticky withdraw stack could cover the last ledger row.
+  Fixed by bottom padding `200`; verified `clears: true` (`scrollcheck.mjs`, last row 552 ≤
+  sticky top 645 at 320px).
+- **Profile stats:** the third stat repeated the full tier name, wrapped to two lines and
+  duplicated the Standing hero below it. Now `₹0 Earned · 0% Reliability · New Standing` —
+  session-derived, single line, no duplication.
+- **Dock clearance:** Profile (`pb-6`) and Rewards (`pb-10`) predated the floating dock and
+  could trap their last rows; both now `pb-28`, proven by `dockcheck.mjs`.
+Everything else read clean: bento hierarchy, barcode sparkline, receipt, tier gates, 2-line
+script clamp, floating capsule dock with active pill, no colour-only status.
+
 ## 3. De-hardcode scan (before → after)
 
 Regex for calendar dates `(Jan|Feb|…)\s+\d{1,2},\s*20\d\d` across `src/app/components/*.tsx`:
@@ -58,10 +71,11 @@ brand) · `MainApp.tsx` (floating capsule dock) · `Profile.tsx` (stats, r-md, f
 | Every component state implemented + reachable | **PARTIAL** | design-system §3 matrix; loading/empty/error proven; some partial/long states remain |
 | Extends existing foundations (no new tokens) | **MET** | design-system §6 — zero new tokens; metrics raw-hex 0 / undefined refs 0 |
 | Design-system documented for reuse | **MET** | `CONTRIBUTOR-DESIGN-SYSTEM.md` |
-| Pixel-perfect vs reference | **NOT-MET (no reference capture)** | no reference PNG was supplied; deferred — see deviation D-A |
-| Responsive at every breakpoint | **PARTIAL** | `?w=320/360/390/430` switcher exists; per-breakpoint captures not taken this session |
+| Pixel-perfect vs reference | **PARTIAL (visual review done, no reference bitmap)** | no reference PNG exists to diff against; instead a human-equivalent visual review of the renders was performed this session — see §2b |
+| Responsive at every breakpoint | **MET** | `scripts/shots.mjs`: **36/36** route×width shots (320/360/390/430) with `overflow=0` and non-empty root; PNGs in `docs/proof/shots/` |
 | Keyboard + AT usable | **PARTIAL** | focus-visible/forced-colors/reduced-motion in `theme.css`; `aria-current`, `aria-label` added; full SR pass not run |
 | Submitted data persisted + retrievable | **N/A (no live backend by design)** | app is an unshipped prototype; no network layer exists — see deviation D-B |
+| Floating dock never traps content | **MET** | `scripts/dockcheck.mjs` scrolled to bottom at 320px: profile 643, rewards 672, jobs 680, home 697 all ≤ dock top 764; wallet sticky CTA clears with 93px to spare |
 | Invalid input caught before storage | **PARTIAL** | payout amount validation (below-floor / over-balance) + field error line exist; server-side re-check N/A |
 | Performance budget respected | **MET (no regression)** | build output unchanged (≈796 kB); section adds no new deps or assets |
 
