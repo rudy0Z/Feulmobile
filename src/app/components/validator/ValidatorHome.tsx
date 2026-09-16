@@ -15,7 +15,7 @@ import { durations } from '../../lib/motion';
 const pendingBatches = [
   { id: 'task-1', title: 'Hindi — Waiter Scenario',   clips: 45, language: 'Hindi',   priority: 'High',   payout: 90 },
   { id: 'task-2', title: 'English — Product Reviews',  clips: 32, language: 'English', priority: 'Medium', payout: 64 },
-  { id: 'task-3', title: 'Spanish — Customer Service', clips: 28, language: 'Spanish', priority: 'Medium', payout: 56 },
+  { id: 'task-3', title: 'Marathi — Product Reviews',  clips: 28, language: 'Marathi', priority: 'Medium', payout: 56 },
 ];
 
 const recentGradings = [
@@ -36,7 +36,7 @@ function EmptyBatchState() {
           background: 'var(--surface-sunken)',
           display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-10)',
         }}>
-          <CheckCircle2 className="w-10 h-10" style={{ color: 'var(--color-success)' }} strokeWidth={1.5} />
+          <CheckCircle2 className="w-10 h-10" style={{ color: 'var(--state-settled)' }} strokeWidth={1.5} />
         </div>
         <h2 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 'var(--space-5)'}}>
           You're all caught up
@@ -44,7 +44,7 @@ function EmptyBatchState() {
         <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.65, maxWidth: 272, marginBottom: 'var(--space-10)'}}>
           No clips waiting in your assigned languages. Check back soon.
         </p>
-        <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--color-success)', marginBottom: 'var(--space-2)'}}>94.8%</p>
+        <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--state-settled)', marginBottom: 'var(--space-2)'}}>94.8%</p>
         <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginBottom: 'var(--space-10)'}}>Above top-10% of validators</p>
         <button style={{
           background: 'transparent', border: '1.5px solid var(--action-primary-pressed)',
@@ -60,19 +60,10 @@ function EmptyBatchState() {
   );
 }
 
-function getGreeting(): string {
-  const h = new Date().getHours();
-  if (h >= 5 && h < 12)  return 'Good morning';
-  if (h >= 12 && h < 17) return 'Good afternoon';
-  if (h >= 17 && h < 21) return 'Good evening';
-  return 'Hey, night owl';
-}
-
 export function ValidatorHome() {
   const navigate = useNavigate();
   const dev = useDevContext();
   const { profile } = useSession();
-  const [greeting, setGreeting] = useState(getGreeting());
   const [notifOpen, setNotifOpen] = useState(false);
   const unreadCount = 1;
 
@@ -80,31 +71,21 @@ export function ValidatorHome() {
   const clipsGraded = 127;
   const weeklyEarned = 254;
 
-  useEffect(() => {
-    const id = setInterval(() => setGreeting(getGreeting()), 60_000);
-    return () => clearInterval(id);
-  }, []);
-
   return (
     <div className="min-h-screen pb-24" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       {/* Notifications Panel */}
       <NotificationsPanel isOpen={notifOpen} onClose={() => setNotifOpen(false)} />
 
-      {/* ── WARM GREETING HERO ──────────────────────────────── */}
+      {/* ── WORK HEADER — flat bone. No greeting, no wallpaper waveform:
+             the reviewer's screen is a work queue, not a marketing hero. ── */}
       <div
         style={{
-          background: 'linear-gradient(175deg, var(--state-settled-container) 0%, var(--state-settled-container) 40%, var(--surface-ground) 100%)',
+          background: 'var(--surface-ground)',
           padding: 'var(--space-14) var(--space-10) var(--space-10)',
           position: 'relative',
-          overflow: 'hidden',
         }}
       >
-        {/* Subtle waveform in bg */}
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, opacity: 0.04, pointerEvents: 'none' }}>
-          <Waveform color="var(--state-settled)" opacity={1} height={60} variant="precision" />
-        </div>
-
         {/* Logo row */}
         <div className="flex items-center justify-between mb-6">
           <FeulLogo />
@@ -118,9 +99,9 @@ export function ValidatorHome() {
               initial={{ opacity: 0, y: 6 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: durations.enter }}
-              style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--color-success)', marginBottom: 'var(--space-2)'}}
+              style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 'var(--space-2)'}}
             >
-              {greeting}
+              Grading queue
             </motion.p>
 
             <motion.h1
@@ -154,12 +135,12 @@ export function ValidatorHome() {
               transition={{ duration: durations.enter, delay: 0.1, type: 'spring', stiffness: 280, damping: 22 }}
               style={{
                 width: 56, height: 56, borderRadius: 'var(--r-full)',
-                background: 'linear-gradient(135deg, var(--state-settled) 0%, var(--state-settled-deep) 100%)',
+                background: 'var(--state-settled-container)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: 'var(--e-2)',
+                boxShadow: 'var(--e-1)',
               }}
             >
-              <span style={{ fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-on-studio)', lineHeight: 1 }}>P</span>
+              <span style={{ fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--state-settled-text)', lineHeight: 1 }}>{(profile?.initials) ?? 'V'}</span>
             </motion.div>
 
             {/* Role badge */}
@@ -188,19 +169,14 @@ export function ValidatorHome() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: durations.enter, delay: 0.28 }}
           style={{
-            background: 'radial-gradient(ellipse at 20% 35%, var(--state-settled-container) 0%, transparent 55%), linear-gradient(150deg, var(--surface-studio) 0%, var(--surface-raised) 100%)',
+            background: 'var(--surface-raised)',
+            border: '1px solid var(--border-subtle)',
             borderRadius: 'var(--r-lg)',
             padding: 'var(--space-9) var(--space-9)',
             position: 'relative',
-            overflow: 'hidden',
-            boxShadow: '0px 12px 40px rgba(var(--carbon-rgb),0.22), inset 0 0 0 0.5px rgba(var(--bone-0-rgb),0.06)',
+            boxShadow: 'var(--e-2)',
           }}
         >
-          {/* Waveform bottom-anchored — clears all text content above */}
-          <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 24px 24px', opacity: 0.05 }}>
-            <Waveform color="var(--text-on-studio)" opacity={1} height={38} variant="precision" />
-          </div>
-
           <div className="relative z-10">
             <div className="flex items-center justify-between mb-4">
               <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'rgba(var(--bone-0-rgb),0.4)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
@@ -252,9 +228,9 @@ export function ValidatorHome() {
           style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)', overflow: 'hidden', boxShadow: 'var(--e-1)' }}
         >
           {[
-            { label: 'Cash Earned', value: '₹568',  mono: true  },
-            { label: 'Batches Done', value: '32',   mono: false },
-            { label: 'Level',        value: 'Lv 4', mono: true  },
+            { label: 'Per Clip',      value: '₹2', mono: true },
+            { label: 'In Queue',      value: String(pendingBatches.reduce((s, b) => s + b.clips, 0)), mono: false },
+            { label: 'Accuracy',      value: '94%', mono: true },
           ].map((stat, idx) => (
             <div
               key={stat.label}
@@ -288,11 +264,11 @@ export function ValidatorHome() {
               whileTap={{ scale: 0.97 }}
               onClick={() => navigate(`/validator/grading/${pendingBatches[0].id}`)}
               style={{
-                width: '100%', height: 62, borderRadius: 'var(--r-full)',
-                background: 'linear-gradient(160deg, var(--action-accent) 0%, var(--action-primary-pressed) 100%)',
+                width: '100%', height: 'var(--cta)', borderRadius: 'var(--cta-r)',
+                background: 'var(--action-primary)',
                 color: 'var(--text-on-accent)',
-                fontSize: 'var(--fs-subhead)', fontWeight: 700, border: 'none', cursor: 'pointer',
-                boxShadow: '0px 10px 28px rgba(var(--terracotta-500-rgb),0.4), inset 0px 1px 0px rgba(var(--bone-0-rgb),0.18)',
+                fontSize: 'var(--fs-body)', fontWeight: 700, border: 'none', cursor: 'pointer',
+                boxShadow: 'var(--e-2)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-5)',
               }}
             >
@@ -397,7 +373,7 @@ export function ValidatorHome() {
                     <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--action-primary)' }}>
                       +₹{grading.earned}
                     </p>
-                    <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--color-success)', marginTop: 'var(--space-1)'}}>
+                    <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--state-settled)', marginTop: 'var(--space-1)'}}>
                       {grading.accuracy}% acc
                     </p>
                   </div>
@@ -410,3 +386,4 @@ export function ValidatorHome() {
     </div>
   );
 }
+

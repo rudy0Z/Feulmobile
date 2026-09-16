@@ -217,7 +217,7 @@ export function GradingTask() {
         <div style={{ background: 'var(--surface-sunken)', borderRadius: 'var(--r-full)', height: 6 }}>
           <div
             style={{
-              background: 'linear-gradient(90deg, var(--state-settled-deep), var(--state-settled))',
+              background: 'var(--state-settled)',
               borderRadius: 'var(--r-full)', height: 6,
               width: `${progress}%`,
               transition: 'width 0.4s ease',
@@ -377,7 +377,7 @@ export function GradingTask() {
               initial={{ scale: 0.5, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               style={{
-                background: 'var(--color-success)', padding: 'var(--space-8) var(--space-10)', borderRadius: 'var(--r-full)',
+                background: 'var(--state-settled-container)', padding: 'var(--space-8) var(--space-10)', borderRadius: 'var(--r-full)',
                 display: 'flex', alignItems: 'center', gap: 'var(--space-5)',
                 boxShadow: 'var(--e-3)'
               }}

@@ -1,6 +1,6 @@
 # Design metrics baseline
 
-Generated: 2026-09-16T11:13:33.313Z
+Generated: 2026-09-16T11:29:48.798Z
 
 Gate: hybrid (structural for borders/shadows, count for gradients).
 
@@ -8,11 +8,11 @@ Gate: hybrid (structural for borders/shadows, count for gradients).
 |---|---|---|
 | Distinct type sizes | 8 | <= 8 (locked scale) |
 | Raw font-size values | 0 | 0 (tokens only) |
-| 12px instances (chrome) | 133 | <= 150 |
+| 12px instances (chrome) | 143 | <= 150 |
 | Double border in one style object | 0 | 0 |
-| Screens over 10 borders | 0 | 0 |
-| Components with >1 hero shadow | 2 | 0  <-- OVER |
-| gradients | 26 | <= 30 (masks) |
+| Screens over 10 borders | 1 | 0  <-- OVER |
+| Components with >1 hero shadow | 3 | 0  <-- OVER |
+| gradients | 21 | <= 30 (masks) |
 | raw hex in components | 0 | 0 |
 | literal rgba() in components | 0 | 0 (use --*-rgb) |
 | emoji in code strings | 0 | 0 |
@@ -32,11 +32,15 @@ Gate: hybrid (structural for borders/shadows, count for gradients).
 
 Type tokens resolved from theme.css: caption=12, secondary=14, body=16, subhead=18, section=20, title=24, display=32, figure=48
 
-Sizes in use: 12px x133, 14px x379, 16px x104, 18px x25, 20px x16, 24px x58, 32px x23, 48px x5
+Sizes in use: 12px x143, 14px x383, 16px x105, 18px x24, 20px x16, 24px x58, 32px x23, 48px x5
+
+## Screens over border density
+- src/app/components/Profile.tsx (11)
 
 ## Components with more than one hero shadow
 - src/app/components/DialectMismatch.tsx — DialectMismatch() has 2
 - src/app/components/RoomConsentRollCall.tsx — RoomConsentRollCall() has 2
+- src/app/components/validator/ValidatorHome.tsx — ValidatorHome() has 2
 
 ## Examples: brand strings
 

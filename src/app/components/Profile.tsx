@@ -7,8 +7,39 @@ import { RoleSwitcher } from './ui/RoleSwitcher';
 import { tierName, nextTierName } from '../lib/tier';
 import { useSession } from '../lib/session';
 
-const dataVaultItems = [
-  { id: 'ds-1', dataset: 'Customer Service Dataset 1', submitted: '2 weeks ago', clips: 42, status: 'Active' },
+/** Data Vault — grouped by dataset "album". Every clip a contributor records
+    lands in exactly one album; revoking an album revokes every clip in it. */
+const dataVaultAlbums = [
+  {
+    id: 'ds-1',
+    dataset: 'Customer Service Dataset 1',
+    submitted: '2 weeks ago',
+    status: 'Active' as const,
+    clips: [
+      { id: 'c-1', label: 'Morning news reading', language: 'Hindi' },
+      { id: 'c-2', label: 'Conversational dialogue', language: 'Hindi' },
+      { id: 'c-3', label: 'Product descriptions', language: 'Marathi' },
+    ],
+  },
+  {
+    id: 'ds-2',
+    dataset: 'Numbers & Money — English',
+    submitted: 'yesterday',
+    status: 'Active' as const,
+    clips: [
+      { id: 'c-4', label: 'Quick phrases', language: 'English' },
+    ],
+  },
+];
+
+/** Derive craft pairs from the session record — nothing is invented here:
+    an empty session shows the honest empty state. */
+const BONUS_LINE = 70;
+
+const COVERAGE_GAPS = [
+  { label: 'Bhojpuri · Room takes' },
+  { label: 'Telugu · Numbers & money' },
+  { label: 'Hindi · 2-speaker dialogues' },
 ];
 
 const menuItems = [
@@ -24,6 +55,28 @@ export function Profile() {
 
   const standingLevel = profile?.standing?.level ?? 1;
   const reliability   = profile?.standing?.reliability ?? 0;
+
+  /* Craft pairs — derived from the session record (format:language → 0-100). */
+  const craftPairs = Object.entries(profile?.craft ?? {})
+    .map(([key, score]) => {
+      const [format, language] = key.split(':');
+      return { key, format, language, score: Math.round(Number(score) || 0) };
+    })
+    .filter((p) => p.format && p.language)
+    .sort((a, b) => b.score - a.score);
+
+  /* Data Vault local state — revoked albums produce a receipt, and every
+     remaining album stays individually revocable. */
+  const [revoked, setRevoked] = useState<Record<string, { at: string; clips: number }>>({});
+  const [receipt, setReceipt] = useState<{ dataset: string; clips: number; at: string } | null>(null);
+
+  const revokeAlbum = (albumId: string) => {
+    const album = dataVaultAlbums.find((a) => a.id === albumId);
+    if (!album || revoked[albumId]) return;
+    const at = new Date().toLocaleString('en-IN', { day: 'numeric', month: 'short', hour: 'numeric', minute: '2-digit' });
+    setRevoked((r) => ({ ...r, [albumId]: { at, clips: album.clips.length } }));
+    setReceipt({ dataset: album.dataset, clips: album.clips.length, at });
+  };
 
   return (
     <div className="min-h-screen pb-28" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
@@ -201,6 +254,95 @@ export function Profile() {
         </div>
       </div>
 
+      {/* ── Craft — demonstrated skill per format × language (session-derived).
+           Bars only where the contributor has actually worked; bonus note
+           states the exact threshold. This is ability, not currency. ── */}
+      <div className="px-6 mb-6">
+        <div
+          style={{
+            background: 'var(--surface-raised)',
+            borderRadius: 'var(--r-md)',
+            border: '1px solid var(--border-subtle)',
+            boxShadow: 'var(--e-1)',
+            padding: 'var(--space-8)',
+          }}
+        >
+          <div className="flex items-center justify-between" style={{ marginBottom: 'var(--space-5)' }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>Craft</p>
+            <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-muted)' }}>
+              skill per job type &amp; language
+            </span>
+          </div>
+          {craftPairs.length === 0 ? (
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.55, margin: 0 }}>
+              Finish a job and your skill for that job type and language shows here.
+            </p>
+          ) : (
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-5)' }}>
+              {craftPairs.map(({ key, format, language, score }) => (
+                <div key={key}>
+                  <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-2)' }}>
+                    <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)' }}>
+                      {format} · {language}
+                    </span>
+                    <span className="tabular" style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-caption)', fontWeight: 700, color: 'var(--text-primary)' }}>
+                      {score}
+                    </span>
+                  </div>
+                  <div style={{ height: 8, borderRadius: 'var(--r-full)', background: 'var(--surface-sunken)', overflow: 'hidden' }}>
+                    <div style={{
+                      width: `${Math.max(4, Math.min(100, score))}%`, height: '100%',
+                      borderRadius: 'var(--r-full)',
+                      background: score >= BONUS_LINE ? 'var(--state-settled)' : 'var(--action-primary-soft)',
+                    }} />
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+          <p style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-6)', lineHeight: 1.5 }}>
+            At {BONUS_LINE}+ craft on a job type and language, bonus-eligible work opens for that pair. Craft never changes base pay.
+          </p>
+        </div>
+      </div>
+
+      {/* ── Coverage context — market information in a quieter register.
+           This is what the LABS still need; you are inside it, you don't
+           earn it. Deliberately flat: no bars, no progress to chase. ── */}
+      <div className="px-6 mb-6">
+        <div
+          style={{
+            background: 'var(--surface-sunken)',
+            borderRadius: 'var(--r-md)',
+            border: '1px solid var(--border-subtle)',
+            padding: 'var(--space-7) var(--space-8)',
+          }}
+        >
+          <p style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 'var(--space-3)' }}>
+            Coverage the labs still need
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 'var(--space-3)' }}>
+            {COVERAGE_GAPS.map((g) => (
+              <span
+                key={g.label}
+                style={{
+                  display: 'inline-flex', alignItems: 'center', gap: 'var(--space-2)',
+                  fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-secondary)',
+                  background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
+                  borderRadius: 'var(--r-full)', padding: 'var(--space-2) var(--space-5)',
+                }}
+              >
+                <span aria-hidden style={{ width: 6, height: 6, borderRadius: 'var(--r-full)', background: 'var(--money-pending)' }} />
+                {g.label}
+              </span>
+            ))}
+          </div>
+          <p style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-5)', lineHeight: 1.5 }}>
+            Market context from the campaigns board — it changes as labs close their targets.
+          </p>
+        </div>
+      </div>
+
       {/* Performance dashboard link */}
       <div className="px-6 mb-6">
         <motion.button
@@ -271,49 +413,100 @@ export function Profile() {
           You own your voice data. Review and manage consent for every dataset.
         </p>
         <div className="space-y-3">
-          {dataVaultItems.map((item) => (
-            <div
-              key={item.id}
-              style={{
-                background: 'var(--surface-raised)',
-                borderRadius: 'var(--r-md)',
-                border: '1px solid var(--border-subtle)',
-                padding: 'var(--space-8)',
-              }}
-            >
-              <div className="flex items-start justify-between mb-4">
-                <div>
-                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>{item.dataset}</p>
-                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>
-                    Submitted {item.submitted} · {item.clips} clips
-                  </p>
-                </div>
-                <span
-                  style={{
-                    fontSize: 'var(--fs-caption)', fontWeight: 700,
-                    padding: 'var(--space-2) var(--space-6)', borderRadius: 'var(--r-full)',
-                    background: 'var(--action-primary-soft)', color: 'var(--state-settled)', flexShrink: 0,
-                  }}
-                >
-                  {item.status}
-                </span>
-              </div>
-              <button
-                onClick={() => setShowRevokeSheet(true)}
+          {dataVaultAlbums.map((album) => {
+            const isRevoked = !!revoked[album.id];
+            return (
+              <div
+                key={album.id}
                 style={{
-                  width: '100%',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
-                  padding: 'var(--space-5)', borderRadius: 'var(--r-full)',
-                  border: '1.5px solid var(--border-subtle)', background: 'var(--surface-ground)', color: 'var(--state-failed)',
-                  fontSize: 'var(--fs-secondary)', fontWeight: 600, cursor: 'pointer',
+                  background: 'var(--surface-raised)',
+                  borderRadius: 'var(--r-md)',
+                  border: '1px solid var(--border-subtle)',
+                  padding: 'var(--space-8)',
+                  opacity: isRevoked ? 0.6 : 1,
                 }}
               >
-                <Trash2 className="w-4 h-4" />
-                Revoke Consent &amp; Delete Data
-              </button>
-            </div>
-          ))}
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>
+                      <span style={isRevoked ? { textDecoration: 'line-through' } : undefined}>{album.dataset}</span>
+                    </p>
+                    <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>
+                      {isRevoked
+                        ? `Revoked ${revoked[album.id].at} · ${album.clips.length} clips deleted`
+                        : `Submitted ${album.submitted} · ${album.clips.length} clips`}
+                    </p>
+                  </div>
+                  <span
+                    style={{
+                      fontSize: 'var(--fs-caption)', fontWeight: 700,
+                      padding: 'var(--space-2) var(--space-6)', borderRadius: 'var(--r-full)',
+                      background: isRevoked ? 'var(--surface-sunken)' : 'var(--action-primary-soft)',
+                      color: isRevoked ? 'var(--text-muted)' : 'var(--state-settled)', flexShrink: 0,
+                    }}
+                  >
+                    {isRevoked ? 'Revoked' : album.status}
+                  </span>
+                </div>
+
+                {!isRevoked && (
+                  <div style={{ marginBottom: 'var(--space-6)', display: 'flex', flexDirection: 'column', gap: 'var(--space-3)' }}>
+                    {album.clips.map((clip) => (
+                      <div key={clip.id} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 'var(--space-4)' }}>
+                        <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
+                          {clip.label}
+                        </span>
+                        <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-muted)', flexShrink: 0 }}>
+                          {clip.language}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <button
+                  onClick={() => revokeAlbum(album.id)}
+                  disabled={isRevoked}
+                  aria-disabled={isRevoked}
+                  style={{
+                    width: '100%',
+                    display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
+                    padding: 'var(--space-5)', borderRadius: 'var(--r-full)',
+                    border: '1.5px solid var(--border-subtle)', background: 'var(--surface-ground)',
+                    color: isRevoked ? 'var(--text-faint)' : 'var(--state-failed)',
+                    fontSize: 'var(--fs-secondary)', fontWeight: 600, cursor: isRevoked ? 'default' : 'pointer',
+                  }}
+                >
+                  <Trash2 className="w-4 h-4" />
+                  {isRevoked ? 'Consent revoked — data deleted' : 'Revoke Consent & Delete Data'}
+                </button>
+              </div>
+            );
+          })}
         </div>
+
+        {receipt && (
+          <div
+            role="status"
+            style={{
+              marginTop: 'var(--space-5)',
+              background: 'var(--surface-sunken)',
+              border: '1px dashed var(--border-strong)',
+              borderRadius: 'var(--r-md)',
+              padding: 'var(--space-7) var(--space-8)',
+            }}
+          >
+            <p style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', marginBottom: 'var(--space-2)' }}>
+              Revocation receipt
+            </p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-primary)', margin: 0, lineHeight: 1.5 }}>
+              {receipt.dataset} — {receipt.clips} clip{receipt.clips > 1 ? 's' : ''} deleted · {receipt.at}
+            </p>
+            <p style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-2)', lineHeight: 1.5 }}>
+              Deleted for every downstream model. Money already paid is never clawed back.
+            </p>
+          </div>
+        )}
       </div>
 
       {/* ── Pro Roles ── */}
