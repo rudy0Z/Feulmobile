@@ -27,7 +27,7 @@ export function MicPermissionDenied({ onClose, onRetry }: Props) {
       >
         {/* Icon */}
         <motion.div
-          initial={{ scale: 0.7, opacity: 0 }}
+          initial={{ scale: 0.96, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 280, damping: 22, delay: 0.1 }}
           style={{

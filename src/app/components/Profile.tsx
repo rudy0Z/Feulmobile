@@ -130,7 +130,6 @@ export function Profile() {
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)',
-            boxShadow: 'var(--e-1)',
             padding: 'var(--space-8) var(--space-4)',
           }}
         >
@@ -166,7 +165,6 @@ export function Profile() {
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
-            boxShadow: 'var(--e-1)',
             cursor: 'pointer',
           }}
         >
@@ -193,7 +191,6 @@ export function Profile() {
           style={{
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-lg)',
-            border: '1px solid var(--border-subtle)',
             boxShadow: 'var(--e-2)',
             padding: 'var(--space-10)',
           }}
@@ -241,9 +238,7 @@ export function Profile() {
           </div>
 
           {/* Unlock preview */}
-          <div
-            style={{ background: 'var(--surface-sunken)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--r-md)', padding: '14px 16px' }}
-          >
+          <div style={{ borderTop: '1px solid var(--divider)', paddingTop: 'var(--space-6)' }}>
             <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               Keep your work on-time and accepted to reach{' '}
               <strong style={{ color: 'var(--text-primary)' }}>{nextTierName(standingLevel)}</strong> — it unlocks{' '}
@@ -263,7 +258,6 @@ export function Profile() {
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)',
-            boxShadow: 'var(--e-1)',
             padding: 'var(--space-8)',
           }}
         >
@@ -353,7 +347,6 @@ export function Profile() {
             width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)', padding: 'var(--space-7) var(--space-8)',
             display: 'flex', alignItems: 'center', gap: 'var(--space-6)', cursor: 'pointer', textAlign: 'left',
-            boxShadow: 'var(--e-1)',
           }}
         >
           <div style={{
@@ -381,7 +374,6 @@ export function Profile() {
             width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)', padding: 'var(--space-8) var(--space-8)',
             display: 'flex', alignItems: 'center', gap: 'var(--space-6)', cursor: 'pointer',
-            textAlign: 'left', boxShadow: 'var(--e-1)',
           }}
         >
           <div style={{
@@ -529,7 +521,6 @@ export function Profile() {
               border: '1px solid var(--border-subtle)', padding: 'var(--space-9)',
               display: 'flex', alignItems: 'center', gap: 'var(--space-8)', cursor: 'pointer',
               textAlign: 'left',
-              boxShadow: 'var(--e-1)',
             }}
           >
             <div style={{

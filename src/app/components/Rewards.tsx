@@ -101,7 +101,6 @@ export function Rewards() {
         <div style={{
           background: 'var(--surface-raised)',
           borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
           padding: 'var(--space-9) var(--space-10)',
         }}>

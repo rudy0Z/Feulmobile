@@ -51,7 +51,6 @@ const cardBase: React.CSSProperties = {
   background: 'var(--surface-raised)',
   borderRadius: 'var(--r-md)',
   border: '1px solid var(--border-subtle)',
-  boxShadow: 'var(--e-1)',
 };
 
 export function Performance() {
@@ -95,7 +94,6 @@ export function Performance() {
           style={{
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-lg)',
-            border: '1px solid var(--border-subtle)',
             padding: 'var(--space-9) var(--space-9)',
             boxShadow: 'var(--e-2)',
           }}

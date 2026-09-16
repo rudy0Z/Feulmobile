@@ -76,7 +76,7 @@ export function Card({
     border: borderColor === null ? 'none' : `1px solid ${borderColor}`,
     boxShadow: elevationShadow[elevation ?? (hero ? 'floating' : 'card')],
     cursor: onClick ? 'pointer' : 'default',
-    ...(borderLeft ? { borderLeft: `${borderLeft.width ?? 3}px solid ${borderLeft.color}` } : {}),
+    ...(borderLeft ? { borderLeft: `${borderLeft.width ?? 1}px solid ${borderLeft.color}` } : {}),
     ...style,
   };
   if (!onClick) return <div style={base}>{children}</div>;
@@ -914,7 +914,7 @@ export function BalanceBlock({
   return (
     <div style={{
       background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
-      border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-2)',
+       boxShadow: 'var(--e-2)',
       padding: 'var(--space-9) var(--space-10)',
     }}>
       <span style={{

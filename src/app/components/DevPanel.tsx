@@ -133,7 +133,7 @@ function MethodSelector() {
               border: `1px solid ${dev.gradingMethod === m.id ? 'rgba(var(--terracotta-500-rgb),0.5)' : 'rgba(var(--bone-0-rgb),0.08)'}`,
               background: dev.gradingMethod === m.id ? 'rgba(var(--terracotta-500-rgb),0.18)' : 'transparent',
               color: dev.gradingMethod === m.id ? 'var(--action-primary)' : 'rgba(var(--bone-0-rgb),0.4)',
-              cursor: 'pointer', transition: 'all 0.15s',
+              cursor: 'pointer', transition: 'background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.15s ease-out',
             }}
           >
             {m.label}

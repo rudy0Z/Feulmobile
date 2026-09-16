@@ -36,7 +36,7 @@ export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: Props) {
                   color: isSelected ? 'var(--text-on-studio)' : 'var(--text-secondary)',
                   border: isSelected ? `1.5px solid ${opt.color}` : '1px solid var(--border-subtle)',
                   boxShadow: isSelected ? 'var(--e-2)' : '0 2px 0 var(--border-strong)',
-                  transition: 'all 0.12s',
+                  transition: 'background-color 0.12s ease-out, border-color 0.12s ease-out, color 0.12s ease-out, transform 0.12s ease-out',
                 }}
               >
                 {opt.id}

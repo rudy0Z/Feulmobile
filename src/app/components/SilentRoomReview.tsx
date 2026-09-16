@@ -73,7 +73,6 @@ export function SilentRoomReview() {
         <div style={{
           background: 'var(--surface-raised)',
           borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
           padding: 'var(--space-8) var(--space-8) var(--space-7)',
         }}>

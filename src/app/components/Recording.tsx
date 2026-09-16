@@ -570,8 +570,7 @@ function Review({ quest, clips, onSubmit, onRetakeAll }: { quest: Quest; clips: 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
       <div className="px-6 pt-14 pb-4">
-        <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 800, letterSpacing: '0.12em', color: 'var(--action-primary)', textTransform: 'uppercase' }}>Review</span>
-        <h1 style={{ fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--text-primary)', marginTop: 'var(--space-3)', letterSpacing: '-0.015em' }}>
+        <h1 style={{ fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.015em' }}>
           {isRoom ? 'Listen back to your take' : `${clips.length} clips ready`}
         </h1>
         <p style={{ fontSize: 'var(--fs-body)', fontWeight: 500, color: 'var(--text-secondary)', marginTop: 'var(--space-2)'}}>
@@ -628,7 +627,7 @@ function Review({ quest, clips, onSubmit, onRetakeAll }: { quest: Quest; clips: 
 function Pending({ quest, onHome }: { quest: Quest; onHome: () => void }) {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center px-8 text-center" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
-      <motion.div initial={{ scale: 0.7, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }}>
+      <motion.div initial={{ scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} transition={{ type: 'spring', stiffness: 260, damping: 20 }}>
         <div style={{ width: 76, height: 76, borderRadius: 'var(--r-full)', background: 'var(--state-settled-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', margin: '0 auto 24px' }}>
           <Check style={{ width: 38, height: 38, color: 'var(--state-settled-text)' }} strokeWidth={2.5} />
         </div>
@@ -684,6 +683,12 @@ function StudioShell({ children, sticky, done, total, onBack, recording, earned,
   /** Mic-distance cue in the telemetry row (08-PHASE-3 §3.5). */
   micHint?: string;
 }) {
+  /* Device chrome follows the surface (status bar goes light over the Studio). */
+  useEffect(() => {
+    document.documentElement.setAttribute('data-studio', '1');
+    return () => document.documentElement.removeAttribute('data-studio');
+  }, []);
+
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--surface-studio)', fontFamily: 'var(--font-ui)' }}>
       <div className="px-6 pt-14 pb-3" style={{ flexShrink: 0 }}>
@@ -834,7 +839,6 @@ function SectionLabel({ children }: { children: React.ReactNode }) {
 
 const briefCard: React.CSSProperties = {
   background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)',
-  padding: 'var(--space-8) var(--space-9)', marginBottom: 'var(--space-9)', boxShadow: 'var(--e-1)',
 };
 
 const dockHint: React.CSSProperties = {

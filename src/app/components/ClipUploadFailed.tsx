@@ -103,7 +103,7 @@ export function ClipUploadFailed({ onClose, onRetry, onSaveDraft }: Props) {
               color: retrying ? 'rgba(var(--bone-0-rgb),0.4)' : 'var(--text-on-dark)',
               fontSize: 'var(--fs-body)', fontWeight: 700, border: 'none', cursor: retrying ? 'not-allowed' : 'pointer',
               display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
-              transition: 'all 0.2s',
+              transition: 'background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, transform 0.2s ease-out',
             }}
           >
             <RefreshCw style={{ width: 16, height: 16, animation: retrying ? 'spin 0.8s linear infinite' : 'none' }} />

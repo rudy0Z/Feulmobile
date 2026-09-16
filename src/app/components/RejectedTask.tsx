@@ -69,7 +69,6 @@ export function RejectedTask() {
             position: 'relative',
             overflow: 'hidden',
             boxShadow: 'var(--e-2)',
-            border: '1px solid var(--border-subtle)',
           }}
         >
           <div className="relative z-10">
@@ -96,7 +95,6 @@ export function RejectedTask() {
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)',
-            boxShadow: 'var(--e-1)',
             padding: 'var(--space-9)',
           }}
         >
@@ -202,7 +200,6 @@ export function RejectedTask() {
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)',
-            boxShadow: 'var(--e-1)',
             padding: 'var(--space-8) var(--space-8)',
           }}
         >

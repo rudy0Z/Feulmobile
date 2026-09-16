@@ -48,7 +48,6 @@ export function CoverageFullState() {
           style={{
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-lg)',
-            border: '1px solid var(--border-subtle)',
             boxShadow: 'var(--e-2)',
             padding: 'var(--space-10)',
           }}
@@ -120,7 +119,6 @@ export function CoverageFullState() {
                 background: 'var(--surface-raised)',
                 borderRadius: 'var(--r-md)',
                 border: '1px solid var(--border-subtle)',
-                boxShadow: 'var(--e-1)',
                 padding: 'var(--space-8)',
                 display: 'flex', alignItems: 'center', gap: 'var(--space-7)',
               }}

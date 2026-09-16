@@ -35,7 +35,7 @@ export function BatchExpired({ onClose, onPickNew }: Props) {
 
         {/* Icon */}
         <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
+          initial={{ scale: 0.96, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 260, damping: 20, delay: 0.05 }}
           style={{

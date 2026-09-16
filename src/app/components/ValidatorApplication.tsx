@@ -34,7 +34,7 @@ export function ValidatorApplication() {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center px-6" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
         <motion.div
-          initial={{ scale: 0.5, opacity: 0 }}
+          initial={{ scale: 0.96, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 200, damping: 15 }}
           className="flex flex-col items-center text-center"
@@ -154,7 +154,7 @@ export function ValidatorApplication() {
                   background: selectedLanguages.includes(lang) ? 'var(--text-primary)' : 'var(--surface-raised)',
                   borderColor: selectedLanguages.includes(lang) ? 'var(--text-primary)' : 'var(--border-subtle)',
                   color: selectedLanguages.includes(lang) ? 'var(--text-on-dark)' : 'var(--text-secondary)',
-                  cursor: 'pointer', transition: 'all 0.15s',
+                  cursor: 'pointer', transition: 'background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.15s ease-out',
                 }}
               >
                 {lang}
@@ -180,7 +180,7 @@ export function ValidatorApplication() {
                   background: hoursPerWeek === opt ? 'var(--text-primary)' : 'var(--surface-raised)',
                   borderColor: hoursPerWeek === opt ? 'var(--text-primary)' : 'var(--border-subtle)',
                   color: hoursPerWeek === opt ? 'var(--text-on-dark)' : 'var(--text-secondary)',
-                  cursor: 'pointer', transition: 'all 0.15s',
+                  cursor: 'pointer', transition: 'background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.15s ease-out',
                 }}
               >
                 {opt}
@@ -221,7 +221,7 @@ export function ValidatorApplication() {
             fontSize: 'var(--fs-body)', fontWeight: 700, border: 'none',
             cursor: canSubmit ? 'pointer' : 'not-allowed',
             boxShadow: canSubmit ? '0px 4px 16px rgba(var(--terracotta-600-rgb),0.28)' : 'none',
-            transition: 'all 0.2s',
+            transition: 'background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, transform 0.2s ease-out',
           }}
         >
           Submit Application

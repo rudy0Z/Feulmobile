@@ -43,7 +43,6 @@ export function DisagreementEscalation() {
         <div style={{
           background: 'var(--surface-raised)',
           borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
           padding: 'var(--space-9)',
         }}>
@@ -71,7 +70,7 @@ export function DisagreementEscalation() {
 
       {/* Status timeline */}
       <div className="px-6 mb-4">
-        <div style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-1)', padding: '18px 20px' }}>
+        <div style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',  boxShadow: 'var(--e-1)', padding: '18px 20px' }}>
           <div className="flex items-center gap-3">
             <div style={{ width: 40, height: 40, borderRadius: 'var(--r-full)', background: 'var(--state-pending-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Users className="w-5 h-5" style={{ color: 'var(--state-pending)' }} strokeWidth={1.9} />

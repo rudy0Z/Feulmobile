@@ -65,7 +65,7 @@ export function ValidatorTasks() {
               borderColor: activeCategory === cat ? 'var(--action-primary)' : 'var(--border-subtle)',
               color: activeCategory === cat ? 'var(--text-on-accent)' : 'var(--text-secondary)',
               boxShadow: activeCategory === cat ? '0px 6px 14px rgba(var(--terracotta-500-rgb),0.22)' : 'none',
-              transition: 'all 0.15s',
+              transition: 'background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.15s ease-out',
             }}
           >
             {cat}

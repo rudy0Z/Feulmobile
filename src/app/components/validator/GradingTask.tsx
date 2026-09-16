@@ -37,7 +37,6 @@ const CONSENSUS_MISMATCH_GRADE = 'Not Usable';
 const cardStyle = {
   background: 'var(--surface-raised)',
   borderRadius: 'var(--r-md)',
-  border: '1px solid var(--border-subtle)',
   boxShadow: 'var(--e-2)',
 };
 
@@ -244,7 +243,6 @@ export function GradingTask() {
               background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
               fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)',
               /* A progress chip, not a hero — the audio player below owns e-2. */
-              boxShadow: 'var(--e-1)',
             }}
           >
             Clip {currentClip + 1} of {sampleClips.length}
@@ -348,7 +346,7 @@ export function GradingTask() {
                 border: flaggedFraud ? '2px solid var(--state-failed)' : '1.5px dashed var(--border-strong)',
                 background: flaggedFraud ? 'var(--state-failed-container)' : 'transparent',
                 color: flaggedFraud ? 'var(--state-failed)' : 'var(--text-muted)',
-                fontSize: 'var(--fs-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
+                fontSize: 'var(--fs-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.15s ease-out',
               }}
             >
               <Flag className="w-4 h-4" />
@@ -374,7 +372,7 @@ export function GradingTask() {
             }}
           >
             <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
+              initial={{ scale: 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               style={{
                 background: 'var(--state-settled-container)', padding: 'var(--space-8) var(--space-10)', borderRadius: 'var(--r-full)',

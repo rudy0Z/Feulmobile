@@ -59,7 +59,7 @@ export function DialectMismatch() {
         className="mx-6 mt-6"
         style={{
           background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-2)', padding: 'var(--space-9)',
+           boxShadow: 'var(--e-2)', padding: 'var(--space-9)',
         }}
       >
         {/* Original claim */}
@@ -136,7 +136,7 @@ export function DialectMismatch() {
         className="mx-6 mt-4"
         style={{
           background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',
-          border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-1)', padding: 'var(--space-9)',
+           boxShadow: 'var(--e-1)', padding: 'var(--space-9)',
         }}
       >
         <div className="flex items-center gap-3 mb-3">

@@ -323,7 +323,7 @@ export function ValidatorWallet() {
                 background: activeFilter === f ? 'var(--action-primary-pressed)' : 'var(--surface-raised)',
                 borderColor: activeFilter === f ? 'var(--action-primary-pressed)' : 'var(--border-subtle)',
                 color: activeFilter === f ? 'var(--surface-raised)' : 'var(--text-secondary)',
-                transition: 'all 0.15s',
+                transition: 'background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.15s ease-out',
               }}
             >
               {f === 'all' ? 'All' : f === 'credited' ? 'Credited' : f === 'bonus' ? 'Bonuses' : 'Pending'}

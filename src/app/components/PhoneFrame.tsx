@@ -50,6 +50,9 @@ function DevButton() {
 
 /* ─── iOS Status Bar ─────────────────────────────────── */
 function IOSStatusBar() {
+  /* RNP chrome rule: device chrome re-themes with the surface beneath it.
+     PhoneFrame sits OUTSIDE the router, so the Studio marks <html data-studio>
+     and the chrome colour is resolved in CSS (see styles/index.css). */
   const [time, setTime] = useState(() => {
     const n = new Date();
     return `${n.getHours()}:${n.getMinutes().toString().padStart(2, '0')}`;
@@ -64,10 +67,11 @@ function IOSStatusBar() {
     return () => clearInterval(id);
   }, []);
 
-  const c = 'var(--text-device-chrome)';
+  const c = 'currentColor';
 
   return (
     <div
+      className="statusbar"
       style={{
         position: 'fixed',
         top: 0,
@@ -89,7 +93,7 @@ function IOSStatusBar() {
         style={{
           fontSize: 'var(--fs-body)',
           fontWeight: 700,
-          color: c,
+          color: 'currentColor',
           fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
           letterSpacing: '-0.3px',
         }}

@@ -57,7 +57,6 @@ const cardStyle: React.CSSProperties = {
   background: 'var(--surface-raised)',
   borderRadius: 'var(--r-md)',
   border: '1px solid var(--border-subtle)',
-  boxShadow: 'var(--e-1)',
 };
 
 export function ValidatorRewards() {
@@ -100,7 +99,7 @@ export function ValidatorRewards() {
           borderRadius: 'var(--r-lg)',
           boxShadow: 'var(--e-2)',
           padding: 'var(--space-9) var(--space-10)',
-          borderLeft: '4px solid var(--state-settled)',
+          borderLeft: '1px solid var(--state-settled)',
         }}>
           <div className="flex items-center justify-between mb-4">
             <div>

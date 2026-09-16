@@ -61,7 +61,6 @@ function StepConfirm({
         <div style={{
           background: 'var(--surface-raised)',
           borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
           padding: 'var(--space-11) var(--space-10)',
           display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
@@ -130,7 +129,7 @@ function StepSuccess({ perk, role }: { perk: ActivatablePerk; role: 'contributor
     >
       <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
         <motion.div
-          initial={{ scale: 0, opacity: 0 }}
+          initial={{ scale: 0.96, opacity: 0 }}
           animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 200, damping: 14, delay: 0.1 }}
           style={{

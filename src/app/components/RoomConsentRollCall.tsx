@@ -97,7 +97,6 @@ export function RoomConsentRollCall() {
          style={{
             borderRadius: 'var(--r-lg)',
             background: 'var(--surface-raised)',
-            border: '1px solid var(--border-subtle)',
             padding: 'var(--space-10) var(--space-9)',
             boxShadow: 'var(--e-2)',
           }}
@@ -149,7 +148,6 @@ export function RoomConsentRollCall() {
                   background: 'var(--surface-raised)',
                   borderRadius: 'var(--r-md)',
                   border: '1px solid var(--border-subtle)',
-                  boxShadow: 'var(--e-1)',
                   padding: 'var(--space-7) var(--space-8)',
                   opacity: p.excluded ? 0.55 : 1,
                 }}
@@ -220,7 +218,6 @@ export function RoomConsentRollCall() {
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)',
-            boxShadow: 'var(--e-1)',
             padding: 'var(--space-8)',
           }}
         >

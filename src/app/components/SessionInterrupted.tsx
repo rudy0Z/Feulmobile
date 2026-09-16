@@ -66,7 +66,6 @@ export function SessionInterrupted() {
         style={{
           background: 'var(--surface-raised)',
           borderRadius: 'var(--r-md)',
-          border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
           overflow: 'hidden',
         }}

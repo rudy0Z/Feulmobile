@@ -263,7 +263,6 @@ function CoverageHero({ quest, level, onOpen }: { quest: Quest; level: number; o
       onClick={() => onOpen(quest)}
       style={{
         display: 'flex', alignItems: 'stretch', overflow: 'hidden', cursor: 'pointer',
-        background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
         borderRadius: 'var(--r-lg)', boxShadow: 'var(--e-2)', minHeight: 150, position: 'relative',
       }}
     >

@@ -27,7 +27,6 @@ const CARD: React.CSSProperties = {
   background: 'var(--surface-raised)',
   borderRadius: 'var(--r-md)',
   border: '1px solid var(--border-subtle)',
-  boxShadow: 'var(--e-1)',
   padding: 'var(--space-9)',
   textAlign: 'left',
 };

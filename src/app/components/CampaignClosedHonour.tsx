@@ -126,7 +126,7 @@ function FilledView({ navigate: _navigate }: { navigate: ReturnType<typeof useNa
       <div
         style={{
           background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-2)', padding: 'var(--space-9)',
+           boxShadow: 'var(--e-2)', padding: 'var(--space-9)',
         }}
       >
         <div className="flex items-start justify-between">
@@ -198,7 +198,7 @@ function WithdrawnView({ navigate: _navigate }: { navigate: ReturnType<typeof us
       <div
         style={{
           background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-2)', overflow: 'hidden',
+           boxShadow: 'var(--e-2)', overflow: 'hidden',
         }}
       >
         <div className="flex items-center gap-3 px-5 py-4" style={{ background: 'var(--surface-sunken)' }}>

@@ -130,7 +130,7 @@ export function ValidatorHome() {
           {/* Avatar + role badge */}
           <div className="flex flex-col items-center gap-2 flex-shrink-0">
             <motion.div
-              initial={{ scale: 0.8, opacity: 0 }}
+              initial={{ scale: 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               transition={{ duration: durations.enter, delay: 0.1, type: 'spring', stiffness: 280, damping: 22 }}
               style={{
@@ -170,7 +170,6 @@ export function ValidatorHome() {
           transition={{ duration: durations.enter, delay: 0.28 }}
           style={{
             background: 'var(--surface-raised)',
-            border: '1px solid var(--border-subtle)',
             borderRadius: 'var(--r-lg)',
             padding: 'var(--space-9) var(--space-9)',
             position: 'relative',
@@ -225,7 +224,7 @@ export function ValidatorHome() {
       <div className="px-5 mb-4">
         <div
           className="flex items-center"
-          style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)', overflow: 'hidden', boxShadow: 'var(--e-1)' }}
+          style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',  overflow: 'hidden', boxShadow: 'var(--e-1)' }}
         >
           {[
             { label: 'Per Clip',      value: '₹2', mono: true },

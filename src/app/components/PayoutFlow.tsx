@@ -279,7 +279,7 @@ function StepSuccess({ amount, vpa, nextPath, nextLabel, backPath }: {
     <div className="min-h-screen flex flex-col" style={shell}>
       <div className="flex-1 flex flex-col items-center justify-center px-6 text-center">
         <motion.div
-          initial={reduce ? false : { scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
+          initial={reduce ? false : { scale: 0.96, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
           transition={{ type: 'spring', stiffness: 200, damping: 15 }}
           style={{ width: 96, height: 96, borderRadius: 'var(--r-full)', background: 'var(--state-settled-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-11)'}}
         >

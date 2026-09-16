@@ -107,11 +107,8 @@ export function Home() {
         <div className="px-5 mb-4">
           <div style={{
             background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
-            border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-1)', padding: 'var(--space-9) var(--space-9)',
+             boxShadow: 'var(--e-1)', padding: 'var(--space-9) var(--space-9)',
           }}>
-            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 800, letterSpacing: '0.09em', textTransform: 'uppercase', color: 'var(--text-muted)', margin: '0 0 8px' }}>
-              Ready to start
-            </p>
             <p style={{ fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 var(--space-3)', letterSpacing: '-0.01em' }}>
               Earn your first ₹ today
             </p>

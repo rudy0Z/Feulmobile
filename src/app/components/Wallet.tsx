@@ -102,7 +102,6 @@ export function Wallet() {
       {/* Bento — the ONE hero of this screen. Varied sizes, no hero ₹. */}
       <div className="px-6 mb-5" style={{
         display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-3)',
-        background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
         borderRadius: 'var(--r-lg)', boxShadow: 'var(--e-2)', overflow: 'hidden',
       }}>
         {/* Available — spans both columns, large ink figure + verdigris delta */}

@@ -28,7 +28,7 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
             color: selectedGrade === 1 ? 'var(--surface-raised)' : 'var(--state-failed)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             border: 'none', cursor: 'pointer',
-            transition: 'all 0.2s',
+            transition: 'background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, transform 0.2s ease-out',
             boxShadow: selectedGrade === 1 ? 'var(--e-2)' : 'none',
           }}
         >
@@ -44,7 +44,7 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
             color: selectedGrade === 5 ? 'var(--surface-raised)' : 'var(--color-success)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             border: 'none', cursor: 'pointer',
-            transition: 'all 0.2s',
+            transition: 'background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, transform 0.2s ease-out',
             boxShadow: selectedGrade === 5 ? 'var(--e-2)' : 'none',
           }}
         >
@@ -61,7 +61,7 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
           border: '2px dashed var(--border-strong)',
           color: 'var(--text-muted)', fontSize: 'var(--fs-secondary)', fontWeight: 700,
           display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
-          cursor: 'pointer', transition: 'all 0.2s',
+          cursor: 'pointer', transition: 'background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, transform 0.2s ease-out',
         }}
       >
         <Flag className="w-4 h-4" />
@@ -95,7 +95,7 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
                       padding: 'var(--space-4) var(--space-7)', borderRadius: 'var(--r-full)',
                       background: 'var(--surface-ground)', border: '1px solid var(--border-subtle)',
                       fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-secondary)',
-                      cursor: 'pointer', transition: 'all 0.1s',
+                      cursor: 'pointer', transition: 'background-color 0.1s ease-out, border-color 0.1s ease-out, color 0.1s ease-out, transform 0.1s ease-out',
                     }}
                     className="active:scale-95"
                   >

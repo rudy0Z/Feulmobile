@@ -1,4 +1,4 @@
-@import './fonts.css';
+﻿@import './fonts.css';
 @import './tailwind.css';
 @import './theme.css';
 
@@ -28,3 +28,12 @@ button {
   -webkit-tap-highlight-color: transparent;
   user-select: none;
 }
+/* Device chrome themes with the surface beneath it (Studio = dark). */
+/* Default chrome ink, overridden on dark surfaces (inline styles would win, so both live here). */
+.statusbar {
+  color: var(--text-device-chrome);
+}
+html[data-studio] .statusbar {
+  color: rgba(var(--bone-0-rgb), 0.92);
+}
+
