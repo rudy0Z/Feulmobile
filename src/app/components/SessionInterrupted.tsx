@@ -1,4 +1,4 @@
-import { useNavigate } from 'react-router';
+﻿import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { ChevronLeft, PhoneOff, Users, Clock, Play, RotateCcw, Save } from 'lucide-react';
 import { IconButton } from './ui/Primitives';
@@ -10,7 +10,7 @@ import { durations } from '../lib/motion';
 // a resume path within 24h — after which the local copy is cleared. Also surfaced on Home as
 // an active-assignment row.
 
-const PARTICIPANTS = ['Asha', 'Ravi', 'Meena', 'Iqbal'];
+const PARTICIPANTS = ['Speaker 1', 'Speaker 2', 'Speaker 3', 'Speaker 4'];
 const PRESERVED_PCT = (19 * 60 + 4) / (25 * 60); // 19:04 of ~25:00
 
 export function SessionInterrupted() {
@@ -202,3 +202,4 @@ export function SessionInterrupted() {
     </div>
   );
 }
+

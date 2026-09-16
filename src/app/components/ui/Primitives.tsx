@@ -687,8 +687,12 @@ export function Button({
         fontSize: 'var(--fs-body)', fontWeight: 700,
         display: 'inline-flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
         cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.5 : 1,
         boxShadow: variant === 'primary' && !disabled ? 'inset 0 1px 0 rgba(var(--bone-0-rgb),.18)' : 'none',
+        /* Disabled is a real state, not opacity: sunken fill + faint ink + dashed
+           edge. Contrast of the label still ≥3:1 against the fill (HG-6). */
+        ...(disabled
+          ? { background: 'var(--surface-sunken)', color: 'var(--text-faint)', border: '1px dashed var(--border-strong)', boxShadow: 'none' }
+          : {}),
         ...variants[variant],
         ...style,
       }}

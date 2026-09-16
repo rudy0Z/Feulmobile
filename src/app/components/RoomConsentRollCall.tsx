@@ -1,4 +1,4 @@
-import { useState } from 'react';
+﻿import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import {
@@ -42,8 +42,8 @@ export function RoomConsentRollCall() {
 
   const [participants, setParticipants] = useState<Participant[]>([
     { id: 'you', name: 'You', isYou: true, status: 'consented' },
-    { id: 'priya', name: 'Priya', status: 'consented' },
-    { id: 'anil', name: 'Anil', status: 'pending' },
+    { id: 'speaker-1', name: 'Speaker 1', status: 'consented' },
+    { id: 'speaker-2', name: 'Speaker 2', status: 'pending' },
     { id: 'guest', name: 'Guest', status: 'pending' },
   ]);
   const [minorPresent, setMinorPresent] = useState(false);
@@ -400,3 +400,4 @@ export function RoomConsentRollCall() {
     </div>
   );
 }
+

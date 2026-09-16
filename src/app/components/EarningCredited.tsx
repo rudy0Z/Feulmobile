@@ -3,6 +3,7 @@ import { motion, useReducedMotion } from 'motion/react';
 import { Check, ArrowRight } from 'lucide-react';
 import { Button, useCountUp } from './ui/Primitives';
 import { useSession } from '../lib/session';
+import { FIRST_JOB, questTotal } from '../lib/quests';
 import { durations } from '../lib/motion';
 
 /* ─────────────────────────────────────────────────────────────────────
@@ -27,7 +28,10 @@ export function EarningCredited() {
   const { profile } = useSession();
 
   const routed = (location.state as { amount?: number; title?: string; next?: string } | null) ?? {};
-  const amount = routed.amount ?? 12;
+  /* Demo-session coherence (HG-1): when reached cold (no routed amount), the
+     surface shows the newcomer chain's real first credit rather than an
+     arbitrary ₹12 against a ₹0 wallet. questTotal is the single source. */
+  const amount = routed.amount ?? questTotal(FIRST_JOB);
   const jobTitle = routed.title ?? 'This job';
   const next = routed.next ?? '/contributor/quests';
 

@@ -73,9 +73,12 @@ export function Wallet() {
   const available = empty ? 0 : (profile?.walletBalance ?? 0);
   const pending = empty ? 0
     : LEDGER.filter((e) => e.status === 'pending').reduce((s, e) => s + e.amount, 0);
-  const thisWeek = empty ? 0
+  /* "This week" is capped by the live wallet so the bento can never show a
+     week figure larger than the balance it sits inside (HG-1 coherence). */
+  const rawWeek = empty ? 0
     : LEDGER.filter((e) => e.kind === 'earning' && e.status === 'settled' && (e.band === 'today' || e.band === 'yesterday'))
         .reduce((s, e) => s + e.amount, 0);
+  const thisWeek = Math.min(rawWeek, available);
   const withdrawn = empty ? 0
     : LEDGER.filter((e) => e.kind === 'withdrawal').reduce((s, e) => s + e.amount, 0);
   const total = empty ? 0 : available + withdrawn;
@@ -222,23 +225,22 @@ export function Wallet() {
         )}
       </div>
 
-      {/* Sticky withdraw */}
-      <div className="fixed bottom-20 left-0 right-0 px-6 py-4 z-40"
+      {/* Sticky withdraw — compact: the exact gap rides INSIDE the button
+          label instead of stacking a second row that covers the tabs at
+          rest (HG-3: no colliding fixed elements). */}
+      <div className="fixed bottom-20 left-0 right-0 px-6 pt-2 pb-4 z-40"
         style={{ background: 'linear-gradient(to bottom, transparent, var(--surface-ground) 34%)' }}>
-        {belowFloor && !empty && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', marginBottom: 'var(--space-5)', justifyContent: 'center' }}>
-            <Info size={14} style={{ color: 'var(--money-pending)' }} />
-            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)' }}>
-              ₹{gap.toFixed(0)} more to withdraw
-            </span>
-          </div>
-        )}
         <Button
           full size="lg"
           disabled={belowFloor}
+          icon={belowFloor ? <Info size={15} /> : undefined}
           onClick={() => navigate('/contributor/payout')}
         >
-          {belowFloor ? `Withdraw (min ₹${WITHDRAW_MIN})` : 'Withdraw'}
+          {belowFloor
+            ? available > 0
+              ? `₹${gap.toFixed(0)} more to reach ₹${WITHDRAW_MIN}`
+              : `Withdraw · min ₹${WITHDRAW_MIN}`
+            : 'Withdraw'}
         </Button>
       </div>
 

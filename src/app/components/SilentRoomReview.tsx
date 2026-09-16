@@ -1,11 +1,11 @@
-import { useNavigate } from 'react-router';
+﻿import { useNavigate } from 'react-router';
 import { Users, MicOff, AlertTriangle, RotateCcw, UserMinus, ChevronLeft } from 'lucide-react';
 import { motion } from 'motion/react';
 import { IconButton } from './ui/Primitives';
 import { durations } from '../lib/motion';
 
 // C-08 (P1) — Silent-room review. A 4-person ROOM take was submitted but one speaker
-// (Meena) never spoke (0s). A room take needs all 4 voices to validate. Name the problem
+// (Speaker 1) never spoke (0s). A room take needs all 4 voices to validate. Name the problem
 // plainly, show the pay consequence (full ₹220 can't count), and offer an honest choice:
 // retake with everyone, or drop to a 3-person take at lower pay (₹165). Non-accusatory.
 
@@ -23,13 +23,13 @@ const LANES: Lane[] = [
   { name: 'You', color: 'var(--action-primary)', segments: [
     { start: 2, width: 14 }, { start: 22, width: 10 }, { start: 40, width: 18 }, { start: 74, width: 12 },
   ] },
-  { name: 'Priya', color: 'var(--state-settled)', segments: [
+  { name: 'Speaker 1', color: 'var(--state-settled)', segments: [
     { start: 8, width: 10 }, { start: 34, width: 8 }, { start: 58, width: 16 }, { start: 88, width: 8 },
   ] },
-  { name: 'Anil', color: 'var(--state-settled-deep)', segments: [
+  { name: 'Speaker 2', color: 'var(--state-settled-deep)', segments: [
     { start: 18, width: 9 }, { start: 46, width: 12 }, { start: 66, width: 7 }, { start: 82, width: 11 },
   ] },
-  { name: 'Meena', color: 'var(--state-pending)', segments: [], empty: true },
+  { name: 'Speaker 1', color: 'var(--state-pending)', segments: [], empty: true },
 ];
 
 const TICKS = ['00:00', '06:15', '12:30', '18:45', '25:00'];
@@ -219,7 +219,7 @@ export function SilentRoomReview() {
           </div>
           <div className="flex-1">
             <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>
-              Remove Meena & submit as a 3-person take
+              Remove Speaker 1 & submit as a 3-person take
             </p>
             <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.5, marginTop: 'var(--space-1)'}}>
               This changes the format. A 3-person take pays{' '}
@@ -239,3 +239,4 @@ export function SilentRoomReview() {
     </div>
   );
 }
+

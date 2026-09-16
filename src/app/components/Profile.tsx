@@ -102,7 +102,7 @@ export function Profile() {
           }}
         >
           <span style={{ fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-on-accent)', letterSpacing: '-0.02em' }}>
-            {profile?.initials || '·'}
+            {profile?.initials || 'ME'}
           </span>
           <div style={{
             position: 'absolute', bottom: -2, right: -2,

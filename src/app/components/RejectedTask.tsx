@@ -24,7 +24,7 @@ const rejectedSubmission = {
   submittedAt:   relStamp(26),
   reasonId:      'noise' as RejectionReasonId,
   prompt4:
-    '"Thank you for calling Sunrise Telecom. My name is Priya, and I\'ll be happy to assist you with your account today."',
+    '"Thank you for calling Sunrise Telecom. My name is Speaker 1, and I\'ll be happy to assist you with your account today."',
   pendingPayout: 25.00,
 };
 
