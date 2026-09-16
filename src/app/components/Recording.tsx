@@ -3,12 +3,12 @@ import { useNavigate, useParams } from 'react-router';
 import { motion, AnimatePresence, useReducedMotion } from 'motion/react';
 import {
   Play, Pause, Check, RotateCcw, ChevronLeft, ChevronRight,
-  Clock, Volume2, AlertCircle,
+  Clock, Volume2, AlertCircle, Smartphone,
 } from 'lucide-react';
 import {
   ScriptDisplay, LevelMeter, RecordTrigger, ProgressPill, Amount,
   AmountBreakdown, Button, IconButton } from './ui/Primitives';
-import { getQuest, formatMeta, Quest, QuestFormat, FIRST_JOB_ID } from '../lib/quests';
+import { getQuest, formatMeta, Quest, QuestFormat, FIRST_JOB_ID, questTotal } from '../lib/quests';
 import {
   LINES_CONTENT, SCENARIO_CONTENT, INTERVIEW_CONTENT, ROOM_CONTENT,
   CALIBRATION_LINES, CALIBRATION_POSTURE,
@@ -98,6 +98,12 @@ function MicPermissionPrime({ quest, onAllow, onBack }: { quest: Quest; onAllow:
       </div>
       <div className="px-6 pb-10">
         <Button full size="lg" onClick={onAllow}>Allow microphone</Button>
+        <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'var(--space-3)' }}>
+          <Button variant="ghost" size="sm" onClick={onBack}>Not now</Button>
+        </div>
+        <p style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 'var(--space-2)', lineHeight: 1.5 }}>
+          You can record later — we'll ask again before your first take.
+        </p>
       </div>
     </div>
   );
@@ -299,6 +305,8 @@ function StepCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
   const [time, setTime] = useState(0);
   const [clips, setClips] = useState<Clip[]>([]);
   const [noise, setNoise] = useState(false);
+  /** Turns where the noise pause fired — drives the inline single-turn banner. */
+  const [flagged, setFlagged] = useState<Record<number, boolean>>({});
 
   /* First-ever LINES capture folds a 2-phrase mic check into the take —
      no standalone calibration screen (08-PHASE-1 §1.6). The contributor
@@ -330,7 +338,7 @@ function StepCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
 
   const startRec = () => {
     setState('recording'); setTime(0);
-    if (dev.forceNoisePause) setTimeout(() => setNoise(true), 2000);
+    if (dev.forceNoisePause) setTimeout(() => { setNoise(true); setFlagged((f) => ({ ...f, [idx]: true })); }, 2000);
   };
   const stopRec = () => setState('kept');
 
@@ -341,6 +349,12 @@ function StepCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
     else onDone(next);
   };
   const retake = () => { setState(isInterview ? 'yourturn' : 'ready'); setTime(0); };
+
+  /* Telemetry: ₹ accumulated. Even-split convention — the job's questTotal
+     accrues per kept clip, so the figure lands exactly on the promised
+     amount when the last clip is kept. */
+  const keptCount = clips.length + (state === 'kept' ? 1 : 0);
+  const earned = Math.round((questTotal(quest) * keptCount) / total);
 
   const sticky =
     isInterview ? `${step.context} · Q ${idx + 1} of ${total}`
@@ -368,6 +382,7 @@ function StepCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
         total={calibLines.length}
         onBack={onBack}
         recording={calibRec}
+        micHint="15 cm"
       >
         <div className="flex-1 flex flex-col items-center justify-center px-7 text-center">
           <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: DIM, marginBottom: 'var(--space-11)', lineHeight: 1.5 }}>
@@ -382,15 +397,15 @@ function StepCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
         <ControlDock>
           {!calibRec && <p style={dockHint}>Say this out loud so we can check your mic</p>}
           {!calibRec
-            ? <RecordTrigger recording={false} onPress={() => setCalibRec(true)} reducedMotion={!!reduce} />
-            : <RecordTrigger recording onPress={advance} reducedMotion={!!reduce} />}
+            ? <Halo><RecordTrigger recording={false} onPress={() => setCalibRec(true)} reducedMotion={!!reduce} /></Halo>
+            : <Halo recording><RecordTrigger recording onPress={advance} reducedMotion={!!reduce} /></Halo>}
         </ControlDock>
       </StudioShell>
     );
   }
 
   return (
-    <StudioShell sticky={sticky} done={idx + (state === 'kept' ? 1 : 0)} total={total} onBack={onBack} recording={state === 'recording'}>
+    <StudioShell sticky={sticky} done={idx + (state === 'kept' ? 1 : 0)} total={total} onBack={onBack} recording={state === 'recording'} earned={earned} micHint="15 cm">
       <div className="flex-1 flex flex-col items-center justify-center px-7 text-center">
         {isInterview && (
           <div style={{ marginBottom: 'var(--space-11)', width: '100%' }}>
@@ -440,13 +455,20 @@ function StepCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
 
       <ControlDock>
         {state === 'listening' && <p style={dockHint}>Playing the prompt…</p>}
+        {state === 'kept' && flagged[idx] && (
+          <NoiseBanner turn={idx + 1} onRetake={retake} last={idx === total - 1} />
+        )}
         {(state === 'ready' || state === 'yourturn') && (
-          <RecordTrigger recording={false} onPress={startRec} reducedMotion={!!reduce} />
+          <Halo>
+            <RecordTrigger recording={false} onPress={startRec} reducedMotion={!!reduce} />
+          </Halo>
         )}
         {state === 'recording' && (
           <div className="flex flex-col items-center gap-3">
             <span className="tabular" style={{ fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-on-studio)' }}>{fmt(time)}</span>
-            <RecordTrigger recording onPress={stopRec} reducedMotion={!!reduce} />
+            <Halo recording>
+              <RecordTrigger recording onPress={stopRec} reducedMotion={!!reduce} />
+            </Halo>
           </div>
         )}
         {state === 'kept' && <KeepRetake time={time} onKeep={keep} onRetake={retake} last={idx === total - 1} />}
@@ -492,7 +514,7 @@ function RoomCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
   const stop = () => onDone([{ label: 'Full room take', seconds: time || 30 }]);
 
   return (
-    <StudioShell sticky={`${quest.title} · Room take`} done={recording ? cue + 1 : 0} total={script.score.length} onBack={onBack} recording={recording}>
+    <StudioShell sticky={`${quest.title} · Room take`} done={recording ? cue + 1 : 0} total={script.score.length} onBack={onBack} recording={recording} micHint="Phone stays put">
       <div ref={scrollRef} className="flex-1 overflow-y-auto px-7 pt-4 pb-6">
         {script.score.map((c, i) => {
           const active = i === cue && recording;
@@ -517,13 +539,17 @@ function RoomCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
         {!recording ? (
           <>
             <p style={dockHint}>One take — don't stop between lines. Phone stays put.</p>
-            <RecordTrigger recording={false} onPress={() => setRecording(true)} reducedMotion={!!reduce} />
+            <Halo>
+              <RecordTrigger recording={false} onPress={() => setRecording(true)} reducedMotion={!!reduce} />
+            </Halo>
           </>
         ) : (
           <div className="flex flex-col items-center gap-3">
             <span className="tabular" style={{ fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-on-studio)' }}>{fmt(time)}</span>
             <LevelMeter level={level} bars={7} />
-            <RecordTrigger recording onPress={stop} reducedMotion={!!reduce} />
+            <Halo recording>
+              <RecordTrigger recording onPress={stop} reducedMotion={!!reduce} />
+            </Halo>
             <p style={{ ...dockHint, marginTop: 'var(--space-2)', marginBottom: '0'}}>End take when the scene is done</p>
           </div>
         )}
@@ -539,6 +565,7 @@ function RoomCapture({ quest, onDone, onBack }: { quest: Quest; onDone: (clips: 
 function Review({ quest, clips, onSubmit, onRetakeAll }: { quest: Quest; clips: Clip[]; onSubmit: () => void; onRetakeAll: () => void }) {
   const isRoom = quest.format === 'room';
   const [playing, setPlaying] = useState<number | null>(null);
+  const [submitted, setSubmitted] = useState(false);
 
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
@@ -555,6 +582,7 @@ function Review({ quest, clips, onSubmit, onRetakeAll }: { quest: Quest; clips: 
       <div className="flex-1 px-6 pb-40 overflow-y-auto">
         {clips.map((c, i) => (
           <div key={i} className="flex items-center gap-3" style={{ ...briefCard, marginBottom: 'var(--space-5)', padding: '14px 16px' }}>
+            <StaticThumb />
             <button
               onClick={() => setPlaying(playing === i ? null : i)}
               style={{
@@ -576,7 +604,13 @@ function Review({ quest, clips, onSubmit, onRetakeAll }: { quest: Quest; clips: 
       </div>
 
       <div className="px-6 pb-10" style={{ position: 'fixed', bottom: 0, left: 0, right: 0, background: 'linear-gradient(to top, var(--surface-ground) 68%, transparent)', paddingTop: 'var(--space-9)'}}>
-        <Button full size="lg" onClick={onSubmit}>Submit for review</Button>
+        <Button
+          full size="lg"
+          disabled={submitted}
+          onClick={() => { if (!submitted) { setSubmitted(true); onSubmit(); } }}
+        >
+          {submitted ? 'Submitting…' : 'Submit for review'}
+        </Button>
         <div style={{ display: 'flex', justifyContent: 'center', marginTop: 'var(--space-3)'}}>
           <Button variant="ghost" size="sm" icon={<RotateCcw size={15} />} onClick={onRetakeAll}>
             {isRoom ? 'Record the take again' : 'Record all again'}
@@ -643,8 +677,12 @@ function GuardScreen({ Icon, title, body, cta, onBack }: { Icon: typeof AlertCir
    Studio chrome — dark shell, context bar + ProgressPill, control dock
    ═══════════════════════════════════════════════════════════════════ */
 
-function StudioShell({ children, sticky, done, total, onBack, recording }: {
+function StudioShell({ children, sticky, done, total, onBack, recording, earned, micHint }: {
   children: React.ReactNode; sticky: string; done: number; total: number; onBack: () => void; recording?: boolean;
+  /** ₹ accumulated on this take — session-derived, never a hardcoded figure. */
+  earned?: number;
+  /** Mic-distance cue in the telemetry row (08-PHASE-3 §3.5). */
+  micHint?: string;
 }) {
   return (
     <div className="min-h-screen flex flex-col" style={{ background: 'var(--surface-studio)', fontFamily: 'var(--font-ui)' }}>
@@ -661,11 +699,47 @@ function StudioShell({ children, sticky, done, total, onBack, recording }: {
           {recording && (
             <span style={{ width: 8, height: 8, borderRadius: 'var(--r-full)', background: 'var(--action-accent)', boxShadow: '0 0 0 4px rgba(var(--terracotta-500-rgb),0.22)' }} />
           )}
-          <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: DIM }}>{sticky}</span>
+          <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: DIM, flex: 1, minWidth: 0, overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{sticky}</span>
+          <span style={{ marginLeft: 'auto', flexShrink: 0, display: 'inline-flex', alignItems: 'center', gap: 'var(--space-4)' }}>
+            {micHint && (
+              <span aria-hidden style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-2)', color: FAINT }}>
+                <Smartphone size={13} strokeWidth={2} />
+                <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.06em' }}>{micHint}</span>
+              </span>
+            )}
+            {typeof earned === 'number' && (
+              <span className="tabular" style={{
+                fontSize: 'var(--fs-secondary)', fontWeight: 800, color: 'var(--text-on-studio)',
+                background: 'rgba(var(--studio-ink-rgb),0.08)', borderRadius: 'var(--r-full)',
+                padding: 'var(--space-2) var(--space-5)',
+              }}>
+                ₹{earned}
+              </span>
+            )}
+          </span>
         </div>
         <ProgressPill done={Math.min(done, total)} total={total} />
       </div>
       {children}
+    </div>
+  );
+}
+
+/* ─── Halo — the 200px orb + 2 rings behind the trigger zone (§3.5).
+       Borders and a wash only — never a gradient; static under motion. ── */
+function Halo({ recording, children }: { recording?: boolean; children: React.ReactNode }) {
+  return (
+    <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', width: 200, height: 200 }}>
+      <span aria-hidden style={{ position: 'absolute', inset: 0, borderRadius: 'var(--r-full)', border: '1px solid rgba(var(--studio-ink-rgb),0.10)' }} />
+      <span aria-hidden style={{ position: 'absolute', inset: 22, borderRadius: 'var(--r-full)', border: '1px solid rgba(var(--studio-ink-rgb),0.16)' }} />
+      <span
+        aria-hidden
+        style={{
+          position: 'absolute', inset: 46, borderRadius: 'var(--r-full)',
+          background: recording ? 'rgba(var(--terracotta-500-rgb),0.12)' : 'rgba(var(--terracotta-500-rgb),0.05)',
+        }}
+      />
+      <div style={{ position: 'relative' }}>{children}</div>
     </div>
   );
 }
@@ -690,6 +764,50 @@ function KeepRetake({ time, onKeep, onRetake, last }: { time: number; onKeep: ()
         <RotateCcw style={{ width: 15, height: 15 }} strokeWidth={2} /> Retake this one
       </button>
     </div>
+  );
+}
+
+/* ─── NoiseBanner — inline single-turn flag (§3.5). The pause sheet already
+       said why; this says what it means for the take, with one action. ── */
+function NoiseBanner({ turn, onRetake, last }: { turn: number; onRetake: () => void; last: boolean }) {
+  return (
+    <div className="w-full" style={{
+      background: 'rgba(var(--terracotta-500-rgb),0.10)',
+      border: '1px solid rgba(var(--terracotta-500-rgb),0.38)',
+      borderRadius: 'var(--r-md)',
+      padding: 'var(--space-5) var(--space-6)',
+      marginBottom: 'var(--space-5)',
+    }}>
+      <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'rgba(var(--studio-ink-rgb),0.78)', lineHeight: 1.5, margin: 0 }}>
+        Noise flagged on turn {turn}. Reviewers check clarity — retake it{last ? ' or submit the take' : ' or keep going'}.
+      </p>
+      <button
+        onClick={onRetake}
+        style={{
+          display: 'inline-flex', alignItems: 'center', gap: 'var(--space-3)',
+          minHeight: 'var(--tap)', padding: '0 var(--space-6)', marginTop: 'var(--space-4)',
+          borderRadius: 'var(--r-full)', cursor: 'pointer',
+          border: '1px solid rgba(var(--studio-ink-rgb),0.28)',
+          background: 'transparent', color: 'var(--text-on-studio)',
+          fontSize: 'var(--fs-secondary)', fontWeight: 700,
+        }}
+      >
+        <RotateCcw style={{ width: 15, height: 15 }} strokeWidth={2} /> Retake turn {turn}
+      </button>
+    </div>
+  );
+}
+
+/* ─── StaticThumb — muted 24px waveform mark. Static by doctrine:
+       nothing ambient moves except the live level. ── */
+function StaticThumb() {
+  const bars = [10, 16, 22, 14, 8];
+  return (
+    <span aria-hidden style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-1)', width: 24, height: 24, flexShrink: 0 }}>
+      {bars.map((h, i) => (
+        <span key={i} style={{ width: 2, height: h, borderRadius: 'var(--r-full)', background: 'var(--border-strong)', opacity: 0.8 }} />
+      ))}
+    </span>
   );
 }
 

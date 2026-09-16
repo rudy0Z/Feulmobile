@@ -96,7 +96,8 @@ export function RoomConsentRollCall() {
         <div
          style={{
             borderRadius: 'var(--r-lg)',
-            background: 'var(--surface-studio)',
+            background: 'var(--surface-raised)',
+            border: '1px solid var(--border-subtle)',
             padding: 'var(--space-10) var(--space-9)',
             boxShadow: 'var(--e-2)',
           }}
@@ -113,20 +114,20 @@ export function RoomConsentRollCall() {
               marginBottom: 'var(--space-8)',
             }}
           >
-            <ShieldCheck className="w-6 h-6" style={{ color: 'var(--state-settled-deep)' }} strokeWidth={1.9} />
+            <ShieldCheck className="w-6 h-6" style={{ color: 'var(--state-settled-text)' }} strokeWidth={1.9} />
           </div>
           <h1
            style={{
               fontSize: 'var(--fs-title)',
               fontWeight: 800,
-              color: 'var(--text-on-studio)',
+              color: 'var(--text-primary)',
               letterSpacing: '-0.01em',
               marginBottom: 'var(--space-4)',
             }}
           >
             Who&rsquo;s in the room?
           </h1>
-          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-on-studio)', opacity: 0.75, lineHeight: 1.55 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
             Everyone here is part of the recording, so everyone gets a say. Each person consents on
             tape before we start — that&rsquo;s the contract.
           </p>
@@ -359,7 +360,7 @@ export function RoomConsentRollCall() {
       {/* Sticky footer CTA */}
       <div
         className="fixed bottom-0 left-0 right-0 px-6 pt-4 pb-8"
-       style={{ background: 'var(--surface-ground)', borderTop: '1px solid var(--divider)' }}
+       style={{ background: 'linear-gradient(to bottom, transparent, var(--surface-ground) 30%)' }}
       >
         {!ready && blockingLine && (
           <div className="flex items-center gap-2 mb-3">
@@ -384,7 +385,7 @@ export function RoomConsentRollCall() {
             gap: 'var(--space-4)',
             background: ready ? 'var(--action-primary)' : 'var(--surface-sunken)',
             color: ready ? 'var(--text-on-accent)' : 'var(--text-faint)',
-            boxShadow: ready ? 'var(--e-glow)' : 'none',
+            boxShadow: 'var(--e-2)',
           }}
         >
           {ready ? (

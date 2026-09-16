@@ -1,6 +1,6 @@
 # Design metrics baseline
 
-Generated: 2026-09-16T10:37:55.861Z
+Generated: 2026-09-16T11:13:33.313Z
 
 Gate: hybrid (structural for borders/shadows, count for gradients).
 
@@ -8,11 +8,11 @@ Gate: hybrid (structural for borders/shadows, count for gradients).
 |---|---|---|
 | Distinct type sizes | 8 | <= 8 (locked scale) |
 | Raw font-size values | 0 | 0 (tokens only) |
-| 12px instances (chrome) | 128 | <= 150 |
+| 12px instances (chrome) | 133 | <= 150 |
 | Double border in one style object | 0 | 0 |
 | Screens over 10 borders | 0 | 0 |
-| Components with >1 hero shadow | 0 | 0 |
-| gradients | 25 | <= 30 (masks) |
+| Components with >1 hero shadow | 2 | 0  <-- OVER |
+| gradients | 26 | <= 30 (masks) |
 | raw hex in components | 0 | 0 |
 | literal rgba() in components | 0 | 0 (use --*-rgb) |
 | emoji in code strings | 0 | 0 |
@@ -23,16 +23,20 @@ Gate: hybrid (structural for borders/shadows, count for gradients).
 
 | Metric | Count | Ratchet (baseline 2026-09-16) |
 |---|---|---|
-| raw spacing values | 0 | <= 0 |
+| raw spacing values | 1 | <= 0  <-- OVER |
 | raw duration values | 0 | <= 0 |
 | raw borderRadius values | 0 | <= 0 |
 | primitive-token leaks | 11 | <= 11 |
-| hand-rolled <button> elements | 113 | <= 116 |
+| hand-rolled <button> elements | 114 | <= 116 |
 | undefined token references | 0 | 0 |
 
 Type tokens resolved from theme.css: caption=12, secondary=14, body=16, subhead=18, section=20, title=24, display=32, figure=48
 
-Sizes in use: 12px x128, 14px x376, 16px x104, 18px x24, 20px x16, 24px x58, 32px x23, 48px x5
+Sizes in use: 12px x133, 14px x379, 16px x104, 18px x25, 20px x16, 24px x58, 32px x23, 48px x5
+
+## Components with more than one hero shadow
+- src/app/components/DialectMismatch.tsx — DialectMismatch() has 2
+- src/app/components/RoomConsentRollCall.tsx — RoomConsentRollCall() has 2
 
 ## Examples: brand strings
 
@@ -49,15 +53,16 @@ Sizes in use: 12px x128, 14px x376, 16px x104, 18px x24, 20px x16, 24px x58, 32p
 ## Examples: small targets
 
 ## Examples: raw spacing values
+- src/app/components/Wallet.tsx:89 paddingBottom: 200
 
 ## Examples: raw duration values
 
 ## Examples: raw borderRadius values
 
 ## Examples: primitive-token leaks
-- src/app/components/Recording.tsx:404 var(--t-terracotta-300)
-- src/app/components/Recording.tsx:425 var(--t-terracotta-300)
-- src/app/components/Recording.tsx:504 var(--t-terracotta-300)
+- src/app/components/Recording.tsx:419 var(--t-terracotta-300)
+- src/app/components/Recording.tsx:440 var(--t-terracotta-300)
+- src/app/components/Recording.tsx:526 var(--t-terracotta-300)
 - src/app/components/ui/Primitives.tsx:169 var(--t-bone-100)
 - src/app/components/ui/Primitives.tsx:170 var(--t-terracotta-100)
 - src/app/components/ui/Primitives.tsx:171 var(--t-bone-100)

@@ -2,8 +2,8 @@ import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDevContext } from '../lib/DevContext';
 import { motion, useReducedMotion } from 'motion/react';
-import { Search, SlidersHorizontal, Inbox } from 'lucide-react';
-import { QuestRow, TierGate, Sheet, Button } from './ui/Primitives';
+import { Search, SlidersHorizontal, Inbox, MapPin } from 'lucide-react';
+import { QuestRow, TierGate, Sheet, Button, Amount } from './ui/Primitives';
 import { quests, questTotal, formatMeta, type Quest, type QuestFormat } from '../lib/quests';
 import { tierName } from '../lib/tier';
 import { useSession } from '../lib/session';
@@ -171,6 +171,14 @@ export function QuestFeed() {
         />
       ) : filter === 'all' ? (
         <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-11)'}}>
+          {/* The ONE 150px coverage hero — the open job closest to closing. */}
+          {(() => {
+            const hero = visible
+              .filter((q) => !isLocked(q))
+              .sort((a, b) => (b.coveragePct ?? 0) - (a.coveragePct ?? 0))[0];
+            if (hero) return <CoverageHero quest={hero} level={level} onOpen={open} />;
+            return null;
+          })()}
           {SECTION_ORDER.map(({ format, blurb }) => {
             const rows = filtered.filter((q) => q.format === format);
             if (rows.length === 0) return null;
@@ -238,6 +246,75 @@ export function QuestFeed() {
         <Button full onClick={() => setFilterOpen(false)}>Show results</Button>
       </Sheet>
     </Shell>
+  );
+}
+
+/* ─── CoverageHero — ONE 150px acoustic-art card per feed (§3.2). It carries
+       the single highest-coverage OPEN job: the market's real supply signal
+       (districts still needed), never a promo banner. Art is a flat terracotta
+       tone + concentric "coverage rings" in CSS only — no gradients, no images
+       to load, nothing decorative that could read as a wash. ── */
+function CoverageHero({ quest, level, onOpen }: { quest: Quest; level: number; onOpen: (q: Quest) => void }) {
+  const fm = formatMeta[quest.format];
+  return (
+    <motion.div
+      whileTap={whileTap.card}
+      transition={springs.tap}
+      onClick={() => onOpen(quest)}
+      style={{
+        display: 'flex', alignItems: 'stretch', overflow: 'hidden', cursor: 'pointer',
+        background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
+        borderRadius: 'var(--r-lg)', boxShadow: 'var(--e-2)', minHeight: 150, position: 'relative',
+      }}
+    >
+      {/* Right cutout — the acoustic art block (150px tall, flat tone + rings) */}
+      <div
+        aria-hidden
+        style={{
+          width: 118, flexShrink: 0, position: 'relative',
+          background: 'var(--action-primary-soft)',
+          borderLeft: '1px solid var(--border-subtle)',
+        }}
+      >
+        {[52, 38, 24].map((d, i) => (
+          <span
+            key={d}
+            style={{
+              position: 'absolute', width: d, height: d, borderRadius: 'var(--r-full)',
+              border: '1.5px solid var(--action-primary)',
+              opacity: 0.22 + i * 0.18,
+              left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
+            }}
+          />
+        ))}
+        <span style={{
+          position: 'absolute', width: 8, height: 8, borderRadius: 'var(--r-full)',
+          background: 'var(--action-primary)', left: '50%', top: '50%', transform: 'translate(-50%, -50%)',
+        }} />
+      </div>
+
+      {/* Copy — the coverage story */}
+      <div style={{ flex: 1, minWidth: 0, padding: 'var(--space-8)', display: 'flex', flexDirection: 'column' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', marginBottom: 'var(--space-3)' }}>
+          <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 800, letterSpacing: '0.09em', textTransform: 'uppercase', color: 'var(--action-primary)' }}>
+            {fm.short} · {quest.language}
+          </span>
+        </div>
+        <p style={{ fontSize: 'var(--fs-subhead)', fontWeight: 700, color: 'var(--text-primary)', margin: 0, lineHeight: 1.3, display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          {quest.title}
+        </p>
+        <p style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-2)', fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-secondary)', margin: 'var(--space-2) 0 0' }}>
+          <MapPin size={12} strokeWidth={2.2} />
+          {quest.districtsNeeded} districts still need this coverage
+        </p>
+        <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingTop: 'var(--space-4)' }}>
+          <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, color: 'var(--text-muted)' }}>
+            {quest.coveragePct}% collected
+          </span>
+          <Amount value={questTotal(quest)} size={22} />
+        </div>
+      </div>
+    </motion.div>
   );
 }
 

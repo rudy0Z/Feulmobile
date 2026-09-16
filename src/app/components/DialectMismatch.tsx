@@ -181,7 +181,7 @@ export function DialectMismatch() {
             width: '100%', height: 52, borderRadius: 'var(--r-full)',
             background: 'var(--action-primary)', color: 'var(--text-on-accent)',
             border: 'none', cursor: 'pointer', fontSize: 'var(--fs-body)', fontWeight: 700,
-            boxShadow: 'var(--e-glow)',
+            boxShadow: 'var(--e-2)',
           }}
         >
           Got it
