@@ -8,6 +8,7 @@
     "metrics": "node scripts/design-metrics.mjs --save",
     "dev": "vite",
     "smoke": "node scripts/smoke.mjs",
+    "shots": "node scripts/shots.mjs",
     "preview": "vite preview"
   },
   "dependencies": {
