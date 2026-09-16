@@ -4,6 +4,22 @@
  * format-specific shapes. All tracks/prompts are MOCKED — no real audio.
  */
 
+/* ── CALIBRATION: the first-ever LINES capture folds a 2-phrase mic check
+   into the take instead of adding a standalone screen (08-PHASE-1 §1.6).
+   The phrases are deliberately short and neutral — they exist so the
+   contributor can watch the level meter move and trust it before the real
+   take starts, not to be good data. Keyed by quest id: only the first job
+   in the newcomer chain carries one. ─────────────────────────────────── */
+export const CALIBRATION_LINES: Record<string, string[]> = {
+  'q-lines-1': [
+    '"टेस्ट, एक, दो, तीन।"',
+    '"मेरी आवाज़ साफ़ आ रही है?"',
+  ],
+};
+
+/** Posture cue shown while the first-job calibration runs. */
+export const CALIBRATION_POSTURE = 'Hold the phone about 15cm from your mouth';
+
 /* ── LINES: an ordered list of short lines to read ──────────────── */
 export const LINES_CONTENT: Record<string, string[]> = {
   'q-lines-1': [

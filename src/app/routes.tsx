@@ -1,5 +1,6 @@
 import { createBrowserRouter, Navigate } from "react-router";
 import { Onboarding } from "./components/Onboarding";
+import { ConsentGate } from "./components/ConsentGate";
 import { EarningCelebration } from "./components/EarningCelebration";
 import { MainApp } from "./components/MainApp";
 import { Home } from "./components/Home";
@@ -45,10 +46,20 @@ export const router = createBrowserRouter([
     Component: EarningCelebration,
   },
 
-  // ── Retired funnel steps → Home-first. Consent is now a lazy sheet;
-  //    calibration is folded into the standard LINES capture. ──
+  // ── Consent gate — a NATIVE ROUTE, not a sheet (owner decision D-3).
+  //    Deliberately a sibling of /contributor, so it renders full-screen
+  //    with no dock: consent must not look like a step inside the app you
+  //    are being asked to trust. This is also the proof URL — open it
+  //    signed-out and you get consent, never a microphone.
+  {
+    path: "/contributor/consent",
+    Component: ConsentGate,
+  },
+
+  // ── Retired funnel steps → Home-first. Calibration is folded into the
+  //    standard LINES capture. ──
   { path: "/first-earning",         element: <Navigate to="/contributor" replace /> },
-  { path: "/data-consent",          element: <Navigate to="/contributor" replace /> },
+  { path: "/data-consent",          element: <Navigate to="/contributor/consent" replace /> },
   { path: "/submission-guidelines", element: <Navigate to="/contributor" replace /> },
   { path: "/voice-calibration",     element: <Navigate to="/recording/q-lines-1" replace /> },
   { path: "/profile-setup",         element: <Navigate to="/contributor" replace /> },

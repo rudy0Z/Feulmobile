@@ -20,7 +20,7 @@ export function SwipeButton({
   onComplete,
   disabled = false,
   fillColor = 'var(--action-primary-pressed)',
-  successColor = 'var(--t-verdigris-500)',
+  successColor = 'var(--state-settled)',
   height = 58,
 }: SwipeButtonProps) {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -73,7 +73,7 @@ export function SwipeButton({
         position: 'relative',
         width: '100%',
         height,
-        borderRadius: 999,
+        borderRadius: 'var(--r-full)',
         background: 'var(--surface-sunken)',
         border: '1px solid var(--border-subtle)',
         boxShadow: 'inset 0px 1px 2px rgba(var(--carbon-rgb),0.05)',
@@ -94,7 +94,7 @@ export function SwipeButton({
           background: completed
             ? `linear-gradient(90deg, ${successColor} 0%, ${successColor} 100%)`
             : `linear-gradient(90deg, ${fillColor}cc 0%, ${fillColor} 100%)`,
-          borderRadius: 999,
+          borderRadius: 'var(--r-full)',
         }}
       />
 
@@ -106,7 +106,7 @@ export function SwipeButton({
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'center',
-          fontSize: 15,
+          fontSize: 'var(--fs-body)',
           fontWeight: 700,
           color: completed ? 'var(--surface-raised)' : 'var(--text-primary)',
           letterSpacing: '0.01em',

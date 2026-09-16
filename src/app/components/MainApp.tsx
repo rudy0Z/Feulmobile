@@ -27,11 +27,9 @@ export function MainApp() {
       <nav
         className="fixed bottom-0 left-0 right-0 z-50"
         style={{
-          background: 'color-mix(in srgb, var(--surface-raised) 92%, transparent)',
-          borderTop: '1px solid var(--border-subtle)',
-          boxShadow: 'var(--e-2)',
-          backdropFilter: 'blur(16px)',
-          WebkitBackdropFilter: 'blur(16px)',
+          background: 'color-mix(in srgb, var(--surface-raised) 88%, transparent)',
+          backdropFilter: 'blur(20px) saturate(140%)',
+          WebkitBackdropFilter: 'blur(20px) saturate(140%)',
         }}
       >
         <div className="flex justify-around items-center max-w-md mx-auto" style={{ height: 64 }}>
@@ -54,7 +52,7 @@ export function MainApp() {
                       transition={{ type: 'spring', stiffness: 380, damping: 30 }}
                       style={{
                         position: 'absolute', inset: 0,
-                        background: 'var(--t-terracotta-50)',
+                        background: 'var(--action-primary-soft)',
                         borderRadius: 'var(--r-full)',
                       }}
                     />
@@ -63,19 +61,20 @@ export function MainApp() {
                     style={{ color: active ? 'var(--action-primary)' : 'var(--text-muted)', position: 'relative', zIndex: 1 }}
                     className="w-[22px] h-[22px]"
                     strokeWidth={active ? 2.4 : 1.75}
-                    fill={active ? 'var(--t-terracotta-50)' : 'none'}
+                    fill={active ? 'var(--action-primary-soft)' : 'none'}
                   />
                 </div>
-                {active && (
-                  <motion.span
-                    initial={{ opacity: 0, y: 2 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    className="text-[10px]"
-                    style={{ color: 'var(--action-primary)', fontFamily: 'var(--font-ui)', fontWeight: 700 }}
-                  >
-                    {item.label}
-                  </motion.span>
-                )}
+                {/* Label always visible — icon-only tabs fail recognition */}
+                <span
+                  style={{
+                    fontSize: 'var(--fs-caption)',
+                    color: active ? 'var(--action-primary)' : 'var(--text-muted)',
+                    fontFamily: 'var(--font-ui)',
+                    fontWeight: active ? 700 : 600,
+                  }}
+                >
+                  {item.label}
+                </span>
               </motion.button>
             );
           })}

@@ -40,12 +40,15 @@ export function Profile() {
           className="flex items-center justify-center flex-shrink-0"
           style={{
             width: 68, height: 68, borderRadius: '50%',
-            background: 'linear-gradient(135deg, var(--t-terracotta-300, var(--action-primary)) 0%, var(--action-primary) 100%)',
-            boxShadow: 'var(--e-2)',
+            /* Flat accent fill, not a gradient — a decorative wash here was
+               both a banned gradient and competing with the Standing hero
+               below it for attention. The avatar is identity, not the hero. */
+            background: 'var(--action-primary)',
+            boxShadow: 'var(--e-1)',
             position: 'relative',
           }}
         >
-          <span style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-on-accent)', letterSpacing: '-0.02em' }}>
+          <span style={{ fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-on-accent)', letterSpacing: '-0.02em' }}>
             {profile?.initials || '·'}
           </span>
           <div style={{
@@ -59,10 +62,10 @@ export function Profile() {
           </div>
         </div>
         <div>
-          <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
+          <h1 style={{ fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 'var(--space-1)'}}>
             {profile?.name || 'Your profile'}
           </h1>
-          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>{profile?.email ?? ''}</p>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>{profile?.email ?? ''}</p>
         </div>
       </div>
 
@@ -75,22 +78,22 @@ export function Profile() {
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)',
             boxShadow: 'var(--e-1)',
-            padding: '18px 8px',
+            padding: 'var(--space-8) var(--space-4)',
           }}
         >
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-number)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>₹1,250</p>
-            <p style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 6 }}>Earned</p>
+            <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>₹1,250</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 'var(--space-3)'}}>Earned</p>
           </div>
           <div style={{ width: 1, height: 36, background: 'var(--divider)' }} />
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-number)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>23</p>
-            <p style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 6 }}>Quests</p>
+            <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>23</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 'var(--space-3)'}}>Jobs</p>
           </div>
           <div style={{ width: 1, height: 36, background: 'var(--divider)' }} />
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-number)', fontSize: 22, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>94%</p>
-            <p style={{ fontSize: 10.5, fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 6 }}>Acceptance</p>
+            <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>94%</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 'var(--space-3)'}}>Acceptance</p>
           </div>
         </div>
       </div>
@@ -106,7 +109,7 @@ export function Profile() {
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)',
-            padding: '14px 20px',
+            padding: 'var(--space-7) var(--space-9)',
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'space-between',
@@ -116,15 +119,15 @@ export function Profile() {
         >
           <div className="flex items-center gap-3">
             <div style={{
-              width: 36, height: 36, borderRadius: 'var(--r-sm)',
-              background: 'var(--t-terracotta-50)',
+              width: 36, height: 36, borderRadius: 'var(--r-xs)',
+              background: 'var(--action-primary-soft)',
               display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               <Repeat2 className="w-4 h-4" style={{ color: 'var(--action-primary)' }} />
             </div>
             <div className="text-left">
-              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>Switch App Role</p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>Currently: Contributor</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>Switch App Role</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>Currently: Contributor</p>
             </div>
           </div>
           <ChevronRight className="w-4 h-4" style={{ color: 'var(--text-faint)' }} />
@@ -139,26 +142,26 @@ export function Profile() {
             borderRadius: 'var(--r-lg)',
             border: '1px solid var(--border-subtle)',
             boxShadow: 'var(--e-2)',
-            padding: '24px',
+            padding: 'var(--space-10)',
           }}
         >
           <div className="flex items-center justify-between mb-5">
             <div className="flex items-center gap-3">
               <div style={{
-                width: 40, height: 40, borderRadius: 'var(--r-sm)',
-                background: 'var(--t-terracotta-50)',
+                width: 40, height: 40, borderRadius: 'var(--r-xs)',
+                background: 'var(--action-primary-soft)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
                 <ShieldCheck className="w-5 h-5" style={{ color: 'var(--action-primary)' }} strokeWidth={2} />
               </div>
-              <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)' }}>Standing</span>
+              <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)' }}>Standing</span>
             </div>
             <span
               style={{
-                background: 'var(--t-terracotta-50)',
+                background: 'var(--action-primary-soft)',
                 borderRadius: 'var(--r-full)',
-                padding: '5px 14px',
-                fontSize: 12,
+                padding: 'var(--space-2) var(--space-7)',
+                fontSize: 'var(--fs-caption)',
                 fontWeight: 700,
                 color: 'var(--action-primary)',
               }}
@@ -168,11 +171,11 @@ export function Profile() {
           </div>
 
           {/* Reliability meter — the honest signal, not a spendable number */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 8 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>Reliability</span>
-            <span style={{ fontFamily: 'var(--font-number)', fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>{reliability}%</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-4)'}}>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)' }}>Reliability</span>
+            <span style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)' }}>{reliability}%</span>
           </div>
-          <div style={{ background: 'var(--surface-sunken)', borderRadius: 'var(--r-full)', height: 10, marginBottom: 16, overflow: 'hidden' }}>
+          <div style={{ background: 'var(--surface-sunken)', borderRadius: 'var(--r-full)', height: 10, marginBottom: 'var(--space-8)', overflow: 'hidden' }}>
             <div
               style={{
                 background: 'var(--state-settled)',
@@ -188,7 +191,7 @@ export function Profile() {
           <div
             style={{ background: 'var(--surface-sunken)', border: '1px solid var(--border-subtle)', borderRadius: 'var(--r-md)', padding: '14px 16px' }}
           >
-            <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.6 }}>
               Keep your work on-time and accepted to reach{' '}
               <strong style={{ color: 'var(--text-primary)' }}>{nextTierName(standingLevel)}</strong> — it unlocks{' '}
               <strong style={{ color: 'var(--action-primary)' }}>earlier access to campaigns</strong> &amp;{' '}
@@ -206,21 +209,21 @@ export function Profile() {
           onClick={() => navigate('/contributor/performance')}
           style={{
             width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',
-            border: '1px solid var(--border-subtle)', padding: '14px 18px',
-            display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer', textAlign: 'left',
+            border: '1px solid var(--border-subtle)', padding: 'var(--space-7) var(--space-8)',
+            display: 'flex', alignItems: 'center', gap: 'var(--space-6)', cursor: 'pointer', textAlign: 'left',
             boxShadow: 'var(--e-1)',
           }}
         >
           <div style={{
-            width: 40, height: 40, borderRadius: 'var(--r-sm)',
+            width: 40, height: 40, borderRadius: 'var(--r-xs)',
             background: 'var(--surface-sunken)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
           }}>
             <BarChart3 className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
           </div>
           <div className="flex-1 min-w-0">
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>Performance Dashboard</p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>Acceptance, quality &amp; consistency scores</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>Performance Dashboard</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>Acceptance, quality &amp; consistency scores</p>
           </div>
           <ChevronRight className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--text-muted)' }} />
         </motion.button>
@@ -234,21 +237,21 @@ export function Profile() {
           onClick={() => navigate('/contributor/rewards')}
           style={{
             width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',
-            border: '1px solid var(--border-subtle)', padding: '16px 18px',
-            display: 'flex', alignItems: 'center', gap: 12, cursor: 'pointer',
+            border: '1px solid var(--border-subtle)', padding: 'var(--space-8) var(--space-8)',
+            display: 'flex', alignItems: 'center', gap: 'var(--space-6)', cursor: 'pointer',
             textAlign: 'left', boxShadow: 'var(--e-1)',
           }}
         >
           <div style={{
-            width: 40, height: 40, borderRadius: 'var(--r-sm)',
-            background: 'var(--t-terracotta-50)',
+            width: 40, height: 40, borderRadius: 'var(--r-xs)',
+            background: 'var(--action-primary-soft)',
             display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
           }}>
             <Award className="w-5 h-5" style={{ color: 'var(--action-primary)' }} strokeWidth={1.9} />
           </div>
           <div className="flex-1 min-w-0 text-left">
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>Recognition</p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>Recognition</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>
               Perks and badges you&apos;ve unlocked through your standing
             </p>
           </div>
@@ -260,11 +263,11 @@ export function Profile() {
       <div className="px-6 mb-6">
         <div className="flex items-center gap-2 mb-2">
           <Shield className="w-5 h-5" style={{ color: 'var(--action-primary)' }} />
-          <h3 style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <h3 style={{ fontSize: 'var(--fs-subhead)', fontWeight: 700, color: 'var(--text-primary)' }}>
             Data Vault &amp; Consent
           </h3>
         </div>
-        <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 14, lineHeight: 1.55 }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', marginBottom: 'var(--space-7)', lineHeight: 1.55 }}>
           You own your voice data. Review and manage consent for every dataset.
         </p>
         <div className="space-y-3">
@@ -275,21 +278,21 @@ export function Profile() {
                 background: 'var(--surface-raised)',
                 borderRadius: 'var(--r-md)',
                 border: '1px solid var(--border-subtle)',
-                padding: '18px',
+                padding: 'var(--space-8)',
               }}
             >
               <div className="flex items-start justify-between mb-4">
                 <div>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>{item.dataset}</p>
-                  <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>{item.dataset}</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>
                     Submitted {item.submitted} · {item.clips} clips
                   </p>
                 </div>
                 <span
                   style={{
-                    fontSize: 11, fontWeight: 700,
-                    padding: '4px 12px', borderRadius: 'var(--r-full)',
-                    background: 'var(--t-terracotta-50)', color: 'var(--state-settled)', flexShrink: 0,
+                    fontSize: 'var(--fs-caption)', fontWeight: 700,
+                    padding: 'var(--space-2) var(--space-6)', borderRadius: 'var(--r-full)',
+                    background: 'var(--action-primary-soft)', color: 'var(--state-settled)', flexShrink: 0,
                   }}
                 >
                   {item.status}
@@ -299,10 +302,10 @@ export function Profile() {
                 onClick={() => setShowRevokeSheet(true)}
                 style={{
                   width: '100%',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                  padding: '10px', borderRadius: 'var(--r-full)',
+                  display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
+                  padding: 'var(--space-5)', borderRadius: 'var(--r-full)',
                   border: '1.5px solid var(--border-subtle)', background: 'var(--surface-ground)', color: 'var(--state-failed)',
-                  fontSize: 13, fontWeight: 600, cursor: 'pointer',
+                  fontSize: 'var(--fs-secondary)', fontWeight: 600, cursor: 'pointer',
                 }}
               >
                 <Trash2 className="w-4 h-4" />
@@ -315,10 +318,10 @@ export function Profile() {
 
       {/* ── Pro Roles ── */}
       <div className="px-6 mb-8">
-        <h3 style={{ fontSize: 19, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3, letterSpacing: '-0.01em' }}>
+        <h3 style={{ fontSize: 'var(--fs-section)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)', letterSpacing: '-0.01em' }}>
           Pro Roles
         </h3>
-        <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', marginBottom: 16 }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginBottom: 'var(--space-8)'}}>
           Take on new roles as your standing grows.
         </p>
 
@@ -330,8 +333,8 @@ export function Profile() {
             onClick={() => navigate('/validator-apply')}
             style={{
               width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
-              border: '1px solid var(--border-subtle)', padding: '20px',
-              display: 'flex', alignItems: 'center', gap: 16, cursor: 'pointer',
+              border: '1px solid var(--border-subtle)', padding: 'var(--space-9)',
+              display: 'flex', alignItems: 'center', gap: 'var(--space-8)', cursor: 'pointer',
               textAlign: 'left',
               boxShadow: 'var(--e-1)',
             }}
@@ -344,8 +347,8 @@ export function Profile() {
               <ShieldCheck className="w-6 h-6" style={{ color: 'var(--state-settled)' }} strokeWidth={1.5} />
             </div>
             <div className="flex-1 min-w-0">
-              <p style={{ fontSize: 16, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>Validator Tier</p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.5 }}>
+              <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>Validator Tier</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.5 }}>
                 Review audio quality and earn ₹2 per clip graded. Restricted to top 5% of contributors.
               </p>
             </div>
@@ -365,7 +368,7 @@ export function Profile() {
               key={item.id}
               className="flex items-center justify-between w-full"
               style={{
-                padding: '16px 0',
+                padding: 'var(--space-8) 0',
                 background: 'transparent',
                 cursor: 'pointer',
                 border: 'none',
@@ -376,7 +379,7 @@ export function Profile() {
             >
               <div className="flex items-center gap-3">
                 <Icon className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} strokeWidth={1.75} />
-                <span style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)' }}>{item.label}</span>
+                <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-primary)' }}>{item.label}</span>
               </div>
               <ChevronRight className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
             </motion.button>

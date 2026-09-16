@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDevContext } from '../lib/DevContext';
-import { motion } from 'motion/react';
+import { motion, useReducedMotion } from 'motion/react';
 import { Search, SlidersHorizontal, Inbox } from 'lucide-react';
 import { QuestRow, TierGate, Sheet, Button } from './ui/Primitives';
 import { quests, questTotal, formatMeta, type Quest, type QuestFormat } from '../lib/quests';
@@ -100,7 +100,7 @@ export function QuestFeed() {
       {/* Search */}
       <div className="px-5 pb-3">
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 10, height: 48, padding: '0 14px',
+          display: 'flex', alignItems: 'center', gap: 'var(--space-5)', height: 48, padding: '0 var(--space-7)',
           background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
           borderRadius: 'var(--r-full)',
         }}>
@@ -111,7 +111,7 @@ export function QuestFeed() {
             placeholder="Search jobs, clients, languages"
             style={{
               flex: 1, border: 'none', outline: 'none', background: 'transparent',
-              fontSize: 15, color: 'var(--text-primary)', fontFamily: 'var(--font-ui)',
+              fontSize: 'var(--fs-body)', color: 'var(--text-primary)', fontFamily: 'var(--font-ui)',
             }}
           />
         </div>
@@ -124,10 +124,10 @@ export function QuestFeed() {
             whileTap={whileTap.button} transition={springs.tap}
             onClick={() => setFilterOpen(true)}
             style={{
-              display: 'flex', alignItems: 'center', gap: 6, height: 38, padding: '0 14px',
+              display: 'flex', alignItems: 'center', gap: 'var(--space-3)', height: 38, padding: '0 var(--space-7)',
               borderRadius: 'var(--r-full)', border: '1px solid var(--border-strong)',
               background: 'var(--surface-raised)', color: 'var(--text-secondary)',
-              fontSize: 13, fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0, cursor: 'pointer',
+              fontSize: 'var(--fs-secondary)', fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0, cursor: 'pointer',
             }}
           >
             <SlidersHorizontal size={15} /> Filter
@@ -140,7 +140,7 @@ export function QuestFeed() {
                 whileTap={whileTap.button} transition={springs.tap}
                 onClick={() => setFilter(f.id)}
                 style={{
-                  height: 38, padding: '0 16px', borderRadius: 'var(--r-full)', fontSize: 13, fontWeight: 700,
+                  height: 38, padding: '0 var(--space-8)', borderRadius: 'var(--r-full)', fontSize: 'var(--fs-secondary)', fontWeight: 700,
                   whiteSpace: 'nowrap', flexShrink: 0, cursor: 'pointer',
                   border: `1px solid ${active ? 'var(--action-primary)' : 'var(--border-subtle)'}`,
                   background: active ? 'var(--action-primary)' : 'var(--surface-raised)',
@@ -156,7 +156,7 @@ export function QuestFeed() {
       </div>
 
       {loading ? (
-        <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)'}}>
           {Array.from({ length: 4 }).map((_, i) => <RowSkeleton key={i} />)}
         </div>
       ) : filtered.length === 0 ? (
@@ -167,7 +167,7 @@ export function QuestFeed() {
           onCta={() => { setQuery(''); setFilter('all'); }}
         />
       ) : filter === 'all' ? (
-        <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 28 }}>
+        <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-11)'}}>
           {SECTION_ORDER.map(({ format, blurb }) => {
             const rows = filtered.filter((q) => q.format === format);
             if (rows.length === 0) return null;
@@ -184,16 +184,16 @@ export function QuestFeed() {
               : '';
             return (
               <section key={format}>
-                <div style={{ marginBottom: 12 }}>
-                  <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', margin: 0 }}>
+                <div style={{ marginBottom: 'var(--space-6)'}}>
+                  <h2 style={{ fontSize: 'var(--fs-section)', fontWeight: 700, color: 'var(--text-primary)', margin: '0'}}>
                     {formatMeta[format].label}
                   </h2>
-                  <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', margin: '2px 0 0' }}>{blurb}</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', margin: '2px 0 0' }}>{blurb}</p>
                 </div>
-                <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+                <div style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)'}}>
                   {[...openRows, ...shownLocked].map(goToRow)}
                   {hiddenLocked.length > 0 && (
-                    <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', textAlign: 'center', margin: '2px 0 0' }}>
+                    <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', textAlign: 'center', margin: '2px 0 0' }}>
                       {hiddenLocked.length} more unlock at {hiddenUnlockTier} standing
                     </p>
                   )}
@@ -203,8 +203,8 @@ export function QuestFeed() {
           })}
         </div>
       ) : (
-        <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-          <p style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', margin: '0 0 2px' }}>
+        <div className="px-5" style={{ display: 'flex', flexDirection: 'column', gap: 'var(--space-6)'}}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)', margin: '0 0 2px' }}>
             {filters.find((f) => f.id === filter)?.label} · {filtered.length}
           </p>
           {filtered.map(goToRow)}
@@ -213,7 +213,7 @@ export function QuestFeed() {
 
       {/* Filter sheet — same options, deliberate surface */}
       <Sheet open={filterOpen} onClose={() => setFilterOpen(false)} title="Filter jobs">
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10, marginBottom: 16 }}>
+        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 'var(--space-5)', marginBottom: 'var(--space-8)'}}>
           {filters.map((f) => {
             const active = filter === f.id;
             return (
@@ -221,10 +221,10 @@ export function QuestFeed() {
                 key={f.id}
                 onClick={() => { setFilter(f.id); setFilterOpen(false); }}
                 style={{
-                  height: 48, borderRadius: 'var(--r-md)', fontSize: 15, fontWeight: 700, cursor: 'pointer',
+                  height: 48, borderRadius: 'var(--r-md)', fontSize: 'var(--fs-body)', fontWeight: 700, cursor: 'pointer',
                   border: `1px solid ${active ? 'var(--action-primary)' : 'var(--border-subtle)'}`,
-                  background: active ? 'var(--t-terracotta-50)' : 'var(--surface-raised)',
-                  color: active ? 'var(--t-terracotta-800)' : 'var(--text-secondary)',
+                  background: active ? 'var(--action-primary-soft)' : 'var(--surface-raised)',
+                  color: active ? 'var(--action-primary)' : 'var(--text-secondary)',
                 }}
               >
                 {f.label}
@@ -242,10 +242,10 @@ function Shell({ children }: { children: React.ReactNode }) {
   return (
     <div className="min-h-screen pb-24" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
       <div className="px-5 pt-16 pb-4">
-        <h1 style={{ fontSize: 30, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.015em', margin: 0 }}>
-          Quests
+        <h1 style={{ fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.015em', margin: '0'}}>
+          Jobs
         </h1>
-        <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', margin: '4px 0 0' }}>
+        <p style={{ fontSize: 'var(--fs-body)', fontWeight: 500, color: 'var(--text-secondary)', margin: '4px 0 0' }}>
           Same work, same pay. Standing changes what opens and how fast it settles.
         </p>
       </div>
@@ -255,14 +255,17 @@ function Shell({ children }: { children: React.ReactNode }) {
 }
 
 function RowSkeleton() {
+  /* Reduced-motion: hold a single flat tone. Never pulse. */
+  const reduce = useReducedMotion();
   return (
     <div style={{
       height: 96, borderRadius: 'var(--r-md)', background: 'var(--surface-raised)',
       border: '1px solid var(--border-subtle)', overflow: 'hidden', position: 'relative',
     }}>
       <motion.div
-        animate={{ opacity: [0.4, 0.7, 0.4] }} transition={{ duration: 1.4, repeat: Infinity }}
-        style={{ position: 'absolute', inset: 16, borderRadius: 6, background: 'var(--surface-sunken)' }}
+        animate={reduce ? { opacity: 0.55 } : { opacity: [0.4, 0.7, 0.4] }}
+        transition={reduce ? { duration: 0 } : { duration: 1.4, repeat: Infinity }}
+        style={{ position: 'absolute', inset: 16, borderRadius: 'var(--r-xs)', background: 'var(--surface-sunken)' }}
       />
     </div>
   );
@@ -273,12 +276,12 @@ function EmptyState({ title, body, cta, onCta }: { title: string; body: string; 
     <div className="flex flex-col items-center justify-center px-8 text-center" style={{ minHeight: '46vh' }}>
       <div style={{
         width: 64, height: 64, borderRadius: 'var(--r-full)', background: 'var(--surface-sunken)',
-        display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20,
+        display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-9)',
       }}>
         <Inbox size={28} style={{ color: 'var(--text-muted)' }} />
       </div>
-      <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 8px' }}>{title}</h2>
-      <p style={{ fontSize: 15, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, maxWidth: 300, margin: '0 0 22px' }}>{body}</p>
+      <h2 style={{ fontSize: 'var(--fs-section)', fontWeight: 700, color: 'var(--text-primary)', margin: '0 0 8px' }}>{title}</h2>
+      <p style={{ fontSize: 'var(--fs-body)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, maxWidth: 300, margin: '0 0 22px' }}>{body}</p>
       <Button variant="secondary" onClick={onCta}>{cta}</Button>
     </div>
   );

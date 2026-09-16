@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router';
 import { Users, MicOff, AlertTriangle, RotateCcw, UserMinus, ChevronLeft } from 'lucide-react';
 import { motion } from 'motion/react';
+import { IconButton } from './ui/Primitives';
+import { durations } from '../lib/motion';
 
 // C-08 (P1) — Silent-room review. A 4-person ROOM take was submitted but one speaker
 // (Meena) never spoke (0s). A room take needs all 4 voices to validate. Name the problem
@@ -24,7 +26,7 @@ const LANES: Lane[] = [
   { name: 'Priya', color: 'var(--state-settled)', segments: [
     { start: 8, width: 10 }, { start: 34, width: 8 }, { start: 58, width: 16 }, { start: 88, width: 8 },
   ] },
-  { name: 'Anil', color: 'var(--t-verdigris-700)', segments: [
+  { name: 'Anil', color: 'var(--state-settled-deep)', segments: [
     { start: 18, width: 9 }, { start: 46, width: 12 }, { start: 66, width: 7 }, { start: 82, width: 11 },
   ] },
   { name: 'Meena', color: 'var(--state-pending)', segments: [], empty: true },
@@ -42,67 +44,58 @@ export function SilentRoomReview() {
     >
       {/* Header */}
       <div className="px-6 pt-14">
-        <button
-          onClick={() => navigate(-1)}
-          aria-label="Back"
-          style={{
-            width: 40, height: 40, borderRadius: 'var(--r-full)',
-            background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            cursor: 'pointer', boxShadow: 'var(--e-1)', marginBottom: 22,
-          }}
-        >
-          <ChevronLeft className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
-        </button>
+        <IconButton label="Back" onClick={() => navigate(-1)} variant="surface" style={{ marginBottom: 'var(--space-9)'}}>
+        <ChevronLeft style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
+      </IconButton>
 
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: durations.enter }}
         >
-          <div className="flex items-center gap-2" style={{ marginBottom: 10 }}>
+          <div className="flex items-center gap-2" style={{ marginBottom: 'var(--space-5)'}}>
             <Users className="w-4 h-4" style={{ color: 'var(--text-muted)' }} strokeWidth={2} />
-            <span style={{ fontSize: 12, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
+            <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>
               Room take · review
             </span>
           </div>
-          <h1 style={{ fontSize: 24, fontWeight: 800, letterSpacing: '-0.015em', color: 'var(--text-primary)', lineHeight: 1.2 }}>
+          <h1 style={{ fontSize: 'var(--fs-title)', fontWeight: 800, letterSpacing: '-0.015em', color: 'var(--text-primary)', lineHeight: 1.2 }}>
             One voice is missing from this take.
           </h1>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginTop: 8, maxWidth: 330 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginTop: 'var(--space-4)', maxWidth: 330 }}>
             Three of four speakers are on tape. One person stayed silent the whole time.
           </p>
         </motion.div>
       </div>
 
       {/* 4-lane speaker timeline */}
-      <div className="px-6" style={{ marginTop: 24 }}>
+      <div className="px-6" style={{ marginTop: 'var(--space-10)'}}>
         <div style={{
           background: 'var(--surface-raised)',
           borderRadius: 'var(--r-lg)',
           border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
-          padding: '18px 16px 14px',
+          padding: 'var(--space-8) var(--space-8) var(--space-7)',
         }}>
           {/* Timeline scale */}
-          <div className="flex items-center justify-between" style={{ marginBottom: 12, paddingLeft: 78 }}>
+          <div className="flex items-center justify-between" style={{ marginBottom: 'var(--space-6)', paddingLeft: 'var(--space-15)'}}>
             {TICKS.map((t) => (
-              <span key={t} style={{ fontFamily: 'var(--font-number)', fontSize: 10, fontWeight: 600, color: 'var(--text-faint)' }}>
+              <span key={t} style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-faint)' }}>
                 {t}
               </span>
             ))}
           </div>
 
           {/* Lanes */}
-          <div className="flex flex-col" style={{ gap: 10 }}>
+          <div className="flex flex-col" style={{ gap: 'var(--space-5)'}}>
             {LANES.map((lane, li) => (
-              <div key={lane.name} className="flex items-center" style={{ gap: 12 }}>
-                <div style={{ width: 66, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 6 }}>
+              <div key={lane.name} className="flex items-center" style={{ gap: 'var(--space-6)'}}>
+                <div style={{ width: 66, flexShrink: 0, display: 'flex', alignItems: 'center', gap: 'var(--space-3)'}}>
                   {lane.empty && (
                     <MicOff className="w-3.5 h-3.5" style={{ color: 'var(--state-pending)' }} strokeWidth={2} />
                   )}
                   <span style={{
-                    fontSize: 13, fontWeight: 700,
+                    fontSize: 'var(--fs-secondary)', fontWeight: 700,
                     color: lane.empty ? 'var(--state-pending)' : 'var(--text-primary)',
                   }}>
                     {lane.name}
@@ -111,17 +104,17 @@ export function SilentRoomReview() {
 
                 <div style={{
                   position: 'relative', flex: 1, height: 30,
-                  borderRadius: 'var(--r-sm)',
-                  background: lane.empty ? 'var(--t-ochre-50)' : 'var(--surface-sunken)',
+                  borderRadius: 'var(--r-xs)',
+                  background: lane.empty ? 'var(--state-pending-container)' : 'var(--surface-sunken)',
                   border: lane.empty ? '1.5px dashed var(--state-pending)' : '1px solid var(--border-subtle)',
                   overflow: 'hidden',
                 }}>
                   {lane.empty ? (
                     <div style={{
                       position: 'absolute', inset: 0, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                      fontSize: 11, fontWeight: 600, color: 'var(--state-pending)',
+                      fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--state-pending)',
                     }}>
-                      no speech detected · <span style={{ fontFamily: 'var(--font-number)', marginLeft: 4 }}>0:00</span>
+                      no speech detected · <span style={{ fontFamily: 'var(--font-number)', marginLeft: 'var(--space-2)'}}>0:00</span>
                     </div>
                   ) : (
                     lane.segments.map((seg, si) => (
@@ -129,7 +122,7 @@ export function SilentRoomReview() {
                         key={si}
                         initial={{ opacity: 0, scaleX: 0 }}
                         animate={{ opacity: 1, scaleX: 1 }}
-                        transition={{ duration: 0.35, delay: 0.15 + li * 0.08 + si * 0.05 }}
+                        transition={{ duration: durations.slow, delay: 0.15 + li * 0.08 + si * 0.05 }}
                         style={{
                           position: 'absolute', top: 6, bottom: 6,
                           left: `${seg.start}%`, width: `${seg.width}%`,
@@ -147,26 +140,26 @@ export function SilentRoomReview() {
       </div>
 
       {/* Consequence card */}
-      <div className="px-6" style={{ marginTop: 18 }}>
+      <div className="px-6" style={{ marginTop: 'var(--space-8)'}}>
         <div style={{
           background: 'var(--surface-raised)',
           borderRadius: 'var(--r-md)',
           border: '1px solid var(--border-strong)',
           boxShadow: 'var(--e-1)',
-          padding: 18,
+          padding: 'var(--space-8)',
         }}>
           <div className="flex items-start gap-3">
             <div style={{
               width: 38, height: 38, borderRadius: 'var(--r-md)', flexShrink: 0,
-              background: 'var(--t-ochre-50)', display: 'flex', alignItems: 'center', justifyContent: 'center',
+              background: 'var(--state-pending-container)', display: 'flex', alignItems: 'center', justifyContent: 'center',
             }}>
               <AlertTriangle className="w-5 h-5" style={{ color: 'var(--state-pending)' }} strokeWidth={2} />
             </div>
             <div className="flex-1">
-              <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4 }}>
+              <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4 }}>
                 A room take needs all 4 voices.
               </p>
-              <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5, marginTop: 4 }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5, marginTop: 'var(--space-2)'}}>
                 As is, this take can’t be validated.
               </p>
             </div>
@@ -175,18 +168,18 @@ export function SilentRoomReview() {
           <div style={{ height: 1, background: 'var(--divider)', margin: '14px 0' }} />
 
           <div className="flex items-center justify-between">
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)' }}>
               Full room take
             </span>
-            <span style={{ fontFamily: 'var(--font-number)', fontSize: 15, fontWeight: 700, color: 'var(--text-faint)', textDecoration: 'line-through' }}>
+            <span style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-faint)', textDecoration: 'line-through' }}>
               ₹220
             </span>
           </div>
-          <div className="flex items-center justify-between" style={{ marginTop: 6 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>
+          <div className="flex items-center justify-between" style={{ marginTop: 'var(--space-3)'}}>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)' }}>
               With one voice missing
             </span>
-            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--state-pending)' }}>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--state-pending)' }}>
               Can’t count
             </span>
           </div>
@@ -194,14 +187,14 @@ export function SilentRoomReview() {
       </div>
 
       {/* Choices */}
-      <div className="px-6" style={{ marginTop: 20, display: 'flex', flexDirection: 'column', gap: 12 }}>
+      <div className="px-6" style={{ marginTop: 'var(--space-9)', display: 'flex', flexDirection: 'column', gap: 'var(--space-6)'}}>
         <button
           onClick={() => navigate('/recording/q-room-1')}
           style={{
             width: '100%', minHeight: 54, borderRadius: 'var(--r-full)',
             background: 'var(--action-primary)', color: 'var(--text-on-accent)',
-            border: 'none', cursor: 'pointer', fontSize: 15, fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9,
+            border: 'none', cursor: 'pointer', fontSize: 'var(--fs-body)', fontWeight: 700,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
             boxShadow: 'var(--e-glow)',
           }}
         >
@@ -214,8 +207,8 @@ export function SilentRoomReview() {
           style={{
             width: '100%', borderRadius: 'var(--r-md)',
             background: 'var(--surface-raised)', border: '1px solid var(--border-strong)',
-            cursor: 'pointer', padding: '14px 16px', textAlign: 'left',
-            display: 'flex', alignItems: 'center', gap: 12,
+            cursor: 'pointer', padding: 'var(--space-7) var(--space-8)', textAlign: 'left',
+            display: 'flex', alignItems: 'center', gap: 'var(--space-6)',
           }}
         >
           <div style={{
@@ -225,10 +218,10 @@ export function SilentRoomReview() {
             <UserMinus className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
           </div>
           <div className="flex-1">
-            <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>
               Remove Meena & submit as a 3-person take
             </p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.5, marginTop: 3 }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.5, marginTop: 'var(--space-1)'}}>
               This changes the format. A 3-person take pays{' '}
               <span style={{ fontFamily: 'var(--font-number)', fontWeight: 700, color: 'var(--text-secondary)' }}>₹165</span>.
             </p>
@@ -237,8 +230,8 @@ export function SilentRoomReview() {
       </div>
 
       {/* Honest footer */}
-      <div className="px-6" style={{ marginTop: 22 }}>
-        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-faint)', lineHeight: 1.6, textAlign: 'center' }}>
+      <div className="px-6" style={{ marginTop: 'var(--space-9)'}}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-faint)', lineHeight: 1.6, textAlign: 'center' }}>
           Everyone on tape has to genuinely take part. That’s what makes room data worth
           recording — and worth paying for.
         </p>

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate, useLocation } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { CheckCircle2, ChevronLeft, ArrowRight, Sparkles } from 'lucide-react';
+import { durations } from '../lib/motion';
 
 /**
  * Perk activation — NOT a store checkout. A perk is unlocked by Standing;
@@ -40,19 +41,19 @@ function StepConfirm({
       initial={{ opacity: 0, x: 40 }}
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: -40 }}
-      transition={{ duration: 0.28 }}
+      transition={{ duration: durations.slow }}
       className="flex flex-col min-h-screen"
       style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}
     >
       {/* Header */}
       <div className="px-6 pt-14 pb-4">
-        <button onClick={onBack} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 }}>
+        <button onClick={onBack} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: 'var(--space-2) 0', marginBottom: 'var(--space-3)'}}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
           Activate perk
         </h1>
-        <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>You unlocked this through your standing.</p>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-1)'}}>You unlocked this through your standing.</p>
       </div>
 
       {/* Perk hero card — one r-lg object */}
@@ -62,21 +63,21 @@ function StepConfirm({
           borderRadius: 'var(--r-lg)',
           border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
-          padding: '28px 24px',
+          padding: 'var(--space-11) var(--space-10)',
           display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center',
         }}>
           <div style={{
             width: 72, height: 72, borderRadius: 'var(--r-lg)',
-            background: 'var(--t-terracotta-50)',
+            background: 'var(--action-primary-soft)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: 18,
+            marginBottom: 'var(--space-8)',
           }}>
             <Sparkles className="w-8 h-8" style={{ color: 'var(--action-primary)' }} strokeWidth={1.75} />
           </div>
-          <h2 style={{ fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 8, letterSpacing: '-0.01em' }}>
+          <h2 style={{ fontSize: 'var(--fs-section)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-4)', letterSpacing: '-0.01em' }}>
             {perk.name}
           </h2>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
             {perk.description}
           </p>
         </div>
@@ -88,9 +89,9 @@ function StepConfirm({
           background: 'var(--surface-sunken)',
           borderRadius: 'var(--r-md)',
           border: '1px solid var(--border-subtle)',
-          padding: '14px 16px',
+          padding: 'var(--space-7) var(--space-8)',
         }}>
-          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
             Turning this on costs nothing and takes nothing from your wallet. It stays active as long as you keep your standing.
           </p>
         </div>
@@ -103,8 +104,8 @@ function StepConfirm({
           style={{
             width: '100%', height: 56, borderRadius: 'var(--r-full)',
             background: 'var(--action-primary)', color: 'var(--text-on-accent)',
-            fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            fontSize: 'var(--fs-body)', fontWeight: 700, border: 'none', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
           }}
         >
           Turn on {perk.name}
@@ -134,9 +135,9 @@ function StepSuccess({ perk, role }: { perk: ActivatablePerk; role: 'contributor
           transition={{ type: 'spring', stiffness: 200, damping: 14, delay: 0.1 }}
           style={{
             width: 96, height: 96, borderRadius: 'var(--r-full)',
-            background: 'var(--t-terracotta-50)',
+            background: 'var(--action-primary-soft)',
             display: 'flex', alignItems: 'center', justifyContent: 'center',
-            marginBottom: 28,
+            marginBottom: 'var(--space-11)',
           }}
         >
           <CheckCircle2 className="w-11 h-11" style={{ color: 'var(--state-settled)' }} strokeWidth={2} />
@@ -147,13 +148,13 @@ function StepSuccess({ perk, role }: { perk: ActivatablePerk; role: 'contributor
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.4 }}
         >
-          <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--state-settled)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--state-settled)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 'var(--space-5)'}}>
             Now active
           </p>
-          <h2 style={{ fontSize: 24, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, marginBottom: 10, maxWidth: 300, letterSpacing: '-0.01em' }}>
+          <h2 style={{ fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, marginBottom: 'var(--space-5)', maxWidth: 300, letterSpacing: '-0.01em' }}>
             {perk.name}
           </h2>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, maxWidth: 300 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, maxWidth: 300 }}>
             {perk.description}
           </p>
         </motion.div>
@@ -170,8 +171,8 @@ function StepSuccess({ perk, role }: { perk: ActivatablePerk; role: 'contributor
           style={{
             width: '100%', height: 56, borderRadius: 'var(--r-full)',
             background: 'var(--action-primary)', color: 'var(--text-on-accent)',
-            fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            fontSize: 'var(--fs-body)', fontWeight: 700, border: 'none', cursor: 'pointer',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
           }}
         >
           Back to Recognition

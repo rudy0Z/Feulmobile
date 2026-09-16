@@ -11,14 +11,14 @@ export function ValidatorQueueEmpty() {
 
   return (
     <div className="flex flex-col items-center justify-center text-center px-8" style={{ minHeight: '60vh' }}>
-      <div style={{ width: 72, height: 72, borderRadius: 'var(--r-full)', background: 'var(--t-verdigris-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 20 }}>
-        <CheckCircle2 className="w-9 h-9" style={{ color: 'var(--t-verdigris-700)' }} strokeWidth={1.8} />
+      <div style={{ width: 72, height: 72, borderRadius: 'var(--r-full)', background: 'var(--state-settled-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-9)'}}>
+        <CheckCircle2 className="w-9 h-9" style={{ color: 'var(--state-settled-deep)' }} strokeWidth={1.8} />
       </div>
 
-      <h2 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', marginBottom: 8 }}>
+      <h2 style={{ fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', marginBottom: 'var(--space-4)'}}>
         Queue’s all caught up
       </h2>
-      <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 28, maxWidth: 300 }}>
+      <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 'var(--space-11)', maxWidth: 300 }}>
         There are no clips to grade right now — you’ve cleared them. We’ll notify you the moment
         a new batch lands.
       </p>
@@ -30,16 +30,16 @@ export function ValidatorQueueEmpty() {
         borderRadius: 'var(--r-lg)',
         border: '1px solid var(--border-subtle)',
         boxShadow: 'var(--e-2)',
-        padding: '20px',
+        padding: 'var(--space-9)',
         textAlign: 'left',
       }}>
         <div className="flex items-center gap-3 mb-3">
-          <div style={{ width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--t-terracotta-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+          <div style={{ width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--action-primary-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
             <Mic className="w-5 h-5" style={{ color: 'var(--action-primary)' }} strokeWidth={1.9} />
           </div>
           <div className="flex-1">
-            <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>Earn while you wait</p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>Record a few clips — it pays into the same wallet.</p>
+            <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)' }}>Earn while you wait</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-1)'}}>Record a few clips — it pays into the same wallet.</p>
           </div>
         </div>
         <button
@@ -47,8 +47,8 @@ export function ValidatorQueueEmpty() {
           style={{
             width: '100%', height: 48, borderRadius: 'var(--r-full)',
             background: 'var(--action-primary)', color: 'var(--text-on-accent)',
-            border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            border: 'none', cursor: 'pointer', fontSize: 'var(--fs-secondary)', fontWeight: 700,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
           }}
         >
           Browse recording quests <ArrowRight className="w-4 h-4" />
@@ -57,7 +57,7 @@ export function ValidatorQueueEmpty() {
 
       <button
         onClick={() => navigate('/validator')}
-        style={{ marginTop: 20, background: 'none', border: 'none', cursor: 'pointer', fontSize: 14, fontWeight: 700, color: 'var(--text-secondary)' }}
+        style={{ marginTop: 'var(--space-9)', background: 'none', border: 'none', cursor: 'pointer', fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-secondary)' }}
       >
         Back to dashboard
       </button>

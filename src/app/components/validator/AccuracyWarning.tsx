@@ -25,7 +25,7 @@ export function AccuracyWarning() {
       <div className="px-6 pt-14 pb-4">
         <button
           onClick={() => navigate(-1)}
-          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 }}
+          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: 'var(--space-2) 0', marginBottom: 'var(--space-3)'}}
         >
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
@@ -38,16 +38,16 @@ export function AccuracyWarning() {
           borderRadius: 'var(--r-lg)',
           border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
-          padding: '24px',
+          padding: 'var(--space-10)',
           borderTop: '4px solid var(--state-pending)',
         }}>
-          <div style={{ width: 52, height: 52, borderRadius: 'var(--r-md)', background: 'var(--t-ochre-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
+          <div style={{ width: 52, height: 52, borderRadius: 'var(--r-md)', background: 'var(--state-pending-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-8)'}}>
             <ShieldAlert className="w-7 h-7" style={{ color: 'var(--state-pending)' }} strokeWidth={1.9} />
           </div>
-          <h1 style={{ fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', marginBottom: 8, lineHeight: 1.25 }}>
+          <h1 style={{ fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', marginBottom: 'var(--space-4)', lineHeight: 1.25 }}>
             Let’s recalibrate together
           </h1>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55 }}>
             Your recent grades have drifted from what other trusted reviewers decided on the same
             clips. It happens — fatigue, a tricky batch, a rubric that needs a refresher. We’ve
             slowed your queue for a bit so you can grade a little more carefully. No penalty, no
@@ -64,8 +64,8 @@ export function AccuracyWarning() {
               <Clock className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} strokeWidth={1.9} />
             </div>
             <div className="flex-1">
-              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>Queue temporarily slowed</p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2, lineHeight: 1.45 }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>Queue temporarily slowed</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-1)', lineHeight: 1.45 }}>
                 Fewer clips at a time for now. Steady agreement over your next batches lifts it
                 back automatically.
               </p>
@@ -80,9 +80,9 @@ export function AccuracyWarning() {
           onClick={() => navigate('/validator/tasks')}
           style={{
             width: '100%', height: 52, borderRadius: 'var(--r-full)',
-            background: 'var(--t-verdigris-700)', color: 'var(--text-on-accent)',
-            border: 'none', cursor: 'pointer', fontSize: 15, fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            background: 'var(--state-settled-deep)', color: 'var(--text-on-accent)',
+            border: 'none', cursor: 'pointer', fontSize: 'var(--fs-body)', fontWeight: 700,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
           }}
         >
           Review the grading rubric <BookOpen className="w-4 h-4" />
@@ -92,8 +92,8 @@ export function AccuracyWarning() {
           style={{
             width: '100%', height: 52, borderRadius: 'var(--r-full)',
             background: 'transparent', color: 'var(--text-secondary)',
-            border: '1.5px solid var(--border-strong)', cursor: 'pointer', fontSize: 15, fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            border: '1.5px solid var(--border-strong)', cursor: 'pointer', fontSize: 'var(--fs-body)', fontWeight: 700,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
           }}
         >
           Continue grading <ArrowRight className="w-4 h-4" />

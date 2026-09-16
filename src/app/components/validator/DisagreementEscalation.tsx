@@ -25,14 +25,14 @@ export function DisagreementEscalation() {
       <div className="px-6 pt-14 pb-4">
         <button
           onClick={() => navigate(-1)}
-          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 }}
+          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: 'var(--space-2) 0', marginBottom: 'var(--space-3)'}}
         >
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 4 }}>
+        <h1 style={{ fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 'var(--space-2)'}}>
           Sent to a third reviewer
         </h1>
-        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
           You and another validator graded this clip differently. That’s normal — a third
           reviewer will settle it. Nothing here counts against you.
         </p>
@@ -45,25 +45,25 @@ export function DisagreementEscalation() {
           borderRadius: 'var(--r-lg)',
           border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
-          padding: '20px',
+          padding: 'var(--space-9)',
         }}>
           <div className="flex items-center gap-2 mb-4">
-            <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Lines · Tamil</span>
-            <span style={{ fontSize: 10.5, fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>· Clip #4821</span>
+            <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>Lines · Tamil</span>
+            <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.08em', textTransform: 'uppercase', color: 'var(--text-muted)' }}>· Clip #4821</span>
           </div>
-          <p className="font-script" style={{ fontSize: 22, fontWeight: 500, color: 'var(--text-primary)', lineHeight: 'var(--lh-taml)' }}>
+          <p className="font-script" style={{ fontSize: 'var(--fs-title)', fontWeight: 500, color: 'var(--text-primary)', lineHeight: 'var(--lh-taml)' }}>
             காலை உணவு சாப்பிட்டீர்களா?
           </p>
 
           {/* Two conflicting grades, anonymised, no winner implied */}
           <div className="flex gap-3 mt-5">
-            <div style={{ flex: 1, background: 'var(--t-verdigris-50)', borderRadius: 'var(--r-md)', padding: '12px 14px' }}>
-              <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 4 }}>Reviewer A</p>
-              <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--t-verdigris-700)' }}>Approved</p>
+            <div style={{ flex: 1, background: 'var(--state-settled-container)', borderRadius: 'var(--r-md)', padding: '12px 14px' }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', marginBottom: 'var(--space-2)'}}>Reviewer A</p>
+              <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--state-settled-deep)' }}>Approved</p>
             </div>
-            <div style={{ flex: 1, background: 'var(--t-crimson-50)', borderRadius: 'var(--r-md)', padding: '12px 14px' }}>
-              <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 4 }}>Reviewer B</p>
-              <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--t-crimson-700)' }}>Rejected · background noise</p>
+            <div style={{ flex: 1, background: 'var(--state-failed-container)', borderRadius: 'var(--r-md)', padding: '12px 14px' }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', marginBottom: 'var(--space-2)'}}>Reviewer B</p>
+              <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--state-failed-text)' }}>Rejected · background noise</p>
             </div>
           </div>
         </div>
@@ -73,12 +73,12 @@ export function DisagreementEscalation() {
       <div className="px-6 mb-4">
         <div style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-1)', padding: '18px 20px' }}>
           <div className="flex items-center gap-3">
-            <div style={{ width: 40, height: 40, borderRadius: 'var(--r-full)', background: 'var(--t-ochre-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
+            <div style={{ width: 40, height: 40, borderRadius: 'var(--r-full)', background: 'var(--state-pending-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0 }}>
               <Users className="w-5 h-5" style={{ color: 'var(--state-pending)' }} strokeWidth={1.9} />
             </div>
             <div className="flex-1">
-              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>Escalated to a third reviewer</p>
-              <p className="flex items-center gap-1.5" style={{ fontSize: 12, fontWeight: 500, color: 'var(--money-pending)', marginTop: 2 }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>Escalated to a third reviewer</p>
+              <p className="flex items-center gap-1.5" style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--money-pending)', marginTop: 'var(--space-1)'}}>
                 <Clock className="w-3.5 h-3.5" />Usually resolves within 24 hours
               </p>
             </div>
@@ -89,12 +89,12 @@ export function DisagreementEscalation() {
       {/* What the contributor sees — honesty mirror */}
       <div className="px-6 mb-6">
         <div style={{ background: 'var(--surface-sunken)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)', padding: '16px 18px' }}>
-          <p className="flex items-center gap-2" style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 8 }}>
+          <p className="flex items-center gap-2" style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-secondary)', marginBottom: 'var(--space-4)'}}>
             <Info className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />What the contributor sees
           </p>
-          <div style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-sm)', border: '1px solid var(--border-subtle)', padding: '12px 14px' }}>
-            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--money-pending)' }}>Under extended review</p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2, lineHeight: 1.5 }}>
+          <div style={{ background: 'var(--surface-raised)', borderRadius: 'var(--r-xs)', border: '1px solid var(--border-subtle)', padding: '12px 14px' }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--money-pending)' }}>Under extended review</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-1)', lineHeight: 1.5 }}>
               Reviewers disagreed, so we’re taking a closer look. Your ₹ is held, not lost — it
               settles the moment this resolves.
             </p>
@@ -108,9 +108,9 @@ export function DisagreementEscalation() {
           onClick={() => navigate('/validator/tasks')}
           style={{
             width: '100%', height: 52, borderRadius: 'var(--r-full)',
-            background: 'var(--t-verdigris-700)', color: 'var(--text-on-accent)',
-            border: 'none', cursor: 'pointer', fontSize: 15, fontWeight: 700,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+            background: 'var(--state-settled-deep)', color: 'var(--text-on-accent)',
+            border: 'none', cursor: 'pointer', fontSize: 'var(--fs-body)', fontWeight: 700,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
           }}
         >
           Back to grading <ArrowRight className="w-4 h-4" />

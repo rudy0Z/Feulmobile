@@ -18,7 +18,7 @@ export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: Segme
 
   return (
     <div className="w-full">
-      <div className="flex rounded-2xl overflow-hidden mb-3" style={{ gap: 3 }}>
+      <div className="flex rounded-2xl overflow-hidden mb-3" style={{ gap: 'var(--space-1)'}}>
         {gradeOptions.map((opt) => {
           const isSelected = selectedGrade === opt.id;
           const fillColor = getSegmentColor(opt.id, selectedGrade);
@@ -61,7 +61,7 @@ export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: Segme
             key={opt.id}
             style={{
               flex: 1, textAlign: 'center',
-              fontSize: 9,
+              fontSize: 'var(--fs-caption)',
               fontWeight: selectedGrade === opt.id ? 700 : 500,
               color: selectedGrade === opt.id ? 'var(--text-primary)' : 'var(--text-muted)',
               transition: 'color 0.15s', lineHeight: 1.3,
@@ -80,7 +80,7 @@ export function SegmentedControl({ selectedGrade, onGrade, gradeOptions }: Segme
           style={{ background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)' }}
         >
           <div style={{ width: 8, height: 8, borderRadius: '50%', background: selectedGradeObj.color, flexShrink: 0 }} />
-          <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <span style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)' }}>
             {selectedGradeObj.id} — {selectedGradeObj.label}
           </span>
         </motion.div>

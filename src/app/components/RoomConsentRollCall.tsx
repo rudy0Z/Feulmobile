@@ -12,6 +12,8 @@ import {
   AlertTriangle,
   Check,
 } from 'lucide-react';
+import { IconButton } from './ui/Primitives';
+import { durations } from '../lib/motion';
 
 // C-01 + C-10 (P0) — On-tape consent roll-call for a multi-person ROOM take.
 // Under India's DPDP Act every person in the room is a data principal and must
@@ -30,9 +32,9 @@ type Participant = {
 };
 
 const STATUS_META: Record<ConsentStatus, { label: string; tint: string; ink: string }> = {
-  consented: { label: 'On tape', tint: 'var(--t-verdigris-50)', ink: 'var(--state-settled)' },
-  pending: { label: 'Waiting', tint: 'var(--t-ochre-50)', ink: 'var(--state-pending)' },
-  blocked: { label: 'Blocked', tint: 'var(--t-crimson-50)', ink: 'var(--state-failed)' },
+  consented: { label: 'On tape', tint: 'var(--state-settled-container)', ink: 'var(--state-settled)' },
+  pending: { label: 'Waiting', tint: 'var(--state-pending-container)', ink: 'var(--state-pending)' },
+  blocked: { label: 'Blocked', tint: 'var(--state-failed-container)', ink: 'var(--state-failed)' },
 };
 
 export function RoomConsentRollCall() {
@@ -75,70 +77,56 @@ export function RoomConsentRollCall() {
   return (
     <div
       className="min-h-screen pb-40"
-      style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}
+     style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}
     >
       {/* Header */}
       <div className="px-6 pt-14">
-        <button
-          onClick={() => navigate(-1)}
-          aria-label="Go back"
-          style={{
-            width: 40,
-            height: 40,
-            borderRadius: 'var(--r-full)',
-            background: 'var(--surface-raised)',
-            border: '1px solid var(--border-subtle)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            cursor: 'pointer',
-          }}
-        >
-          <ChevronLeft className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
-        </button>
+        <IconButton label="Go back" onClick={() => navigate(-1)} variant="surface">
+        <ChevronLeft style={{ color: 'var(--text-primary)' }} />
+      </IconButton>
       </div>
 
       {/* Hero */}
       <motion.div
         initial={{ opacity: 0, y: 8 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
+        transition={{ duration: durations.slow }}
         className="px-6 mt-5"
       >
         <div
-          style={{
+         style={{
             borderRadius: 'var(--r-lg)',
             background: 'var(--surface-studio)',
-            padding: '24px 22px',
+            padding: 'var(--space-10) var(--space-9)',
             boxShadow: 'var(--e-2)',
           }}
         >
           <div
-            style={{
+           style={{
               width: 48,
               height: 48,
               borderRadius: 'var(--r-md)',
-              background: 'var(--t-verdigris-50)',
+              background: 'var(--state-settled-container)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              marginBottom: 16,
+              marginBottom: 'var(--space-8)',
             }}
           >
-            <ShieldCheck className="w-6 h-6" style={{ color: 'var(--t-verdigris-700)' }} strokeWidth={1.9} />
+            <ShieldCheck className="w-6 h-6" style={{ color: 'var(--state-settled-deep)' }} strokeWidth={1.9} />
           </div>
           <h1
-            style={{
-              fontSize: 24,
+           style={{
+              fontSize: 'var(--fs-title)',
               fontWeight: 800,
               color: 'var(--text-on-studio)',
               letterSpacing: '-0.01em',
-              marginBottom: 8,
+              marginBottom: 'var(--space-4)',
             }}
           >
             Who&rsquo;s in the room?
           </h1>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-on-studio)', opacity: 0.75, lineHeight: 1.55 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-on-studio)', opacity: 0.75, lineHeight: 1.55 }}>
             Everyone here is part of the recording, so everyone gets a say. Each person consents on
             tape before we start — that&rsquo;s the contract.
           </p>
@@ -147,7 +135,7 @@ export function RoomConsentRollCall() {
 
       {/* Roll-call list */}
       <div className="px-6 mt-6">
-        <p style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 10 }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.04em', textTransform: 'uppercase', marginBottom: 'var(--space-5)'}}>
           {active.length} in the room
         </p>
         <div className="flex flex-col gap-3">
@@ -156,18 +144,18 @@ export function RoomConsentRollCall() {
             return (
               <div
                 key={p.id}
-                style={{
+               style={{
                   background: 'var(--surface-raised)',
                   borderRadius: 'var(--r-md)',
                   border: '1px solid var(--border-subtle)',
                   boxShadow: 'var(--e-1)',
-                  padding: '14px 16px',
+                  padding: 'var(--space-7) var(--space-8)',
                   opacity: p.excluded ? 0.55 : 1,
                 }}
                 className="flex items-center gap-3"
               >
                 <div
-                  style={{
+                 style={{
                     width: 40,
                     height: 40,
                     borderRadius: 'var(--r-full)',
@@ -188,52 +176,24 @@ export function RoomConsentRollCall() {
                 </div>
 
                 <div className="flex-1 min-w-0">
-                  <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>{p.name}</p>
-                  <span style={{ fontSize: 12, fontWeight: 600, color: meta.ink }}>
+                  <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)' }}>{p.name}</p>
+                  <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: meta.ink }}>
                     {p.excluded ? 'Removed — nothing kept' : meta.label}
                   </span>
                 </div>
 
                 {p.status === 'pending' && !p.excluded ? (
                   <div className="flex items-center gap-2">
-                    <button
-                      onClick={() => giveConsent(p.id)}
-                      aria-label={`${p.name} consents on tape`}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 'var(--r-full)',
-                        background: 'var(--t-terracotta-50)',
-                        border: 'none',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <Mic className="w-4 h-4" style={{ color: 'var(--action-primary)' }} strokeWidth={2} />
-                    </button>
-                    <button
-                      onClick={() => giveConsent(p.id)}
-                      aria-label={`${p.name} consents by QR`}
-                      style={{
-                        width: 40,
-                        height: 40,
-                        borderRadius: 'var(--r-full)',
-                        background: 'var(--surface-sunken)',
-                        border: '1px solid var(--border-subtle)',
-                        cursor: 'pointer',
-                        display: 'flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                      }}
-                    >
-                      <QrCode className="w-4 h-4" style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
-                    </button>
+                    <IconButton label={`${p.name} consents on tape`} onClick={() => giveConsent(p.id)} variant="accent-soft">
+        <Mic style={{ color: 'var(--action-primary)' }} strokeWidth={2} />
+      </IconButton>
+                    <IconButton label={`${p.name} consents by QR`} onClick={() => giveConsent(p.id)} variant="surface">
+        <QrCode style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
+      </IconButton>
                   </div>
                 ) : p.status === 'consented' ? (
                   <div
-                    style={{
+                   style={{
                       width: 28,
                       height: 28,
                       borderRadius: 'var(--r-full)',
@@ -255,29 +215,29 @@ export function RoomConsentRollCall() {
       {/* Minor gate question */}
       <div className="px-6 mt-6">
         <div
-          style={{
+         style={{
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-md)',
             border: '1px solid var(--border-subtle)',
             boxShadow: 'var(--e-1)',
-            padding: '16px',
+            padding: 'var(--space-8)',
           }}
         >
           <div className="flex items-center justify-between gap-4">
             <div className="flex-1">
-              <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>
                 Is anyone under 18 present?
               </p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-1)'}}>
                 We have to ask — the law protects them a little differently.
               </p>
             </div>
             <div
               className="flex"
-              style={{
+             style={{
                 borderRadius: 'var(--r-full)',
                 background: 'var(--surface-sunken)',
-                padding: 3,
+                padding: 'var(--space-1)',
                 border: '1px solid var(--border-subtle)',
               }}
             >
@@ -290,13 +250,13 @@ export function RoomConsentRollCall() {
                       setMinorPresent(opt === 'Yes');
                       setMinorResolved(false);
                     }}
-                    style={{
+                   style={{
                       minWidth: 52,
                       height: 34,
                       borderRadius: 'var(--r-full)',
                       border: 'none',
                       cursor: 'pointer',
-                      fontSize: 13,
+                      fontSize: 'var(--fs-secondary)',
                       fontWeight: 700,
                       background: on ? 'var(--action-primary)' : 'transparent',
                       color: on ? 'var(--text-on-accent)' : 'var(--text-secondary)',
@@ -316,20 +276,20 @@ export function RoomConsentRollCall() {
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.3 }}
+          transition={{ duration: durations.slow }}
           className="px-6 mt-4"
         >
           <div
-            style={{
-              background: 'var(--t-crimson-50)',
+           style={{
+              background: 'var(--state-failed-container)',
               borderRadius: 'var(--r-md)',
               border: '1px solid var(--border-subtle)',
-              padding: '18px',
+              padding: 'var(--space-8)',
             }}
           >
             <div className="flex items-center gap-3 mb-3">
               <div
-                style={{
+               style={{
                   width: 40,
                   height: 40,
                   borderRadius: 'var(--r-full)',
@@ -342,18 +302,18 @@ export function RoomConsentRollCall() {
               >
                 <AlertTriangle className="w-5 h-5" style={{ color: 'var(--state-failed)' }} strokeWidth={1.9} />
               </div>
-              <p style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-primary)' }}>
+              <p style={{ fontSize: 'var(--fs-body)', fontWeight: 800, color: 'var(--text-primary)' }}>
                 A guardian needs to say yes first
               </p>
             </div>
-            <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 14 }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 'var(--space-7)'}}>
               We can&rsquo;t record someone under 18 without their guardian&rsquo;s consent on tape. Nothing
               is kept for a speaker we exclude — their voice never touches our servers.
             </p>
             <div className="flex flex-col gap-2">
               <button
                 onClick={() => setMinorResolved(true)}
-                style={{
+               style={{
                   width: '100%',
                   height: 48,
                   borderRadius: 'var(--r-full)',
@@ -361,19 +321,19 @@ export function RoomConsentRollCall() {
                   color: 'var(--text-on-accent)',
                   border: 'none',
                   cursor: 'pointer',
-                  fontSize: 14,
+                  fontSize: 'var(--fs-secondary)',
                   fontWeight: 700,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 8,
+                  gap: 'var(--space-4)',
                 }}
               >
                 <Mic className="w-4 h-4" /> Capture guardian consent on tape
               </button>
               <button
                 onClick={() => removeSpeaker('guest')}
-                style={{
+               style={{
                   width: '100%',
                   height: 48,
                   borderRadius: 'var(--r-full)',
@@ -381,12 +341,12 @@ export function RoomConsentRollCall() {
                   color: 'var(--text-primary)',
                   border: '1px solid var(--border-strong)',
                   cursor: 'pointer',
-                  fontSize: 14,
+                  fontSize: 'var(--fs-secondary)',
                   fontWeight: 700,
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  gap: 8,
+                  gap: 'var(--space-4)',
                 }}
               >
                 <UserX className="w-4 h-4" /> Remove this speaker &amp; continue
@@ -399,29 +359,29 @@ export function RoomConsentRollCall() {
       {/* Sticky footer CTA */}
       <div
         className="fixed bottom-0 left-0 right-0 px-6 pt-4 pb-8"
-        style={{ background: 'var(--surface-ground)', borderTop: '1px solid var(--divider)' }}
+       style={{ background: 'var(--surface-ground)', borderTop: '1px solid var(--divider)' }}
       >
         {!ready && blockingLine && (
           <div className="flex items-center gap-2 mb-3">
             <AlertTriangle className="w-4 h-4" style={{ color: 'var(--state-pending)' }} strokeWidth={2} />
-            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>{blockingLine}</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)' }}>{blockingLine}</p>
           </div>
         )}
         <button
           disabled={!ready}
           onClick={() => ready && navigate('/recording/q-room-1')}
-          style={{
+         style={{
             width: '100%',
             height: 56,
             borderRadius: 'var(--r-full)',
             border: 'none',
             cursor: ready ? 'pointer' : 'not-allowed',
-            fontSize: 15,
+            fontSize: 'var(--fs-body)',
             fontWeight: 800,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            gap: 8,
+            gap: 'var(--space-4)',
             background: ready ? 'var(--action-primary)' : 'var(--surface-sunken)',
             color: ready ? 'var(--text-on-accent)' : 'var(--text-faint)',
             boxShadow: ready ? 'var(--e-glow)' : 'none',

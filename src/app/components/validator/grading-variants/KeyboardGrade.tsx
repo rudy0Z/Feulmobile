@@ -24,14 +24,14 @@ export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: Props) {
               whileTap={{ scale: 0.94, y: 2 }}
               style={{
                 flex: 1, maxWidth: 60, cursor: 'pointer', border: 'none', background: 'transparent',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-3)',
               }}
             >
               <span
                 style={{
-                  width: '100%', height: 52, borderRadius: 'var(--r-sm)',
+                  width: '100%', height: 52, borderRadius: 'var(--r-xs)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: 'var(--font-number)', fontSize: 20, fontWeight: 800,
+                  fontFamily: 'var(--font-number)', fontSize: 'var(--fs-section)', fontWeight: 800,
                   background: isSelected ? opt.color : 'var(--surface-raised)',
                   color: isSelected ? 'var(--text-on-studio)' : 'var(--text-secondary)',
                   border: isSelected ? `1.5px solid ${opt.color}` : '1px solid var(--border-subtle)',
@@ -41,7 +41,7 @@ export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: Props) {
               >
                 {opt.id}
               </span>
-              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: isSelected ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+              <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: isSelected ? 'var(--text-primary)' : 'var(--text-muted)' }}>
                 {opt.label}
               </span>
             </motion.button>
@@ -53,7 +53,7 @@ export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: Props) {
         {selected && (
           <motion.span
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}
+            style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}
           >
             {selected.id} — {selected.description}
           </motion.span>

@@ -5,9 +5,17 @@
       
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Feul Mobile</title>
-      <meta name="description" content="Record short audio clips to train AI while earning points through gamified quests and rewards, designed for users seeking engaging and rewarding experiences." />
+      <!-- Title is deliberately NAME-FREE. The product has no name by design
+           (00-MAKE-CONTEXT: the brand slot stays empty, Feul/Grain never render).
+           This previously read "Feul Mobile" — a banned brand string in the most
+           visible place in the browser. Do not resolve the naming question here;
+           replace this with the real name only when that decision lands. -->
+      <title>Voice recording jobs — prototype</title>
+      <meta name="description" content="A gig-job marketplace where contributors record short voice clips for AI labs, and get paid in rupees for the coverage their voice provides." />
       <meta name="robots" content="noindex, nofollow" />
+      <!-- Suppress the automatic /favicon.ico request (there is no favicon, and
+           the 404 was the only console error across all 34 routes). -->
+      <link rel="icon" href="data:," />
       <style>html, body { height: 100%; margin: 0; } #root { height: 100%; }</style>
       
     </head>

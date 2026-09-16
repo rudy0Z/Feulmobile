@@ -1,5 +1,7 @@
 ﻿import { ReactNode, useEffect, useState } from 'react';
+import { Bug } from 'lucide-react';
 import { useDevContext } from '../lib/DevContext';
+import { screenWidth, screenHeight } from '../lib/chrome';
 
 /* ─── Dev Button ─────────────────────────────────────── */
 function DevButton() {
@@ -15,13 +17,13 @@ function DevButton() {
         zIndex: 9999,
         display: 'flex',
         alignItems: 'center',
-        gap: 6,
-        padding: '7px 12px',
+        gap: 'var(--space-3)',
+        padding: 'var(--space-3) var(--space-6)',
         borderRadius: 999,
-        background: 'rgba(255,255,255,0.06)',
-        border: '1px solid rgba(255,255,255,0.1)',
-        color: 'rgba(255,255,255,0.45)',
-        fontSize: 11,
+        background: 'rgba(var(--bone-0-rgb),0.06)',
+        border: '1px solid rgba(var(--bone-0-rgb),0.1)',
+        color: 'rgba(var(--bone-0-rgb),0.45)',
+        fontSize: 'var(--fs-caption)',
         fontWeight: 700,
         fontFamily: 'monospace',
         letterSpacing: '0.06em',
@@ -30,17 +32,18 @@ function DevButton() {
         transition: 'background 0.15s, color 0.15s',
       }}
       onMouseEnter={e => {
-        (e.currentTarget as HTMLButtonElement).style.background = 'rgba(224, 108, 58,0.18)';
-        (e.currentTarget as HTMLButtonElement).style.color = 'rgba(224, 108, 58,0.9)';
-        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(224, 108, 58,0.3)';
+        (e.currentTarget as HTMLButtonElement).style.background = 'rgba(var(--terracotta-500-rgb),0.18)';
+        (e.currentTarget as HTMLButtonElement).style.color = 'rgba(var(--terracotta-500-rgb),0.9)';
+        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(var(--terracotta-500-rgb),0.3)';
       }}
       onMouseLeave={e => {
-        (e.currentTarget as HTMLButtonElement).style.background = 'rgba(255,255,255,0.06)';
-        (e.currentTarget as HTMLButtonElement).style.color = 'rgba(255,255,255,0.45)';
-        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(255,255,255,0.1)';
+        (e.currentTarget as HTMLButtonElement).style.background = 'rgba(var(--bone-0-rgb),0.06)';
+        (e.currentTarget as HTMLButtonElement).style.color = 'rgba(var(--bone-0-rgb),0.45)';
+        (e.currentTarget as HTMLButtonElement).style.borderColor = 'rgba(var(--bone-0-rgb),0.1)';
       }}
     >
-      ⬡ DEV
+      <Bug size={11} strokeWidth={2} aria-hidden />
+      DEV
     </button>
   );
 }
@@ -61,7 +64,7 @@ function IOSStatusBar() {
     return () => clearInterval(id);
   }, []);
 
-  const c = '#1C2434';
+  const c = 'var(--text-device-chrome)';
 
   return (
     <div
@@ -75,16 +78,16 @@ function IOSStatusBar() {
         display: 'flex',
         alignItems: 'flex-end',
         justifyContent: 'space-between',
-        paddingLeft: 26,
-        paddingRight: 20,
-        paddingBottom: 11,
+        paddingLeft: 'var(--space-10)',
+        paddingRight: 'var(--space-9)',
+        paddingBottom: 'var(--space-5)',
         pointerEvents: 'none',
       }}
     >
       {/* Time */}
       <span
         style={{
-          fontSize: 15,
+          fontSize: 'var(--fs-body)',
           fontWeight: 700,
           color: c,
           fontFamily: '-apple-system, BlinkMacSystemFont, sans-serif',
@@ -95,7 +98,7 @@ function IOSStatusBar() {
       </span>
 
       {/* Right icons */}
-      <div style={{ display: 'flex', alignItems: 'center', gap: 5 }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-2)'}}>
         {/* Signal bars */}
         <svg width="17" height="13" viewBox="0 0 17 13" fill="none">
           <rect x="0"    y="7"   width="3" height="6"  rx="1" fill={c} />
@@ -125,7 +128,7 @@ function IOSStatusBar() {
               height: 13,
               borderRadius: 4,
               border: `1.5px solid ${c}`,
-              padding: '2px 2px',
+              padding: 'var(--space-1) var(--space-1)',
               display: 'flex',
               alignItems: 'center',
             }}
@@ -146,7 +149,7 @@ function IOSStatusBar() {
               borderRadius: '0 2px 2px 0',
               background: c,
               opacity: 0.5,
-              marginLeft: 1,
+              marginLeft: 'var(--space-0)',
             }}
           />
         </div>
@@ -167,7 +170,7 @@ function HomeIndicator() {
         width: 134,
         height: 5,
         borderRadius: 3,
-        background: 'rgba(28,36,52,0.22)',
+        background: 'rgba(var(--carbon-rgb),0.22)',
         zIndex: 9999,
         pointerEvents: 'none',
       }}
@@ -180,6 +183,12 @@ const DEV = import.meta.env.DEV;
 
 export function PhoneFrame({ children }: { children: ReactNode }) {
   const [isDesktop, setIsDesktop] = useState(() => window.innerWidth >= 520);
+
+  /* ?w=320|360|390|430 — 360 is the design default (a ₹9k Android at 360px).
+     The shell resizes so the 320 no-overflow gate is a one-click check. */
+  const [width] = useState(screenWidth);
+  const height = screenHeight(width);
+  const bezel = 11;
 
   useEffect(() => {
     const handleResize = () => setIsDesktop(window.innerWidth >= 520);
@@ -200,7 +209,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
             left: 0,
             right: 0,
             height: 54,
-            background: 'rgba(248,249,250,0.72)',
+            background: 'rgba(var(--bone-50-rgb),0.72)',
             backdropFilter: 'blur(14px) saturate(140%)',
             WebkitBackdropFilter: 'blur(14px) saturate(140%)',
             zIndex: 9998,
@@ -224,7 +233,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center',
-        padding: '40px 20px',
+        padding: 'var(--space-13) var(--space-9)',
         boxSizing: 'border-box',
         position: 'relative',
         overflow: 'hidden',
@@ -242,24 +251,24 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
         {/* Phone body — minimal bezel, no orange glow, no oversized drop */}
         <div
           style={{
-            width: 412,
-            height: 868,
+            width: width + bezel * 2,
+            height: height + bezel * 2,
             borderRadius: 58,
-            background: '#1a1a1a',
-            boxShadow: '0 0 0 0.5px rgba(255,255,255,0.06)',
-            padding: 11,
+            background: 'var(--surface-device)',
+            boxShadow: '0 0 0 0.5px rgba(var(--bone-0-rgb),0.06)',
+            padding: bezel,
             position: 'relative',
           }}
         >
           {/* Screen */}
           <div
             style={{
-              width: 390,
-              height: 844,
+              width,
+              height,
               borderRadius: 48,
               overflow: 'hidden',
               position: 'relative',
-              background: '#F8F9FA',
+              background: 'var(--surface-ground)',
               /*
                * CRITICAL: transform creates a new containing block for
                * position:fixed children, keeping all fixed navs/overlays
@@ -278,7 +287,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
                 width: 126,
                 height: 37,
                 borderRadius: 20,
-                background: '#000000',
+                background: 'var(--surface-device-notch)',
                 zIndex: 10000,
               }}
             />
@@ -297,7 +306,7 @@ export function PhoneFrame({ children }: { children: ReactNode }) {
                 left: 0,
                 right: 0,
                 height: 54,
-                background: 'rgba(248,249,250,0.72)',
+                background: 'rgba(var(--bone-50-rgb),0.72)',
                 backdropFilter: 'blur(14px) saturate(140%)',
                 WebkitBackdropFilter: 'blur(14px) saturate(140%)',
                 zIndex: 9998,

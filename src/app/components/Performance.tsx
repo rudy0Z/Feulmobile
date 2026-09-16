@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { motion } from 'motion/react';
 import { TrendingUp, Mic2, Activity, Languages, CheckCircle2, ChevronLeft } from 'lucide-react';
 import { tierName } from '../lib/tier';
+import { durations } from '../lib/motion';
 
 const metrics = [
   {
@@ -24,7 +25,7 @@ const metrics = [
     deltaPositive: true,
     description: 'Signal clarity, noise floor, mic technique',
     icon: Mic2,
-    tint: 'var(--t-terracotta-50)',
+    tint: 'var(--action-primary-soft)',
     iconColor: 'var(--action-primary)',
   },
   {
@@ -75,14 +76,14 @@ export function Performance() {
       <div className="px-6 pt-14 pb-2">
         <button
           onClick={() => navigate(-1)}
-          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 }}
+          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: 'var(--space-2) 0', marginBottom: 'var(--space-3)'}}
         >
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontSize: 22, fontWeight: 700, color: 'var(--text-primary)' }}>
+        <h1 style={{ fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)' }}>
           Performance
         </h1>
-        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>How you compare to last month</p>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>How you compare to last month</p>
       </div>
 
       {/* Hero — trust tier + total accepted */}
@@ -90,22 +91,22 @@ export function Performance() {
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4 }}
+          transition={{ duration: durations.enter }}
           style={{
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-lg)',
             border: '1px solid var(--border-subtle)',
-            padding: '22px 22px',
+            padding: 'var(--space-9) var(--space-9)',
             boxShadow: 'var(--e-2)',
           }}
         >
-          <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 10 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 'var(--space-5)'}}>
             Total Accepted Contributions
           </p>
-          <p style={{ fontFamily: 'var(--font-number)', fontSize: 44, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, marginBottom: 6, letterSpacing: '-0.02em' }}>
+          <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-figure)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, marginBottom: 'var(--space-3)', letterSpacing: '-0.02em' }}>
             207
           </p>
-          <p style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-secondary)' }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)' }}>
             clips contributed to live datasets as a{' '}
             <span style={{ color: 'var(--action-primary)', fontWeight: 700 }}>{tierName(3)}</span>
           </p>
@@ -121,28 +122,28 @@ export function Performance() {
               key={m.id}
               initial={{ opacity: 0, y: 8 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.35, delay: 0.08 + idx * 0.06 }}
+              transition={{ duration: durations.slow, delay: 0.08 + idx * 0.06 }}
               style={{ ...cardBase, padding: '18px' }}
             >
               <div className="flex items-center gap-3 mb-2">
                 <div style={{
-                  width: 38, height: 38, borderRadius: 12,
+                  width: 38, height: 38, borderRadius: 'var(--r-sm)',
                   background: m.tint,
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
                   <Icon className="w-4.5 h-4.5" style={{ color: m.iconColor }} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>{m.label}</p>
-                  <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.45 }}>{m.description}</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>{m.label}</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.45 }}>{m.description}</p>
                 </div>
               </div>
               <div className="flex items-baseline justify-between">
-                <p style={{ fontFamily: 'var(--font-number)', fontSize: 26, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
+                <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.01em' }}>
                   {m.value}
                 </p>
                 <span className="flex items-center gap-1" style={{
-                  fontSize: 11, fontWeight: 700,
+                  fontSize: 'var(--fs-caption)', fontWeight: 700,
                   color: m.deltaPositive ? 'var(--state-settled)' : 'var(--state-failed)',
                 }}>
                   <TrendingUp className="w-3 h-3" />
@@ -158,7 +159,7 @@ export function Performance() {
       <div className="px-6">
         <div className="flex items-center gap-2 mb-3">
           <Languages className="w-5 h-5" style={{ color: 'var(--text-primary)' }} />
-          <h2 style={{ fontSize: 17, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <h2 style={{ fontSize: 'var(--fs-subhead)', fontWeight: 700, color: 'var(--text-primary)' }}>
             Language Expertise
           </h2>
         </div>
@@ -174,13 +175,13 @@ export function Performance() {
             >
               <div className="flex items-center justify-between mb-2">
                 <div>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>{lang.language}</p>
-                  <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>{lang.accepted} accepted clips</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>{lang.language}</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>{lang.accepted} accepted clips</p>
                 </div>
                 <span style={{
-                  fontSize: 11, fontWeight: 700,
-                  padding: '4px 12px', borderRadius: 'var(--r-full)',
-                  background: lang.bar > 0.5 ? 'var(--t-terracotta-50)' : 'var(--surface-sunken)',
+                  fontSize: 'var(--fs-caption)', fontWeight: 700,
+                  padding: 'var(--space-2) var(--space-6)', borderRadius: 'var(--r-full)',
+                  background: lang.bar > 0.5 ? 'var(--action-primary-soft)' : 'var(--surface-sunken)',
                   color:      lang.bar > 0.8 ? 'var(--state-settled)' : lang.bar > 0.5 ? 'var(--action-primary)' : 'var(--text-secondary)',
                 }}>
                   {lang.level}
@@ -200,7 +201,7 @@ export function Performance() {
             </div>
           ))}
         </div>
-        <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 14, lineHeight: 1.5 }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 'var(--space-7)', lineHeight: 1.5 }}>
           Expertise grows with every accepted clip in a given language.
         </p>
       </div>

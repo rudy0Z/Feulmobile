@@ -26,7 +26,7 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
           position: 'fixed',
           inset: 0,
           zIndex: 50,
-          background: 'rgba(0,0,0,0.5)',
+          background: 'rgba(var(--scrim-rgb),0.5)',
         }}
         onClick={onClose}
       />
@@ -45,8 +45,8 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
           right: 0,
           zIndex: 51,
           background: 'var(--surface-ground)',
-          borderRadius: '24px 24px 0 0',
-          padding: '28px 24px 40px',
+          borderRadius: 'var(--r-lg) var(--r-lg) 0 0',
+          padding: 'var(--space-11) var(--space-10) var(--space-13)',
           maxHeight: '85vh',
           overflowY: 'auto',
         }}
@@ -57,26 +57,26 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
           style={{
             width: 36,
             height: 4,
-            borderRadius: 999,
-            background: 'var(--t-bone-100)',
+            borderRadius: 'var(--r-full)',
+            background: 'var(--surface-sunken)',
             margin: '0 auto 20px',
           }}
         />
 
         {/* Header */}
-        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 10, marginBottom: 8 }}>
+        <div style={{ display: 'flex', alignItems: 'flex-start', gap: 'var(--space-5)', marginBottom: 'var(--space-4)'}}>
           <AlertTriangle
             size={20}
-            style={{ color: 'var(--state-failed)', flexShrink: 0, marginTop: 2 }}
+            style={{ color: 'var(--state-failed)', flexShrink: 0, marginTop: 'var(--space-1)'}}
           />
           <div>
             <h2
               style={{
                 fontFamily: 'var(--font-ui)',
-                fontSize: 20,
+                fontSize: 'var(--fs-section)',
                 fontWeight: 800,
                 color: 'var(--text-primary)',
-                margin: 0,
+                margin: '0',
               }}
             >
               Revoke Data Consent
@@ -85,9 +85,9 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
         </div>
         <p
           style={{
-            fontSize: 13,
+            fontSize: 'var(--fs-secondary)',
             color: 'var(--text-muted)',
-            margin: '0 0 20px',
+            margin: '0 0 var(--space-9)',
           }}
         >
           This action is permanent and cannot be undone.
@@ -96,25 +96,25 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
         {/* Red caution card */}
         <div
           style={{
-            background: 'var(--t-crimson-50)',
+            background: 'var(--state-failed-container)',
             border: '1px solid rgba(var(--crimson-rgb),0.2)',
-            borderRadius: 16,
-            padding: 16,
-            marginBottom: 16,
+            borderRadius: 'var(--r-md)',
+            padding: 'var(--space-8)',
+            marginBottom: 'var(--space-8)',
           }}
         >
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 8,
-              marginBottom: 8,
+              gap: 'var(--space-4)',
+              marginBottom: 'var(--space-4)',
             }}
           >
             <Shield size={14} style={{ color: 'var(--state-failed)' }} />
             <span
               style={{
-                fontSize: 12,
+                fontSize: 'var(--fs-caption)',
                 fontWeight: 700,
                 color: 'var(--state-failed)',
               }}
@@ -124,10 +124,10 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
           </div>
           <p
             style={{
-              fontSize: 13,
+              fontSize: 'var(--fs-secondary)',
               lineHeight: 1.6,
               color: 'var(--state-failed)',
-              margin: 0,
+              margin: '0',
             }}
           >
             Revoking consent will permanently delete 42 clips from active AI training runs. This
@@ -139,40 +139,40 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
         <div
           style={{
             background: 'var(--surface-raised)',
-            borderRadius: 12,
-            padding: '12px 16px',
+            borderRadius: 'var(--r-sm)',
+            padding: 'var(--space-6) var(--space-8)',
             border: '1px solid var(--border-subtle)',
-            marginBottom: 20,
+            marginBottom: 'var(--space-9)',
           }}
         >
-          <div style={{ fontSize: 12, color: 'var(--text-muted)' }}>Clips still in review</div>
+          <div style={{ fontSize: 'var(--fs-caption)', color: 'var(--text-muted)' }}>Clips still in review</div>
           <div
             style={{
               fontFamily: 'var(--font-number)',
-              fontSize: 22,
+              fontSize: 'var(--fs-title)',
               fontWeight: 700,
               color: 'var(--state-failed)',
-              marginTop: 2,
+              marginTop: 'var(--space-1)',
             }}
           >
             -₹60.00
           </div>
-          <div style={{ fontSize: 11, color: 'var(--text-muted)', marginTop: 4 }}>
+          <div style={{ fontSize: 'var(--fs-caption)', color: 'var(--text-muted)', marginTop: 'var(--space-2)'}}>
             These clips can't be reviewed once you withdraw consent. Your ₹127.50 of settled earnings stays yours.
           </div>
         </div>
 
         {/* Confirmation input */}
-        <div style={{ marginBottom: 24 }}>
+        <div style={{ marginBottom: 'var(--space-10)'}}>
           <label
             style={{
               display: 'block',
-              fontSize: 11,
+              fontSize: 'var(--fs-caption)',
               fontWeight: 700,
               color: 'var(--text-muted)',
               textTransform: 'uppercase',
               letterSpacing: '0.07em',
-              marginBottom: 8,
+              marginBottom: 'var(--space-4)',
             }}
           >
             Type DELETE to confirm
@@ -184,11 +184,11 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
             placeholder="DELETE"
             style={{
               width: '100%',
-              padding: '12px 16px',
-              borderRadius: 12,
+              padding: 'var(--space-6) var(--space-8)',
+              borderRadius: 'var(--r-sm)',
               border: `2px solid ${isConfirmed ? 'var(--state-failed)' : 'var(--border-subtle)'}`,
               fontFamily: 'var(--font-number)',
-              fontSize: 16,
+              fontSize: 'var(--fs-body)',
               fontWeight: 700,
               background: 'var(--surface-raised)',
               color: 'var(--text-primary)',
@@ -205,11 +205,11 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
           style={{
             width: '100%',
             height: 52,
-            borderRadius: 999,
-            background: isConfirmed ? 'var(--state-failed)' : 'var(--t-bone-100)',
-            color: isConfirmed ? 'var(--t-bone-0)' : 'var(--text-muted)',
+            borderRadius: 'var(--r-full)',
+            background: isConfirmed ? 'var(--state-failed)' : 'var(--surface-sunken)',
+            color: isConfirmed ? 'var(--text-on-dark)' : 'var(--text-muted)',
             border: 'none',
-            fontSize: 15,
+            fontSize: 'var(--fs-body)',
             fontWeight: 700,
             cursor: isConfirmed ? 'pointer' : 'not-allowed',
             transition: 'background 0.2s, color 0.2s',
@@ -227,10 +227,10 @@ export function DPDPConsentRevocation({ onClose, onRevoked }: Props) {
             border: 'none',
             color: 'var(--surface-studio)',
             fontWeight: 700,
-            fontSize: 14,
-            marginTop: 12,
+            fontSize: 'var(--fs-secondary)',
+            marginTop: 'var(--space-6)',
             cursor: 'pointer',
-            padding: '8px 0',
+            padding: 'var(--space-4) 0',
           }}
         >
           Keep My Data &amp; Keep Earning

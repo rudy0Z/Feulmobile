@@ -17,7 +17,7 @@ const tasks = [
 const categories = ['All Tasks', 'High Priority', 'English', 'Dialogue'];
 
 const priorityConfig: Record<string, { bg: string; text: string; bar: string }> = {
-  High:   { bg: 'var(--t-terracotta-50)', text: 'var(--action-primary-pressed)', bar: 'var(--action-primary)' },
+  High:   { bg: 'var(--action-primary-soft)', text: 'var(--action-primary-pressed)', bar: 'var(--action-primary)' },
   Medium: { bg: 'var(--t-bone-100)', text: 'var(--text-secondary)', bar: 'var(--text-muted)' },
   Low:    { bg: 'var(--t-bone-100)', text: 'var(--text-muted)', bar: 'var(--border-strong)' },
 };
@@ -39,14 +39,14 @@ export function ValidatorTasks() {
       {/* ── Header ── */}
       <div className="px-6 pt-16 pb-2 flex items-center gap-2">
         <ShieldCheck className="w-5 h-5" style={{ color: 'var(--text-primary)' }} strokeWidth={2} />
-        <h1 style={{ fontFamily: 'var(--font-ui)', fontSize: 26, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
+        <h1 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>
           Available Tasks
         </h1>
       </div>
 
       <div className="px-6 pb-4">
-        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)' }}>Choose a batch and start grading</p>
-        <div style={{ marginTop: 10, opacity: 0.08 }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)' }}>Choose a batch and start grading</p>
+        <div style={{ marginTop: 'var(--space-5)', opacity: 0.08 }}>
           <Waveform color="var(--surface-studio)" opacity={1} height={24} variant="precision" />
         </div>
       </div>
@@ -58,13 +58,13 @@ export function ValidatorTasks() {
             key={cat}
             onClick={() => setActiveCategory(cat)}
             style={{
-              padding: '7px 18px', borderRadius: 'var(--r-full)',
-              fontSize: 13, fontWeight: 600, whiteSpace: 'nowrap',
+              padding: 'var(--space-3) var(--space-8)', borderRadius: 'var(--r-full)',
+              fontSize: 'var(--fs-secondary)', fontWeight: 600, whiteSpace: 'nowrap',
               border: '1.5px solid',
               background: activeCategory === cat ? 'var(--action-primary)' : 'var(--surface-raised)',
               borderColor: activeCategory === cat ? 'var(--action-primary)' : 'var(--border-subtle)',
               color: activeCategory === cat ? 'var(--text-on-accent)' : 'var(--text-secondary)',
-              boxShadow: activeCategory === cat ? '0px 6px 14px rgba(224, 108, 58,0.22)' : 'none',
+              boxShadow: activeCategory === cat ? '0px 6px 14px rgba(var(--terracotta-500-rgb),0.22)' : 'none',
               transition: 'all 0.15s',
             }}
           >
@@ -86,38 +86,38 @@ export function ValidatorTasks() {
                 onClick={() => navigate(`/validator/grading/${task.id}`)}
                 style={{
                   background: 'var(--surface-raised)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)',
-                  padding: '18px', cursor: 'pointer',
-                  display: 'flex', alignItems: 'center', gap: 14,
+                  padding: 'var(--space-8)', cursor: 'pointer',
+                  display: 'flex', alignItems: 'center', gap: 'var(--space-7)',
                 }}
               >
                 <div style={{ width: 4, alignSelf: 'stretch', borderRadius: 'var(--r-full)', background: pCfg.bar, flexShrink: 0, minHeight: 52 }} />
                 <div className="flex-1">
-                  <h4 style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 7 }}>{task.title}</h4>
+                  <h4 style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-3)'}}>{task.title}</h4>
                   <div className="flex items-center gap-3 flex-wrap mb-3">
                     <div className="flex items-center gap-1">
                       <Clock className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
-                      <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{task.clips} clips</span>
+                      <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)' }}>{task.clips} clips</span>
                     </div>
                     <div className="flex items-center gap-1">
                       <Languages className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
-                      <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{task.language}</span>
+                      <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)' }}>{task.language}</span>
                     </div>
-                    <span style={{ fontFamily: 'var(--font-number)', fontSize: 13, fontWeight: 700, color: 'var(--action-primary-pressed)' }}>₹{task.payout}</span>
+                    <span style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--action-primary-pressed)' }}>₹{task.payout}</span>
                   </div>
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span style={{ fontSize: 11, fontWeight: 700, padding: '4px 12px', borderRadius: 'var(--r-full)', background: pCfg.bg, color: pCfg.text }}>
+                    <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, padding: 'var(--space-2) var(--space-6)', borderRadius: 'var(--r-full)', background: pCfg.bg, color: pCfg.text }}>
                       {task.priority} Priority
                     </span>
-                    <span style={{ fontSize: 11, fontWeight: 600, padding: '4px 12px', borderRadius: 'var(--r-full)', background: 'var(--t-bone-100)', color: 'var(--text-secondary)' }}>
+                    <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, padding: 'var(--space-2) var(--space-6)', borderRadius: 'var(--r-full)', background: 'var(--surface-sunken)', color: 'var(--text-secondary)' }}>
                       {task.category}
                     </span>
                   </div>
                 </div>
                 <div style={{
                   width: 44, height: 44, borderRadius: '50%', flexShrink: 0,
-                  background: task.priority === 'High' ? 'var(--action-primary-pressed)' : 'var(--t-bone-100)',
+                  background: task.priority === 'High' ? 'var(--action-primary-pressed)' : 'var(--surface-sunken)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  boxShadow: task.priority === 'High' ? '0px 4px 12px rgba(196, 98, 45,0.25)' : 'none',
+                  boxShadow: task.priority === 'High' ? '0px 4px 12px rgba(var(--terracotta-600-rgb),0.25)' : 'none',
                 }}>
                   <Play className="w-5 h-5" style={{ color: task.priority === 'High' ? 'var(--text-on-accent)' : 'var(--text-primary)' }} fill={task.priority === 'High' ? 'var(--text-on-accent)' : 'var(--text-primary)'} />
                 </div>

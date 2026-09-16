@@ -33,6 +33,11 @@
   --t-verdigris-50:  #E8F0EC;
   --t-verdigris-300: #7FA99B;   /* light — success marks on the dark studio ground */
   --t-verdigris-500: #3D6B5E;
+  /* 600 was referenced 7× across 6 screens but never defined — every one of
+     those declarations was silently dropped by the browser, so the settled
+     marks in Home, EarningCelebration, Recording and the DPDP consent shield
+     fell back to inherited colour. Found in the 2026-09-16 audit (F9). */
+  --t-verdigris-600: #35604F;   /* settled text/mark on light — 6.74:1 on bone-50 */
   --t-verdigris-700: #2E5245;
 
   /* Ochre — pending / in review. A wait, not a warning. */
@@ -42,46 +47,81 @@
 
   /* Crimson — error / rejected. Hue ~15, dark, never confusable with terracotta. */
   --t-crimson-50:  #F7E4E4;
+  --t-crimson-300: #E07A7A;   /* light — for the dark Studio ground */
   --t-crimson-500: #8E2434;
   --t-crimson-700: #6E1926;
+
+  /* Deep text stops — the pressed / on-white-legible end of each ramp. */
   --t-terracotta-900: #7A3A1A;  /* pressed-dark, CTA text 8.0:1 */
+  --t-ochre-300:      #D9A83F;  /* light — for the dark Studio ground */
   --t-ochre-800:      #6B4C15;  /* pending text, 7.9:1 on white */
+
+  /* Warm whites — foregrounds that sit ON a dark or accent ground.
+     These live in Layer 1 so Layer 2 never has to hold a literal
+     (audit 2026-09-16, F5). Consolidated from three near-duplicate
+     values that had drifted apart by 2–6 units per channel. */
+  --t-bone-25:    #FFF6EF;   /* on terracotta accent */
+  --t-studio-0:   #FBEFE4;   /* on carbon studio */
 
   /* ═══════════════════════════════════════════════════════════
      LAYER 2 — SEMANTIC TOKENS  (what components reference)
      Per 01-DESIGN-SYSTEM §1.2.
      ═══════════════════════════════════════════════════════════ */
 
-  /* Grounds */
+  /* ── Grounds ──────────────────────────────────────────────────────
+     A warm two-layer ground, not an M3 five-rung ladder: bone-50 is the
+     page, bone-0 lifts a card off it, bone-100 sinks an inset into it.
+     Two directions off one base is deliberate for a warm system. */
   --surface-ground:   var(--t-bone-50);     /* page */
   --surface-raised:   var(--t-bone-0);      /* cards */
   --surface-sunken:   var(--t-bone-100);    /* insets, script preview wells */
   --surface-studio:   var(--t-carbon-900);  /* ONLY Studio capture */
 
-  /* Text */
+  /* ── Text ─────────────────────────────────────────────────────────── */
   --text-primary:     var(--t-carbon-900);
   --text-secondary:   var(--t-carbon-700);
   --text-muted:       var(--t-carbon-500);
   --text-faint:       var(--t-carbon-300);
-  --text-on-accent:   #FFF6EF;
-  --text-on-studio:   #FBEFE4;
+  --text-on-accent:   var(--t-bone-25);     /* Layer 1 — never a literal */
+  --text-on-studio:   var(--t-studio-0);    /* warm white, on carbon studio */
+  --text-on-dark:     var(--t-bone-0);      /* pure white, on dark dev/overlay grounds */
 
-  /* Action */
+  /* ── Action ───────────────────────────────────────────────────────── */
   --action-primary:         var(--t-terracotta-800);  /* P0-2: 6.51:1 with --text-on-accent */
   --action-primary-pressed: var(--t-terracotta-900);
   --action-disabled:        var(--t-carbon-200);
+  --action-primary-soft:    var(--t-terracotta-50);   /* tinted fill behind the accent */
+  --action-accent:          var(--t-terracotta-500);  /* the BASE brand accent — marks, glows, halos */
+  --action-accent-deep:     var(--t-terracotta-600);  /* deep accent — pressed glows */
 
-  /* State — always paired with icon + label, never color alone */
-  --state-settled:  var(--t-verdigris-500);
-  --state-pending:  var(--t-ochre-500);
-  --state-failed:   var(--t-crimson-500);
+  /* ── State — always paired with icon + label, never colour alone ────
+     Every state role ships BOTH halves: the ink and its container.
+     The container half was missing until 2026-09-16, which is the single
+     structural reason 289 call sites reached past this layer into raw
+     primitives (audit F1). Add the container here, not at the call site. */
+  --state-settled:           var(--t-verdigris-500);
+  --state-settled-text:      var(--t-verdigris-600);  /* settled text/mark on light */
+  --state-settled-deep:      var(--t-verdigris-700);  /* settled emphasis on light */
+  --state-settled-container: var(--t-verdigris-50);
+  --state-settled-on-studio: var(--t-verdigris-300);  /* settled mark on the dark ground */
 
-  /* Money — figure is ink, not orange */
+  --state-pending:           var(--t-ochre-500);
+  --state-pending-text:      var(--t-ochre-800);
+  --state-pending-deep:      var(--t-ochre-700);   /* pending emphasis / icons */
+  --state-pending-container: var(--t-ochre-50);
+  --state-pending-on-studio: var(--t-ochre-300);   /* pending mark on the dark ground */
+
+  --state-failed:            var(--t-crimson-500);
+  --state-failed-text:       var(--t-crimson-700);
+  --state-failed-container:  var(--t-crimson-50);
+  --state-failed-on-studio:  var(--t-crimson-300);  /* failed mark on the dark ground */
+
+  /* ── Money — figure is ink, not orange ────────────────────────────── */
   --money-figure:   var(--t-carbon-900);
   --money-positive: var(--t-verdigris-700);
   --money-pending:  var(--t-ochre-800);  /* P0-2: pending text 7.9:1 on white */
 
-  /* Structure */
+  /* ── Structure ────────────────────────────────────────────────────── */
   --border-subtle:  var(--t-carbon-200);
   --border-strong:  var(--t-carbon-300);
   --divider:        var(--t-carbon-100);
@@ -109,8 +149,23 @@
 
   /* Studio / hero dark surface — now carbon, not navy-blue. */
 
-  /* Brand-terracotta RGB channels — compose any alpha via rgba(var(--…),a). */
-  --carbon-rgb:      32, 22, 17;    /* == carbon-900, for elevation tints */
+  /* Brand-terracotta RGB channels — compose any alpha via rgba(var(--…),a).
+     Components must never hardcode rgba(): the hex rule only catches #rrggbb,
+     so these channels are what close that blind spot (audited 2026-09-16 —
+     151 literal rgba() calls were found across 23 files). */
+  --carbon-rgb:         32, 22, 17;    /* == carbon-900, for elevation tints */
+  --bone-0-rgb:         255, 255, 255; /* == bone-0, white alpha on dark grounds */
+  --bone-50-rgb:        250, 247, 242; /* == bone-50, for device-chrome scrims */
+  --studio-ink-rgb:     245, 238, 229; /* Studio body ink — the warm white on --surface-studio */
+  --terracotta-50-rgb:  251, 238, 230; /* == terracotta-50, faint fills on dark */
+  --terracotta-500-rgb: 224, 108, 58;  /* == terracotta-500, accent glows */
+  --terracotta-600-rgb: 196, 98, 45;   /* == terracotta-600, deep accent glows */
+  --scrim-rgb:          0, 0, 0;       /* modal / overlay scrims only */
+
+  /* ─── Device chrome (PhoneFrame only). Never used inside app screens. ─── */
+  --surface-device:       var(--t-carbon-900);  /* bezel */
+  --surface-device-notch: var(--t-carbon-900);  /* dynamic island */
+  --text-device-chrome:   var(--t-carbon-900);  /* status-bar time + icons */
 
   /* State-colour channels — compose tinted fills/scrims via rgba(var(--…),a).
      Use these instead of literal rgb() so error/success/pending tints stay
@@ -130,25 +185,56 @@
   --color-error:       var(--state-failed);
 
   /* ═══════════════════════════════════════════════════════════
-     SPACING SCALE (4pt) — 01-DESIGN-SYSTEM §3.1
+     SPACING — a 2pt micro-grid, re-derived from the design.
+
+     The previous scale was a 4pt ladder (4/8/12/16/20/24/32/40/56/72).
+     It was adopted FOUR times in the whole app, because the design does
+     not sit on a 4pt grid. Measured frequencies of the real values:
+
+       8 ×94 · 6 ×65 · 12 ×62 · 10 ×54 · 20 ×49 · 4 ×46 · 2 ×37
+       14 ×32 · 16 ×30 · 24 ×19 · 28 ×18 · 32 ×5 · 40 ×3
+
+     That is a 2pt micro-grid — legitimate for a dense 360px app, and the
+     reason a 4pt theory could never be adopted. `--card-pad` is 14, which
+     a 4pt grid cannot express at all.
+
+     Drift values (1,3,5,7,9,11,18,22,26,30) round to the nearest step.
      ═══════════════════════════════════════════════════════════ */
-  --space-1:  4px;
-  --space-2:  8px;
-  --space-3:  12px;
-  --space-4:  16px;
-  --space-5:  20px;
-  --space-6:  24px;
-  --space-7:  32px;
-  --space-8:  40px;
-  --space-9:  56px;
-  --space-10: 72px;
+  --space-0:   0px;
+  --space-1:   2px;   /* hairline — icon-to-label, divider offsets */
+  --space-2:   4px;
+  --space-3:   6px;
+  --space-4:   8px;   /* the most common gap in the app */
+  --space-5:  10px;
+  --space-6:  12px;   /* default stack gap == --gap */
+  --space-7:  14px;   /* == --card-pad */
+  --space-8:  16px;   /* == --gutter */
+  --space-9:  20px;
+  --space-10: 24px;
+  --space-11: 28px;   /* == --sheet-top */
+  --space-12: 32px;
+  --space-13: 40px;
+  --space-14: 56px;   /* == --cta */
+  --space-15: 80px;   /* rare — full-bleed hero air */
 
   /* ═══════════════════════════════════════════════════════════
-     RADIUS — 4 only (8/14/24/999). 01-DESIGN-SYSTEM §3.2
+     RADIUS — 5 stops. 01-DESIGN-SYSTEM §3.2, revised 2026-09-16.
+
+     Was 4 stops (8/14/24/999) and the design kept bypassing it: 16 was
+     written 15× (cards, panels) and 12 11× (controls, tiles). --r-md: 14
+     sat exactly between the two values people actually reached for, which
+     is why it lost. A stop the design never reaches for is not a stop.
+
+     8/12/16 would be M3's rhythm (its card radius is 12). 14 is retained
+     as --r-md because it is a LOCKED spec value with 103 call sites —
+     changing it would shift every card in the app for a 2px gain. So the
+     scale absorbs 12 and 16 around it instead of replacing it.
+
      Exactly one --r-lg hero object per screen.
      ═══════════════════════════════════════════════════════════ */
-  --r-sm:   8px;    /* chips, tags, small controls */
-  --r-md:   14px;   /* cards, inputs, list rows */
+  --r-xs:    8px;   /* chips, tags, tiny tiles */
+  --r-sm:   12px;   /* inputs, small controls, segmented controls */
+  --r-md:   14px;   /* cards, list rows — locked */
   --r-lg:   24px;   /* THE ONE hero object per screen */
   --r-full: 999px;  /* pills, avatars, record trigger */
 
@@ -157,27 +243,56 @@
 
   /* ═══════════════════════════════════════════════════════════
      ELEVATION — carbon-tinted, two-layer. 01-DESIGN-SYSTEM §3.3
+
+     Carbon-tinted rather than neutral black: on a warm bone ground a
+     neutral shadow reads grey and dirty. Uses the --*-rgb channel tokens
+     so the tint can never drift from the palette (the 2026-09-16 rgba
+     sweep fixed 151 component call sites but missed the token source).
      ═══════════════════════════════════════════════════════════ */
   --e-0: none;
-  --e-1: 0 1px 2px rgba(32,22,17,.05);
-  --e-2: 0 1px 3px rgba(32,22,17,.06), 0 8px 20px -6px rgba(32,22,17,.08);
-  --e-3: 0 2px 6px rgba(32,22,17,.08), 0 16px 32px -10px rgba(32,22,17,.12);
-  --e-glow: 0 0 0 1px rgba(224,108,58,.12), 0 8px 32px rgba(224,108,58,.28);
+  --e-1: 0 1px 2px rgba(var(--carbon-rgb), .05);
+  --e-2: 0 1px 3px rgba(var(--carbon-rgb), .06), 0 8px 20px -6px rgba(var(--carbon-rgb), .08);
+  --e-3: 0 2px 6px rgba(var(--carbon-rgb), .08), 0 16px 32px -10px rgba(var(--carbon-rgb), .12);
+  --e-glow: 0 0 0 1px rgba(var(--terracotta-500-rgb), .12), 0 8px 32px rgba(var(--terracotta-500-rgb), .28);
 
   /* Legacy shadow aliases → new elevation. */
 
   /* ═══════════════════════════════════════════════════════════
-     MOTION — 01-DESIGN-SYSTEM §4
+     MOTION — 01-DESIGN-SYSTEM §4, extended per audit F3 (2026-09-16).
+
+     Durations pair with DIRECTION, not just speed. A thing entering the
+     screen decelerates; a thing leaving accelerates. Calling an animation
+     "fast" says nothing about which curve it needs — which is why every
+     call site was hand-tuning its own curve and this scale sat at 2% use.
+
+     Previously defined 9 tokens with 3 exact duplicates and one invalid
+     curve (--ease-emphasized used a y-control point of 1.2, outside the
+     [0,1] range a cubic-bezier needs to behave).
      ═══════════════════════════════════════════════════════════ */
-  --ease:            cubic-bezier(0.2, 0, 0, 1);
-  --duration-fast:   120ms;
-  --duration-base:   180ms;
-  --duration-slow:   280ms;
-  --d-fast:          120ms;
-  --d-base:          180ms;
-  --d-slow:          280ms;
-  --ease-standard:   cubic-bezier(0.2, 0, 0, 1);
-  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1.2);
+
+  /* Durations — re-derived from the design, 2026-09-16.
+
+     The previous set (120/180/280) was theory again: the design actually
+     writes 0.4 ×13, 0.35 ×13, 0.3 ×12, 0.28 ×3, 0.25 ×3. 180ms was not in
+     use at all. Same failure mode as the 4pt spacing grid and the 14px
+     card radius — a scale nobody reaches for does not get adopted.
+
+     200/300/400 sits in M3's medium/long band (its medium2 is 300ms). */
+  --duration-fast:  120ms;  /* press, hover, chip toggle */
+  --duration-base:  200ms;  /* quick state change */
+  --duration-slow:  300ms;  /* the workhorse — most transitions */
+  --duration-enter: 400ms;  /* enter/exit, sheets, page transitions */
+
+  /* Easing — directional pairs, M3's standard / emphasized model. */
+  --ease-standard:              cubic-bezier(0.2, 0, 0, 1);      /* on screen, both ends */
+  --ease-decelerate:            cubic-bezier(0.05, 0.7, 0.1, 1); /* ENTERING the screen */
+  --ease-accelerate:            cubic-bezier(0.3, 0, 0.8, 0.15); /* LEAVING the screen */
+  --ease-emphasized:            cubic-bezier(0.2, 0, 0, 1);      /* hero moments */
+  --ease-emphasized-decelerate: cubic-bezier(0.05, 0.7, 0.1, 1);
+  --ease-emphasized-accelerate: cubic-bezier(0.3, 0, 0.8, 0.15);
+
+  /* Legacy alias — 2 call sites. Prefer --ease-standard in new work. */
+  --ease: var(--ease-standard);
 
   /* ─── Tailwind / shadcn compatibility (retargeted, do not remove) ─── */
   --foreground:            var(--text-primary);
@@ -186,11 +301,11 @@
   --primary:               var(--action-primary);
   --primary-foreground:    var(--text-on-accent);
   --secondary:             var(--t-ochre-700);
-  --secondary-foreground:  #FFFFFF;
+  --secondary-foreground:  var(--t-bone-0);
   --muted:                 var(--t-bone-100);
   --muted-foreground:      var(--text-secondary);
   --destructive:           var(--state-failed);
-  --destructive-foreground: #FFFFFF;
+  --destructive-foreground: var(--t-bone-0);
   --border:                var(--border-subtle);
   --input:                 transparent;
   --input-background:      var(--t-bone-0);
@@ -227,6 +342,105 @@
   --lh-latin: 1.5;
   --lh-deva:  1.72;
   --lh-taml:  1.72;
+
+  /* ═══════════════════════════════════════════════════════════
+     TYPE SCALE — 8 steps. The ONLY sizes allowed anywhere.
+     Locked 2026-09-16 (owner decision, "Utilitarian" scale).
+
+     Why 8: the previous 14-step scale left 25 distinct sizes in the
+     components, which is how hierarchy turns to mush — every new screen
+     invented its own step. Eight steps with real gaps force the
+     hierarchy to come from weight, colour and space instead of from
+     yet another 1px of type. 6–8 is what premium mobile ships.
+
+     Roles are fixed. Do not add a step for one screen.
+     Body floor is 16px on every device; prose never goes below it.
+     12px is for chrome only (eyebrows, timestamps, ledger meta) —
+     never for content the user must actually read at 300 nits.
+
+     Anything outside this set is a build error (`pnpm metrics`).
+     ═══════════════════════════════════════════════════════════ */
+  --fs-caption:   12px;  /* CHROME ONLY — eyebrows, meta, timestamps */
+  --fs-secondary: 14px;  /* secondary body, list sub-text, labels */
+  --fs-body:      16px;  /* BODY FLOOR — default for all prose */
+  --fs-subhead:   18px;  /* card titles, row emphasis */
+  --fs-section:   20px;  /* section headings, app-bar titles */
+  --fs-title:     24px;  /* screen + sheet titles */
+  --fs-display:   32px;  /* market headline, standing hero */
+  --fs-figure:    48px;  /* money figure, celebration — one per screen */
+
+  /* ═══════════════════════════════════════════════════════════
+     COMPOSITE TYPE ROLES — one token per role, script-aware.
+
+     --fs-* carries a size and nothing else, so "a heading" was never a
+     thing a component could reach for — only "a number". That is how 25
+     sizes accumulated in the first place. M3 fixes this by bundling five
+     axes per role (md.sys.typescale.*). Feul has a harder problem M3 does
+     not: two scripts with different leading (--lh-latin 1.5 vs
+     --lh-deva 1.72), so the role must carry the leading and resolve it
+     per script — or Devanagari matras clip.
+
+     Use:
+       style={{ font: 'var(--type-title)', letterSpacing: 'var(--type-title-track)' }}
+
+     Inside `.font-script` (see the scope block below) every role
+     re-resolves to the Indic leading and typeface automatically.
+     ═══════════════════════════════════════════════════════════ */
+  --type-display:   700 var(--fs-display)/1.15 var(--font-ui);
+  --type-title:     700 var(--fs-title)/1.28 var(--font-ui);
+  --type-section:   600 var(--fs-section)/1.35 var(--font-ui);
+  --type-subhead:   600 var(--fs-subhead)/1.45 var(--font-ui);
+  --type-body:      400 var(--fs-body)/var(--lh-latin) var(--font-ui);
+  --type-body-bold: 600 var(--fs-body)/var(--lh-latin) var(--font-ui);
+  --type-secondary: 500 var(--fs-secondary)/1.5 var(--font-ui);
+  --type-caption:   600 var(--fs-caption)/1.4 var(--font-ui);
+  --type-figure:    700 var(--fs-figure)/1 var(--font-number);
+
+  --type-display-track:   -0.025em;
+  --type-title-track:     -0.015em;
+  --type-section-track:   -0.005em;
+  --type-subhead-track:   0;
+  --type-body-track:      0;
+  --type-secondary-track: 0;
+  --type-caption-track:   0.02em;
+  --type-figure-track:    -0.03em;
+
+  /* ═══════════════════════════════════════════════════════════
+     COMPONENT GEOMETRY — 08 handoff "System" line.
+     ═══════════════════════════════════════════════════════════ */
+  --gutter:    16px;  /* screen outer padding */
+  --card-pad:  14px;  /* padding inside a card */
+  --gap:       12px;  /* between rows / cards */
+  --row:       68px;  /* list row height */
+  --cta:       56px;  /* primary CTA height */
+  --cta-r:     28px;  /* CTA corner radius */
+  --chip:      36px;  /* filter chip */
+  --search:    52px;  /* search pill */
+  --filter:    44px;  /* filter circle */
+  --sheet-top: 28px;  /* bottom-sheet top radius */
+  --tap:       44px;  /* minimum touch target */
+  --trigger:   84px;  /* record trigger */
+}
+
+/* ═══════════════════════════════════════════════════════════
+   SCRIPT SCOPE — re-resolves every composite type role for Indic
+   scripts. Applied on any subtree rendering Devanagari / Tamil.
+
+   This is the piece M3 does not need and Feul cannot do without: the
+   Latin leading (1.5) clips Devanagari matras, which need 1.72. Instead
+   of every call site remembering to pass a line-height, the role tokens
+   re-resolve here and the component keeps using --type-* unchanged.
+   ═══════════════════════════════════════════════════════════ */
+.font-script {
+  --type-display:   700 var(--fs-display)/var(--lh-deva) var(--font-script);
+  --type-title:     700 var(--fs-title)/var(--lh-deva) var(--font-script);
+  --type-section:   600 var(--fs-section)/var(--lh-deva) var(--font-script);
+  --type-subhead:   600 var(--fs-subhead)/var(--lh-deva) var(--font-script);
+  --type-body:      400 var(--fs-body)/var(--lh-deva) var(--font-script);
+  --type-body-bold: 600 var(--fs-body)/var(--lh-deva) var(--font-script);
+  --type-secondary: 500 var(--fs-secondary)/var(--lh-deva) var(--font-script);
+  --type-caption:   600 var(--fs-caption)/var(--lh-deva) var(--font-script);
+  --type-figure:    700 var(--fs-figure)/var(--lh-deva) var(--font-script);
 }
 
 /* ═══════════════════════════════════════════════════════════
@@ -420,13 +634,12 @@
     font-size: var(--font-size);
   }
 
-  /* ── Type scale. 01-DESIGN-SYSTEM §2.2. Body floor 16px on every device.
-     Display/heading steps: 16/18/20/24/30/38/48/64 (headings below).
-     Sanctioned caption/label sub-steps (dense mobile UI): 10/11/12/13/15/17/22/26.
-     Do NOT introduce fractional or ad-hoc sizes outside this set. ── */
+  /* ── Base element styles. Every size below resolves through the locked
+     8-step scale above — no literal px here, so the scale has exactly one
+     source of truth. Body floor 16px on every device. ── */
   h1 {
     font-family: var(--font-ui);
-    font-size: 30px;
+    font-size: var(--fs-display);
     font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.015em;
@@ -435,7 +648,7 @@
 
   h2 {
     font-family: var(--font-ui);
-    font-size: 24px;
+    font-size: var(--fs-title);
     font-weight: 700;
     line-height: 1.3;
     letter-spacing: -0.01em;
@@ -444,7 +657,7 @@
 
   h3 {
     font-family: var(--font-ui);
-    font-size: 20px;
+    font-size: var(--fs-section);
     font-weight: 600;
     line-height: 1.35;
     letter-spacing: -0.005em;
@@ -453,7 +666,7 @@
 
   h4 {
     font-family: var(--font-ui);
-    font-size: 18px;
+    font-size: var(--fs-subhead);
     font-weight: 600;
     line-height: 1.5;
     color: var(--text-primary);
@@ -461,21 +674,21 @@
 
   label {
     font-family: var(--font-ui);
-    font-size: 12px;
+    font-size: var(--fs-caption);
     font-weight: 500;
     line-height: 1.45;
   }
 
   button {
     font-family: var(--font-ui);
-    font-size: 16px;
+    font-size: var(--fs-body);
     font-weight: 600;
     line-height: 1.5;
   }
 
   input {
     font-family: var(--font-ui);
-    font-size: 16px;
+    font-size: var(--fs-body);
     font-weight: 400;
     line-height: 1.5;
     border-radius: var(--r-md);
@@ -483,7 +696,7 @@
 
   p {
     font-family: var(--font-ui);
-    font-size: 16px;
+    font-size: var(--fs-body);
     font-weight: 400;
     line-height: var(--lh-latin);
     color: var(--text-secondary);
@@ -501,5 +714,33 @@
     font-family: var(--font-number);
     font-variant-numeric: tabular-nums;
     letter-spacing: -0.01em;
+  }
+
+  /* ── Accessibility floors. 08-HANDOFF Phase 4 §4.6. ── */
+
+  /* Keyboard focus is always visible, and always 2px. */
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  /* Never animate for a user who asked for less motion. */
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  /* Windows High Contrast / forced-colors: borders and states stay legible. */
+  @media (forced-colors: active) {
+    [role="button"], button, a, input, select, textarea, [tabindex] {
+      border: 1px solid ButtonBorder;
+    }
+    :focus-visible { outline: 2px solid Highlight; }
+    /* Status marks keep their icon + label in HC mode (never colour alone). */
+    svg { forced-color-adjust: auto; }
   }
 }

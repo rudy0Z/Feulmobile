@@ -57,7 +57,7 @@ export function ValidatorApp() {
                       style={{
                         position: 'absolute', inset: 0,
                         background: 'color-mix(in oklch, var(--action-primary) 14%, transparent)',
-                        borderRadius: 999,
+                        borderRadius: 'var(--r-full)',
                       }}
                     />
                   )}
@@ -72,8 +72,7 @@ export function ValidatorApp() {
                   <motion.span
                     initial={{ opacity: 0, y: 2 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="text-[10px]"
-                    style={{ color: 'var(--action-primary)', fontWeight: 700 }}
+                    style={{ fontSize: 'var(--fs-caption)', color: 'var(--action-primary)', fontWeight: 700 }}
                   >
                     {item.label}
                   </motion.span>
