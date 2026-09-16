@@ -5,7 +5,7 @@
  * variant:
  *   'audio'     → organic sine pattern (Contributor screens)
  *   'precision' → uniform, staircase-like bars (Validator screens)
- *   'data'      → spiky data-chart bars (Quest Creator screens)
+ *   'data'      → spiky data-chart bars (legacy job screens)
  */
 export function Waveform({
   color = 'var(--action-primary)',

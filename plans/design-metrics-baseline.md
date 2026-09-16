@@ -1,6 +1,6 @@
 # Design metrics baseline
 
-Generated: 2026-09-16T09:41:33.170Z
+Generated: 2026-09-16T10:37:55.861Z
 
 Gate: hybrid (structural for borders/shadows, count for gradients).
 
@@ -8,7 +8,7 @@ Gate: hybrid (structural for borders/shadows, count for gradients).
 |---|---|---|
 | Distinct type sizes | 8 | <= 8 (locked scale) |
 | Raw font-size values | 0 | 0 (tokens only) |
-| 12px instances (chrome) | 127 | <= 150 |
+| 12px instances (chrome) | 128 | <= 150 |
 | Double border in one style object | 0 | 0 |
 | Screens over 10 borders | 0 | 0 |
 | Components with >1 hero shadow | 0 | 0 |
@@ -16,7 +16,7 @@ Gate: hybrid (structural for borders/shadows, count for gradients).
 | raw hex in components | 0 | 0 |
 | literal rgba() in components | 0 | 0 (use --*-rgb) |
 | emoji in code strings | 0 | 0 |
-| brand strings (Feul/Grain) | 2 | 0  <-- OVER |
+| brand strings (Feul/Grain) | 0 | 0 |
 | heuristic targets < 44px | 0 | 0 |
 
 **Adoption ratchets** — raw values are tokens the design has not adopted yet. These can only go down.
@@ -32,11 +32,9 @@ Gate: hybrid (structural for borders/shadows, count for gradients).
 
 Type tokens resolved from theme.css: caption=12, secondary=14, body=16, subhead=18, section=20, title=24, display=32, figure=48
 
-Sizes in use: 12px x127, 14px x376, 16px x103, 18px x24, 20px x16, 24px x58, 32px x23, 48px x4
+Sizes in use: 12px x128, 14px x376, 16px x104, 18px x24, 20px x16, 24px x58, 32px x23, 48px x5
 
 ## Examples: brand strings
-- src/app/components/PayoutFlow.tsx:274 const text = `Feul payout ${refNum} — ₹${amount} to ${vpa}`;
-- src/app/components/ui/Primitives.tsx:999 <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 
 
 ## Examples: emoji
 

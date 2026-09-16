@@ -2,6 +2,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { Onboarding } from "./components/Onboarding";
 import { ConsentGate } from "./components/ConsentGate";
 import { EarningCelebration } from "./components/EarningCelebration";
+import { EarningCredited } from "./components/EarningCredited";
 import { MainApp } from "./components/MainApp";
 import { Home } from "./components/Home";
 import { QuestFeed } from "./components/QuestFeed";
@@ -44,6 +45,12 @@ export const router = createBrowserRouter([
   {
     path: "/earning-celebration",
     Component: EarningCelebration,
+  },
+  /* The quiet in-flow award — one task credited mid-session. Sibling of
+     the session-total celebration so it is route-reachable (smoke-tested). */
+  {
+    path: "/contributor/credited",
+    Component: EarningCredited,
   },
 
   // ── Consent gate — a NATIVE ROUTE, not a sheet (owner decision D-3).

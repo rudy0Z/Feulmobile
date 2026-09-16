@@ -8,6 +8,7 @@ import { Amount, Button, IconButton, ReceiptCard } from './ui/Primitives';
 import { useDevContext } from '../lib/DevContext';
 import { getProfile, setProfile } from '../lib/session';
 import { durations } from '../lib/motion';
+import { WITHDRAW_MIN } from '../lib/quests';
 
 /* ═══════════════════════════════════════════════════════════════════
    Payout — the honest withdrawal path. First-ever withdrawal links a
@@ -15,8 +16,6 @@ import { durations } from '../lib/motion';
    a ₹100 floor; the money is never described as "instant". Bank-layer
    failure is a real, reachable branch (money stays in the wallet).
    ═══════════════════════════════════════════════════════════════════ */
-
-const WITHDRAW_FLOOR = 100;
 
 function getRole(pathname: string): 'contributor' | 'validator' {
   return pathname.startsWith('/validator') ? 'validator' : 'contributor';
@@ -133,10 +132,10 @@ function StepAmount({ balance, vpa, presets, amount, setAmount, onNext, onBack }
   setAmount: (v: string) => void; onNext: () => void; onBack: () => void;
 }) {
   const numeric = parseFloat(amount) || 0;
-  const belowFloor = numeric < WITHDRAW_FLOOR;
+  const belowFloor = numeric < WITHDRAW_MIN;
   const overBalance = numeric > balance;
   const invalid = belowFloor || overBalance;
-  const gap = Math.max(0, WITHDRAW_FLOOR - numeric);
+  const gap = Math.max(0, WITHDRAW_MIN - numeric);
   const inputRef = useRef<HTMLInputElement>(null);
 
   return (
@@ -165,7 +164,7 @@ function StepAmount({ balance, vpa, presets, amount, setAmount, onNext, onBack }
         </div>
         {amount && invalid && (
           <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: belowFloor ? 'var(--text-secondary)' : 'var(--state-failed)', marginTop: 'var(--space-4)'}}>
-            {belowFloor ? <><Amount value={gap} size={13} color="var(--text-primary)" /> more to reach the ₹{WITHDRAW_FLOOR} minimum</>
+            {belowFloor ? <><Amount value={gap} size={13} color="var(--text-primary)" /> more to reach the ₹{WITHDRAW_MIN} minimum</>
               : `That's more than your ₹${balance.toFixed(2)} balance`}
           </p>
         )}
@@ -195,7 +194,7 @@ function StepAmount({ balance, vpa, presets, amount, setAmount, onNext, onBack }
       <div className="px-6 py-8">
         <Button full size="lg" disabled={!amount || invalid} onClick={onNext}>Review</Button>
         <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', textAlign: 'center', marginTop: 'var(--space-5)'}}>
-          No fees · minimum ₹{WITHDRAW_FLOOR} · arrives in 2–3 days
+          No fees · minimum ₹{WITHDRAW_MIN} · arrives in 2–3 days
         </p>
       </div>
     </motion.div>
@@ -271,7 +270,7 @@ function StepSuccess({ amount, vpa, nextPath, nextLabel, backPath }: {
   const arrival = nextMonday.toLocaleDateString('en-IN', { weekday: 'long', day: 'numeric', month: 'long' });
 
   const shareReceipt = () => {
-    const text = `Feul payout ${refNum} — ₹${amount} to ${vpa}`;
+    const text = `Payout ${refNum} — ₹${amount} to ${vpa}`;
     if (typeof navigator !== 'undefined' && navigator.share) navigator.share({ text }).catch(() => {});
     else if (typeof navigator !== 'undefined' && navigator.clipboard) navigator.clipboard.writeText(refNum).catch(() => {});
   };

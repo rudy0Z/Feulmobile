@@ -100,7 +100,7 @@ export function QuestFeed() {
       {/* Search */}
       <div className="px-5 pb-3">
         <div style={{
-          display: 'flex', alignItems: 'center', gap: 'var(--space-5)', height: 48, padding: '0 var(--space-7)',
+          display: 'flex', alignItems: 'center', gap: 'var(--space-5)', height: 'var(--search)', padding: '0 var(--space-8)',
           background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
           borderRadius: 'var(--r-full)',
         }}>
@@ -123,14 +123,17 @@ export function QuestFeed() {
           <motion.button
             whileTap={whileTap.button} transition={springs.tap}
             onClick={() => setFilterOpen(true)}
+            aria-label="Open filters" title="Filters"
             style={{
-              display: 'flex', alignItems: 'center', gap: 'var(--space-3)', height: 38, padding: '0 var(--space-7)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              width: 'var(--filter)', height: 'var(--filter)', padding: 0,
               borderRadius: 'var(--r-full)', border: '1px solid var(--border-strong)',
-              background: 'var(--surface-raised)', color: 'var(--text-secondary)',
-              fontSize: 'var(--fs-secondary)', fontWeight: 700, whiteSpace: 'nowrap', flexShrink: 0, cursor: 'pointer',
+              background: filter === 'all' ? 'var(--surface-raised)' : 'var(--action-primary-soft)',
+              color: filter === 'all' ? 'var(--text-secondary)' : 'var(--action-primary)',
+              flexShrink: 0, cursor: 'pointer',
             }}
           >
-            <SlidersHorizontal size={15} /> Filter
+            <SlidersHorizontal size={18} />
           </motion.button>
           {filters.map((f) => {
             const active = filter === f.id;
@@ -140,7 +143,7 @@ export function QuestFeed() {
                 whileTap={whileTap.button} transition={springs.tap}
                 onClick={() => setFilter(f.id)}
                 style={{
-                  height: 38, padding: '0 var(--space-8)', borderRadius: 'var(--r-full)', fontSize: 'var(--fs-secondary)', fontWeight: 700,
+                  height: 'var(--tap)', padding: '0 var(--space-8)', borderRadius: 'var(--r-full)', fontSize: 'var(--fs-secondary)', fontWeight: 700,
                   whiteSpace: 'nowrap', flexShrink: 0, cursor: 'pointer',
                   border: `1px solid ${active ? 'var(--action-primary)' : 'var(--border-subtle)'}`,
                   background: active ? 'var(--action-primary)' : 'var(--surface-raised)',

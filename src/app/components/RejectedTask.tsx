@@ -10,11 +10,18 @@ import { durations } from '../lib/motion';
 // reason. Accepted clips are preserved; only the flagged prompt is re-recorded.
 
 const TOTAL_PROMPTS = 10;
+
+/** Relative timestamp — never a hardcoded calendar date (no-hardcode rule). */
+function relStamp(hoursAgo: number): string {
+  const d = new Date(Date.now() - hoursAgo * 60 * 60 * 1000);
+  const time = d.toLocaleTimeString('en-IN', { hour: 'numeric', minute: '2-digit' });
+  return (hoursAgo < 24 ? 'Today' : 'Yesterday') + ' · ' + time;
+}
 const FLAGGED_PROMPTS = [4];
 
 const rejectedSubmission = {
   questName:     'Customer Service Dialogue',
-  submittedAt:   'Feb 24, 2026 at 2:45 PM',
+  submittedAt:   relStamp(26),
   reasonId:      'noise' as RejectionReasonId,
   prompt4:
     '"Thank you for calling Sunrise Telecom. My name is Priya, and I\'ll be happy to assist you with your account today."',

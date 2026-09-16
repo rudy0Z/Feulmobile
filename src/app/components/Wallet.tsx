@@ -10,8 +10,9 @@ import { useSession } from '../lib/session';
 import { WITHDRAW_MIN, withdrawGap } from '../lib/quests';
 
 /* ═══════════════════════════════════════════════════════════════════
-   Wallet — the LEDGER, not the hero. Home has the one 48px ₹; the
-   Wallet is a varied bento + an honest, tabbed, week-filterable ledger.
+   Wallet — the LEDGER, not the hero. The one figure-size ₹ on this
+   screen lives inside the bento below; the rest is an honest, tabbed,
+   week-filterable ledger.
    Every pending amount says what it waits on. No Security Reserve, no
    XP-as-money. Withdrawal floor is ₹100, stated as an exact gap.
    ═══════════════════════════════════════════════════════════════════ */
@@ -24,6 +25,9 @@ interface Entry {
   date: string;
   /** Weekday key for the weekly filter pills (Mon–Sun). */
   dayKey?: string;
+  /** Recency band — drives "this week" money from a field, never from
+      the human-readable date string. */
+  band?: 'today' | 'yesterday' | 'earlier';
   amount: number;
   status: StatusKind;
   /** Honest note: what a pending amount is waiting on, or a bonus reason. */
@@ -37,18 +41,22 @@ interface Entry {
 const WEEKDAYS = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
 const LEDGER: Entry[] = [
-  { id: 1, kind: 'earning', title: 'Morning news reading', quest: 'q-lines-1', date: 'Today · 9:30 AM', dayKey: 'Mon', amount: 15, status: 'settled',
+  { id: 1, kind: 'earning', title: 'Morning news reading', quest: 'q-lines-1', date: 'Today · 9:30 AM', dayKey: 'Mon', band: 'today', amount: 15, status: 'settled',
     breakdown: { basePay: 15, coverageMult: 1, bonus: 0 } },
-  { id: 2, kind: 'earning', title: 'Product descriptions', quest: 'q-lines-2', date: 'Today · 7:15 AM', dayKey: 'Mon', amount: 25, status: 'pending',
+  { id: 2, kind: 'earning', title: 'Product descriptions', quest: 'q-lines-2', date: 'Today · 7:15 AM', dayKey: 'Mon', band: 'today', amount: 25, status: 'pending',
     note: 'Waiting on a validator to review 2 clips', breakdown: { basePay: 25, coverageMult: 1, bonus: 0 } },
-  { id: 3, kind: 'earning', title: 'Clarity bonus', date: 'Yesterday · 6:00 PM', dayKey: 'Sun', amount: 8, status: 'settled',
+  { id: 3, kind: 'earning', title: 'Clarity bonus', date: 'Yesterday · 6:00 PM', dayKey: 'Sun', band: 'yesterday', amount: 8, status: 'settled',
     note: 'Top-quartile clarity on 5 clips', bonus: { label: 'Clarity bonus', amount: 8 } },
-  { id: 4, kind: 'earning', title: 'Conversational dialogue', quest: 'q-scen-1', date: 'Yesterday · 3:00 PM', dayKey: 'Sun', amount: 35, status: 'settled',
+  { id: 4, kind: 'earning', title: 'Conversational dialogue', quest: 'q-scen-1', date: 'Yesterday · 3:00 PM', dayKey: 'Sun', band: 'yesterday', amount: 35, status: 'settled',
     breakdown: { basePay: 22, coverageMult: 1.4, bonus: 4 } },
-  { id: 5, kind: 'withdrawal', title: 'Withdrawal to your UPI', date: 'Last week', dayKey: 'Mon', amount: 120, status: 'settled' },
-  { id: 6, kind: 'earning', title: 'Quick phrases', quest: 'q-lines-3', date: 'Last week', dayKey: 'Mon', amount: 0, status: 'failed',
+  { id: 5, kind: 'withdrawal', title: 'Withdrawal to your UPI', date: 'Last week', dayKey: 'Mon', band: 'earlier', amount: 120, status: 'settled' },
+  { id: 6, kind: 'earning', title: 'Quick phrases', quest: 'q-lines-3', date: 'Last week', dayKey: 'Mon', band: 'earlier', amount: 0, status: 'failed',
     note: 'Background noise on all clips — re-record to earn ₹10' },
 ];
+
+/** Only weekdays that actually carry entries. A 7-pill control that yields
+    content on 2 of 7 days is a false affordance (13-AUDIT F-1). */
+const ACTIVE_DAYS = WEEKDAYS.filter((d) => LEDGER.some((e) => e.dayKey === d));
 
 export function Wallet() {
   const navigate = useNavigate();
@@ -66,9 +74,10 @@ export function Wallet() {
   const pending = empty ? 0
     : LEDGER.filter((e) => e.status === 'pending').reduce((s, e) => s + e.amount, 0);
   const thisWeek = empty ? 0
-    : LEDGER.filter((e) => e.kind === 'earning' && e.status === 'settled' && /^(Today|Yesterday)/.test(e.date))
+    : LEDGER.filter((e) => e.kind === 'earning' && e.status === 'settled' && (e.band === 'today' || e.band === 'yesterday'))
         .reduce((s, e) => s + e.amount, 0);
-  const withdrawn = LEDGER.filter((e) => e.kind === 'withdrawal').reduce((s, e) => s + e.amount, 0);
+  const withdrawn = empty ? 0
+    : LEDGER.filter((e) => e.kind === 'withdrawal').reduce((s, e) => s + e.amount, 0);
   const total = empty ? 0 : available + withdrawn;
 
   const belowFloor = available < WITHDRAW_MIN;
@@ -179,7 +188,7 @@ export function Wallet() {
 
         {/* Weekly 7-pill filter — drives the ledger below */}
         <div style={{ display: 'flex', gap: 'var(--space-2)', marginBottom: 'var(--space-7)', overflowX: 'auto', paddingBottom: 'var(--space-1)' }}>
-          {WEEKDAYS.map((d) => (
+          {ACTIVE_DAYS.map((d) => (
             <Button
               key={d}
               size="sm"
@@ -214,7 +223,7 @@ export function Wallet() {
       </div>
 
       {/* Sticky withdraw */}
-      <div className="fixed bottom-16 left-0 right-0 px-6 py-4 z-40"
+      <div className="fixed bottom-20 left-0 right-0 px-6 py-4 z-40"
         style={{ background: 'linear-gradient(to bottom, transparent, var(--surface-ground) 34%)' }}>
         {belowFloor && !empty && (
           <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-4)', marginBottom: 'var(--space-5)', justifyContent: 'center' }}>

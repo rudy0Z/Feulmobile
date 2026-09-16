@@ -8,7 +8,7 @@ import { tierName, nextTierName } from '../lib/tier';
 import { useSession } from '../lib/session';
 
 const dataVaultItems = [
-  { id: 'ds-1', dataset: 'Customer Service Dataset 1', submitted: 'Jan 12, 2026', clips: 42, status: 'Active' },
+  { id: 'ds-1', dataset: 'Customer Service Dataset 1', submitted: '2 weeks ago', clips: 42, status: 'Active' },
 ];
 
 const menuItems = [
@@ -22,8 +22,8 @@ export function Profile() {
   const [roleSwitcherOpen, setRoleSwitcherOpen] = useState(false);
   const [showRevokeSheet, setShowRevokeSheet]   = useState(false);
 
-  const standingLevel = profile?.standing?.level ?? 3;
-  const reliability   = profile?.standing?.reliability ?? 78;
+  const standingLevel = profile?.standing?.level ?? 1;
+  const reliability   = profile?.standing?.reliability ?? 0;
 
   return (
     <div className="min-h-screen pb-6" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
@@ -69,7 +69,7 @@ export function Profile() {
         </div>
       </div>
 
-      {/* Stats — lifetime figures */}
+      {/* Stats — THIS MONTH, derived from the session (never hardcoded figures) */}
       <div className="px-6 mb-6">
         <div
           className="flex items-center justify-between"
@@ -82,18 +82,18 @@ export function Profile() {
           }}
         >
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>₹1,250</p>
+            <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>₹{Math.round(profile?.walletBalance ?? 0)}</p>
             <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 'var(--space-3)'}}>Earned</p>
           </div>
           <div style={{ width: 1, height: 36, background: 'var(--divider)' }} />
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>23</p>
-            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 'var(--space-3)'}}>Jobs</p>
+            <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>{Math.round(reliability)}%</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 'var(--space-3)'}}>Reliability</p>
           </div>
           <div style={{ width: 1, height: 36, background: 'var(--divider)' }} />
           <div className="text-center flex-1">
-            <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1 }}>94%</p>
-            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 'var(--space-3)'}}>Acceptance</p>
+            <p style={{ fontSize: 'var(--fs-subhead)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.2, paddingTop: 'var(--space-2)' }}>{tierName(standingLevel)}</p>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', letterSpacing: '0.06em', textTransform: 'uppercase', marginTop: 'var(--space-3)'}}>Standing</p>
           </div>
         </div>
       </div>
@@ -332,7 +332,7 @@ export function Profile() {
             transition={{ type: 'spring', stiffness: 400, damping: 30 }}
             onClick={() => navigate('/validator-apply')}
             style={{
-              width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
+              width: '100%', background: 'var(--surface-raised)', borderRadius: 'var(--r-md)',
               border: '1px solid var(--border-subtle)', padding: 'var(--space-9)',
               display: 'flex', alignItems: 'center', gap: 'var(--space-8)', cursor: 'pointer',
               textAlign: 'left',

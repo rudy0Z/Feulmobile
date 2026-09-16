@@ -25,14 +25,20 @@ export function MainApp() {
       </div>
 
       <nav
-        className="fixed bottom-0 left-0 right-0 z-50"
-        style={{
-          background: 'color-mix(in srgb, var(--surface-raised) 88%, transparent)',
-          backdropFilter: 'blur(20px) saturate(140%)',
-          WebkitBackdropFilter: 'blur(20px) saturate(140%)',
-        }}
+        className="fixed bottom-4 left-0 right-0 z-50 flex justify-center px-6"
+        aria-label="Primary"
       >
-        <div className="flex justify-around items-center max-w-md mx-auto" style={{ height: 64 }}>
+        <div
+          className="flex items-center"
+          style={{
+            height: 64, padding: '0 var(--space-3)', gap: 'var(--space-1)',
+            borderRadius: 'var(--r-full)',
+            background: 'color-mix(in srgb, var(--surface-raised) 86%, transparent)',
+            backdropFilter: 'blur(20px) saturate(140%)',
+            WebkitBackdropFilter: 'blur(20px) saturate(140%)',
+            boxShadow: 'var(--e-2)',
+          }}
+        >
           {navItems.map((item) => {
             const Icon   = item.icon;
             const active = isActive(item.path);
@@ -40,12 +46,13 @@ export function MainApp() {
               <motion.button
                 key={item.path}
                 onClick={() => navigate(item.path)}
+                aria-current={active ? 'page' : undefined}
                 whileTap={{ scale: 0.92 }}
                 transition={{ type: 'spring', stiffness: 400, damping: 28 }}
-                className="relative flex flex-col items-center justify-center flex-1 h-full gap-0.5"
-                style={{ minWidth: 48, minHeight: 48 }}
+                className="relative flex flex-col items-center justify-center gap-0.5"
+                style={{ minWidth: 56, minHeight: 44, padding: '0 var(--space-4)' }}
               >
-                <div className="relative flex items-center justify-center" style={{ width: 44, height: 28 }}>
+                <div className="relative flex items-center justify-center" style={{ width: 44, height: 26 }}>
                   {active && (
                     <motion.div
                       layoutId="nav-active-pill"
@@ -59,7 +66,7 @@ export function MainApp() {
                   )}
                   <Icon
                     style={{ color: active ? 'var(--action-primary)' : 'var(--text-muted)', position: 'relative', zIndex: 1 }}
-                    className="w-[22px] h-[22px]"
+                    className="w-[20px] h-[20px]"
                     strokeWidth={active ? 2.4 : 1.75}
                     fill={active ? 'var(--action-primary-soft)' : 'none'}
                   />

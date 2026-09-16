@@ -25,7 +25,7 @@ const PERKS: Perk[] = [
   { id: 'verified-badge', name: 'Verified profile badge', description: 'A verified mark on your profile so labs know your work is trusted.', icon: 'badge', unlocksAt: 2 },
   { id: 'early-access',   name: 'Early access to campaigns', description: 'See and claim new high-coverage campaigns a day before they open widely.', icon: 'zap', unlocksAt: 3 },
   { id: 'priority-review', name: 'Priority review', description: 'Your submitted clips move to the front of the review queue — settle sooner.', icon: 'clock', unlocksAt: 3 },
-  { id: 'elite-circle',   name: 'Elite contributor circle', description: 'Direct line to campaign creators and a say in what gets built next.', icon: 'sparkles', unlocksAt: 4 },
+  { id: 'elite-circle',   name: 'Elite contributor circle', description: 'Direct line to the labs that commission the work, and a say in what gets built next.', icon: 'sparkles', unlocksAt: 4 },
 ];
 
 interface Badge {
@@ -74,7 +74,7 @@ export function Rewards() {
     background: 'var(--surface-raised)',
     borderRadius: 'var(--r-md)',
     border: '1px solid var(--border-subtle)',
-    boxShadow: 'var(--e-1)',
+    boxShadow: 'var(--e-0)',
   };
 
   return (
@@ -167,8 +167,8 @@ export function Rewards() {
                       onClick={() => activatePerk(perk)}
                       style={{
                         display: 'inline-flex', alignItems: 'center', gap: 'var(--space-3)',
-                        fontSize: 'var(--fs-secondary)', fontWeight: 700, padding: 'var(--space-3) var(--space-8)',
-                        borderRadius: 'var(--r-full)', border: 'none', cursor: 'pointer',
+                        fontSize: 'var(--fs-secondary)', fontWeight: 700, padding: '0 var(--space-9)',
+                        minHeight: 'var(--tap)', borderRadius: 'var(--r-full)', border: 'none', cursor: 'pointer',
                         background: 'var(--action-primary)', color: 'var(--text-on-accent)',
                       }}
                     >

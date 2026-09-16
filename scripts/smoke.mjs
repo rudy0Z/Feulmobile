@@ -1,4 +1,4 @@
-#!/usr/bin/env node
+﻿#!/usr/bin/env node
 /**
  * smoke.mjs — render every route in a real browser and fail on any error.
  *
@@ -54,6 +54,7 @@ const ROUTES = [
   '/contributor/quality-dispute',
   '/contributor/battery-warning',
   '/earning-celebration',
+  '/contributor/credited',
   '/validator',
   '/validator/tasks',
   '/validator/wallet',
@@ -138,3 +139,4 @@ for (const route of ROUTES) {
 await browser.close();
 console.log(`\n${ROUTES.length - failures}/${ROUTES.length} routes render clean`);
 process.exit(failures ? 1 : 0);
+
