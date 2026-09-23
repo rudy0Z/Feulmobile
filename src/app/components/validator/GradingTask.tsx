@@ -14,14 +14,16 @@ import { ThumbArc } from './grading-variants/ThumbArc';
 import { KeyboardGrade } from './grading-variants/KeyboardGrade';
 import { BinaryFlag } from './grading-variants/BinaryFlag';
 import { UndoToast } from './UndoToast';
+import { durations } from '../../lib/motion';
+import { IconButton } from '../ui/Primitives';
 
 // Grade definitions
 const gradeOptions = [
   { id: 1, label: 'Not Usable', description: 'Unusable for training',                   color: 'var(--state-failed)' },
-  { id: 2, label: 'Poor',       description: 'Multiple quality issues',                  color: 'var(--accent-primary-deep)' },
-  { id: 3, label: 'Neutral',    description: 'Acceptable with some issues',              color: 'var(--t-ochre-700)' },
+  { id: 2, label: 'Poor',       description: 'Multiple quality issues',                  color: 'var(--action-primary-pressed)' },
+  { id: 3, label: 'Neutral',    description: 'Acceptable with some issues',              color: 'var(--state-pending-deep)' },
   { id: 4, label: 'Good',       description: 'Good quality, minor issues acceptable',    color: 'var(--color-success)' },
-  { id: 5, label: 'Perfect',    description: 'Clear, accurate, no issues',               color: 'var(--t-verdigris-700)' },
+  { id: 5, label: 'Perfect',    description: 'Clear, accurate, no issues',               color: 'var(--state-settled-deep)' },
 ];
 
 const sampleClips = [
@@ -35,7 +37,6 @@ const CONSENSUS_MISMATCH_GRADE = 'Not Usable';
 const cardStyle = {
   background: 'var(--surface-raised)',
   borderRadius: 'var(--r-md)',
-  border: '1px solid var(--border-subtle)',
   boxShadow: 'var(--e-2)',
 };
 
@@ -185,20 +186,20 @@ export function GradingTask() {
         style={{
           background: 'var(--surface-raised)',
           borderBottom: '1px solid var(--border-subtle)',
-          padding: '64px 24px 16px',
+          padding: 'var(--space-14) var(--space-10) var(--space-8)',
         }}
       >
-        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--accent-primary)', padding: '4px 0', marginBottom: 10 }}>
+        <button onClick={() => navigate(-1)} style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: 'var(--space-2) 0', marginBottom: 'var(--space-5)'}}>
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
         <div className="flex items-center justify-between mb-4">
-          <h2 style={{ fontFamily: 'var(--font-ui)', fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <h2 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-subhead)', fontWeight: 700, color: 'var(--text-primary)' }}>
             Hindi — Waiter Scenario
           </h2>
 
           <button
             onClick={handleSkip}
-            style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer' }}
+            style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', background: 'none', border: 'none', cursor: 'pointer' }}
             disabled={currentClip === sampleClips.length - 1}
           >
             Skip
@@ -207,15 +208,15 @@ export function GradingTask() {
 
         {/* Progress */}
         <div className="flex items-center justify-between mb-2">
-          <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>Progress</span>
-          <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>
+          <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)' }}>Progress</span>
+          <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)' }}>
             {gradedClips.length} / {sampleClips.length} graded
           </span>
         </div>
-        <div style={{ background: 'var(--neutral-100)', borderRadius: 'var(--r-full)', height: 6 }}>
+        <div style={{ background: 'var(--surface-sunken)', borderRadius: 'var(--r-full)', height: 6 }}>
           <div
             style={{
-              background: 'linear-gradient(90deg, var(--t-verdigris-700), var(--t-verdigris-500))',
+              background: 'var(--state-settled)',
               borderRadius: 'var(--r-full)', height: 6,
               width: `${progress}%`,
               transition: 'width 0.4s ease',
@@ -238,10 +239,10 @@ export function GradingTask() {
         <div className="flex justify-center mb-5">
           <span
             style={{
-              padding: '6px 18px', borderRadius: 'var(--r-full)',
+              padding: 'var(--space-3) var(--space-8)', borderRadius: 'var(--r-full)',
               background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
-              fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)',
-              boxShadow: 'var(--e-2)',
+              fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)',
+              /* A progress chip, not a hero — the audio player below owns e-2. */
             }}
           >
             Clip {currentClip + 1} of {sampleClips.length}
@@ -249,9 +250,9 @@ export function GradingTask() {
         </div>
 
         {/* Transcript Card */}
-        <div style={{ ...cardStyle, padding: '20px', marginBottom: 20 }}>
-          <p style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', marginBottom: 8, textTransform: 'uppercase', letterSpacing: '0.5px' }}>Transcript</p>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-primary)', lineHeight: 1.65 }}>{clip.text}</p>
+        <div style={{ ...cardStyle, padding: 'var(--space-9)', marginBottom: 'var(--space-9)'}}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)', marginBottom: 'var(--space-4)', textTransform: 'uppercase', letterSpacing: '0.5px' }}>Transcript</p>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-primary)', lineHeight: 1.65 }}>{clip.text}</p>
         </div>
 
         {/* Audio Player */}
@@ -260,35 +261,35 @@ export function GradingTask() {
             background: 'var(--surface-studio)',
             borderRadius: 'var(--r-md)',
             border: 'none',
-            padding: '22px',
-            marginBottom: 24,
+            padding: 'var(--space-9)',
+            marginBottom: 'var(--space-10)',
             boxShadow: 'var(--e-2)',
           }}
         >
           {/* Waveform */}
           <div
-            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 3, height: 96, marginBottom: 16 }}
+            style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-1)', height: 96, marginBottom: 'var(--space-8)'}}
           >
             {[...Array(36)].map((_, i) => (
               <motion.div
                 key={i}
-                style={{ width: 3, background: isPlaying ? 'var(--t-verdigris-500)' : 'rgba(255,255,255,0.15)', borderRadius: 4 }}
+                style={{ width: 3, background: isPlaying ? 'var(--state-settled)' : 'rgba(var(--bone-0-rgb),0.15)', borderRadius: 'var(--r-xs)' }}
                 animate={{ height: isPlaying ? [Math.random() * 64 + 14, Math.random() * 64 + 14] : 24 }}
-                transition={{ duration: 0.35, repeat: isPlaying ? Infinity : 0, repeatType: 'reverse', delay: i * 0.02 }}
+                transition={{ duration: durations.slow, repeat: isPlaying ? Infinity : 0, repeatType: 'reverse', delay: i * 0.02 }}
               />
             ))}
           </div>
 
           {/* Controls */}
           <div className="flex items-center justify-between mb-3">
-            <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-on-studio)' }}>00:00</span>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-on-studio)' }}>00:00</span>
             <button
               onClick={() => setIsPlaying(!isPlaying)}
               style={{
                 width: 56, height: 56, borderRadius: '50%',
-                background: 'var(--accent-primary-deep)',
+                background: 'var(--action-primary-pressed)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
-                boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.30)',
+                boxShadow: '0px 4px 16px rgba(var(--terracotta-600-rgb),0.30)',
                 border: 'none', cursor: 'pointer',
               }}
             >
@@ -297,20 +298,20 @@ export function GradingTask() {
                 : <Play  className="w-6 h-6 text-white" style={{ fill: 'var(--text-on-studio)' }} />
               }
             </button>
-            <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-on-studio)' }}>{clip.duration}</span>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-on-studio)' }}>{clip.duration}</span>
           </div>
 
           <div className="flex items-center gap-3">
             <Volume2 className="w-4 h-4" style={{ color: 'var(--text-on-studio)' }} />
-            <div style={{ flex: 1, background: 'rgba(255,255,255,0.08)', borderRadius: 'var(--r-full)', height: 4 }}>
-              <div style={{ background: 'var(--accent-primary-deep)', borderRadius: 'var(--r-full)', height: 4, width: '72%' }} />
+            <div style={{ flex: 1, background: 'rgba(var(--bone-0-rgb),0.08)', borderRadius: 'var(--r-full)', height: 4 }}>
+              <div style={{ background: 'var(--action-primary-pressed)', borderRadius: 'var(--r-full)', height: 4, width: '72%' }} />
             </div>
           </div>
         </div>
 
         {/* ── Grading Section ────────────────────────────────────────────────── */}
         <div className="mb-4">
-          <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 20, fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', marginBottom: 16 }}>
+          <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-section)', fontWeight: 700, color: 'var(--text-primary)', textAlign: 'center', marginBottom: 'var(--space-8)'}}>
             Grade this clip
           </h3>
 
@@ -318,9 +319,9 @@ export function GradingTask() {
           {showKeyboardTip && !tipDismissed && (
             <div
               className="flex items-center justify-between px-3 py-2 rounded-xl mb-4"
-              style={{ background: 'var(--neutral-100)', border: '1px solid var(--border-subtle)' }}
+              style={{ background: 'var(--surface-sunken)', border: '1px solid var(--border-subtle)' }}
             >
-              <span className="flex items-center gap-2" style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-secondary)' }}>
+              <span className="flex items-center gap-2" style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-secondary)' }}>
                 <Keyboard className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
                 Press <strong>1–5</strong> to grade faster
               </span>
@@ -339,13 +340,13 @@ export function GradingTask() {
             <button
               onClick={() => setFlaggedFraud(!flaggedFraud)}
               style={{
-                marginTop: 12, width: '100%',
-                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-                padding: '12px', borderRadius: 'var(--r-full)',
+                marginTop: 'var(--space-6)', width: '100%',
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
+                padding: 'var(--space-6)', borderRadius: 'var(--r-full)',
                 border: flaggedFraud ? '2px solid var(--state-failed)' : '1.5px dashed var(--border-strong)',
-                background: flaggedFraud ? 'var(--status-error-bg)' : 'transparent',
-                color: flaggedFraud ? 'var(--status-error-text)' : 'var(--text-muted)',
-                fontSize: 13, fontWeight: 600, cursor: 'pointer', transition: 'all 0.15s',
+                background: flaggedFraud ? 'var(--state-failed-container)' : 'transparent',
+                color: flaggedFraud ? 'var(--state-failed)' : 'var(--text-muted)',
+                fontSize: 'var(--fs-secondary)', fontWeight: 600, cursor: 'pointer', transition: 'background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.15s ease-out',
               }}
             >
               <Flag className="w-4 h-4" />
@@ -364,18 +365,18 @@ export function GradingTask() {
             exit={{ opacity: 0 }}
             style={{
               position: 'fixed', inset: 0,
-              background: 'var(--t-verdigris-50)',
+              background: 'var(--state-settled-container)',
               zIndex: 100,
               pointerEvents: 'none',
               display: 'flex', alignItems: 'center', justifyContent: 'center'
             }}
           >
             <motion.div
-              initial={{ scale: 0.5, opacity: 0 }}
+              initial={{ scale: 0.96, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               style={{
-                background: 'var(--color-success)', padding: '16px 24px', borderRadius: 'var(--r-full)',
-                display: 'flex', alignItems: 'center', gap: 10,
+                background: 'var(--state-settled-container)', padding: 'var(--space-8) var(--space-10)', borderRadius: 'var(--r-full)',
+                display: 'flex', alignItems: 'center', gap: 'var(--space-5)',
                 boxShadow: 'var(--e-3)'
               }}
             >
@@ -400,33 +401,29 @@ export function GradingTask() {
               transition={{ type: 'spring', damping: 28, stiffness: 340 }}
               style={{
                 position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 301,
-                background: 'var(--surface-raised)', borderRadius: '32px 32px 0 0',
-                padding: '28px 24px 40px',
+                background: 'var(--surface-raised)', borderRadius: 'var(--sheet-top) var(--sheet-top) 0 0',
+                padding: 'var(--space-11) var(--space-10) var(--space-13)',
                 maxWidth: 480, margin: '0 auto',
                 boxShadow: 'var(--e-3)',
               }}
             >
-              <div style={{ width: 36, height: 4, borderRadius: 2, background: 'var(--border-subtle)', margin: '0 auto 24px' }} />
-              <button
+              <div style={{ width: 36, height: 4, borderRadius: 'var(--r-xs)', background: 'var(--border-subtle)', margin: '0 auto 24px' }} />
+              <IconButton
+                label="Close"
                 onClick={() => { setShowConsensusMismatch(false); setSelectedGrade(null); dev.dismissOverlay(); }}
-                style={{
-                  position: 'absolute', top: 24, right: 24,
-                  width: 32, height: 32, borderRadius: '50%',
-                  background: 'var(--neutral-100)', border: 'none',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-                }}
+                style={{ position: 'absolute', top: 24, right: 24 }}
               >
-                <X className="w-4 h-4" style={{ color: 'var(--text-secondary)' }} />
-              </button>
+                <X size={18} style={{ color: 'var(--text-secondary)' }} aria-hidden />
+              </IconButton>
 
-              <div style={{ width: 52, height: 52, borderRadius: 'var(--r-md)', background: 'var(--warning-50)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 16 }}>
-                <AlertTriangle className="w-6 h-6" style={{ color: 'var(--t-ochre-700)' }} />
+              <div style={{ width: 52, height: 52, borderRadius: 'var(--r-md)', background: 'var(--state-pending-container)', display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-8)'}}>
+                <AlertTriangle className="w-6 h-6" style={{ color: 'var(--state-pending-deep)' }} />
               </div>
 
-              <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', marginBottom: 10 }}>
+              <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-primary)', marginBottom: 'var(--space-5)'}}>
                 Your grade differs from others
               </h3>
-              <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: 20 }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.65, marginBottom: 'var(--space-9)'}}>
                 You graded this clip{' '}
                 <strong style={{ color: 'var(--text-primary)' }}>'{selectedGradeObj?.label}'</strong>.
                 Two other validators graded it{' '}
@@ -437,38 +434,34 @@ export function GradingTask() {
               {/* Mini audio player */}
               <div
                 style={{
-                  background: 'var(--background)', borderRadius: 'var(--r-md)',
+                  background: 'var(--surface-ground)', borderRadius: 'var(--r-md)',
                   border: '1px solid var(--border-subtle)',
-                  padding: '14px 18px',
-                  display: 'flex', alignItems: 'center', gap: 12, marginBottom: 20,
+                  padding: 'var(--space-7) var(--space-8)',
+                  display: 'flex', alignItems: 'center', gap: 'var(--space-6)', marginBottom: 'var(--space-9)',
                 }}
               >
-                <button
+                <IconButton
+                  label={isPlaying ? 'Pause playback' : 'Play recording'}
                   onClick={() => setIsPlaying(!isPlaying)}
-                  style={{
-                    width: 40, height: 40, borderRadius: '50%',
-                    background: 'var(--accent-primary)',
-                    border: 'none', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', flexShrink: 0,
-                    boxShadow: '0px 4px 12px rgba(var(--accent-glow-rgb),0.3)',
-                  }}
+                  variant="accent-soft"
+                  style={{ background: 'var(--action-primary)', color: 'var(--text-on-accent)', boxShadow: 'var(--e-3)' }}
                 >
                   {isPlaying
-                    ? <Pause className="w-4 h-4 text-white" style={{ fill: 'var(--text-on-accent)' }} />
-                    : <Play  className="w-4 h-4 text-white" style={{ fill: 'var(--text-on-accent)' }} />
+                    ? <Pause size={18} style={{ fill: 'var(--text-on-accent)' }} aria-hidden />
+                    : <Play size={18} style={{ fill: 'var(--text-on-accent)' }} aria-hidden />
                   }
-                </button>
-                <div style={{ display: 'flex', alignItems: 'center', gap: 2, flex: 1 }}>
+                </IconButton>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 'var(--space-1)', flex: 1 }}>
                   {[...Array(24)].map((_, i) => (
                     <motion.div
                       key={i}
-                      style={{ flex: 1, background: isPlaying ? 'var(--accent-primary)' : 'var(--border-subtle)', borderRadius: 2 }}
+                      style={{ flex: 1, background: isPlaying ? 'var(--action-primary)' : 'var(--border-subtle)', borderRadius: 'var(--r-xs)' }}
                       animate={{ height: isPlaying ? [Math.random() * 28 + 8, Math.random() * 28 + 8] : 12 }}
-                      transition={{ duration: 0.3, repeat: isPlaying ? Infinity : 0, repeatType: 'reverse' }}
+                      transition={{ duration: durations.slow, repeat: isPlaying ? Infinity : 0, repeatType: 'reverse' }}
                     />
                   ))}
                 </div>
-                <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', flexShrink: 0 }}>{clip.duration}</span>
+                <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)', flexShrink: 0 }}>{clip.duration}</span>
               </div>
 
               <div className="flex gap-3">
@@ -481,9 +474,9 @@ export function GradingTask() {
                     navigate('/validator/disagreement/' + (taskId ?? 'clip'));
                   }}
                   style={{
-                    flex: 1, padding: '14px', borderRadius: 'var(--r-full)',
-                    background: 'var(--neutral-100)', border: '1.5px solid var(--border-subtle)',
-                    color: 'var(--text-secondary)', fontSize: 14, fontWeight: 700, cursor: 'pointer',
+                    flex: 1, padding: 'var(--space-7)', borderRadius: 'var(--r-full)',
+                    background: 'var(--surface-sunken)', border: '1.5px solid var(--border-subtle)',
+                    color: 'var(--text-secondary)', fontSize: 'var(--fs-secondary)', fontWeight: 700, cursor: 'pointer',
                   }}
                 >
                   Keep My Grade
@@ -491,10 +484,10 @@ export function GradingTask() {
                 <button
                   onClick={() => { setShowConsensusMismatch(false); setSelectedGrade(null); dev.dismissOverlay(); }}
                   style={{
-                    flex: 1, padding: '14px', borderRadius: 'var(--r-full)',
-                    background: 'var(--accent-primary)', border: 'none',
-                    color: 'var(--text-on-accent)', fontSize: 14, fontWeight: 700, cursor: 'pointer',
-                    boxShadow: '0px 4px 12px rgba(var(--accent-glow-rgb),0.3)',
+                    flex: 1, padding: 'var(--space-7)', borderRadius: 'var(--r-full)',
+                    background: 'var(--action-primary)', border: 'none',
+                    color: 'var(--text-on-accent)', fontSize: 'var(--fs-secondary)', fontWeight: 700, cursor: 'pointer',
+                    boxShadow: '0px 4px 12px rgba(var(--terracotta-500-rgb),0.3)',
                   }}
                 >
                   Change Grade

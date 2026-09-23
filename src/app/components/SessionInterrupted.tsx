@@ -1,6 +1,8 @@
-import { useNavigate } from 'react-router';
+﻿import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { ChevronLeft, PhoneOff, Users, Clock, Play, RotateCcw, Save } from 'lucide-react';
+import { IconButton } from './ui/Primitives';
+import { durations } from '../lib/motion';
 
 // C-04 (P1) — A long multi-person ROOM recording was interrupted at 19:04 of ~25:00
 // (a call came in / app backgrounded). Four people gave up their evening and ₹220 is at
@@ -8,7 +10,7 @@ import { ChevronLeft, PhoneOff, Users, Clock, Play, RotateCcw, Save } from 'luci
 // a resume path within 24h — after which the local copy is cleared. Also surfaced on Home as
 // an active-assignment row.
 
-const PARTICIPANTS = ['Asha', 'Ravi', 'Meena', 'Iqbal'];
+const PARTICIPANTS = ['Speaker 1', 'Speaker 2', 'Speaker 3', 'Speaker 4'];
 const PRESERVED_PCT = (19 * 60 + 4) / (25 * 60); // 19:04 of ~25:00
 
 export function SessionInterrupted() {
@@ -21,46 +23,38 @@ export function SessionInterrupted() {
     >
       {/* Header */}
       <div className="px-6 pt-14 pb-2">
-        <button
-          onClick={() => navigate(-1)}
-          aria-label="Go back"
-          style={{
-            width: 40, height: 40, borderRadius: 'var(--r-full)',
-            background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-          }}
-        >
-          <ChevronLeft className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
-        </button>
+        <IconButton label="Go back" onClick={() => navigate(-1)} variant="surface">
+        <ChevronLeft style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
+      </IconButton>
       </div>
 
       {/* Reassurance hero */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
+        transition={{ duration: durations.enter, ease: 'easeOut' }}
         className="mx-6 mt-3"
         style={{
           background: 'var(--surface-studio)',
           borderRadius: 'var(--r-lg)',
-          padding: '28px 24px',
+          padding: 'var(--space-11) var(--space-10)',
           boxShadow: 'var(--e-3)',
         }}
       >
         <div style={{
           width: 56, height: 56, borderRadius: 'var(--r-full)',
-          background: 'var(--t-verdigris-50)',
-          display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 18,
+          background: 'var(--state-settled-container)',
+          display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: 'var(--space-8)',
         }}>
           <Save className="w-7 h-7" style={{ color: 'var(--state-settled)' }} strokeWidth={1.8} />
         </div>
         <h1 style={{
-          fontSize: 25, fontWeight: 800, letterSpacing: '-0.015em', lineHeight: 1.2,
-          color: 'var(--text-on-studio)', marginBottom: 10,
+          fontSize: 'var(--fs-title)', fontWeight: 800, letterSpacing: '-0.015em', lineHeight: 1.2,
+          color: 'var(--text-on-studio)', marginBottom: 'var(--space-5)',
         }}>
           Your 19-minute take is saved.
         </h1>
-        <p style={{ fontSize: 14.5, fontWeight: 500, lineHeight: 1.55, color: 'var(--text-on-studio)', opacity: 0.82 }}>
+        <p style={{ fontSize: 'var(--fs-body)', fontWeight: 500, lineHeight: 1.55, color: 'var(--text-on-studio)', opacity: 0.82 }}>
           A call came in and the recording stopped early — but nothing is lost. Every minute
           you all recorded is safe on this phone.
         </p>
@@ -72,24 +66,23 @@ export function SessionInterrupted() {
         style={{
           background: 'var(--surface-raised)',
           borderRadius: 'var(--r-md)',
-          border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
           overflow: 'hidden',
         }}
       >
         <div style={{ padding: '20px 20px 18px' }}>
           {/* Interruption cause — plain */}
-          <div className="flex items-center gap-2" style={{ marginBottom: 16 }}>
+          <div className="flex items-center gap-2" style={{ marginBottom: 'var(--space-8)'}}>
             <PhoneOff className="w-4 h-4" style={{ color: 'var(--text-muted)' }} strokeWidth={1.9} />
-            <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-muted)' }}>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)' }}>
               Interrupted at minute 19 — a call came in.
             </span>
           </div>
 
           {/* Duration preserved */}
-          <div className="flex items-baseline justify-between" style={{ marginBottom: 8 }}>
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>Preserved</span>
-            <span style={{ fontFamily: 'var(--font-number)', fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>
+          <div className="flex items-baseline justify-between" style={{ marginBottom: 'var(--space-4)'}}>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)' }}>Preserved</span>
+            <span style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)' }}>
               19:04 <span style={{ color: 'var(--text-faint)', fontWeight: 500 }}>of ~25:00</span>
             </span>
           </div>
@@ -97,7 +90,7 @@ export function SessionInterrupted() {
           {/* Progress bar */}
           <div style={{
             width: '100%', height: 8, borderRadius: 'var(--r-full)',
-            background: 'var(--surface-sunken)', overflow: 'hidden', marginBottom: 20,
+            background: 'var(--surface-sunken)', overflow: 'hidden', marginBottom: 'var(--space-9)',
           }}>
             <motion.div
               initial={{ width: 0 }}
@@ -108,20 +101,20 @@ export function SessionInterrupted() {
           </div>
 
           {/* Participants */}
-          <div className="flex items-center gap-2" style={{ marginBottom: 6 }}>
+          <div className="flex items-center gap-2" style={{ marginBottom: 'var(--space-3)'}}>
             <Users className="w-4 h-4" style={{ color: 'var(--text-muted)' }} strokeWidth={1.9} />
-            <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)' }}>
               4 people in this take
             </span>
           </div>
-          <div className="flex flex-wrap gap-2" style={{ marginBottom: 4 }}>
+          <div className="flex flex-wrap gap-2" style={{ marginBottom: 'var(--space-2)'}}>
             {PARTICIPANTS.map((name) => (
               <span
                 key={name}
                 style={{
-                  fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)',
+                  fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-secondary)',
                   background: 'var(--surface-sunken)', border: '1px solid var(--border-subtle)',
-                  borderRadius: 'var(--r-full)', padding: '4px 12px',
+                  borderRadius: 'var(--r-full)', padding: 'var(--space-2) var(--space-6)',
                 }}
               >
                 {name}
@@ -135,14 +128,14 @@ export function SessionInterrupted() {
           className="flex items-center justify-between"
           style={{
             borderTop: '1px solid var(--divider)',
-            background: 'var(--t-verdigris-50)',
-            padding: '14px 20px',
+            background: 'var(--state-settled-container)',
+            padding: 'var(--space-7) var(--space-9)',
           }}
         >
-          <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-secondary)' }}>
+          <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)' }}>
             Riding on this take
           </span>
-          <span style={{ fontFamily: 'var(--font-number)', fontSize: 18, fontWeight: 800, color: 'var(--money-pending)' }}>
+          <span style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-subhead)', fontWeight: 800, color: 'var(--money-pending)' }}>
             ₹220
           </span>
         </div>
@@ -152,18 +145,18 @@ export function SessionInterrupted() {
       <div
         className="mx-6 mt-4 flex items-start gap-3"
         style={{
-          background: 'var(--t-ochre-50)',
+          background: 'var(--state-pending-container)',
           border: '1px solid var(--border-subtle)',
           borderRadius: 'var(--r-md)',
-          padding: '16px 18px',
+          padding: 'var(--space-8) var(--space-8)',
         }}
       >
-        <Clock className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--state-pending)', marginTop: 1 }} strokeWidth={1.9} />
+        <Clock className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--state-pending)', marginTop: 'var(--space-0)'}} strokeWidth={1.9} />
         <div>
-          <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>
             Resume within 24 hours
           </p>
-          <p style={{ fontSize: 13, fontWeight: 500, lineHeight: 1.5, color: 'var(--text-secondary)' }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, lineHeight: 1.5, color: 'var(--text-secondary)' }}>
             <span style={{ fontFamily: 'var(--font-number)', fontWeight: 700, color: 'var(--state-pending)' }}>23h 41m left</span>
             {' '}— after that, this phone clears the local copy to free up space.
           </p>
@@ -178,8 +171,8 @@ export function SessionInterrupted() {
           style={{
             width: '100%', height: 54, borderRadius: 'var(--r-full)',
             background: 'var(--action-primary)', color: 'var(--text-on-accent)',
-            border: 'none', cursor: 'pointer', fontSize: 16, fontWeight: 800,
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 9,
+            border: 'none', cursor: 'pointer', fontSize: 'var(--fs-body)', fontWeight: 800,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
             boxShadow: 'var(--e-glow)',
           }}
         >
@@ -189,9 +182,9 @@ export function SessionInterrupted() {
         <button
           onClick={() => navigate('/contributor')}
           style={{
-            width: '100%', marginTop: 14, background: 'none', border: 'none', cursor: 'pointer',
-            fontSize: 14, fontWeight: 600, color: 'var(--text-muted)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 7,
+            width: '100%', marginTop: 'var(--space-7)', background: 'none', border: 'none', cursor: 'pointer',
+            fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-3)',
           }}
         >
           <RotateCcw className="w-4 h-4" strokeWidth={1.9} /> Discard and start over
@@ -201,10 +194,11 @@ export function SessionInterrupted() {
       {/* Home note */}
       <p
         className="mx-6 mt-6 text-center"
-        style={{ fontSize: 12, fontWeight: 500, lineHeight: 1.5, color: 'var(--text-faint)', paddingBottom: 40 }}
+        style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, lineHeight: 1.5, color: 'var(--text-faint)', paddingBottom: 'var(--space-13)'}}
       >
         You’ll also find this waiting as an active-assignment row on your Home.
       </p>
     </div>
   );
 }
+

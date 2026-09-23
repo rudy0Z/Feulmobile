@@ -18,7 +18,7 @@ export function ThumbArc({ selectedGrade, onGrade, gradeOptions }: Props) {
 
   return (
     <div className="w-full">
-      <div className="flex items-end justify-center gap-2.5" style={{ height: 128, paddingTop: 24 }}>
+      <div className="flex items-end justify-center gap-2.5" style={{ height: 128, paddingTop: 'var(--space-10)'}}>
         {gradeOptions.map((opt, i) => {
           const isSelected = selectedGrade === opt.id;
           return (
@@ -35,7 +35,7 @@ export function ThumbArc({ selectedGrade, onGrade, gradeOptions }: Props) {
                 fontFamily: 'var(--font-number)',
                 fontSize: isSelected ? 22 : 18, fontWeight: 800,
                 cursor: 'pointer', border: 'none',
-                background: isSelected ? opt.color : 'var(--neutral-100)',
+                background: isSelected ? opt.color : 'var(--surface-sunken)',
                 color: isSelected ? 'var(--text-on-studio)' : 'var(--text-secondary)',
                 boxShadow: isSelected ? 'var(--e-3)' : 'var(--e-1)',
                 transition: 'background 0.15s, color 0.15s, font-size 0.12s',
@@ -47,14 +47,14 @@ export function ThumbArc({ selectedGrade, onGrade, gradeOptions }: Props) {
         })}
       </div>
 
-      <div style={{ minHeight: 44, marginTop: 8, textAlign: 'center' }}>
+      <div style={{ minHeight: 44, marginTop: 'var(--space-4)', textAlign: 'center' }}>
         {selected ? (
           <motion.div initial={{ opacity: 0, y: 4 }} animate={{ opacity: 1, y: 0 }}>
-            <span style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>{selected.label}</span>
-            <span style={{ display: 'block', fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 1 }}>{selected.description}</span>
+            <span style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)' }}>{selected.label}</span>
+            <span style={{ display: 'block', fontSize: 'var(--fs-caption)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-0)'}}>{selected.description}</span>
           </motion.div>
         ) : (
-          <span style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}>Tap a score — 1 poor, 5 perfect</span>
+          <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>Tap a score — 1 poor, 5 perfect</span>
         )}
       </div>
     </div>

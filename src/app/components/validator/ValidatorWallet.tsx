@@ -36,10 +36,10 @@ const transactions: Transaction[] = [
 ];
 
 const statusConfig: Record<TxStatus, { label: string; bg: string; text: string; icon: React.ElementType }> = {
-  credited:   { label: 'Credited',   bg: 'var(--status-success-bg)', text: 'var(--status-success-text)', icon: CheckCircle2 },
-  pending:    { label: 'Pending',    bg: 'var(--t-ochre-50)', text: 'var(--status-warning-text)', icon: Clock        },
-  processing: { label: 'Processing', bg: 'var(--status-info-bg)', text: 'var(--status-info-text)', icon: Clock        },
-  bonus:      { label: 'Bonus',      bg: 'var(--t-verdigris-50)', text: 'var(--t-verdigris-700)', icon: Star         },
+  credited:   { label: 'Credited',   bg: 'var(--state-settled-container)', text: 'var(--money-positive)', icon: CheckCircle2 },
+  pending:    { label: 'Pending',    bg: 'var(--state-pending-container)', text: 'var(--money-pending)', icon: Clock        },
+  processing: { label: 'Processing', bg: 'var(--surface-sunken)', text: 'var(--text-secondary)', icon: Clock        },
+  bonus:      { label: 'Bonus',      bg: 'var(--state-settled-container)', text: 'var(--state-settled-deep)', icon: Star         },
 };
 
 const totalBalance   = 568.00;
@@ -59,27 +59,27 @@ export function ValidatorWallet() {
   /* ── Empty / New Validator State ── */
   if (dev.validatorWalletEmpty) {
     return (
-      <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-ui)' }}>
+      <div className="min-h-screen pb-28" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
         <div className="px-6 pt-16 pb-4">
-          <h1 style={{ fontFamily: 'var(--font-ui)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
+          <h1 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-display)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
         </div>
 
         {/* Locked Potential Card */}
         <div className="px-6 mb-5">
           <div style={{
-            background: 'var(--surface-studio)', borderRadius: 'var(--r-lg)', padding: '28px 24px',
+            background: 'var(--surface-studio)', borderRadius: 'var(--r-lg)', padding: 'var(--space-11) var(--space-10)',
             position: 'relative', overflow: 'hidden',
           }}>
             <div className="absolute bottom-0 left-0 right-0 pointer-events-none overflow-hidden" style={{ borderRadius: '0 0 24px 24px', opacity: 0.10 }}>
               <Waveform color="var(--text-on-studio)" opacity={1} height={60} variant="precision" />
             </div>
             <div className="relative z-10 flex flex-col items-center text-center">
-              <div style={{ position: 'relative', width: 120, height: 120, marginBottom: 20 }}>
+              <div style={{ position: 'relative', width: 120, height: 120, marginBottom: 'var(--space-9)'}}>
                 <svg width="120" height="120" viewBox="0 0 120 120">
-                  <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(255,255,255,0.06)" strokeWidth="6" strokeDasharray="8 4" />
+                  <circle cx="60" cy="60" r="52" fill="none" stroke="rgba(var(--bone-0-rgb),0.06)" strokeWidth="6" strokeDasharray="8 4" />
                   <motion.circle
                     cx="60" cy="60" r="52" fill="none"
-                    stroke="var(--t-verdigris-500)" strokeWidth="6" strokeLinecap="round"
+                    stroke="var(--state-settled)" strokeWidth="6" strokeLinecap="round"
                     strokeDasharray={`${2 * Math.PI * 52}`}
                     initial={{ strokeDashoffset: 2 * Math.PI * 52 }}
                     animate={{ strokeDashoffset: 2 * Math.PI * 52 * 0.85 }}
@@ -91,17 +91,17 @@ export function ValidatorWallet() {
                   position: 'absolute', inset: 0,
                   display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
                 }}>
-                  <Lock className="w-5 h-5 mb-1" style={{ color: 'rgba(255,255,255,0.3)' }} />
-                  <p style={{ fontFamily: 'var(--font-number)', fontSize: 26, fontWeight: 700, color: 'var(--text-on-studio)', lineHeight: 1 }}>
+                  <Lock className="w-5 h-5 mb-1" style={{ color: 'rgba(var(--bone-0-rgb),0.3)' }} />
+                  <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-title)', fontWeight: 700, color: 'var(--text-on-studio)', lineHeight: 1 }}>
                     ₹0
                   </p>
                 </div>
               </div>
 
-              <p style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-on-studio)', marginBottom: 6 }}>
+              <p style={{ fontSize: 'var(--fs-subhead)', fontWeight: 700, color: 'var(--text-on-studio)', marginBottom: 'var(--space-3)'}}>
                 Grade your first batch
               </p>
-              <p style={{ fontSize: 13, fontWeight: 500, color: 'rgba(255,255,255,0.45)', lineHeight: 1.6, maxWidth: 260 }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'rgba(var(--bone-0-rgb),0.45)', lineHeight: 1.6, maxWidth: 260 }}>
                 Complete a grading batch to unlock your first earnings. Each clip pays ₹{perClipRate.toFixed(2)}.
               </p>
             </div>
@@ -110,12 +110,12 @@ export function ValidatorWallet() {
 
         {/* How earnings work */}
         <div className="px-6 mb-6">
-          <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 12 }}>
+          <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-body)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 'var(--space-6)'}}>
             How Grading Pay Works
           </h3>
           {[
-            { icon: ShieldCheck, label: 'Grade audio clips',     desc: `₹${perClipRate.toFixed(2)} per clip graded`, color: 'var(--t-verdigris-500)' },
-            { icon: Target,      label: 'Hit accuracy targets',  desc: 'Earn accuracy bonuses for 95%+', color: 'var(--accent-primary-deep)'  },
+            { icon: ShieldCheck, label: 'Grade audio clips',     desc: `₹${perClipRate.toFixed(2)} per clip graded`, color: 'var(--state-settled)' },
+            { icon: Target,      label: 'Hit accuracy targets',  desc: 'Earn accuracy bonuses for 95%+', color: 'var(--action-primary-pressed)'  },
             { icon: WalletIcon,  label: 'Cash hits your wallet', desc: 'Withdraw via UPI every Monday',  color: 'var(--text-primary)'  },
           ].map((step, idx) => {
             const Icon = step.icon;
@@ -125,14 +125,14 @@ export function ValidatorWallet() {
               }}>
                 <div style={{
                   width: 44, height: 44, borderRadius: 'var(--r-md)',
-                  background: 'var(--neutral-100)',
+                  background: 'var(--surface-sunken)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
                 }}>
                   <Icon className="w-5 h-5" style={{ color: step.color }} />
                 </div>
                 <div>
-                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 2 }}>{step.label}</p>
-                  <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{step.desc}</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>{step.label}</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>{step.desc}</p>
                 </div>
               </div>
             );
@@ -142,13 +142,13 @@ export function ValidatorWallet() {
         {/* First batch bonus teaser */}
         <div className="px-6">
           <div className="flex items-center gap-3" style={{
-            background: 'var(--t-verdigris-50)', borderRadius: 'var(--r-md)', padding: '14px 18px',
-            border: '1px solid var(--t-verdigris-50)',
+            background: 'var(--state-settled-container)', borderRadius: 'var(--r-md)', padding: 'var(--space-7) var(--space-8)',
+            border: '1px solid var(--state-settled-container)',
           }}>
-            <Gift className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--t-verdigris-700)' }} />
+            <Gift className="w-5 h-5 flex-shrink-0" style={{ color: 'var(--state-settled-deep)' }} />
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--t-verdigris-700)' }}>First Batch Bonus: ₹25</p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--t-verdigris-500)' }}>Complete any grading batch to claim</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--state-settled-deep)' }}>First Batch Bonus: ₹25</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--state-settled)' }}>Complete any grading batch to claim</p>
             </div>
           </div>
         </div>
@@ -159,9 +159,9 @@ export function ValidatorWallet() {
             onClick={() => navigate('/validator/tasks')}
             style={{
               width: '100%', height: 56, borderRadius: 'var(--r-full)',
-              background: 'var(--accent-primary-deep)', color: 'var(--surface)',
-              fontSize: 16, fontWeight: 700, border: 'none', cursor: 'pointer',
-              boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.30)',
+              background: 'var(--action-primary-pressed)', color: 'var(--surface-raised)',
+              fontSize: 'var(--fs-body)', fontWeight: 700, border: 'none', cursor: 'pointer',
+              boxShadow: '0px 4px 16px rgba(var(--terracotta-600-rgb),0.30)',
             }}
           >
             Start Grading Now
@@ -172,11 +172,11 @@ export function ValidatorWallet() {
   }
 
   return (
-    <div className="min-h-screen pb-28" style={{ background: 'var(--background)', fontFamily: 'var(--font-ui)' }}>
+    <div className="min-h-screen pb-28" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       {/* Header */}
       <div className="px-6 pt-16 pb-4">
-        <h1 style={{ fontFamily: 'var(--font-ui)', fontSize: 28, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
+        <h1 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-display)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.02em' }}>Earnings</h1>
       </div>
 
       {/* Balance Card — ink studio ground */}
@@ -184,7 +184,7 @@ export function ValidatorWallet() {
         <div style={{
           background: 'var(--surface-studio)',
           borderRadius: 'var(--r-lg)',
-          padding: '24px',
+          padding: 'var(--space-10)',
           position: 'relative',
           overflow: 'hidden',
         }}>
@@ -195,44 +195,44 @@ export function ValidatorWallet() {
           <div className="relative z-10">
             <div className="flex items-start justify-between mb-5">
               <div>
-                <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--t-verdigris-500)', marginBottom: 6, letterSpacing: '0.08em', textTransform: 'uppercase' }}>
+                <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--state-settled)', marginBottom: 'var(--space-3)', letterSpacing: '0.08em', textTransform: 'uppercase' }}>
                   Grading Balance
                 </p>
-                <p style={{ fontFamily: 'var(--font-number)', fontSize: 38, fontWeight: 700, color: 'var(--text-on-studio)', lineHeight: 1 }}>
+                <p style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--text-on-studio)', lineHeight: 1 }}>
                   ₹{totalBalance.toFixed(2)}
                 </p>
-                <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.4)', marginTop: 5 }}>
+                <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'rgba(var(--bone-0-rgb),0.4)', marginTop: 'var(--space-2)'}}>
                   Available to withdraw
                 </p>
               </div>
-              <div style={{ width: 48, height: 48, borderRadius: 'var(--r-md)', background: 'var(--t-verdigris-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                <ShieldCheck className="w-6 h-6" style={{ color: 'var(--t-verdigris-500)' }} />
+              <div style={{ width: 48, height: 48, borderRadius: 'var(--r-md)', background: 'var(--state-settled-container)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                <ShieldCheck className="w-6 h-6" style={{ color: 'var(--state-settled)' }} />
               </div>
             </div>
 
             {/* Per-clip rate pill */}
             <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 6,
-              background: 'rgba(255,255,255,0.05)', borderRadius: 'var(--r-full)',
-              padding: '5px 12px', marginBottom: 14,
+              display: 'inline-flex', alignItems: 'center', gap: 'var(--space-3)',
+              background: 'rgba(var(--bone-0-rgb),0.05)', borderRadius: 'var(--r-full)',
+              padding: 'var(--space-2) var(--space-6)', marginBottom: 'var(--space-7)',
             }}>
-              <Target className="w-3 h-3" style={{ color: 'rgba(255,255,255,0.35)' }} />
-              <span style={{ fontSize: 11, fontWeight: 600, color: 'rgba(255,255,255,0.35)' }}>
+              <Target className="w-3 h-3" style={{ color: 'rgba(var(--bone-0-rgb),0.35)' }} />
+              <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'rgba(var(--bone-0-rgb),0.35)' }}>
                 ₹{perClipRate.toFixed(2)} per clip · accuracy bonuses apply
               </span>
             </div>
 
-            <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: 16 }}>
+            <div style={{ borderTop: '1px solid rgba(var(--bone-0-rgb),0.08)', paddingTop: 'var(--space-8)'}}>
               <div className="flex items-center justify-between">
                 <div>
-                  <p style={{ fontSize: 12, fontWeight: 500, color: 'rgba(255,255,255,0.4)' }}>Pending</p>
-                  <p style={{ fontFamily: 'var(--font-number)', color: 'var(--money-pending)', fontSize: 16, fontWeight: 600 }}>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'rgba(var(--bone-0-rgb),0.4)' }}>Pending</p>
+                  <p style={{ fontFamily: 'var(--font-number)', color: 'var(--money-pending)', fontSize: 'var(--fs-body)', fontWeight: 600 }}>
                     ₹{pendingBalance.toFixed(2)}
                   </p>
                 </div>
                 <div className="flex items-center gap-1.5">
-                  <ArrowUpRight className="w-4 h-4" style={{ color: 'var(--accent-primary-deep)' }} />
-                  <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--accent-primary-deep)' }}>+₹{weeklyEarned.toFixed(2)} this week</p>
+                  <ArrowUpRight className="w-4 h-4" style={{ color: 'var(--action-primary-pressed)' }} />
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--action-primary-pressed)' }}>+₹{weeklyEarned.toFixed(2)} this week</p>
                 </div>
               </div>
             </div>
@@ -243,18 +243,18 @@ export function ValidatorWallet() {
       {/* Accuracy bonus strip */}
       <div className="px-6 mb-4">
         <div style={{
-          background: 'var(--t-verdigris-50)', borderRadius: 'var(--r-md)', padding: '12px 16px',
-          border: '1px solid var(--t-verdigris-50)',
+          background: 'var(--state-settled-container)', borderRadius: 'var(--r-md)', padding: 'var(--space-6) var(--space-8)',
+          border: '1px solid var(--state-settled-container)',
           display: 'flex', alignItems: 'center', justifyContent: 'space-between',
         }}>
           <div className="flex items-center gap-3">
-            <Star className="w-4 h-4" style={{ color: 'var(--t-verdigris-700)' }} strokeWidth={2} />
+            <Star className="w-4 h-4" style={{ color: 'var(--state-settled-deep)' }} strokeWidth={2} />
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--t-verdigris-700)' }}>Accuracy Bonus Active</p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--t-verdigris-500)' }}>94.8% avg · +20% on next batch</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--state-settled-deep)' }}>Accuracy Bonus Active</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--state-settled)' }}>94.8% avg · +20% on next batch</p>
             </div>
           </div>
-          <div style={{ fontFamily: 'var(--font-number)', fontSize: 15, fontWeight: 700, color: 'var(--t-verdigris-700)' }}>
+          <div style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--state-settled-deep)' }}>
             +20%
           </div>
         </div>
@@ -264,15 +264,15 @@ export function ValidatorWallet() {
       <div className="px-6 mb-4">
         <div className="flex items-center justify-between px-4 py-3" style={{ borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-3">
-            <CreditCard className="w-4 h-4" style={{ color: 'var(--t-verdigris-500)' }} />
+            <CreditCard className="w-4 h-4" style={{ color: 'var(--state-settled)' }} />
             <div>
-              <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-primary)' }}>alex@upi</p>
-              <p style={{ fontSize: 11, fontWeight: 500, color: 'var(--text-muted)' }}>UPI ID linked · payouts every Monday</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-primary)' }}>alex@upi</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>UPI ID linked · payouts every Monday</p>
             </div>
           </div>
           <button
             className="flex items-center gap-1"
-            style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent-primary-deep)', background: 'none', border: 'none', cursor: 'pointer' }}
+            style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--action-primary-pressed)', background: 'none', border: 'none', cursor: 'pointer' }}
           >
             <Pencil className="w-3.5 h-3.5" />
             Edit
@@ -283,8 +283,8 @@ export function ValidatorWallet() {
       {/* Payout Info */}
       <div className="px-6 mb-5">
         <div className="flex items-start gap-3 px-1 py-3">
-          <Info className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--t-ochre-700)' }} />
-          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--status-warning-text)', lineHeight: 1.5 }}>
+          <Info className="w-4 h-4 flex-shrink-0 mt-0.5" style={{ color: 'var(--state-pending-deep)' }} />
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--money-pending)', lineHeight: 1.5 }}>
             Minimum withdrawal: <strong style={{ color: 'var(--text-primary)' }}>₹100</strong>. Bonus credits are released after 48 h quality audit passes.
           </p>
         </div>
@@ -294,16 +294,16 @@ export function ValidatorWallet() {
       <div className="px-6 mb-5">
         <div className="flex items-center justify-between py-3" style={{ borderTop: '1px solid var(--border-subtle)', borderBottom: '1px solid var(--border-subtle)' }}>
           <div className="flex items-center gap-3">
-            <ShieldCheck className="w-4 h-4" style={{ color: 'var(--t-verdigris-500)' }} />
+            <ShieldCheck className="w-4 h-4" style={{ color: 'var(--state-settled)' }} />
             <div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>Trusted Validator · Level 4</p>
-              <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>Recognition &amp; perks — never touches your balance</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>Trusted Validator · Level 4</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>Recognition &amp; perks — never touches your balance</p>
             </div>
           </div>
           <button
             onClick={() => navigate('/validator/rewards')}
             className="flex items-center gap-1"
-            style={{ fontSize: 12, fontWeight: 700, color: 'var(--t-verdigris-500)', background: 'none', border: 'none', cursor: 'pointer' }}
+            style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, color: 'var(--state-settled)', background: 'none', border: 'none', cursor: 'pointer' }}
           >
             View <ArrowRight className="w-3.5 h-3.5" />
           </button>
@@ -318,12 +318,12 @@ export function ValidatorWallet() {
               key={f}
               onClick={() => setActiveFilter(f)}
               style={{
-                padding: '7px 18px', borderRadius: 'var(--r-full)', fontSize: 12, fontWeight: 600,
+                padding: 'var(--space-3) var(--space-8)', borderRadius: 'var(--r-full)', fontSize: 'var(--fs-caption)', fontWeight: 600,
                 whiteSpace: 'nowrap', border: '1.5px solid',
-                background: activeFilter === f ? 'var(--accent-primary-deep)' : 'var(--surface)',
-                borderColor: activeFilter === f ? 'var(--accent-primary-deep)' : 'var(--card-border)',
-                color: activeFilter === f ? 'var(--surface)' : 'var(--text-secondary)',
-                transition: 'all 0.15s',
+                background: activeFilter === f ? 'var(--action-primary-pressed)' : 'var(--surface-raised)',
+                borderColor: activeFilter === f ? 'var(--action-primary-pressed)' : 'var(--border-subtle)',
+                color: activeFilter === f ? 'var(--surface-raised)' : 'var(--text-secondary)',
+                transition: 'background-color 0.15s ease-out, border-color 0.15s ease-out, color 0.15s ease-out, transform 0.15s ease-out',
               }}
             >
               {f === 'all' ? 'All' : f === 'credited' ? 'Credited' : f === 'bonus' ? 'Bonuses' : 'Pending'}
@@ -334,7 +334,7 @@ export function ValidatorWallet() {
 
       {/* Earnings Ledger */}
       <div className="px-6">
-        <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 16, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 14 }}>
+        <h3 style={{ fontFamily: 'var(--font-ui)', fontSize: 'var(--fs-body)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 'var(--space-7)'}}>
           Earnings Ledger
         </h3>
 
@@ -346,34 +346,34 @@ export function ValidatorWallet() {
               <div
                 key={tx.id}
                 style={{
-                  padding: '14px 0',
+                  padding: 'var(--space-7) 0',
                   borderBottom: idx < filtered.length - 1 ? '1px solid var(--border-subtle)' : 'none',
                 }}
               >
                 <div className="flex items-start justify-between gap-3">
                   <div className="flex-1 min-w-0">
-                    <p style={{ fontSize: 14, fontWeight: 600, color: 'var(--text-primary)', marginBottom: 2 }}>{tx.batch}</p>
+                    <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>{tx.batch}</p>
                     <div className="flex items-center gap-2">
-                      <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>{tx.date}</p>
+                      <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>{tx.date}</p>
                       {tx.clips > 0 && (
-                        <span style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-muted)' }}>· {tx.clips} clips</span>
+                        <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-muted)' }}>· {tx.clips} clips</span>
                       )}
                     </div>
                     {tx.note && (
-                      <p style={{ fontSize: 11, fontWeight: 500, color: cfg.text, marginTop: 4, lineHeight: 1.4 }}>
+                      <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: cfg.text, marginTop: 'var(--space-2)', lineHeight: 1.4 }}>
                         {tx.note}
                       </p>
                     )}
                     {tx.accuracyPct && (
-                      <p style={{ fontSize: 11, fontWeight: 600, color: 'var(--t-verdigris-500)', marginTop: 4 }}>
+                      <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--state-settled)', marginTop: 'var(--space-2)'}}>
                         {tx.accuracyPct}% accuracy
                       </p>
                     )}
                   </div>
                   <div className="flex flex-col items-end gap-2 flex-shrink-0">
                     <span style={{
-                      fontFamily: 'var(--font-number)', fontSize: 15, fontWeight: 700,
-                      color: tx.status === 'credited' ? 'var(--accent-primary-deep)'
+                      fontFamily: 'var(--font-number)', fontSize: 'var(--fs-body)', fontWeight: 700,
+                      color: tx.status === 'credited' ? 'var(--action-primary-pressed)'
                            : tx.status === 'bonus'    ? 'var(--money-positive)'
                            : 'var(--text-secondary)',
                     }}>
@@ -382,7 +382,7 @@ export function ValidatorWallet() {
                     <span
                       className="inline-flex items-center gap-1"
                       style={{
-                        fontSize: 11, fontWeight: 600, padding: '3px 10px', borderRadius: 'var(--r-full)',
+                        fontSize: 'var(--fs-caption)', fontWeight: 600, padding: 'var(--space-1) var(--space-5)', borderRadius: 'var(--r-full)',
                         background: cfg.bg, color: cfg.text,
                       }}
                     >
@@ -407,13 +407,13 @@ export function ValidatorWallet() {
             width: '100%',
             height: 56,
             borderRadius: 'var(--r-full)',
-            background: 'var(--accent-primary-deep)',
-            color: 'var(--surface)',
-            fontSize: 16,
+            background: 'var(--action-primary-pressed)',
+            color: 'var(--surface-raised)',
+            fontSize: 'var(--fs-body)',
             fontWeight: 700,
             border: 'none',
             cursor: 'pointer',
-            boxShadow: '0px 4px 16px rgba(var(--accent-deep-rgb),0.30)',
+            boxShadow: '0px 4px 16px rgba(var(--terracotta-600-rgb),0.30)',
           }}
           onClick={() => navigate('/validator/payout')}
         >

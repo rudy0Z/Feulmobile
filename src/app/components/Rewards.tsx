@@ -25,7 +25,7 @@ const PERKS: Perk[] = [
   { id: 'verified-badge', name: 'Verified profile badge', description: 'A verified mark on your profile so labs know your work is trusted.', icon: 'badge', unlocksAt: 2 },
   { id: 'early-access',   name: 'Early access to campaigns', description: 'See and claim new high-coverage campaigns a day before they open widely.', icon: 'zap', unlocksAt: 3 },
   { id: 'priority-review', name: 'Priority review', description: 'Your submitted clips move to the front of the review queue — settle sooner.', icon: 'clock', unlocksAt: 3 },
-  { id: 'elite-circle',   name: 'Elite contributor circle', description: 'Direct line to campaign creators and a say in what gets built next.', icon: 'sparkles', unlocksAt: 4 },
+  { id: 'elite-circle',   name: 'Elite contributor circle', description: 'Direct line to the labs that commission the work, and a say in what gets built next.', icon: 'sparkles', unlocksAt: 4 },
 ];
 
 interface Badge {
@@ -74,24 +74,24 @@ export function Rewards() {
     background: 'var(--surface-raised)',
     borderRadius: 'var(--r-md)',
     border: '1px solid var(--border-subtle)',
-    boxShadow: 'var(--e-1)',
+    boxShadow: 'var(--e-0)',
   };
 
   return (
-    <div className="min-h-screen pb-10" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
+    <div className="min-h-screen pb-28" style={{ background: 'var(--surface-ground)', fontFamily: 'var(--font-ui)' }}>
 
       {/* Header */}
       <div className="px-6 pt-14 pb-4">
         <button
           onClick={() => navigate(-1)}
-          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: '4px 0', marginBottom: 6 }}
+          style={{ display: 'flex', alignItems: 'center', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--action-primary)', padding: 'var(--space-2) 0', marginBottom: 'var(--space-3)'}}
         >
           <ChevronLeft style={{ width: 22, height: 22 }} strokeWidth={2.5} />
         </button>
-        <h1 style={{ fontSize: 28, fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 2 }}>
+        <h1 style={{ fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--text-primary)', letterSpacing: '-0.02em', marginBottom: 'var(--space-1)'}}>
           Recognition
         </h1>
-        <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)' }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)' }}>
           What reliable work has earned you — perks and standing, not payouts.
         </p>
       </div>
@@ -101,32 +101,31 @@ export function Rewards() {
         <div style={{
           background: 'var(--surface-raised)',
           borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)',
           boxShadow: 'var(--e-2)',
-          padding: '22px 24px',
+          padding: 'var(--space-9) var(--space-10)',
         }}>
-          <div className="flex items-center justify-between" style={{ marginBottom: 16 }}>
+          <div className="flex items-center justify-between" style={{ marginBottom: 'var(--space-8)'}}>
             <div>
-              <p style={{ fontSize: 11, fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 6 }}>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-muted)', letterSpacing: '0.08em', textTransform: 'uppercase', marginBottom: 'var(--space-3)'}}>
                 Your standing
               </p>
-              <p style={{ fontSize: 30, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, letterSpacing: '-0.02em' }}>
+              <p style={{ fontSize: 'var(--fs-display)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1, letterSpacing: '-0.02em' }}>
                 {STANDING_NAMES[standingLevel]}
               </p>
             </div>
-            <div style={{ width: 52, height: 52, borderRadius: 'var(--r-md)', background: 'var(--t-terracotta-50)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+            <div style={{ width: 52, height: 52, borderRadius: 'var(--r-md)', background: 'var(--action-primary-soft)', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
               <Award className="w-7 h-7" style={{ color: 'var(--action-primary)' }} strokeWidth={1.75} />
             </div>
           </div>
           {/* Reliability meter */}
-          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 6 }}>
-            <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)' }}>Reliability</span>
-            <span style={{ fontSize: 12, fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-number)' }}>{reliability}%</span>
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 'var(--space-3)'}}>
+            <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-secondary)' }}>Reliability</span>
+            <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, color: 'var(--text-primary)', fontFamily: 'var(--font-number)' }}>{reliability}%</span>
           </div>
           <div style={{ height: 8, borderRadius: 'var(--r-full)', background: 'var(--surface-sunken)', overflow: 'hidden' }}>
             <div style={{ width: `${Math.max(4, reliability)}%`, height: '100%', borderRadius: 'var(--r-full)', background: 'var(--state-settled)' }} />
           </div>
-          <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 12, lineHeight: 1.5 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-6)', lineHeight: 1.5 }}>
             Standing rises with on-time, accepted work. It unlocks the perks below — it is not money and can&apos;t be withdrawn.
           </p>
         </div>
@@ -136,7 +135,7 @@ export function Rewards() {
       <div className="px-6 mb-8">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="w-4 h-4" style={{ color: 'var(--action-primary)' }} />
-          <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>Perks</h3>
+          <h3 style={{ fontSize: 'var(--fs-subhead)', fontWeight: 700, color: 'var(--text-primary)' }}>Perks</h3>
         </div>
         <div className="space-y-3">
           {PERKS.map((perk) => {
@@ -147,37 +146,37 @@ export function Rewards() {
                 key={perk.id}
                 style={{
                   ...card,
-                  padding: 16,
-                  display: 'flex', alignItems: 'flex-start', gap: 14,
+                  padding: 'var(--space-8)',
+                  display: 'flex', alignItems: 'flex-start', gap: 'var(--space-7)',
                   opacity: unlocked ? 1 : 0.92,
                 }}
               >
                 <div style={{
                   width: 44, height: 44, borderRadius: 'var(--r-md)', flexShrink: 0,
-                  background: unlocked ? 'var(--t-terracotta-50)' : 'var(--surface-sunken)',
+                  background: unlocked ? 'var(--action-primary-soft)' : 'var(--surface-sunken)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
                 }}>
                   <Icon className="w-5 h-5" style={{ color: unlocked ? 'var(--action-primary)' : 'var(--text-faint)' }} strokeWidth={1.9} />
                 </div>
                 <div className="flex-1 min-w-0">
-                  <p style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>{perk.name}</p>
-                  <p style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 12 }}>{perk.description}</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>{perk.name}</p>
+                  <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.5, marginBottom: 'var(--space-6)'}}>{perk.description}</p>
                   {unlocked ? (
                     <button
                       onClick={() => activatePerk(perk)}
                       style={{
-                        display: 'inline-flex', alignItems: 'center', gap: 6,
-                        fontSize: 12.5, fontWeight: 700, padding: '7px 16px',
-                        borderRadius: 'var(--r-full)', border: 'none', cursor: 'pointer',
+                        display: 'inline-flex', alignItems: 'center', gap: 'var(--space-3)',
+                        fontSize: 'var(--fs-secondary)', fontWeight: 700, padding: '0 var(--space-9)',
+                        minHeight: 'var(--tap)', borderRadius: 'var(--r-full)', border: 'none', cursor: 'pointer',
                         background: 'var(--action-primary)', color: 'var(--text-on-accent)',
                       }}
                     >
                       Activate
                     </button>
                   ) : (
-                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 6 }}>
+                    <div style={{ display: 'inline-flex', alignItems: 'center', gap: 'var(--space-3)'}}>
                       <Lock className="w-3.5 h-3.5" style={{ color: 'var(--text-muted)' }} />
-                      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>
+                      <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-muted)' }}>
                         Unlocks at {STANDING_NAMES[perk.unlocksAt]} standing
                       </span>
                     </div>
@@ -194,9 +193,9 @@ export function Rewards() {
         <div className="flex items-center justify-between mb-4">
           <div className="flex items-center gap-2">
             <BadgeCheck className="w-4 h-4" style={{ color: 'var(--action-primary)' }} />
-            <h3 style={{ fontSize: 18, fontWeight: 700, color: 'var(--text-primary)' }}>Badges</h3>
+            <h3 style={{ fontSize: 'var(--fs-subhead)', fontWeight: 700, color: 'var(--text-primary)' }}>Badges</h3>
           </div>
-          <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)', fontFamily: 'var(--font-number)' }}>
+          <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-muted)', fontFamily: 'var(--font-number)' }}>
             {earnedBadges}/{BADGES.length}
           </span>
         </div>
@@ -206,13 +205,13 @@ export function Rewards() {
               key={badge.id}
               style={{
                 ...card,
-                padding: 16,
+                padding: 'var(--space-8)',
                 opacity: badge.earned ? 1 : 0.6,
                 background: badge.earned ? 'var(--surface-raised)' : 'var(--surface-sunken)',
               }}
             >
               <div style={{
-                width: 40, height: 40, borderRadius: 'var(--r-full)', marginBottom: 12,
+                width: 40, height: 40, borderRadius: 'var(--r-full)', marginBottom: 'var(--space-6)',
                 background: 'var(--surface-sunken)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center',
               }}>
@@ -220,8 +219,8 @@ export function Rewards() {
                   ? <Check className="w-5 h-5" style={{ color: 'var(--state-settled)' }} strokeWidth={2.5} />
                   : <Lock className="w-4 h-4" style={{ color: 'var(--text-faint)' }} />}
               </div>
-              <p style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)', marginBottom: 3 }}>{badge.name}</p>
-              <p style={{ fontSize: 11.5, fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.4 }}>{badge.detail}</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)', marginBottom: 'var(--space-1)'}}>{badge.name}</p>
+              <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', lineHeight: 1.4 }}>{badge.detail}</p>
             </div>
           ))}
         </div>

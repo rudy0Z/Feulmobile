@@ -23,45 +23,45 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
         <button
           onClick={() => onGrade(1)} // Mapping Reject to 1
           style={{
-            flex: 1, borderRadius: 24,
-            background: selectedGrade === 1 ? 'var(--status-error-text)' : 'var(--status-error-bg)',
-            color: selectedGrade === 1 ? 'var(--surface)' : 'var(--status-error-text)',
+            flex: 1, borderRadius: 'var(--r-lg)',
+            background: selectedGrade === 1 ? 'var(--state-failed)' : 'var(--state-failed-container)',
+            color: selectedGrade === 1 ? 'var(--surface-raised)' : 'var(--state-failed)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             border: 'none', cursor: 'pointer',
-            transition: 'all 0.2s',
+            transition: 'background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, transform 0.2s ease-out',
             boxShadow: selectedGrade === 1 ? 'var(--e-2)' : 'none',
           }}
         >
           <Trash2 className="w-6 h-6 mb-1" />
-          <span style={{ fontSize: 16, fontWeight: 800 }}>Reject</span>
+          <span style={{ fontSize: 'var(--fs-body)', fontWeight: 800 }}>Reject</span>
         </button>
 
         <button
           onClick={() => onGrade(5)} // Mapping Accept to 5
           style={{
-            flex: 1, borderRadius: 24,
-            background: selectedGrade === 5 ? 'var(--color-success)' : 'var(--status-success-bg)',
-            color: selectedGrade === 5 ? 'var(--surface)' : 'var(--color-success)',
+            flex: 1, borderRadius: 'var(--r-lg)',
+            background: selectedGrade === 5 ? 'var(--color-success)' : 'var(--state-settled-container)',
+            color: selectedGrade === 5 ? 'var(--surface-raised)' : 'var(--color-success)',
             display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center',
             border: 'none', cursor: 'pointer',
-            transition: 'all 0.2s',
+            transition: 'background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, transform 0.2s ease-out',
             boxShadow: selectedGrade === 5 ? 'var(--e-2)' : 'none',
           }}
         >
           <Check className="w-6 h-6 mb-1" />
-          <span style={{ fontSize: 16, fontWeight: 800 }}>Accept</span>
+          <span style={{ fontSize: 'var(--fs-body)', fontWeight: 800 }}>Accept</span>
         </button>
       </div>
 
       <button
         onClick={() => setShowTags(true)}
         style={{
-          width: '100%', padding: '14px', borderRadius: 999,
+          width: '100%', padding: 'var(--space-7)', borderRadius: 'var(--r-full)',
           background: 'transparent',
           border: '2px dashed var(--border-strong)',
-          color: 'var(--text-muted)', fontSize: 14, fontWeight: 700,
-          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
-          cursor: 'pointer', transition: 'all 0.2s',
+          color: 'var(--text-muted)', fontSize: 'var(--fs-secondary)', fontWeight: 700,
+          display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
+          cursor: 'pointer', transition: 'background-color 0.2s ease-out, border-color 0.2s ease-out, color 0.2s ease-out, transform 0.2s ease-out',
         }}
       >
         <Flag className="w-4 h-4" />
@@ -78,7 +78,7 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
             style={{ background: 'var(--surface-raised)', borderColor: 'var(--border-subtle)' }}
           >
             <div className="flex items-center justify-between mb-3">
-              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-primary)' }}>Select Reason</span>
+              <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>Select Reason</span>
               <button onClick={() => setShowTags(false)} style={{ background: 'none', border: 'none', cursor: 'pointer' }}>
                 <X className="w-4 h-4" style={{ color: 'var(--text-muted)' }} />
               </button>
@@ -91,11 +91,11 @@ export function BinaryFlag({ selectedGrade, onGrade, onFlag, gradeOptions }: Bin
                     key={reason.id}
                     onClick={() => onFlag(reason.label)}
                     style={{
-                      display: 'flex', alignItems: 'center', gap: 6,
-                      padding: '8px 14px', borderRadius: 999,
+                      display: 'flex', alignItems: 'center', gap: 'var(--space-3)',
+                      padding: 'var(--space-4) var(--space-7)', borderRadius: 'var(--r-full)',
                       background: 'var(--surface-ground)', border: '1px solid var(--border-subtle)',
-                      fontSize: 12, fontWeight: 600, color: 'var(--text-secondary)',
-                      cursor: 'pointer', transition: 'all 0.1s',
+                      fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-secondary)',
+                      cursor: 'pointer', transition: 'background-color 0.1s ease-out, border-color 0.1s ease-out, color 0.1s ease-out, transform 0.1s ease-out',
                     }}
                     className="active:scale-95"
                   >

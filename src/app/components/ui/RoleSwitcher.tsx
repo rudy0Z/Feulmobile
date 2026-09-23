@@ -1,6 +1,7 @@
 import { useNavigate } from 'react-router';
 import { motion, AnimatePresence } from 'motion/react';
 import { Mic, ShieldCheck, ArrowRight, CheckCircle2, Lock } from 'lucide-react';
+import { durations } from '../../lib/motion';
 
 export type Role = 'contributor' | 'validator';
 
@@ -22,9 +23,9 @@ const roles: RoleConfig[] = [
     label: 'Contributor',
     descriptor: 'Earn by recording your voice for AI',
     icon: Mic,
-    color: 'var(--accent-primary)',
-    bg: 'linear-gradient(135deg, var(--t-terracotta-50) 0%, var(--t-terracotta-100) 100%)',
-    borderColor: 'rgba(var(--accent-glow-rgb),0.2)',
+    color: 'var(--action-primary)',
+    bg: 'linear-gradient(135deg, var(--action-primary-soft) 0%, var(--t-terracotta-100) 100%)',
+    borderColor: 'rgba(var(--terracotta-500-rgb),0.2)',
     path: '/contributor',
     unlocked: true,
   },
@@ -34,7 +35,7 @@ const roles: RoleConfig[] = [
     descriptor: 'Grade & approve audio clips',
     icon: ShieldCheck,
     color: 'var(--color-success)',
-    bg: 'linear-gradient(135deg, var(--t-verdigris-50) 0%, var(--t-verdigris-50) 100%)',
+    bg: 'linear-gradient(135deg, var(--state-settled-container) 0%, var(--state-settled-container) 100%)',
     borderColor: 'rgba(var(--verdigris-rgb),0.2)',
     path: '/validator',
     unlocked: true,
@@ -66,7 +67,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.22 }}
+            transition={{ duration: durations.base }}
             onClick={onClose}
             style={{
               position: 'fixed', inset: 0, zIndex: 100,
@@ -85,25 +86,25 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
             style={{
               position: 'fixed', bottom: 0, left: 0, right: 0,
               zIndex: 101,
-              background: 'var(--t-bone-0)',
-              borderRadius: '28px 28px 0 0',
-              padding: '12px 20px 40px',
-              boxShadow: '0px -8px 40px rgba(0,0,0,0.18)',
+              background: 'var(--surface-raised)',
+              borderRadius: 'var(--sheet-top) var(--sheet-top) 0 0',
+              padding: 'var(--space-6) var(--space-9) var(--space-13)',
+              boxShadow: '0px -8px 40px rgba(var(--scrim-rgb),0.18)',
             }}
           >
             {/* Drag handle */}
             <div style={{
-              width: 36, height: 4, borderRadius: 999,
-              background: 'var(--neutral-200)', margin: '0 auto 20px',
+              width: 36, height: 4, borderRadius: 'var(--r-full)',
+              background: 'var(--border-subtle)', margin: '0 auto 20px',
             }} />
 
             {/* Header */}
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h2 style={{ fontSize: 20, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
+                <h2 style={{ fontSize: 'var(--fs-section)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.3px' }}>
                   Switch Role
                 </h2>
-                <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 2 }}>
+                <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-1)'}}>
                   You have access to {roles.filter(r => r.unlocked).length} roles
                 </p>
               </div>
@@ -124,11 +125,11 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                     disabled={isActive || isLocked}
                     style={{
                       width: '100%',
-                      background: isActive ? role.bg : 'var(--background)',
-                      border: `1.5px solid ${isActive ? role.borderColor : 'var(--card-border)'}`,
-                      borderRadius: 20,
-                      padding: '16px 18px',
-                      display: 'flex', alignItems: 'center', gap: 14,
+                      background: isActive ? role.bg : 'var(--surface-ground)',
+                      border: `1.5px solid ${isActive ? role.borderColor : 'var(--border-subtle)'}`,
+                      borderRadius: 'var(--r-md)',
+                      padding: 'var(--space-8) var(--space-8)',
+                      display: 'flex', alignItems: 'center', gap: 'var(--space-7)',
                       cursor: isActive || isLocked ? 'default' : 'pointer',
                       textAlign: 'left',
                       transition: 'background 0.15s, border-color 0.15s',
@@ -140,7 +141,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                     {isActive && (
                       <div style={{
                         position: 'absolute', inset: 0,
-                        borderRadius: 20,
+                        borderRadius: 'var(--r-md)',
                         boxShadow: `inset 0 0 0 1.5px ${role.color}40`,
                         pointerEvents: 'none',
                       }} />
@@ -148,14 +149,14 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
 
                     {/* Icon tile */}
                     <div style={{
-                      width: 48, height: 48, borderRadius: 16, flexShrink: 0,
+                      width: 48, height: 48, borderRadius: 'var(--r-md)', flexShrink: 0,
                       background: isActive
                         ? `${role.color}18`
-                        : isLocked ? 'var(--neutral-100)' : 'var(--border-subtle)',
+                        : isLocked ? 'var(--t-bone-100)' : 'var(--border-subtle)',
                       display: 'flex', alignItems: 'center', justifyContent: 'center',
                     }}>
                       {isLocked
-                        ? <Lock className="w-5 h-5" style={{ color: 'var(--neutral-400)' }} />
+                        ? <Lock className="w-5 h-5" style={{ color: 'var(--text-faint)' }} />
                         : <Icon className="w-5 h-5" style={{ color: isActive ? role.color : 'var(--text-muted)' }} strokeWidth={isActive ? 2.2 : 1.75} />
                       }
                     </div>
@@ -164,34 +165,34 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center gap-2">
                         <p style={{
-                          fontSize: 15, fontWeight: 700,
-                          color: isLocked ? 'var(--neutral-400)' : 'var(--text-primary)',
+                          fontSize: 'var(--fs-body)', fontWeight: 700,
+                          color: isLocked ? 'var(--text-faint)' : 'var(--text-primary)',
                         }}>
                           {role.label}
                         </p>
                         {isActive && (
                           <span style={{
-                            fontSize: 10, fontWeight: 700,
-                            background: role.color, color: 'var(--t-bone-0)',
-                            padding: '2px 8px', borderRadius: 999,
+                            fontSize: 'var(--fs-caption)', fontWeight: 700,
+                            background: role.color, color: 'var(--text-on-dark)',
+                            padding: 'var(--space-1) var(--space-4)', borderRadius: 'var(--r-full)',
                           }}>
                             Active
                           </span>
                         )}
                         {isLocked && (
                           <span style={{
-                            fontSize: 10, fontWeight: 700,
-                            background: 'var(--neutral-100)', color: 'var(--text-muted)',
-                            padding: '2px 8px', borderRadius: 999,
+                            fontSize: 'var(--fs-caption)', fontWeight: 700,
+                            background: 'var(--surface-sunken)', color: 'var(--text-muted)',
+                            padding: 'var(--space-1) var(--space-4)', borderRadius: 'var(--r-full)',
                           }}>
                             Locked
                           </span>
                         )}
                       </div>
                       <p style={{
-                        fontSize: 12, fontWeight: 500,
-                        color: isLocked ? 'var(--neutral-300)' : 'var(--text-muted)',
-                        marginTop: 2, lineHeight: 1.4,
+                        fontSize: 'var(--fs-secondary)', fontWeight: 500,
+                        color: isLocked ? 'var(--text-faint)' : 'var(--text-muted)',
+                        marginTop: 'var(--space-1)', lineHeight: 1.4,
                       }}>
                         {isLocked ? 'Apply from your Contributor profile' : role.descriptor}
                       </p>
@@ -199,7 +200,7 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
 
                     {/* Right chevron */}
                     {!isActive && !isLocked && (
-                      <ArrowRight className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--neutral-300)' }} />
+                      <ArrowRight className="w-4 h-4 flex-shrink-0" style={{ color: 'var(--text-faint)' }} />
                     )}
                     {isActive && (
                       <CheckCircle2 className="w-5 h-5 flex-shrink-0" style={{ color: role.color }} />
@@ -213,9 +214,9 @@ export function RoleSwitcher({ isOpen, currentRole, onClose }: Props) {
             <button
               onClick={onClose}
               style={{
-                marginTop: 16, width: '100%', height: 52, borderRadius: 999,
-                background: 'var(--neutral-100)', border: 'none', cursor: 'pointer',
-                fontSize: 15, fontWeight: 700, color: 'var(--text-secondary)',
+                marginTop: 'var(--space-8)', width: '100%', height: 52, borderRadius: 'var(--r-full)',
+                background: 'var(--surface-sunken)', border: 'none', cursor: 'pointer',
+                fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-secondary)',
               }}
             >
               Cancel

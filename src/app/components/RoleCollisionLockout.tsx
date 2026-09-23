@@ -10,9 +10,9 @@ interface Props {
 
 export function RoleCollisionLockout({ onVerify, onHome }: Props) {
   const fingerprintDetails = [
-    { color: 'var(--status-error-text)', label: 'Device fingerprint: matched' },
-    { color: 'var(--status-error-text)', label: 'IP network: same session' },
-    { color: 'var(--warning-700)', label: 'Account overlap: under review' },
+    { color: 'var(--state-failed)', label: 'Device fingerprint: matched' },
+    { color: 'var(--state-failed)', label: 'IP network: same session' },
+    { color: 'var(--money-pending)', label: 'Account overlap: under review' },
   ];
 
   return (
@@ -31,7 +31,7 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
       <div
         style={{
           margin: 'auto',
-          padding: '32px 24px',
+          padding: 'var(--space-12) var(--space-10)',
           maxWidth: 340,
           width: '100%',
           textAlign: 'center',
@@ -51,7 +51,7 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
             margin: '0 auto',
           }}
         >
-          <ShieldAlert size={64} style={{ color: 'var(--status-error-text)' }} />
+          <ShieldAlert size={64} style={{ color: 'var(--state-failed)' }} />
         </div>
 
         {/* Policy violation badge */}
@@ -62,14 +62,14 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
             display: 'inline-block',
             background: 'rgba(var(--crimson-rgb),0.15)',
             border: '1px solid rgba(var(--crimson-rgb),0.3)',
-            borderRadius: 999,
-            padding: '4px 14px',
-            fontSize: 9,
+            borderRadius: 'var(--r-full)',
+            padding: 'var(--space-2) var(--space-7)',
+            fontSize: 'var(--fs-caption)',
             fontWeight: 800,
             letterSpacing: '0.12em',
-            color: 'var(--status-error-text)',
+            color: 'var(--state-failed)',
             textTransform: 'uppercase',
-            marginTop: 16,
+            marginTop: 'var(--space-8)',
           }}
         >
           POLICY VIOLATION
@@ -78,12 +78,12 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
         {/* H1 */}
         <h1
           style={{
-            fontFamily: 'var(--font-display)',
-            fontSize: 24,
+            fontFamily: 'var(--font-ui)',
+            fontSize: 'var(--fs-title)',
             fontWeight: 800,
-            color: 'var(--t-bone-0)',
-            marginTop: 20,
-            marginBottom: 0,
+            color: 'var(--text-on-dark)',
+            marginTop: 'var(--space-9)',
+            marginBottom: '0',
             lineHeight: 1.2,
           }}
         >
@@ -93,10 +93,10 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
         {/* Sub */}
         <div
           style={{
-            fontSize: 13,
+            fontSize: 'var(--fs-secondary)',
             fontWeight: 600,
-            color: 'var(--status-error-text)',
-            marginTop: 4,
+            color: 'var(--state-failed)',
+            marginTop: 'var(--space-2)',
           }}
         >
           Session Suspended
@@ -105,20 +105,20 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
         {/* Explanation card */}
         <div
           style={{
-            background: 'rgba(255,255,255,0.04)',
-            border: '1px solid rgba(255,255,255,0.07)',
-            borderRadius: 16,
-            padding: 20,
-            marginTop: 24,
+            background: 'rgba(var(--bone-0-rgb),0.04)',
+            border: '1px solid rgba(var(--bone-0-rgb),0.07)',
+            borderRadius: 'var(--r-md)',
+            padding: 'var(--space-9)',
+            marginTop: 'var(--space-10)',
             textAlign: 'left',
           }}
         >
           <p
             style={{
-              fontSize: 13,
+              fontSize: 'var(--fs-secondary)',
               lineHeight: 1.65,
-              color: 'rgba(255,255,255,0.6)',
-              margin: 0,
+              color: 'rgba(var(--bone-0-rgb),0.6)',
+              margin: '0',
             }}
           >
             Our system has detected that this grading session was assigned to audio clips
@@ -128,37 +128,37 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
           {/* Divider */}
           <div
             style={{
-              marginTop: 12,
-              marginBottom: 12,
-              borderTop: '1px solid rgba(255,255,255,0.07)',
+              marginTop: 'var(--space-6)',
+              marginBottom: 'var(--space-6)',
+              borderTop: '1px solid rgba(var(--bone-0-rgb),0.07)',
             }}
           />
 
           <p
             style={{
-              fontSize: 13,
+              fontSize: 'var(--fs-secondary)',
               lineHeight: 1.65,
-              color: 'rgba(255,255,255,0.6)',
-              margin: 0,
+              color: 'rgba(var(--bone-0-rgb),0.6)',
+              margin: '0',
             }}
           >
             Concurrent Contributor + Validator roles on the same device and IP network fingerprint
-            violate Feul's marketplace integrity rules.
+            violate the marketplace integrity rules.
           </p>
 
           {/* Fingerprint detail rows */}
-          <div style={{ marginTop: 12 }}>
+          <div style={{ marginTop: 'var(--space-6)'}}>
             {fingerprintDetails.map((item, i) => (
               <div
                 key={i}
                 style={{
                   display: 'flex',
                   alignItems: 'center',
-                  gap: 8,
+                  gap: 'var(--space-4)',
                   marginTop: i === 0 ? 0 : 6,
-                  fontSize: 11,
+                  fontSize: 'var(--fs-caption)',
                   fontWeight: 600,
-                  color: 'rgba(255,255,255,0.5)',
+                  color: 'rgba(var(--bone-0-rgb),0.5)',
                 }}
               >
                 <div
@@ -177,16 +177,16 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
         </div>
 
         {/* Buttons */}
-        <div style={{ marginTop: 28 }}>
+        <div style={{ marginTop: 'var(--space-11)'}}>
           <button
             onClick={onVerify}
             style={{
               width: '100%',
               height: 58,
-              borderRadius: 999,
-              background: 'var(--status-error-text)',
-              color: 'var(--t-bone-0)',
-              fontSize: 16,
+              borderRadius: 'var(--r-full)',
+              background: 'var(--state-failed)',
+              color: 'var(--text-on-dark)',
+              fontSize: 'var(--fs-body)',
               fontWeight: 700,
               border: 'none',
               cursor: 'pointer',
@@ -200,14 +200,14 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
             onClick={onHome}
             style={{
               width: '100%',
-              marginTop: 12,
+              marginTop: 'var(--space-6)',
               background: 'none',
               border: 'none',
-              fontSize: 14,
+              fontSize: 'var(--fs-secondary)',
               fontWeight: 700,
-              color: 'rgba(255,255,255,0.45)',
+              color: 'rgba(var(--bone-0-rgb),0.45)',
               cursor: 'pointer',
-              padding: '8px 0',
+              padding: 'var(--space-4) 0',
             }}
           >
             Return to Home
@@ -217,10 +217,10 @@ export function RoleCollisionLockout({ onVerify, onHome }: Props) {
         {/* Footer */}
         <div
           style={{
-            fontSize: 10,
-            color: 'rgba(255,255,255,0.2)',
-            marginTop: 20,
-            fontFamily: 'var(--font-mono)',
+            fontSize: 'var(--fs-caption)',
+            color: 'rgba(var(--bone-0-rgb),0.2)',
+            marginTop: 'var(--space-9)',
+            fontFamily: 'var(--font-number)',
           }}
         >
           Session ID: FSN-2847-VIOLATION · Case logged

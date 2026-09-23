@@ -45,10 +45,10 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
     >
       <div
         style={{
-          background: 'var(--navy)',
-          borderRadius: 24,
-          padding: 24,
-          margin: 24,
+          background: 'var(--surface-studio)',
+          borderRadius: 'var(--r-lg)',
+          padding: 'var(--space-10)',
+          margin: 'var(--space-10)',
           width: '100%',
           maxWidth: 390,
           boxSizing: 'border-box',
@@ -56,24 +56,24 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
       >
         {/* Top: icon + title */}
         <div style={{ textAlign: 'center' }}>
-          <Volume2 size={28} style={{ color: 'var(--warning-700)' }} />
+          <Volume2 size={28} style={{ color: 'var(--money-pending)' }} />
           <h2
             style={{
-              fontFamily: 'var(--font-display)',
-              fontSize: 22,
+              fontFamily: 'var(--font-ui)',
+              fontSize: 'var(--fs-title)',
               fontWeight: 800,
-              color: 'var(--t-bone-0)',
-              margin: '12px 0 0',
+              color: 'var(--text-on-dark)',
+              margin: 'var(--space-6) 0 0',
             }}
           >
             Recording Paused
           </h2>
           <div
             style={{
-              fontSize: 13,
+              fontSize: 'var(--fs-secondary)',
               fontWeight: 600,
-              color: 'var(--warning-700)',
-              marginTop: 4,
+              color: 'var(--money-pending)',
+              marginTop: 'var(--space-2)',
             }}
           >
             Environment Too Noisy
@@ -85,11 +85,11 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
           style={{
             display: 'flex',
             alignItems: 'flex-end',
-            gap: 2,
+            gap: 'var(--space-1)',
             height: 50,
             justifyContent: 'center',
-            marginTop: 20,
-            marginBottom: 20,
+            marginTop: 'var(--space-9)',
+            marginBottom: 'var(--space-9)',
           }}
         >
           {Array.from({ length: waveBarCount }).map((_, i) => {
@@ -100,8 +100,8 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
                 style={{
                   width: 3,
                   height: 24,
-                  background: 'var(--warning-700)',
-                  borderRadius: 999,
+                  background: 'var(--money-pending)',
+                  borderRadius: 'var(--r-full)',
                   originY: 1,
                 }}
                 animate={{ scaleY: scaleSet }}
@@ -118,40 +118,40 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
         </div>
 
         {/* Telemetry gauges */}
-        <div style={{ display: 'flex', gap: 12 }}>
+        <div style={{ display: 'flex', gap: 'var(--space-6)'}}>
           {/* Current — warning */}
           <div
             style={{
               flex: 1,
-              background: 'rgba(255,255,255,0.05)',
-              borderRadius: 16,
-              padding: 14,
+              background: 'rgba(var(--bone-0-rgb),0.05)',
+              borderRadius: 'var(--r-md)',
+              padding: 'var(--space-7)',
               border: '1px solid rgba(var(--ochre-rgb),0.2)',
             }}
           >
             <div
               style={{
-                fontSize: 9,
+                fontSize: 'var(--fs-caption)',
                 fontWeight: 700,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.4)',
+                color: 'rgba(var(--bone-0-rgb),0.4)',
               }}
             >
               CURRENT
             </div>
             <div
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 28,
+                fontFamily: 'var(--font-number)',
+                fontSize: 'var(--fs-display)',
                 fontWeight: 700,
-                color: 'var(--warning-700)',
-                marginTop: 4,
+                color: 'var(--money-pending)',
+                marginTop: 'var(--space-2)',
               }}
             >
               42 dB
             </div>
-            <div style={{ fontSize: 10, color: 'var(--warning-700)', marginTop: 2 }}>
+            <div style={{ fontSize: 'var(--fs-caption)', color: 'var(--money-pending)', marginTop: 'var(--space-1)'}}>
               Too Loud
             </div>
           </div>
@@ -160,55 +160,55 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
           <div
             style={{
               flex: 1,
-              background: 'rgba(255,255,255,0.05)',
-              borderRadius: 16,
-              padding: 14,
+              background: 'rgba(var(--bone-0-rgb),0.05)',
+              borderRadius: 'var(--r-md)',
+              padding: 'var(--space-7)',
               border: '1px solid rgba(var(--verdigris-rgb),0.2)',
             }}
           >
             <div
               style={{
-                fontSize: 9,
+                fontSize: 'var(--fs-caption)',
                 fontWeight: 700,
                 letterSpacing: '0.1em',
                 textTransform: 'uppercase',
-                color: 'rgba(255,255,255,0.4)',
+                color: 'rgba(var(--bone-0-rgb),0.4)',
               }}
             >
               TARGET
             </div>
             <div
               style={{
-                fontFamily: 'var(--font-mono)',
-                fontSize: 28,
+                fontFamily: 'var(--font-number)',
+                fontSize: 'var(--fs-display)',
                 fontWeight: 700,
-                color: 'var(--success-500)',
-                marginTop: 4,
+                color: 'var(--state-settled)',
+                marginTop: 'var(--space-2)',
               }}
             >
               &lt; 12 dB
             </div>
-            <div style={{ fontSize: 10, color: 'var(--success-500)', marginTop: 2 }}>
+            <div style={{ fontSize: 'var(--fs-caption)', color: 'var(--state-settled)', marginTop: 'var(--space-1)'}}>
               Quiet Zone
             </div>
           </div>
         </div>
 
         {/* Gain adjustment slider */}
-        <div style={{ marginTop: 20 }}>
+        <div style={{ marginTop: 'var(--space-9)'}}>
           <div
             style={{
               display: 'flex',
               justifyContent: 'space-between',
               alignItems: 'center',
-              marginBottom: 8,
-              fontSize: 12,
+              marginBottom: 'var(--space-4)',
+              fontSize: 'var(--fs-caption)',
               fontWeight: 600,
               color: 'var(--text-muted)',
             }}
           >
             <span>Gain Adjustment</span>
-            <span style={{ fontFamily: 'var(--font-mono)' }}>{gainValue} dB</span>
+            <span style={{ fontFamily: 'var(--font-number)' }}>{gainValue} dB</span>
           </div>
           <input
             type="range"
@@ -220,8 +220,8 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
               width: '100%',
               appearance: 'none',
               height: 6,
-              borderRadius: 999,
-              background: `linear-gradient(to right, var(--accent-primary) ${sliderFillPct}%, rgba(255,255,255,0.1) ${sliderFillPct}%)`,
+              borderRadius: 'var(--r-full)',
+              background: `linear-gradient(to right, var(--action-primary) ${sliderFillPct}%, rgba(var(--bone-0-rgb),0.1) ${sliderFillPct}%)`,
               outline: 'none',
               cursor: 'pointer',
             }}
@@ -230,8 +230,8 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             style={{
               display: 'flex',
               justifyContent: 'space-between',
-              marginTop: 4,
-              fontSize: 10,
+              marginTop: 'var(--space-2)',
+              fontSize: 'var(--fs-caption)',
               color: 'var(--text-muted)',
             }}
           >
@@ -243,21 +243,21 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
         {/* Tips */}
         <div
           style={{
-            marginTop: 16,
-            background: 'rgba(255,255,255,0.04)',
-            borderRadius: 12,
-            padding: '12px 14px',
+            marginTop: 'var(--space-8)',
+            background: 'rgba(var(--bone-0-rgb),0.04)',
+            borderRadius: 'var(--r-sm)',
+            padding: 'var(--space-6) var(--space-7)',
           }}
         >
           <div
             style={{
               display: 'flex',
               alignItems: 'center',
-              gap: 6,
-              fontSize: 11,
+              gap: 'var(--space-3)',
+              fontSize: 'var(--fs-caption)',
               fontWeight: 700,
-              color: 'rgba(255,255,255,0.5)',
-              marginBottom: 4,
+              color: 'rgba(var(--bone-0-rgb),0.5)',
+              marginBottom: 'var(--space-2)',
             }}
           >
             <Lightbulb size={12} style={{ flexShrink: 0 }} />
@@ -267,9 +267,9 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
             <div
               key={i}
               style={{
-                fontSize: 11,
-                color: 'rgba(255,255,255,0.4)',
-                marginTop: 4,
+                fontSize: 'var(--fs-caption)',
+                color: 'rgba(var(--bone-0-rgb),0.4)',
+                marginTop: 'var(--space-2)',
               }}
             >
               • {tip}
@@ -283,15 +283,15 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
           style={{
             width: '100%',
             height: 58,
-            borderRadius: 999,
+            borderRadius: 'var(--r-full)',
             background:
-              'linear-gradient(160deg, var(--accent-primary-light), var(--accent-primary-deep))',
-            color: 'var(--t-bone-0)',
-            fontSize: 16,
+              'linear-gradient(160deg, var(--action-accent), var(--action-primary-pressed))',
+            color: 'var(--text-on-dark)',
+            fontSize: 'var(--fs-body)',
             fontWeight: 700,
             border: 'none',
             cursor: 'pointer',
-            marginTop: 20,
+            marginTop: 'var(--space-9)',
           }}
         >
           Recalibrate &amp; Resume
@@ -301,10 +301,10 @@ export function AcousticNoisePause({ onClose, onRecalibrate }: Props) {
         <div
           onClick={onClose}
           style={{
-            fontSize: 12,
-            color: 'rgba(255,255,255,0.3)',
+            fontSize: 'var(--fs-caption)',
+            color: 'rgba(var(--bone-0-rgb),0.3)',
             textAlign: 'center',
-            marginTop: 12,
+            marginTop: 'var(--space-6)',
             cursor: 'pointer',
           }}
         >

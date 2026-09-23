@@ -2,6 +2,8 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router';
 import { motion } from 'motion/react';
 import { ShieldCheck, Clock, CheckCircle2, Users, ArrowRight, ChevronLeft, Lock, Info } from 'lucide-react';
+import { IconButton } from './ui/Primitives';
+import { durations } from '../lib/motion';
 
 // C-03 + C-16 (P0) — The campaign closes while the contributor is mid-flow:
 // either another contributor filled the last slots (C-03), or the lab withdrew the
@@ -22,18 +24,9 @@ export function CampaignClosedHonour() {
     >
       {/* Header */}
       <div className="px-6 pt-14">
-        <button
-          onClick={() => navigate(-1)}
-          aria-label="Go back"
-          style={{
-            width: 40, height: 40, borderRadius: 'var(--r-full)',
-            background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-            boxShadow: 'var(--e-1)',
-          }}
-        >
-          <ChevronLeft className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
-        </button>
+        <IconButton label="Go back" onClick={() => navigate(-1)} variant="surface">
+        <ChevronLeft style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
+      </IconButton>
 
         {/* Segmented toggle between the two closure scenarios */}
         <div
@@ -52,7 +45,7 @@ export function CampaignClosedHonour() {
                 className="flex-1"
                 style={{
                   height: 40, borderRadius: 'var(--r-full)', border: 'none', cursor: 'pointer',
-                  fontSize: 13, fontWeight: 700,
+                  fontSize: 'var(--fs-secondary)', fontWeight: 700,
                   background: active ? 'var(--action-primary)' : 'transparent',
                   color: active ? 'var(--text-on-accent)' : 'var(--text-secondary)',
                 }}
@@ -71,7 +64,7 @@ export function CampaignClosedHonour() {
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.12, duration: 0.3 }}
+          transition={{ delay: 0.12, duration: durations.slow }}
           className="mt-8"
         >
           <button
@@ -79,8 +72,8 @@ export function CampaignClosedHonour() {
             style={{
               width: '100%', height: 52, borderRadius: 'var(--r-full)',
               background: 'var(--action-primary)', color: 'var(--text-on-accent)',
-              border: 'none', cursor: 'pointer', fontSize: 15, fontWeight: 800,
-              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 8,
+              border: 'none', cursor: 'pointer', fontSize: 'var(--fs-body)', fontWeight: 800,
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: 'var(--space-4)',
               boxShadow: 'var(--e-glow)',
             }}
           >
@@ -89,8 +82,8 @@ export function CampaignClosedHonour() {
           <button
             onClick={() => navigate('/contributor/wallet')}
             style={{
-              width: '100%', marginTop: 12, background: 'none', border: 'none', cursor: 'pointer',
-              fontSize: 14, fontWeight: 700, color: 'var(--text-secondary)',
+              width: '100%', marginTop: 'var(--space-6)', background: 'none', border: 'none', cursor: 'pointer',
+              fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-secondary)',
             }}
           >
             View my submissions
@@ -103,28 +96,28 @@ export function CampaignClosedHonour() {
 
 function FilledView({ navigate: _navigate }: { navigate: ReturnType<typeof useNavigate> }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: durations.slow }}>
       {/* Toast-style strip */}
       <motion.div
         initial={{ opacity: 0, y: -6 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35 }}
+        transition={{ duration: durations.slow }}
         className="flex items-center gap-2 mb-6 px-4 py-3"
         style={{
-          background: 'var(--t-verdigris-50)', borderRadius: 'var(--r-md)',
+          background: 'var(--state-settled-container)', borderRadius: 'var(--r-md)',
           border: '1px solid var(--border-subtle)',
         }}
       >
         <ShieldCheck className="w-4 h-4 shrink-0" style={{ color: 'var(--state-settled)' }} strokeWidth={2} />
-        <p style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
           Filled while you were reading — anything you already submitted is safe.
         </p>
       </motion.div>
 
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', marginBottom: 8 }}>
+      <h1 style={{ fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', marginBottom: 'var(--space-4)'}}>
         This campaign just filled.
       </h1>
-      <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 22 }}>
+      <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 'var(--space-9)'}}>
         Another contributor took the last open slots. No slots left to record — but nothing you
         did here is lost.
       </p>
@@ -133,24 +126,24 @@ function FilledView({ navigate: _navigate }: { navigate: ReturnType<typeof useNa
       <div
         style={{
           background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-2)', padding: 20,
+           boxShadow: 'var(--e-2)', padding: 'var(--space-9)',
         }}
       >
         <div className="flex items-start justify-between">
           <div className="flex-1 pr-3">
-            <p style={{ fontSize: 15, fontWeight: 700, color: 'var(--text-primary)' }}>
+            <p style={{ fontSize: 'var(--fs-body)', fontWeight: 700, color: 'var(--text-primary)' }}>
               Tamil weather phrases
             </p>
-            <p style={{ fontSize: 12.5, fontWeight: 500, color: 'var(--text-muted)', marginTop: 3 }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-1)'}}>
               40 takes · ₹6 each
             </p>
           </div>
           <div
             className="flex items-center gap-1.5 px-3 py-1.5"
-            style={{ background: 'var(--t-ochre-50)', borderRadius: 'var(--r-full)' }}
+            style={{ background: 'var(--state-pending-container)', borderRadius: 'var(--r-full)' }}
           >
             <Users className="w-3.5 h-3.5" style={{ color: 'var(--state-pending)' }} strokeWidth={2.2} />
-            <span style={{ fontSize: 12, fontWeight: 800, color: 'var(--state-pending)' }}>Filled</span>
+            <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 800, color: 'var(--state-pending)' }}>Filled</span>
           </div>
         </div>
 
@@ -160,17 +153,17 @@ function FilledView({ navigate: _navigate }: { navigate: ReturnType<typeof useNa
         <div className="flex items-start gap-3">
           <div
             style={{
-              width: 36, height: 36, borderRadius: 'var(--r-md)', background: 'var(--t-verdigris-50)',
+              width: 36, height: 36, borderRadius: 'var(--r-md)', background: 'var(--state-settled-container)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}
           >
             <CheckCircle2 className="w-4.5 h-4.5" style={{ color: 'var(--state-settled)' }} strokeWidth={2} />
           </div>
           <div>
-            <p style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text-primary)' }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>
               Started or submitted a take? It's still counted and paid.
             </p>
-            <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)', marginTop: 3, lineHeight: 1.5 }}>
+            <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)', marginTop: 'var(--space-1)', lineHeight: 1.5 }}>
               Your work reaches your wallet just like any other take.
             </p>
           </div>
@@ -182,21 +175,21 @@ function FilledView({ navigate: _navigate }: { navigate: ReturnType<typeof useNa
 
 function WithdrawnView({ navigate: _navigate }: { navigate: ReturnType<typeof useNavigate> }) {
   return (
-    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.3 }}>
+    <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: durations.slow }}>
       <div
         className="flex items-center gap-2 mb-6 px-4 py-3"
-        style={{ background: 'var(--t-ochre-50)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)' }}
+        style={{ background: 'var(--state-pending-container)', borderRadius: 'var(--r-md)', border: '1px solid var(--border-subtle)' }}
       >
         <Info className="w-4 h-4 shrink-0" style={{ color: 'var(--state-pending)' }} strokeWidth={2} />
-        <p style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)', lineHeight: 1.4 }}>
           The lab pulled this campaign — that's on us to absorb, not on you.
         </p>
       </div>
 
-      <h1 style={{ fontSize: 24, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', marginBottom: 8 }}>
+      <h1 style={{ fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', marginBottom: 'var(--space-4)'}}>
         The lab closed this campaign.
       </h1>
-      <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 22 }}>
+      <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 'var(--space-9)'}}>
         The lab withdrew after you'd already submitted. The platform absorbs that — you're still
         paid for what you recorded. There's no clawback.
       </p>
@@ -205,12 +198,12 @@ function WithdrawnView({ navigate: _navigate }: { navigate: ReturnType<typeof us
       <div
         style={{
           background: 'var(--surface-raised)', borderRadius: 'var(--r-lg)',
-          border: '1px solid var(--border-subtle)', boxShadow: 'var(--e-2)', overflow: 'hidden',
+           boxShadow: 'var(--e-2)', overflow: 'hidden',
         }}
       >
         <div className="flex items-center gap-3 px-5 py-4" style={{ background: 'var(--surface-sunken)' }}>
           <Clock className="w-4 h-4 shrink-0" style={{ color: 'var(--state-pending)' }} strokeWidth={2.2} />
-          <p style={{ fontSize: 13.5, fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)', lineHeight: 1.4 }}>
             Campaign closed — your submission is still under review
           </p>
         </div>
@@ -218,11 +211,11 @@ function WithdrawnView({ navigate: _navigate }: { navigate: ReturnType<typeof us
         <div className="flex items-center justify-between px-5 py-4">
           <div className="flex items-center gap-2">
             <Lock className="w-3.5 h-3.5" style={{ color: 'var(--text-faint)' }} strokeWidth={2} />
-            <span style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-muted)' }}>
+            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-muted)' }}>
               Pending payout
             </span>
           </div>
-          <span style={{ fontFamily: 'var(--font-number)', fontSize: 20, fontWeight: 800, color: 'var(--money-pending)' }}>
+          <span style={{ fontFamily: 'var(--font-number)', fontSize: 'var(--fs-section)', fontWeight: 800, color: 'var(--money-pending)' }}>
             ₹180
           </span>
         </div>
@@ -230,8 +223,8 @@ function WithdrawnView({ navigate: _navigate }: { navigate: ReturnType<typeof us
         <div style={{ height: 1, background: 'var(--divider)' }} />
 
         <div className="flex items-start gap-3 px-5 py-4">
-          <ShieldCheck className="w-4.5 h-4.5 shrink-0" style={{ color: 'var(--state-settled)', marginTop: 1 }} strokeWidth={2} />
-          <p style={{ fontSize: 12.5, fontWeight: 600, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
+          <ShieldCheck className="w-4.5 h-4.5 shrink-0" style={{ color: 'var(--state-settled)', marginTop: 'var(--space-0)'}} strokeWidth={2} />
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 600, color: 'var(--text-secondary)', lineHeight: 1.5 }}>
             The platform covers this — your review continues and your ₹180 lands in your wallet.
           </p>
         </div>

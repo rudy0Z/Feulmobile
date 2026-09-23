@@ -234,3 +234,30 @@ export const pickedForYou: Quest[] = [
   quests.find((qq) => qq.id === 'q-int-1')!,
   quests.find((qq) => qq.id === 'q-room-1')!,
 ];
+
+/* ── First-session promise, in code ─────────────────────────────────
+   The guided first job a brand-new contributor is walked into. */
+export const FIRST_JOB_ID = 'q-lines-1';
+export const FIRST_JOB = quests.find((qq) => qq.id === FIRST_JOB_ID)!;
+
+/** Withdrawal floor (₹). Referenced everywhere the gap is shown — never a magic 100. */
+export const WITHDRAW_MIN = 100;
+
+/**
+ * Newcomer chain — the ordered jobs the app walks a new contributor through
+ * in session one. First job (New tier) → first acceptance unlocks Verified →
+ * the rest open. The sum is computed from questTotal() so the "₹100 floor in
+ * session one" promise is provable: newcomerChainTotal >= WITHDRAW_MIN.
+ */
+export const newcomerChain: Quest[] = [
+  FIRST_JOB,
+  quests.find((qq) => qq.id === 'q-scen-1')!,
+  quests.find((qq) => qq.id === 'q-int-1')!,
+];
+
+export const newcomerChainTotal = newcomerChain.reduce((sum, qq) => sum + questTotal(qq), 0);
+
+/** Exact gap to the withdrawal floor from an earned-so-far amount. */
+export function withdrawGap(earned: number): number {
+  return Math.max(0, WITHDRAW_MIN - earned);
+}

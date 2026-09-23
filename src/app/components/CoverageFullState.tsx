@@ -1,6 +1,8 @@
 import { useNavigate } from 'react-router';
 import { ChevronLeft, ChevronRight, Users, TrendingUp, MapPin, Sparkles } from 'lucide-react';
 import { motion } from 'motion/react';
+import { IconButton } from './ui/Primitives';
+import { durations } from '../lib/motion';
 
 // C-02 (P0) — Contributor opens a campaign whose demographic quota their profile already
 // satisfies. Instead of a generic "not eligible" wall, name the honest reason (coverage is
@@ -30,54 +32,45 @@ export function CoverageFullState() {
     >
       {/* Header */}
       <div className="px-6 pt-14 pb-4">
-        <button
-          onClick={() => navigate(-1)}
-          aria-label="Go back"
-          style={{
-            width: 40, height: 40, borderRadius: 'var(--r-full)',
-            background: 'var(--surface-raised)', border: '1px solid var(--border-subtle)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer',
-          }}
-        >
-          <ChevronLeft className="w-5 h-5" style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
-        </button>
+        <IconButton label="Go back" onClick={() => navigate(-1)} variant="surface">
+        <ChevronLeft style={{ color: 'var(--text-secondary)' }} strokeWidth={2} />
+      </IconButton>
       </div>
 
       {/* 1 — Coverage-full explanation card */}
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: 'easeOut' }}
+        transition={{ duration: durations.slow, ease: 'easeOut' }}
         className="px-6"
       >
         <div
           style={{
             background: 'var(--surface-raised)',
             borderRadius: 'var(--r-lg)',
-            border: '1px solid var(--border-subtle)',
             boxShadow: 'var(--e-2)',
-            padding: '24px',
+            padding: 'var(--space-10)',
           }}
         >
           <div className="flex items-center gap-3 mb-4">
             <div style={{
-              width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--t-verdigris-50)',
+              width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--state-settled-container)',
               display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
             }}>
               <Users className="w-5 h-5" style={{ color: 'var(--state-settled)' }} strokeWidth={1.9} />
             </div>
             <span style={{
-              fontSize: 12, fontWeight: 700, letterSpacing: '0.02em', textTransform: 'uppercase',
+              fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.02em', textTransform: 'uppercase',
               color: 'var(--state-settled)',
             }}>
               Coverage full
             </span>
           </div>
 
-          <h1 style={{ fontSize: 22, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', lineHeight: 1.25, marginBottom: 10 }}>
+          <h1 style={{ fontSize: 'var(--fs-title)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.01em', lineHeight: 1.25, marginBottom: 'var(--space-5)'}}>
             This campaign has enough Hindi · Delhi · 25–34 voices.
           </h1>
-          <p style={{ fontSize: 14, fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 20 }}>
+          <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-secondary)', lineHeight: 1.55, marginBottom: 'var(--space-9)'}}>
             Quotas keep the dataset balanced, so this one’s full for your profile. It’s not about
             you — your bucket is already well covered here.
           </p>
@@ -85,17 +78,17 @@ export function CoverageFullState() {
           {/* Coverage bar sitting at 100% / full */}
           <div style={{
             background: 'var(--surface-sunken)', borderRadius: 'var(--r-md)',
-            padding: '14px 16px', border: '1px solid var(--divider)',
+            padding: 'var(--space-7) var(--space-8)', border: '1px solid var(--divider)',
           }}>
             <div className="flex items-center justify-between mb-2">
-              <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>
+              <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 600, color: 'var(--text-muted)' }}>
                 Hindi · Delhi · 25–34
               </span>
-              <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--state-settled)', fontFamily: 'var(--font-number)' }}>
+              <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--state-settled)', fontFamily: 'var(--font-number)' }}>
                 100%
               </span>
             </div>
-            <div style={{ height: 8, borderRadius: 'var(--r-full)', background: 'var(--t-verdigris-50)', overflow: 'hidden' }}>
+            <div style={{ height: 8, borderRadius: 'var(--r-full)', background: 'var(--state-settled-container)', overflow: 'hidden' }}>
               <div style={{ width: '100%', height: '100%', borderRadius: 'var(--r-full)', background: 'var(--state-settled)' }} />
             </div>
           </div>
@@ -106,12 +99,12 @@ export function CoverageFullState() {
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.35, ease: 'easeOut', delay: 0.08 }}
+        transition={{ duration: durations.slow, ease: 'easeOut', delay: 0.08 }}
         className="px-6 mt-7"
       >
         <div className="flex items-center gap-2 mb-3">
           <Sparkles className="w-4 h-4" style={{ color: 'var(--action-primary)' }} strokeWidth={2} />
-          <h2 style={{ fontSize: 15, fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.005em' }}>
+          <h2 style={{ fontSize: 'var(--fs-body)', fontWeight: 800, color: 'var(--text-primary)', letterSpacing: '-0.005em' }}>
             Your voice is scarce here — and pays more
           </h2>
         </div>
@@ -126,13 +119,12 @@ export function CoverageFullState() {
                 background: 'var(--surface-raised)',
                 borderRadius: 'var(--r-md)',
                 border: '1px solid var(--border-subtle)',
-                boxShadow: 'var(--e-1)',
-                padding: '16px',
-                display: 'flex', alignItems: 'center', gap: 14,
+                padding: 'var(--space-8)',
+                display: 'flex', alignItems: 'center', gap: 'var(--space-7)',
               }}
             >
               <div style={{
-                width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--t-terracotta-50)',
+                width: 44, height: 44, borderRadius: 'var(--r-md)', background: 'var(--action-primary-soft)',
                 display: 'flex', alignItems: 'center', justifyContent: 'center', flexShrink: 0,
               }}>
                 <TrendingUp className="w-5 h-5" style={{ color: 'var(--action-primary)' }} strokeWidth={1.9} />
@@ -141,11 +133,11 @@ export function CoverageFullState() {
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-1.5 mb-1">
                   <MapPin className="w-3.5 h-3.5" style={{ color: 'var(--text-faint)' }} strokeWidth={2} />
-                  <span style={{ fontSize: 14, fontWeight: 700, color: 'var(--text-primary)' }}>
+                  <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-primary)' }}>
                     {r.language} · {r.region} · {r.age}
                   </span>
                 </div>
-                <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-muted)' }}>
+                <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}>
                   {r.needLine} ·{' '}
                   <span style={{ fontFamily: 'var(--font-number)', fontWeight: 700, color: 'var(--action-primary)' }}>
                     {r.multiplier}
@@ -162,7 +154,7 @@ export function CoverageFullState() {
 
       {/* 3 — Quiet footer reinforcing the honest logic */}
       <div className="px-6 mt-7">
-        <p style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-faint)', lineHeight: 1.5, textAlign: 'center' }}>
+        <p style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-faint)', lineHeight: 1.5, textAlign: 'center' }}>
           Rarity pays more because balance is scarce — the buckets that need you most earn the
           biggest multiplier.
         </p>
