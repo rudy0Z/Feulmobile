@@ -31,31 +31,31 @@ export function UndoToast({ gradeLabel, onUndo, onDismiss, visible }: UndoToastP
             style={{
               background: 'var(--text-primary)',
               borderRadius: 'var(--r-full)',
-              padding: 'var(--space-5) var(--space-9)',
+              padding: '10px 20px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              gap: 'var(--space-6)',
+              gap: 12,
               boxShadow: 'var(--e-3)',
               margin: '0 auto',
               width: 'max-content',
             }}
           >
-            <span style={{ fontSize: 'var(--fs-secondary)', fontWeight: 700, color: 'var(--text-on-studio)' }}>
+            <span style={{ fontSize: 13, fontWeight: 700, color: 'var(--text-on-studio)' }}>
               Graded: {gradeLabel}
             </span>
-            <div style={{ width: 1, height: 12, background: 'rgba(var(--bone-0-rgb),0.2)' }} />
+            <div style={{ width: 1, height: 12, background: 'rgba(255,255,255,0.2)' }} />
             <button
               onClick={onUndo}
               style={{
                 background: 'none',
                 border: 'none',
-                color: 'var(--action-primary)',
-                fontSize: 'var(--fs-secondary)',
+                color: 'var(--accent-primary)',
+                fontSize: 13,
                 fontWeight: 800,
                 cursor: 'pointer',
-                padding: 'var(--space-2) var(--space-4)',
-                borderRadius: 'var(--r-xs)',
+                padding: '4px 8px',
+                borderRadius: 4,
                 textTransform: 'uppercase',
                 letterSpacing: '0.05em',
               }}

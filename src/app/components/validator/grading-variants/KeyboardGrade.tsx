@@ -24,24 +24,24 @@ export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: Props) {
               whileTap={{ scale: 0.94, y: 2 }}
               style={{
                 flex: 1, maxWidth: 60, cursor: 'pointer', border: 'none', background: 'transparent',
-                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 'var(--space-3)',
+                display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 6,
               }}
             >
               <span
                 style={{
-                  width: '100%', height: 52, borderRadius: 'var(--r-xs)',
+                  width: '100%', height: 52, borderRadius: 'var(--r-sm)',
                   display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  fontFamily: 'var(--font-number)', fontSize: 'var(--fs-section)', fontWeight: 800,
+                  fontFamily: 'var(--font-number)', fontSize: 20, fontWeight: 800,
                   background: isSelected ? opt.color : 'var(--surface-raised)',
                   color: isSelected ? 'var(--text-on-studio)' : 'var(--text-secondary)',
                   border: isSelected ? `1.5px solid ${opt.color}` : '1px solid var(--border-subtle)',
                   boxShadow: isSelected ? 'var(--e-2)' : '0 2px 0 var(--border-strong)',
-                  transition: 'background-color 0.12s ease-out, border-color 0.12s ease-out, color 0.12s ease-out, transform 0.12s ease-out',
+                  transition: 'all 0.12s',
                 }}
               >
                 {opt.id}
               </span>
-              <span style={{ fontSize: 'var(--fs-caption)', fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: isSelected ? 'var(--text-primary)' : 'var(--text-muted)' }}>
+              <span style={{ fontSize: 9, fontWeight: 700, letterSpacing: '0.04em', textTransform: 'uppercase', color: isSelected ? 'var(--text-primary)' : 'var(--text-muted)' }}>
                 {opt.label}
               </span>
             </motion.button>
@@ -53,7 +53,7 @@ export function KeyboardGrade({ selectedGrade, onGrade, gradeOptions }: Props) {
         {selected && (
           <motion.span
             initial={{ opacity: 0 }} animate={{ opacity: 1 }}
-            style={{ fontSize: 'var(--fs-secondary)', fontWeight: 500, color: 'var(--text-muted)' }}
+            style={{ fontSize: 13, fontWeight: 500, color: 'var(--text-muted)' }}
           >
             {selected.id} — {selected.description}
           </motion.span>

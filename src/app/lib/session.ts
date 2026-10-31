@@ -96,7 +96,7 @@ export function setProfile(patch: Partial<FeulProfile>) {
 }
 
 /** Stubbed auth — records a signed-in profile and starts the day-0 journey. */
-export function signIn(_method: 'google' | 'email' | 'phone', name = 'Contributor') {
+export function signIn(_method: 'google' | 'email' | 'phone', name = 'Alex Johnson') {
   return setProfile({
     name,
     initials: getInitials(name),

@@ -1,11 +1,11 @@
-﻿/**
- * Signature Waveform - acoustic instrument element (brand-neutral).
+/**
+ * Feul Signature Waveform — decorative audio waveform element.
  * Used as background texture on hero sections throughout the app.
  *
  * variant:
  *   'audio'     → organic sine pattern (Contributor screens)
  *   'precision' → uniform, staircase-like bars (Validator screens)
- *   'data'      → spiky data-chart bars (legacy job screens)
+ *   'data'      → spiky data-chart bars (Quest Creator screens)
  */
 export function Waveform({
   color = 'var(--action-primary)',
